@@ -9,10 +9,10 @@ export function WhatsAppFloat() {
       href={WHATSAPP_URL}
       target="_blank"
       rel="noreferrer noopener"
-      aria-label="Hablar con Cómplice Lab por WhatsApp"
+      aria-label="Abrir chat con Cómplice Lab por WhatsApp"
     >
       <MessageCircle size={24} />
-      <span>WhatsApp</span>
+      <span>Hablemos</span>
     </a>
   );
 }

@@ -1,4 +1,4 @@
-import { ArrowRight, BrainCircuit, Building2, Laptop2, Sparkles, Users } from "lucide-react";
+import { ArrowRight, BrainCircuit, Building2, CheckCircle2, Laptop2, Sparkles, Users } from "lucide-react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { BrandMark } from "@/components/marketing/brand";
@@ -97,13 +97,64 @@ function FormationPage() {
           <div className="container">
             <div className="section-heading">
               <p className="eyebrow">PARA QUIÉN ES</p>
-              <h2>Formación para aprender, aplicar y luego avanzar.</h2>
+              <h2>Una misma metodología. Distintos puntos de partida.</h2>
+              <p>La formación cambia según quién aprende, qué necesita resolver y cuánto acompañamiento requiere.</p>
             </div>
-            <div className="formation-audience">
-              <article><Users /><h3>Emprendedores y profesionales</h3><p>Para aprender herramientas que permitan crear, comunicar y trabajar con mayor autonomía.</p></article>
-              <article><Building2 /><h3>Empresas y equipos</h3><p>Capacitaciones adaptables a objetivos de marketing, comunicación, productividad y adopción de IA.</p></article>
-              <article><Laptop2 /><h3>Online en Colombia</h3><p>Formación remota para ampliar el alcance más allá de nuestra ubicación actual en Manizales.</p></article>
-              <article><Sparkles /><h3>Aprender haciendo</h3><p>Ejercicios y aplicación práctica sobre ideas, marcas, negocios o situaciones reales.</p></article>
+
+            <div className="formation-paths">
+              <article className="formation-path-card">
+                <div className="formation-path-icon"><Users /></div>
+                <p className="eyebrow">PERSONAS</p>
+                <h3>Emprendedores y profesionales</h3>
+                <p>Para quienes quieren adquirir habilidades prácticas y aplicarlas directamente en su negocio, trabajo o proyecto.</p>
+                <ul>
+                  <li><CheckCircle2 /> IA aplicada al trabajo</li>
+                  <li><CheckCircle2 /> Contenido y reels</li>
+                  <li><CheckCircle2 /> Meta Ads</li>
+                  <li><CheckCircle2 /> Branding y presencia digital</li>
+                </ul>
+                <a className="text-link" href={whatsapp} target="_blank" rel="noreferrer noopener">
+                  Quiero aprender <ArrowRight size={17} />
+                </a>
+              </article>
+
+              <article className="formation-path-card formation-path-featured">
+                <div className="formation-path-icon"><Building2 /></div>
+                <p className="eyebrow">EMPRESAS Y EQUIPOS</p>
+                <h3>Capacitación adaptada a objetivos reales</h3>
+                <p>Para organizaciones que quieren que sus equipos incorporen IA, marketing y herramientas digitales de forma práctica.</p>
+                <ul>
+                  <li><CheckCircle2 /> Talleres para equipos</li>
+                  <li><CheckCircle2 /> IA aplicada a procesos</li>
+                  <li><CheckCircle2 /> Marketing y comunicación</li>
+                  <li><CheckCircle2 /> Programas personalizados</li>
+                </ul>
+                <a className="button" href="/capacitacion-ia-empresas">
+                  Ver capacitación para empresas <ArrowRight size={17} />
+                </a>
+              </article>
+            </div>
+
+            <div className="formation-format-strip">
+              <div><Laptop2 /><span><b>Online</b> para ampliar el alcance en Colombia.</span></div>
+              <div><Sparkles /><span><b>Práctico</b> para aprender haciendo.</span></div>
+              <div><BrainCircuit /><span><b>Aplicado</b> a situaciones y objetivos reales.</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="container formation-method-layout">
+            <div className="section-heading">
+              <p className="eyebrow">CÓMO ENSEÑAMOS</p>
+              <h2>Menos teoría aislada. Más criterio para usar herramientas.</h2>
+              <p>No buscamos que memorices plataformas. Buscamos que entiendas qué usar, cuándo usarlo y cómo convertirlo en una ventaja para tu trabajo o negocio.</p>
+            </div>
+            <div className="formation-method-steps">
+              <article><span>01</span><h3>Entender</h3><p>Partimos del objetivo antes de elegir la herramienta.</p></article>
+              <article><span>02</span><h3>Probar</h3><p>Trabajamos con ejercicios concretos, no solamente demostraciones.</p></article>
+              <article><span>03</span><h3>Aplicar</h3><p>Llevamos lo aprendido a una situación propia o de tu equipo.</p></article>
+              <article><span>04</span><h3>Replicar</h3><p>Te llevas una lógica de trabajo que puedas volver a utilizar.</p></article>
             </div>
           </div>
         </section>

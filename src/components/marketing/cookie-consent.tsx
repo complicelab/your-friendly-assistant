@@ -72,6 +72,11 @@ export function CookieConsent() {
 
     if (value === "accepted") {
       loadAnalytics();
+      return;
+    }
+
+    if (window.__compliceAnalyticsLoaded) {
+      window.location.reload();
     }
   };
 

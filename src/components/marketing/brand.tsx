@@ -1,6 +1,6 @@
 export function BrandMark({ compact = false }: { compact?: boolean }) {
   return (
-    <a href="#inicio" className={`brand ${compact ? "is-compact" : ""}`} aria-label="Cómplice Lab, inicio">
+    <a href="/#inicio" className={`brand ${compact ? "is-compact" : ""}`} aria-label="Cómplice Lab, inicio">
       <img
         className="brand-logo"
         src="/brand/complice-lab-logo.svg"

@@ -151,12 +151,7 @@ export function TrainingSection() {
             </article>
           ))}
         </div>
-        <a
-          href="https://api.whatsapp.com/send?phone=+573161772880&text=Hola.%20Quiero%20informaci%C3%B3n%20sobre%20las%20formaciones%20de%20C%C3%B3mplice%20Lab."
-          target="_blank"
-          rel="noreferrer noopener"
-          className="button reveal"
-        >Quiero información sobre formaciones <ArrowRight size={18}/></a>
+        <a href="/formacion" className="button reveal">Conocer nuestras formaciones <ArrowRight size={18}/></a>
       </div>
     </section>
   );

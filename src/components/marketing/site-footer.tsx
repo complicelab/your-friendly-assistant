@@ -61,7 +61,7 @@ export function SiteFooter() {
           </div>
         </div>
       </div>
-      <div className="container footer-bottom">© Cómplice Lab.</div>
+      <div className="container footer-bottom">© 2026 Cómplice Lab. Todos los derechos reservados.</div>
     </footer>
   );
 }

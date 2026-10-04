@@ -4,13 +4,13 @@ import { Menu, X } from "lucide-react";
 import { BrandMark } from "./brand";
 
 const links = [
-  ["Inicio", "inicio"],
-  ["Servicios", "servicios"],
-  ["Creamos", "formas"],
-  ["Enseñamos", "formacion"],
-  ["Implementamos", "formas"],
-  ["Proyectos", "proyectos"],
-  ["Nosotros", "nosotros"],
+  ["Inicio", "/#inicio"],
+  ["Servicios", "/#servicios"],
+  ["Creamos", "/#formas"],
+  ["Enseñamos", "/formacion"],
+  ["Implementamos", "/#formas"],
+  ["Proyectos", "/#proyectos"],
+  ["Nosotros", "/#nosotros"],
 ] as const;
 
 export function SiteHeader() {
@@ -30,7 +30,7 @@ export function SiteHeader() {
         <BrandMark />
         <nav className={open ? "is-open" : ""} aria-label="Principal">
           {links.map(([label, id]) => (
-            <a key={id + label} href={`#${id}`} onClick={() => setOpen(false)}>
+            <a key={id + label} href={id} onClick={() => setOpen(false)}>
               {label}
             </a>
           ))}

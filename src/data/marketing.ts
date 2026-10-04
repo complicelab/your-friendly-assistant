@@ -87,9 +87,10 @@ export const projects: Project[] = [
   },
   {
     name: "B2Home",
-    category: "Proyecto digital",
-    description: "Un proyecto desarrollado para convertir una idea de negocio en una presencia digital clara y profesional.",
-    services: ["Estrategia", "Diseño", "Web"],
+    category: "Negocio digital · Home services",
+    description: "Naming, marca, estrategia, web y herramientas comerciales creadas desde cero para una propuesta orientada a Latinoamérica.",
+    services: ["Naming", "Branding", "Estrategia", "Web", "Producto digital"],
+    href: "/proyectos/b2home",
     visual: "home",
   },
   {

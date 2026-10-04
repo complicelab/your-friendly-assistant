@@ -110,9 +110,10 @@ export const projects: Project[] = [
   },
   {
     name: "Mi Raíz",
-    category: "Proyecto de marca",
-    description: "Caso en construcción con una presentación visual preparada para crecer sin depender de muchas fotografías.",
-    services: ["Estrategia", "Marca", "Diseño"],
+    category: "Plataforma inmobiliaria · PropTech",
+    description: "Marca, web, buscador, panel administrativo y operación inmobiliaria desarrollados como un ecosistema completo.",
+    services: ["Branding", "UX/UI", "Web", "Back office", "Asesores"],
+    href: "/proyectos/mi-raiz",
     visual: "roots",
   },
   {

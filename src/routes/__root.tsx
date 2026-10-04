@@ -36,23 +36,30 @@ const analyticsEventsScript = `
       link.closest('.formation-hero') ? 'hero' :
       'content';
 
-    var common = {
+    var attribution = {};
+    try {
+      attribution = JSON.parse(window.sessionStorage.getItem('complice-campaign-attribution') || '{}');
+    } catch (error) {
+      attribution = {};
+    }
+
+    var common = Object.assign({
       link_text: text,
       link_url: href,
       placement: placement,
       page_path: window.location.pathname
-    };
+    }, attribution);
 
     if (href.indexOf('api.whatsapp.com') !== -1 || href.indexOf('wa.me') !== -1) {
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'whatsapp_click', common);
       }
       if (typeof window.fbq === 'function') {
-        window.fbq('track', 'Contact', {
+        window.fbq('track', 'Contact', Object.assign({
           content_name: 'WhatsApp',
           content_category: placement,
           link_text: text
-        });
+        }, attribution));
       }
       return;
     }
@@ -62,10 +69,10 @@ const analyticsEventsScript = `
         window.gtag('event', 'formation_cta_click', common);
       }
       if (typeof window.fbq === 'function') {
-        window.fbq('trackCustom', 'FormationCTA', {
+        window.fbq('trackCustom', 'FormationCTA', Object.assign({
           content_name: text,
           placement: placement
-        });
+        }, attribution));
       }
       return;
     }
@@ -75,10 +82,10 @@ const analyticsEventsScript = `
         window.gtag('event', 'company_training_cta_click', common);
       }
       if (typeof window.fbq === 'function') {
-        window.fbq('trackCustom', 'CompanyTrainingCTA', {
+        window.fbq('trackCustom', 'CompanyTrainingCTA', Object.assign({
           content_name: text,
           placement: placement
-        });
+        }, attribution));
       }
       return;
     }
@@ -88,11 +95,11 @@ const analyticsEventsScript = `
         window.gtag('event', 'email_click', common);
       }
       if (typeof window.fbq === 'function') {
-        window.fbq('track', 'Contact', {
+        window.fbq('track', 'Contact', Object.assign({
           content_name: 'Email',
           content_category: placement,
           link_text: text
-        });
+        }, attribution));
       }
     }
   }, { capture: true });

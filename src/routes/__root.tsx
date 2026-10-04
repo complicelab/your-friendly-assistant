@@ -13,6 +13,70 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
+const GA_MEASUREMENT_ID = "G-GM6V155DF5";
+
+const analyticsInitScript = `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_MEASUREMENT_ID}', {
+  send_page_view: true
+});
+`;
+
+const analyticsEventsScript = `
+(function () {
+  if (window.__compliceAnalyticsBound) return;
+  window.__compliceAnalyticsBound = true;
+
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    if (!(target instanceof Element)) return;
+
+    var link = target.closest('a');
+    if (!link) return;
+
+    var href = link.getAttribute('href') || '';
+    var text = (link.textContent || '').trim().replace(/\\s+/g, ' ').slice(0, 100);
+    var placement =
+      link.classList.contains('whatsapp-float') ? 'floating_button' :
+      link.classList.contains('desktop-cta') ? 'header' :
+      link.closest('footer') ? 'footer' :
+      link.closest('.main-cta') ? 'main_cta' :
+      link.closest('.formation-hero') ? 'hero' :
+      'content';
+
+    if (typeof window.gtag !== 'function') return;
+
+    var common = {
+      link_text: text,
+      link_url: href,
+      placement: placement,
+      page_path: window.location.pathname
+    };
+
+    if (href.indexOf('api.whatsapp.com') !== -1 || href.indexOf('wa.me') !== -1) {
+      window.gtag('event', 'whatsapp_click', common);
+      return;
+    }
+
+    if (href === '/formacion' || href.indexOf('/formacion#') === 0) {
+      window.gtag('event', 'formation_cta_click', common);
+      return;
+    }
+
+    if (href.indexOf('/capacitacion-ia-empresas') === 0) {
+      window.gtag('event', 'company_training_cta_click', common);
+      return;
+    }
+
+    if (href.indexOf('mailto:') === 0) {
+      window.gtag('event', 'email_click', common);
+    }
+  }, { capture: true });
+})();
+`;
+
 const organizationSchema = {
   "@context": "https://schema.org",
   "@graph": [
@@ -188,6 +252,8 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="es">
       <head>
         <HeadContent />
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
+        <script dangerouslySetInnerHTML={{ __html: analyticsInitScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -195,6 +261,7 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <script dangerouslySetInnerHTML={{ __html: analyticsEventsScript }} />
         <Scripts />
       </body>
     </html>

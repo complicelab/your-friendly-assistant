@@ -17,14 +17,14 @@ export function Hero() {
       <div className="orb orb-two" aria-hidden="true" />
       <div className="container hero-inner">
         <div className="hero-copy">
-          <p className="eyebrow reveal">PUBLICIDAD · CREATIVIDAD · TECNOLOGÍA</p>
+          <p className="eyebrow reveal">FORMACIÓN · PUBLICIDAD · CREATIVIDAD · IA</p>
           <h1 className="reveal">
-            Haz más con tu marca.
+            Aprende. Crea. Haz más.
             <br />
             Hazlo <span className="gradient-text">con IA.</span>
           </h1>
           <p className="hero-lead reveal">
-            Creamos, enseñamos e implementamos publicidad, contenido, marcas y experiencias digitales potenciadas por inteligencia artificial.
+            Formación práctica en inteligencia artificial, marketing y publicidad para emprendedores, profesionales, empresas y equipos. También creamos e implementamos marcas, contenido, campañas y experiencias digitales.
           </p>
           <p className="hero-triad reveal">CREAMOS. ENSEÑAMOS. IMPLEMENTAMOS.</p>
           <div className="hero-actions reveal">

@@ -182,29 +182,22 @@ svg { flex: 0 0 auto; }
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 11px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  white-space: nowrap;
+  flex: 0 0 auto;
 }
-.brand-word b { color: var(--cl-sky); }
-.brand-mark {
-  position: relative;
-  display: inline-flex;
-  width: 34px;
-  height: 26px;
+.brand-logo {
+  display: block;
+  width: 178px;
+  height: auto;
+  max-height: 48px;
+  object-fit: contain;
+  object-position: left center;
 }
-.brand-mark i {
-  position: absolute;
-  width: 18px;
-  height: 26px;
-  border: 2px solid var(--cl-sky);
-  border-radius: 10px 10px 4px 10px;
-  transform: skewX(-14deg);
+.brand.is-compact .brand-logo {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  object-position: left center;
 }
-.brand-mark i:first-child { left: 1px; }
-.brand-mark i:last-child { right: 1px; transform: skewX(14deg); border-color: #fff; }
 
 .site-header {
   position: fixed;
@@ -883,7 +876,7 @@ svg { flex: 0 0 auto; }
   .footer-grid > div:first-child { grid-column:1/-1; }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 640px) {\n  .brand-logo { width: 150px; max-height: 42px; }
   .container { width:calc(100% - 28px); }
   .section { padding:82px 0; }
   .section-heading { margin-bottom:36px; }

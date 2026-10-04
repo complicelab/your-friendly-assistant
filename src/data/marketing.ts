@@ -85,10 +85,10 @@ export const principles = [
 ] as const;
 
 export const faqs = [
-  ["¿Trabajan solamente en Manizales?", "No. Trabajamos online y podemos desarrollar proyectos, talleres y capacitaciones presenciales en diferentes lugares de Colombia."],
+  ["¿Trabajan solamente en Manizales?", "No. Estamos en Manizales, pero trabajamos con personas, marcas, empresas y equipos de toda Colombia mediante formatos online y proyectos presenciales según el alcance. La propuesta está preparada para crecer también hacia mercados internacionales."],
   ["¿Trabajan solamente con empresas?", "No. Trabajamos con emprendedores, profesionales, marcas, negocios, empresas, equipos, instituciones y organizaciones."],
   ["¿Puedo contratar solamente un servicio?", "Sí. Analizamos qué necesitas y construimos una propuesta según el alcance del proyecto."],
-  ["¿También capacitan equipos?", "Sí. Podemos realizar talleres y programas personalizados para equipos, empresas, instituciones y organizaciones."],
+  ["¿También capacitan equipos?", "Sí. Diseñamos talleres y capacitaciones de inteligencia artificial, marketing, publicidad, contenido y herramientas digitales para equipos, empresas, instituciones y organizaciones."],
   ["¿Necesito conocimientos de inteligencia artificial?", "No. Nuestras formaciones están diseñadas para explicar las herramientas de una manera sencilla y práctica."],
   ["¿Ustedes hacen el trabajo o solamente enseñan?", "Ambas opciones. Podemos hacerlo por ti, enseñarte a hacerlo o implementarlo contigo."],
   ["¿Crean páginas web?", "Sí. Desarrollamos landing pages, páginas corporativas y páginas comerciales, además de acompañar la configuración de dominio y presencia digital."],

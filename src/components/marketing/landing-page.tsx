@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Hero } from "./hero";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
+import { WhatsAppFloat } from "./whatsapp-float";
 import {
   AiMethodSection,
   ChangeSection,
@@ -84,6 +85,7 @@ export function LandingPage() {
         <FaqSection />
       </main>
       <SiteFooter />
+      <WhatsAppFloat />
     </div>
   );
 }

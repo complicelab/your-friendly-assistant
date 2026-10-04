@@ -203,6 +203,41 @@ function ProjectVisual({ visual, name }: { visual: string; name: string }) {
     );
   }
 
+
+  if (visual === "pulse") {
+    return (
+      <div className="project-visual project-visual-pulso" aria-label="Vista previa del proyecto Pulso Data">
+        <div className="pulso-preview-browser">
+          <div className="pulso-preview-top"><i/><i/><i/><span>pulsodt.com</span></div>
+          <div className="pulso-preview-layout">
+            <div className="pulso-preview-copy">
+              <b><em>Pulso</em><span>data</span></b>
+              <small>FLUJO · EARNINGS · MACRO</small>
+              <strong>Lee el mercado antes de operar.</strong>
+              <span>Opciones · Earnings · FRED · Contexto</span>
+            </div>
+            <div className="pulso-preview-panel">
+              <small>CONTEXTO DEL DÍA · _SPX</small>
+              <b>Flujo de Opciones</b>
+              <div className="pulso-preview-bars">
+                <i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/>
+              </div>
+              <div className="pulso-preview-tags"><span>GEX</span><span>DEX</span><span>Gamma</span></div>
+            </div>
+          </div>
+        </div>
+        <div className="pulso-preview-phone">
+          <div className="pulso-preview-phone-notch"/>
+          <b><em>Pulso</em><span>data</span></b>
+          <small>EARNINGS</small>
+          <strong>Apple Inc. (AAPL)</strong>
+          <div><span>$333.60</span><span>4.5%</span></div>
+          <i/><i/>
+        </div>
+      </div>
+    );
+  }
+
 return (
     <div className={`project-visual project-visual-fallback visual-${visual}`} aria-label={`Vista conceptual de ${name}`}>
       <div className="fallback-grid"/>

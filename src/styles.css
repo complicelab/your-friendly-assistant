@@ -2549,3 +2549,106 @@ a.project-card-pro:hover {
   .clab-phone p{font-size:.5rem}
   .clab-phone-cta,.clab-phone-ghost{font-size:.46rem;padding:9px}
 }
+
+
+/* Mi Raiz case study + portfolio preview */
+.project-visual-miraiz{
+  display:flex;
+  align-items:center;
+  padding:7%;
+  background:
+    radial-gradient(circle at 80% 20%,rgba(50,183,94,.11),transparent 34%),
+    linear-gradient(145deg,#f3faf5,#e6f4ea);
+}
+.miraiz-preview-browser{
+  width:82%;
+  aspect-ratio:16/10;
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:13px;
+  background:white;
+  box-shadow:0 24px 70px rgba(0,0,0,.18);
+}
+.miraiz-preview-top{
+  height:24px;display:flex;align-items:center;gap:5px;padding:0 9px;
+  border-bottom:1px solid rgba(0,0,0,.06);background:#f7faf8
+}
+.miraiz-preview-top i{width:5px;height:5px;border-radius:50%;background:#cfd7d1}
+.miraiz-preview-top span{margin-left:5px;color:#8c9890;font-size:.36rem}
+.miraiz-preview-layout{
+  display:grid;grid-template-columns:1.1fr .9fr;gap:6%;align-items:center;
+  height:calc(100% - 24px);padding:7%;background:linear-gradient(180deg,#eff8f1,#ffffff)
+}
+.miraiz-preview-copy{display:flex;flex-direction:column;align-items:flex-start}
+.miraiz-preview-copy > b,.miraiz-preview-phone > b{font-size:.72rem;color:#050505}
+.miraiz-preview-copy > b span,.miraiz-preview-phone > b span{display:inline-grid;place-items:center;width:14px;aspect-ratio:1;margin-right:3px;background:#34c759;color:white;font-size:.44rem}
+.miraiz-preview-copy small{margin-top:12%;color:#16733e;font-size:.3rem;letter-spacing:.12em}
+.miraiz-preview-copy strong{margin-top:5%;max-width:96%;font-size:clamp(.72rem,1.45vw,1.3rem);line-height:1;letter-spacing:-.045em;color:#07552f}
+.miraiz-preview-copy > span{margin-top:7%;color:#728078;font-size:.3rem}
+.miraiz-preview-search{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:4px;width:100%;margin-top:10%;padding:6px;border-radius:7px;background:white;border:1px solid #dfe9e2}
+.miraiz-preview-search i{height:16px;border-radius:4px;background:#f1f5f2;border:1px solid #e0e8e2}
+.miraiz-preview-search b{display:grid;place-items:center;padding:0 7px;border-radius:4px;background:#1b8f4b;color:white;font-size:.25rem}
+.miraiz-preview-admin{
+  padding:10%;border:1px solid #dce8df;border-radius:12px;background:#f7fcf8;color:#07552f
+}
+.miraiz-preview-admin small{display:block;font-size:.28rem;letter-spacing:.12em;color:#4f705d}
+.miraiz-preview-admin > b{display:block;margin:6% 0 9%;font-size:.62rem}
+.miraiz-preview-admin > div{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.miraiz-preview-admin span{padding:7px;border:1px solid #dfe8e2;border-radius:7px;background:white;color:#6f7a73;font-size:.23rem}
+.miraiz-preview-admin strong{display:block;margin-top:4px;color:#18864a;font-size:.55rem}
+.miraiz-preview-phone{
+  position:absolute;right:5%;bottom:7%;width:24%;aspect-ratio:9/17;padding:11% 5% 5%;
+  border:1px solid rgba(0,0,0,.08);border-radius:18px;background:#fff;box-shadow:0 20px 55px rgba(0,0,0,.20)
+}
+.miraiz-preview-phone-notch{position:absolute;top:5px;left:35%;right:35%;height:4px;border-radius:5px;background:#d7ded9}
+.miraiz-preview-phone small{display:block;margin-top:22%;color:#18864a;font-size:.27rem;letter-spacing:.12em}
+.miraiz-preview-phone strong{display:block;margin:8% 0 14%;font-size:.48rem;line-height:1.08;color:#07552f}
+.miraiz-preview-phone i{display:block;height:11%;margin-top:7%;border-radius:6px;background:#f2f6f3;border:1px solid #e2e9e4}
+.miraiz-preview-phone i:first-of-type{background:#dff4e6;border-color:#c9ead4}
+
+.miraiz-browser,.miraiz-admin-browser{background:#f3faf5}
+.miraiz-home-ui{min-height:610px;background:linear-gradient(rgba(10,92,53,.74),rgba(10,92,53,.64)),radial-gradient(circle at 65% 38%,#7aa988,#3a7154 46%,#234e3a 75%);color:white}
+.miraiz-home-ui header{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 7%;background:white;color:#111}
+.miraiz-home-ui header b{font-size:1rem}.miraiz-home-ui header b span{display:inline-grid;place-items:center;width:23px;aspect-ratio:1;margin-right:5px;background:#34c759;color:white;font-size:.7rem}
+.miraiz-home-ui nav{display:flex;gap:18px}.miraiz-home-ui nav span{font-size:.56rem;color:#313a34}
+.miraiz-hero-ui{display:grid;align-content:center;min-height:538px;padding:7% 9%}
+.miraiz-hero-ui > div:first-child{max-width:720px}
+.miraiz-hero-ui small{display:inline-block;padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.18);font-size:.52rem;letter-spacing:.05em}
+.miraiz-hero-ui h3{margin:20px 0 16px;font-size:clamp(2rem,4vw,4.2rem);line-height:.98;letter-spacing:-.05em;font-weight:800}
+.miraiz-hero-ui p{max-width:650px;font-size:.8rem;line-height:1.7;color:#eef6f1}
+.miraiz-searchbar{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:9px;align-items:end;margin-top:30px;padding:15px;border-radius:16px;background:white;color:#1c2921;box-shadow:0 20px 55px rgba(0,0,0,.18)}
+.miraiz-searchbar span{display:flex;flex-direction:column;gap:6px}.miraiz-searchbar span small{padding:0;background:none;color:#17623b;font-size:.34rem}.miraiz-searchbar span b{padding:10px;border:1px solid #dfe6e1;border-radius:8px;font-size:.54rem;font-weight:600}
+.miraiz-searchbar > strong{padding:12px 18px;border-radius:8px;background:#1b8f4b;color:white;font-size:.58rem}
+.miraiz-admin-ui{display:grid;grid-template-columns:190px 1fr;min-height:540px;background:#eff7f1;color:#173424}
+.miraiz-admin-ui aside{display:flex;flex-direction:column;gap:4px;padding:24px 14px;background:white;border-right:1px solid #dce6df}
+.miraiz-admin-ui aside > b{font-size:.58rem;color:#647168;margin-bottom:15px}
+.miraiz-admin-ui aside span{padding:9px 10px;border-radius:8px;font-size:.62rem;color:#0d5b34}
+.miraiz-admin-ui aside .active{background:#1b8f4b;color:white}
+.miraiz-admin-ui main{padding:32px}
+.miraiz-admin-head{display:flex;justify-content:space-between;gap:20px;align-items:center}
+.miraiz-admin-head small{font-size:.52rem;color:#5b6b61}.miraiz-admin-head h3{margin:5px 0 0;color:#07552f;font-size:1.6rem}.miraiz-admin-head button{border:0;border-radius:999px;background:#1b8f4b;color:white;padding:10px 14px}
+.miraiz-filters{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px;margin:22px 0}
+.miraiz-filters span{padding:10px;border:1px solid #d7e2da;border-radius:8px;background:white;color:#7b8680;font-size:.58rem}
+.miraiz-table{border:1px solid #d7e2da;border-radius:12px;overflow:hidden;background:white}
+.miraiz-table > div{display:grid;grid-template-columns:.7fr 2fr .8fr 1fr 1fr;gap:8px;padding:12px;border-top:1px solid #e4ebe6;font-size:.55rem}
+.miraiz-table > div:first-child{border-top:0}.miraiz-table span:nth-child(2){color:#0b6338;font-weight:700}.miraiz-table span:last-child{font-weight:700}
+.miraiz-mobile-pair{display:flex;justify-content:center;gap:42px;padding:34px 0 12px;background:radial-gradient(circle at 50% 35%,rgba(63,134,255,.06),transparent 36%)}
+.miraiz-phone{position:relative;width:min(320px,42%);aspect-ratio:9/18.8;overflow:hidden;padding:12% 6% 6%;border:1px solid rgba(255,255,255,.13);border-radius:38px;background:#f5faf6;color:#0e2a1b;box-shadow:0 24px 70px rgba(0,0,0,.32)}
+.miraiz-phone-notch{position:absolute;top:12px;left:38%;right:38%;height:5px;border-radius:8px;background:#d6ddd8}
+.miraiz-phone > b{font-size:.78rem;color:#050505}.miraiz-phone > b span{display:inline-grid;place-items:center;width:15px;aspect-ratio:1;background:#34c759;color:white;font-size:.46rem;margin-right:3px}
+.miraiz-phone > small{display:block;margin-top:25%;color:#18864a;font-size:.42rem;letter-spacing:.1em}
+.miraiz-phone h3{margin:13px 0;font-size:1.45rem;line-height:.98;letter-spacing:-.045em;color:#07552f}
+.miraiz-phone p{font-size:.6rem;line-height:1.6;color:#66736b}
+.miraiz-form{display:grid;gap:9px;margin-top:18px}.miraiz-form i{display:block;height:38px;border:1px solid #dce5df;border-radius:10px;background:white}.miraiz-form strong{padding:11px;border-radius:999px;background:#1b8f4b;color:white;text-align:center;font-size:.58rem}
+.miraiz-phone-admin{background:#eff7f1}.miraiz-phone-admin h3{font-size:1.1rem}.miraiz-kpis{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}.miraiz-kpis span{padding:12px;border-radius:12px;background:white;border:1px solid #dfe7e1;color:#6c776f;font-size:.46rem}.miraiz-kpis b{display:block;margin-top:8px;color:#18864a;font-size:1.05rem}
+@media(max-width:980px){
+  .miraiz-searchbar{grid-template-columns:1fr 1fr}
+  .miraiz-admin-ui{grid-template-columns:1fr}.miraiz-admin-ui aside{display:none}
+}
+@media(max-width:640px){
+  .miraiz-home-ui{min-height:470px}.miraiz-home-ui header{height:50px;padding:0 5%}.miraiz-home-ui nav{display:none}
+  .miraiz-hero-ui{padding:9% 7%}.miraiz-hero-ui h3{font-size:2rem}
+  .miraiz-searchbar{grid-template-columns:1fr;margin-top:18px}
+  .miraiz-admin-ui main{padding:20px}.miraiz-filters{grid-template-columns:1fr}.miraiz-table > div{grid-template-columns:.7fr 1.5fr 1fr}.miraiz-table span:nth-child(4),.miraiz-table span:nth-child(5){display:none}
+  .miraiz-mobile-pair{gap:12px;padding-top:18px}.miraiz-phone{width:48%;border-radius:24px;padding-top:15%}.miraiz-phone > small{margin-top:20%;font-size:.34rem}.miraiz-phone h3{font-size:.95rem}.miraiz-phone p{font-size:.48rem}.miraiz-form i{height:25px}.miraiz-form strong{font-size:.46rem;padding:8px}
+}

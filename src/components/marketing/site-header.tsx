@@ -35,7 +35,12 @@ export function SiteHeader() {
             </a>
           ))}
         </nav>
-        <a className="button button-sm desktop-cta" href="#contacto">
+        <a
+          className="button button-sm desktop-cta"
+          href="https://api.whatsapp.com/send?phone=+573161772880&text=Hola.%20Me%20interesa%20sus%20servicios%20de..."
+          target="_blank"
+          rel="noreferrer noopener"
+        >
           Hablemos
         </a>
         <button

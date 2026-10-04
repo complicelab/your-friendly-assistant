@@ -190,7 +190,7 @@ function CamiloRespiroCase() {
           <div className="container case-story-grid">
             <div>
               <p className="eyebrow">EL RETO</p>
-              <h2>Mucho más que una página para vender cursos.</h2>
+              <h2>Mucho más que una página para <span className="case-accent">vender cursos.</span></h2>
             </div>
             <div className="case-story-copy">
               <p>
@@ -211,7 +211,7 @@ function CamiloRespiroCase() {
           <div className="container">
             <div className="section-heading">
               <p className="eyebrow">QUÉ CONSTRUIMOS</p>
-              <h2>Un sistema completo, no solo una web.</h2>
+              <h2>Un sistema completo, <span className="case-accent">no solo una web.</span></h2>
               <p>Diseñamos la marca y conectamos la experiencia comercial, educativa y administrativa.</p>
             </div>
             <div className="case-capabilities">
@@ -230,7 +230,7 @@ function CamiloRespiroCase() {
           <div className="container">
             <div className="section-heading">
               <p className="eyebrow">WEB · CAMPUS · BACK OFFICE</p>
-              <h2>Tres experiencias. Un mismo ecosistema.</h2>
+              <h2>Tres experiencias. <span className="case-accent">Un mismo ecosistema.</span></h2>
               <p>La estructura visual del caso está diseñada para mantener proporciones profesionales y adaptarse a proyectos con mucho o poco material.</p>
             </div>
             <div className="case-gallery">
@@ -258,7 +258,7 @@ function CamiloRespiroCase() {
           <div className="container case-system-grid">
             <div>
               <p className="eyebrow">DE LA VISITA A LA OPERACIÓN</p>
-              <h2>Un flujo conectado de principio a fin.</h2>
+              <h2>Un flujo conectado <span className="case-accent-blue">de principio a fin.</span></h2>
             </div>
             <div className="case-flow">
               {[
@@ -276,7 +276,7 @@ function CamiloRespiroCase() {
           <div className="container case-tech-grid">
             <div>
               <p className="eyebrow">TECNOLOGÍA Y EJECUCIÓN</p>
-              <h2>Estrategia humana. Herramientas modernas.</h2>
+              <h2>Estrategia humana. <span className="case-accent-blue">Herramientas modernas.</span></h2>
               <p className="body-large">
                 El proyecto fue construido con un stack ágil que permitió integrar producto,
                 operación y experiencia sin perder el criterio creativo y estratégico.
@@ -305,7 +305,7 @@ function CamiloRespiroCase() {
         <section className="main-cta formation-cta">
           <div className="container">
             <p className="eyebrow">¿TIENES ALGO QUE QUIERES CONSTRUIR?</p>
-            <h2>Las buenas ideas necesitan un Cómplice.</h2>
+            <h2>Las buenas ideas necesitan un <span className="case-accent-light">Cómplice.</span></h2>
             <p>Creamos marcas, webs, plataformas y sistemas digitales pensados para vender, operar y crecer.</p>
             <div className="hero-actions">
               <a className="button button-light" href={whatsapp} target="_blank" rel="noreferrer noopener">

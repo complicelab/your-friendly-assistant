@@ -15,8 +15,24 @@ declare global {
   }
 }
 
+function captureCampaignAttribution() {
+  const params = new URLSearchParams(window.location.search);
+  const keys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid"];
+  const attribution: Record<string, string> = {};
+
+  keys.forEach((key) => {
+    const value = params.get(key);
+    if (value) attribution[key] = value;
+  });
+
+  if (Object.keys(attribution).length > 0) {
+    window.sessionStorage.setItem("complice-campaign-attribution", JSON.stringify(attribution));
+  }
+}
+
 function loadAnalytics() {
   if (window.__compliceAnalyticsLoaded) return;
+  captureCampaignAttribution();
   window.__compliceAnalyticsLoaded = true;
 
   window.dataLayer = window.dataLayer || [];

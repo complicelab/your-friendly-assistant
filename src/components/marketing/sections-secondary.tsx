@@ -68,28 +68,87 @@ export function EntrepreneurSection() {
   );
 }
 
+function ProjectVisual({ visual, name }: { visual: string; name: string }) {
+  if (visual === "camilo") {
+    return (
+      <div className="project-visual project-visual-camilo" aria-label="Vista previa del ecosistema digital Camilo Respiro">
+        <div className="preview-browser">
+          <div className="preview-browser-top"><i/><i/><i/><span>camilorespiro.com</span></div>
+          <div className="preview-camilo-layout">
+            <div>
+              <b>camilo<br/>respiro</b>
+              <small>DATA INSTITUCIONAL · MACROECONOMÍA</small>
+              <strong>Aprende a ver<br/><em>dónde está el dinero.</em></strong>
+              <span>Web · Campus · Membresías · Back office</span>
+            </div>
+            <div className="preview-chart">
+              <i/><i/><i/><i/><i/><svg viewBox="0 0 220 100" aria-hidden="true"><path d="M0 82 C34 78, 30 58, 58 61 S88 39, 111 45 S139 20, 162 31 S194 8, 220 14"/></svg>
+            </div>
+          </div>
+        </div>
+        <div className="preview-phone">
+          <div className="preview-phone-notch"/>
+          <b>camilo<br/>respiro</b>
+          <small>CAMPUS PRIVADO</small>
+          <strong>Continúa donde<br/>lo dejaste</strong>
+          <span/>
+          <span/>
+          <span/>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`project-visual project-visual-fallback visual-${visual}`} aria-label={`Vista conceptual de ${name}`}>
+      <div className="fallback-grid"/>
+      <span className="fallback-kicker">CÓMPLICE LAB · PROYECTO</span>
+      <strong>{name}</strong>
+      <div className="fallback-orb"/>
+    </div>
+  );
+}
+
 export function ProjectsSection() {
   return (
     <section id="proyectos" className="section section-deep">
       <div className="container">
         <SectionHeading
-          eyebrow="PROYECTOS"
-          title="Ideas que ya hemos convertido en realidad."
-          copy="Proyectos propios y marcas donde hemos aplicado estrategia, creatividad, contenido, publicidad, tecnología y diseño."
+          eyebrow="CASOS Y PROYECTOS"
+          title="Proyectos que diseñamos, construimos e implementamos."
+          copy="Marcas, webs, plataformas y ecosistemas digitales desarrollados con una estructura visual preparada para mostrar cada caso con la profundidad que realmente tenga."
         />
-        <div className="projects-grid">
-          {projects.map((project,index)=>(
-            <article className={`project-card project-${index + 1} reveal`} key={project}>
-              <div className="project-art" aria-hidden="true"><span>0{index + 1}</span><i/><i/></div>
-              <div className="project-meta">
-                <div><span>PROYECTO</span><h3>{project}</h3></div>
-                <p>Categorías y caso de estudio preparados para completar posteriormente.</p>
-                <span className="project-arrow"><ArrowRight/></span>
-              </div>
-            </article>
-          ))}
+        <div className="projects-grid projects-grid-pro">
+          {projects.map((project,index)=>{
+            const content = (
+              <>
+                <ProjectVisual visual={project.visual} name={project.name} />
+                <div className="project-meta project-meta-pro">
+                  <div>
+                    <span>{project.category}</span>
+                    <h3>{project.name}</h3>
+                  </div>
+                  <p>{project.description}</p>
+                  <div className="project-tags">
+                    {project.services.map((service)=><span key={service}>{service}</span>)}
+                  </div>
+                  <span className="project-arrow" aria-hidden="true"><ArrowRight/></span>
+                </div>
+              </>
+            );
+
+            return project.href ? (
+              <a className={`project-card project-card-pro project-${index + 1} reveal`} key={project.name} href={project.href} aria-label={`Ver caso de estudio de ${project.name}`}>
+                {content}
+              </a>
+            ) : (
+              <article className={`project-card project-card-pro project-${index + 1} reveal`} key={project.name}>
+                {content}
+              </article>
+            );
+          })}
         </div>
-        <p className="project-note reveal">Estructura preparada para: EL RETO · QUÉ HICIMOS · EL PROCESO · EL RESULTADO</p>
+        <p className="project-note reveal">Cada caso puede crecer con imágenes, proceso, funcionalidades y resultados sin romper la consistencia visual del portafolio.</p>
       </div>
     </section>
   );

@@ -13,6 +13,61 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://complicelab.com/#organization",
+      name: "Cómplice Lab",
+      url: "https://complicelab.com/",
+      logo: "https://complicelab.com/brand/complice-lab-logo.svg",
+      email: "info@complicelab.com",
+      telephone: "+573161772880",
+      description:
+        "Formación práctica en inteligencia artificial, marketing y publicidad, junto con servicios de branding, contenido, publicidad digital y desarrollo web.",
+      areaServed: {
+        "@type": "Country",
+        name: "Colombia",
+      },
+      sameAs: [
+        "https://www.instagram.com/complicelab",
+        "https://www.tiktok.com/@complicelab",
+        "https://www.facebook.com/complicelab",
+        "https://www.youtube.com/@complicelab",
+      ],
+      knowsAbout: [
+        "Inteligencia artificial aplicada a negocios",
+        "Marketing digital",
+        "Publicidad digital",
+        "Meta Ads",
+        "Creación de contenido",
+        "Branding",
+        "Reels",
+        "CapCut",
+        "Páginas web con inteligencia artificial",
+      ],
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        telephone: "+573161772880",
+        email: "info@complicelab.com",
+        availableLanguage: ["es"],
+        areaServed: "CO",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://complicelab.com/#website",
+      url: "https://complicelab.com/",
+      name: "Cómplice Lab",
+      alternateName: "Complice Lab",
+      publisher: { "@id": "https://complicelab.com/#organization" },
+      inLanguage: "es-CO",
+    },
+  ],
+};
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -79,24 +134,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Cómplice Lab | Publicidad, IA, Diseño y Formación" },
+      { title: "Formación en IA, Marketing y Publicidad | Cómplice Lab" },
       {
         name: "description",
         content:
-          "Creamos, enseñamos e implementamos branding, contenido, publicidad, páginas web y estrategias potenciadas por inteligencia artificial.",
+          "Formación práctica en inteligencia artificial, marketing y publicidad para emprendedores, profesionales, empresas y equipos en Colombia. También creamos e implementamos estrategias, contenido, branding y web.",
       },
       { name: "author", content: "Cómplice Lab" },
       { name: "theme-color", content: "#040507" },
-      { property: "og:title", content: "Cómplice Lab | Publicidad, IA, Diseño y Formación" },
+      { property: "og:title", content: "Formación en IA, Marketing y Publicidad | Cómplice Lab" },
       {
         property: "og:description",
         content:
-          "Creamos, enseñamos e implementamos branding, contenido, publicidad, páginas web y estrategias potenciadas por inteligencia artificial.",
+          "Formación práctica en inteligencia artificial, marketing y publicidad para emprendedores, profesionales, empresas y equipos en Colombia. También creamos e implementamos estrategias, contenido, branding y web.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Cómplice Lab" },
       { property: "og:url", content: "https://complicelab.com/" },
       { property: "og:locale", content: "es_CO" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
+      { name: "googlebot", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -122,6 +180,10 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="es">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
       </head>
       <body>
         {children}

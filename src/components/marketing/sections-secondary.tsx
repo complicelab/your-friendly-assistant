@@ -166,10 +166,14 @@ export function MainCtaSection() {
         <h2>Las buenas ideas necesitan un Cómplice.</h2>
         <p>Cuéntanos qué quieres crear, aprender o implementar.</p>
         <div className="hero-actions">
-          <a className="button button-light" href="#footer"><span>Hablar con Cómplice Lab</span><ArrowRight/></a>
+          <a
+            className="button button-light"
+            href="https://api.whatsapp.com/send?phone=+573161772880&text=Hola.%20Me%20interesa%20sus%20servicios%20de..."
+            target="_blank"
+            rel="noreferrer noopener"
+          ><span>Hablar con Cómplice Lab</span><ArrowRight/></a>
           <a className="button button-outline-light" href="#servicios">Conocer nuestros servicios</a>
         </div>
-        <small>El canal directo de contacto se configurará cuando esté disponible. No se ha inventado ningún dato.</small>
       </div>
     </section>
   );

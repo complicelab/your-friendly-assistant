@@ -2122,3 +2122,57 @@ a.project-card-pro:hover {
 .case-progress-box {
   border-left-color:#caff00;
 }
+
+
+/* Stable case-study hero title system */
+.case-hero h1 {
+  display:block;
+  overflow:visible;
+  margin:10px 0 24px;
+  padding:0 0 .12em;
+  font-size:clamp(4.3rem,9vw,8.5rem);
+  font-weight:800;
+  line-height:.88;
+  letter-spacing:-.075em;
+}
+
+.case-hero h1 br {
+  line-height:1;
+}
+
+.case-hero h1 > span {
+  display:inline-block;
+  overflow:visible;
+  margin-top:.02em;
+  padding:0 .01em .14em 0;
+  line-height:.92;
+  vertical-align:top;
+  background:linear-gradient(100deg,#ffffff 0%,#9fc2ff 42%,#3f86ff 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-box-decoration-break:clone;
+  box-decoration-break:clone;
+}
+
+.case-hero-grid > div:first-child {
+  overflow:visible;
+}
+
+.case-hero .container,
+.case-hero-grid {
+  overflow:visible;
+}
+
+@media (max-width:640px) {
+  .case-hero h1 {
+    font-size:clamp(4.2rem,20vw,6.3rem);
+    line-height:.9;
+    padding-bottom:.14em;
+  }
+
+  .case-hero h1 > span {
+    padding-bottom:.16em;
+    line-height:.94;
+  }
+}

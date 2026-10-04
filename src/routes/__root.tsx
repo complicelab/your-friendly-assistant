@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 const GA_MEASUREMENT_ID = "G-GM6V155DF5";
+const META_PIXEL_ID = "2947877528938358";
 
 const analyticsInitScript = `
 window.dataLayer = window.dataLayer || [];
@@ -22,6 +23,19 @@ gtag('js', new Date());
 gtag('config', '${GA_MEASUREMENT_ID}', {
   send_page_view: true
 });
+`;
+
+const metaPixelInitScript = `
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '${META_PIXEL_ID}');
+fbq('track', 'PageView');
 `;
 
 const analyticsEventsScript = `
@@ -46,8 +60,6 @@ const analyticsEventsScript = `
       link.closest('.formation-hero') ? 'hero' :
       'content';
 
-    if (typeof window.gtag !== 'function') return;
-
     var common = {
       link_text: text,
       link_url: href,
@@ -56,22 +68,56 @@ const analyticsEventsScript = `
     };
 
     if (href.indexOf('api.whatsapp.com') !== -1 || href.indexOf('wa.me') !== -1) {
-      window.gtag('event', 'whatsapp_click', common);
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'whatsapp_click', common);
+      }
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Contact', {
+          content_name: 'WhatsApp',
+          content_category: placement,
+          link_text: text
+        });
+      }
       return;
     }
 
     if (href === '/formacion' || href.indexOf('/formacion#') === 0) {
-      window.gtag('event', 'formation_cta_click', common);
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'formation_cta_click', common);
+      }
+      if (typeof window.fbq === 'function') {
+        window.fbq('trackCustom', 'FormationCTA', {
+          content_name: text,
+          placement: placement
+        });
+      }
       return;
     }
 
     if (href.indexOf('/capacitacion-ia-empresas') === 0) {
-      window.gtag('event', 'company_training_cta_click', common);
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'company_training_cta_click', common);
+      }
+      if (typeof window.fbq === 'function') {
+        window.fbq('trackCustom', 'CompanyTrainingCTA', {
+          content_name: text,
+          placement: placement
+        });
+      }
       return;
     }
 
     if (href.indexOf('mailto:') === 0) {
-      window.gtag('event', 'email_click', common);
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'email_click', common);
+      }
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Contact', {
+          content_name: 'Email',
+          content_category: placement,
+          link_text: text
+        });
+      }
     }
   }, { capture: true });
 })();
@@ -254,12 +300,22 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
         <script dangerouslySetInnerHTML={{ __html: analyticsInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: metaPixelInitScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
       </head>
       <body>
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
+            alt=""
+          />
+        </noscript>
         {children}
         <script dangerouslySetInnerHTML={{ __html: analyticsEventsScript }} />
         <Scripts />

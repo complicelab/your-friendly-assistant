@@ -117,10 +117,11 @@ export const projects: Project[] = [
     visual: "roots",
   },
   {
-    name: "Pulso",
-    category: "Proyecto propio",
-    description: "Un proyecto que forma parte del laboratorio de ideas, marcas y productos desarrollados por Cómplice Lab.",
-    services: ["Concepto", "Marca", "Digital"],
+    name: "Pulso Data",
+    category: "Data app financiera · Membresía",
+    description: "Plataforma de análisis bursátil creada desde cero con flujo de opciones, earnings, macroeconomía e integración de múltiples APIs.",
+    services: ["UX/UI", "Web App", "APIs", "Data", "Membresía"],
+    href: "/proyectos/pulso-data",
     visual: "pulse",
   },
 ];

@@ -138,7 +138,40 @@ function ProjectVisual({ visual, name }: { visual: string; name: string }) {
     );
   }
 
-  return (
+
+  if (visual === "brand") {
+    return (
+      <div className="project-visual project-visual-complice" aria-label="Vista previa del proyecto Cómplice Lab">
+        <div className="clab-preview-browser">
+          <div className="clab-preview-top"><i/><i/><i/><span>complicelab.com</span></div>
+          <div className="clab-preview-layout">
+            <div className="clab-preview-copy">
+              <b>CÓMPLICE<br/><span>LAB</span></b>
+              <small>FORMACIÓN · PUBLICIDAD · CREATIVIDAD · IA</small>
+              <strong>Aprende. Crea. Haz más. <em>Hazlo con IA.</em></strong>
+              <span>Creamos · Enseñamos · Implementamos</span>
+            </div>
+            <div className="clab-preview-orbit">
+              <div><small>CÓMPLICE</small><b>LAB</b></div>
+              <span className="p1">Branding</span>
+              <span className="p2">Meta Ads</span>
+              <span className="p3">Web</span>
+              <span className="p4">Contenido</span>
+            </div>
+          </div>
+        </div>
+        <div className="clab-preview-phone">
+          <div className="clab-preview-phone-notch"/>
+          <b>CÓMPLICE<br/><span>LAB</span></b>
+          <small>CASOS Y PROYECTOS</small>
+          <strong>Proyectos que diseñamos, construimos e implementamos.</strong>
+          <i/><i/>
+        </div>
+      </div>
+    );
+  }
+
+return (
     <div className={`project-visual project-visual-fallback visual-${visual}`} aria-label={`Vista conceptual de ${name}`}>
       <div className="fallback-grid"/>
       <span className="fallback-kicker">CÓMPLICE LAB · PROYECTO</span>

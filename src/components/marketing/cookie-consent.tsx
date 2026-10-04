@@ -11,7 +11,6 @@ declare global {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
     fbq?: (...args: unknown[]) => void;
-    _fbq?: unknown;
     __compliceAnalyticsLoaded?: boolean;
   }
 }
@@ -21,7 +20,7 @@ function loadAnalytics() {
   window.__compliceAnalyticsLoaded = true;
 
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag(...args: unknown[]) {
+  window.gtag = (...args: unknown[]) => {
     window.dataLayer?.push(args);
   };
   window.gtag("js", new Date());
@@ -32,30 +31,20 @@ function loadAnalytics() {
   gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
   document.head.appendChild(gaScript);
 
-  if (!window.fbq) {
-    const fbq = function (...args: unknown[]) {
-      const fn = fbq as typeof fbq & { queue?: unknown[][]; callMethod?: (...params: unknown[]) => void };
-      if (fn.callMethod) {
-        fn.callMethod(...args);
-      } else {
-        fn.queue = fn.queue || [];
-        fn.queue.push(args);
-      }
-    } as typeof window.fbq & { queue?: unknown[][]; loaded?: boolean; version?: string };
-
-    fbq.queue = [];
-    fbq.loaded = true;
-    fbq.version = "2.0";
-    window.fbq = fbq;
-
-    const metaScript = document.createElement("script");
-    metaScript.async = true;
-    metaScript.src = "https://connect.facebook.net/en_US/fbevents.js";
-    document.head.appendChild(metaScript);
-  }
-
-  window.fbq?.("init", META_PIXEL_ID);
-  window.fbq?.("track", "PageView");
+  const metaBootstrap = document.createElement("script");
+  metaBootstrap.text = `
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '${META_PIXEL_ID}');
+    fbq('track', 'PageView');
+  `;
+  document.head.appendChild(metaBootstrap);
 }
 
 export function CookieConsent() {

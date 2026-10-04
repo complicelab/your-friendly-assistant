@@ -2176,3 +2176,61 @@ a.project-card-pro:hover {
     line-height:.94;
   }
 }
+
+
+/* B2Home case mockups */
+.b2-browser{background:#120805}
+.b2-ui{min-height:610px;background:
+  radial-gradient(circle at 18% 20%,rgba(255,116,45,.12),transparent 30%),
+  linear-gradient(180deg,#190b06,#120805 68%,#0b0705);
+  color:#f5eadf;
+}
+.b2-ui header{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 7%;border-bottom:1px solid rgba(255,116,45,.16)}
+.b2-ui header b{font-family:Georgia,serif;font-size:1.05rem}
+.b2-ui nav{display:flex;gap:18px}
+.b2-ui nav span{font-size:.58rem;color:#c8b7aa}
+.b2-hero-ui{display:grid;grid-template-columns:1.05fr .95fr;gap:7%;align-items:center;padding:7% 9%}
+.b2-hero-ui small{color:#ff7a2f;font-size:.55rem;letter-spacing:.13em}
+.b2-hero-ui h3{max-width:620px;margin:20px 0 16px;font-family:Georgia,serif;font-size:clamp(2rem,4vw,4.1rem);line-height:1.02;letter-spacing:-.035em}
+.b2-hero-ui h3 em,.b2-hero-ui h3 i{font-style:italic}
+.b2-hero-ui h3 em{color:#ff7a2f}
+.b2-hero-ui p{color:#9f8f84;line-height:1.7}
+.b2-actions{display:flex;gap:10px;margin-top:24px}
+.b2-actions span{padding:11px 15px;border:1px solid rgba(255,116,45,.35);border-radius:999px;font-size:.6rem}
+.b2-actions span:first-child{background:#ff7a2f;color:#120805;border-color:#ff7a2f;font-weight:800}
+.b2-panel{min-height:320px;padding:23px;border:1px solid rgba(255,116,45,.22);border-radius:16px;background:linear-gradient(180deg,rgba(54,22,13,.95),rgba(28,12,8,.94));box-shadow:0 30px 70px rgba(0,0,0,.38)}
+.b2-panel > small{display:block;color:#9e8271}.b2-panel > b{display:block;margin:8px 0 17px;font-family:Georgia,serif;font-size:1.15rem}
+.b2-stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.b2-stats span{padding:12px;border:1px solid rgba(255,116,45,.18);border-radius:10px;color:#8f796a;font-size:.5rem}
+.b2-stats strong{display:block;margin-top:7px;color:#f8eee4;font-family:Georgia,serif;font-size:1.1rem}
+.b2-bars{display:flex;align-items:end;gap:7px;height:95px;margin-top:18px;padding:10px 12px;border:1px solid rgba(255,116,45,.14);border-radius:10px}
+.b2-bars i{flex:1;display:block;border-radius:3px 3px 0 0;background:#ff7a2f;opacity:.95}
+.b2-tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.b2-tool-card{min-height:500px;padding:30px;border:1px solid rgba(255,255,255,.08);border-radius:24px;background:
+  radial-gradient(circle at 85% 12%,rgba(63,134,255,.08),transparent 26%),
+  linear-gradient(145deg,rgba(255,255,255,.03),rgba(255,255,255,.012))}
+.b2-tool-card > small{color:var(--cl-sky);font-size:.62rem;letter-spacing:.13em;font-weight:800}
+.b2-tool-card h3{max-width:560px;margin:18px 0 10px;font-size:clamp(1.7rem,3vw,2.7rem);line-height:1;letter-spacing:-.045em;font-weight:800}
+.b2-tool-card > p{color:var(--cl-muted);font-size:.78rem}
+.b2-tool-card > span{display:block;margin-top:10px;padding:13px 14px;border:1px solid rgba(255,255,255,.08);border-radius:12px;color:#c9d0db;font-size:.75rem;background:rgba(255,255,255,.018)}
+.b2-calc-lines{display:grid;gap:10px;margin-top:26px}
+.b2-calc-lines span{display:flex;justify-content:space-between;gap:18px;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:12px;color:#858f9e;font-size:.72rem}
+.b2-calc-lines b{color:white}
+.b2-result-box{margin-top:20px;padding:22px;border:1px solid rgba(63,134,255,.22);border-radius:15px;background:linear-gradient(135deg,rgba(0,43,212,.12),rgba(63,134,255,.035))}
+.b2-result-box small{display:block;color:var(--cl-sky);font-size:.58rem;letter-spacing:.1em}
+.b2-result-box b{display:inline-block;margin-top:10px;font-size:3.2rem;line-height:1;letter-spacing:-.06em}
+.b2-result-box span{margin-left:8px;color:#9fbef7;font-size:.9rem}
+@media(max-width:980px){
+  .b2-hero-ui{grid-template-columns:1fr}
+  .b2-panel{margin-top:22px}
+  .b2-tools-grid{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .b2-ui{min-height:480px}
+  .b2-ui header{height:50px;padding:0 5%}
+  .b2-ui nav{display:none}
+  .b2-hero-ui{padding:9% 7%}
+  .b2-hero-ui h3{font-size:2rem}
+  .b2-panel{min-height:250px}
+  .b2-tool-card{min-height:0;padding:22px}
+}

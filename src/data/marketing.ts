@@ -67,14 +67,60 @@ export const workshops = [
   ["Creación de páginas web con IA", "Aprendes cómo convertir una idea en una página funcional."],
 ] as const;
 
-export const projects = [
-  "B2Home",
-  "Cómplice Lab",
-  "Persianas y Blackouts",
-  "Mi Raíz",
-  "Camilo Respiro",
-  "Pulso",
-] as const;
+export type Project = {
+  name: string;
+  category: string;
+  description: string;
+  services: string[];
+  href?: string;
+  visual: "camilo" | "home" | "brand" | "interiors" | "roots" | "pulse";
+};
+
+export const projects: Project[] = [
+  {
+    name: "Camilo Respiro",
+    category: "Ecosistema digital · Formación",
+    description: "Marca, web, campus privado, membresías, pagos y back office construidos como un solo sistema.",
+    services: ["Branding", "UX/UI", "Web", "Campus", "Back office"],
+    href: "/proyectos/camilo-respiro",
+    visual: "camilo",
+  },
+  {
+    name: "B2Home",
+    category: "Proyecto digital",
+    description: "Un proyecto desarrollado para convertir una idea de negocio en una presencia digital clara y profesional.",
+    services: ["Estrategia", "Diseño", "Web"],
+    visual: "home",
+  },
+  {
+    name: "Cómplice Lab",
+    category: "Marca · Producto digital",
+    description: "Nuestra propia marca como laboratorio para aplicar estrategia, publicidad, tecnología y formación.",
+    services: ["Branding", "Estrategia", "Web"],
+    visual: "brand",
+  },
+  {
+    name: "Persianas y Blackouts",
+    category: "Marca · Presencia digital",
+    description: "Proyecto preparado para mostrar su caso a medida que consolidemos el material visual y sus resultados.",
+    services: ["Marca", "Contenido", "Digital"],
+    visual: "interiors",
+  },
+  {
+    name: "Mi Raíz",
+    category: "Proyecto de marca",
+    description: "Caso en construcción con una presentación visual preparada para crecer sin depender de muchas fotografías.",
+    services: ["Estrategia", "Marca", "Diseño"],
+    visual: "roots",
+  },
+  {
+    name: "Pulso",
+    category: "Proyecto propio",
+    description: "Un proyecto que forma parte del laboratorio de ideas, marcas y productos desarrollados por Cómplice Lab.",
+    services: ["Concepto", "Marca", "Digital"],
+    visual: "pulse",
+  },
+];
 
 export const principles = [
   ["Pensamos antes de crear", "No hacemos piezas porque sí."],

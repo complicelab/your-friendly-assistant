@@ -2043,3 +2043,82 @@ a.project-card-pro:hover {
     font-size:clamp(2.7rem,12vw,4rem);
   }
 }
+
+
+/* Case study brand-color correction and heading clipping fix */
+.case-page h1,
+.case-page h2,
+.case-page h3 {
+  overflow:visible;
+  padding-bottom:.04em;
+}
+.case-hero h1 {
+  line-height:.84;
+  padding-bottom:.07em;
+}
+.case-story-grid h2,
+.case-system-grid h2,
+.case-tech-grid h2,
+.case-page .section-heading h2,
+.case-result h2,
+.case-page .main-cta h2 {
+  line-height:.96;
+  padding-bottom:.06em;
+}
+.case-hero h1 span {
+  background:linear-gradient(100deg,#ffffff 0%,#8fb8ff 42%,#3f86ff 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 40px rgba(63,134,255,.10);
+}
+.case-accent,
+.case-accent-blue,
+.case-accent-light {
+  background:linear-gradient(100deg,#ffffff 0%,#9fc2ff 42%,#3f86ff 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.case-page .eyebrow {
+  color:#5f9cff;
+}
+.case-story-copy strong {
+  border-left-color:#3f86ff;
+}
+.projects-grid-pro .project-card-pro:first-child {
+  border-color:rgba(63,134,255,.16);
+}
+.projects-grid-pro .project-card-pro:first-child:hover {
+  border-color:rgba(63,134,255,.34);
+  box-shadow:0 24px 70px rgba(0,0,0,.30),0 0 52px rgba(63,134,255,.08);
+}
+
+/* Keep Camilo Respiro brand green only inside project mockups */
+.project-visual-camilo .preview-camilo-layout small,
+.project-visual-camilo .preview-camilo-layout strong em,
+.project-visual-camilo .preview-phone small,
+.case-camilo-hero small,
+.case-camilo-hero h3 em,
+.case-campus-ui nav .active,
+.case-campus-ui > section small,
+.case-campus-ui > section h3 em,
+.case-progress-box b,
+.case-membership-box b,
+.case-phone > small,
+.case-phone h3 em {
+  color:#caff00;
+}
+.preview-chart path,
+.case-market-card path {
+  stroke:#caff00;
+}
+.preview-phone span:first-of-type,
+.case-camilo-hero > div:first-child > div span:first-child,
+.case-membership-box span,
+.case-phone-cta {
+  background:#caff00;
+}
+.case-progress-box {
+  border-left-color:#caff00;
+}

@@ -99,6 +99,45 @@ function ProjectVisual({ visual, name }: { visual: string; name: string }) {
     );
   }
 
+
+  if (visual === "home") {
+    return (
+      <div className="project-visual project-visual-b2home" aria-label="Vista previa del proyecto B2Home">
+        <div className="b2-preview-browser">
+          <div className="b2-preview-top"><i/><i/><i/><span>be2home.co</span></div>
+          <div className="b2-preview-layout">
+            <div className="b2-preview-copy">
+              <b>b2home↗</b>
+              <small>LATINOAMÉRICA · HOME SERVICES</small>
+              <strong>El sistema de crecimiento para empresas de <em>home services.</em></strong>
+              <span>Marketing · WhatsApp · Ventas</span>
+            </div>
+            <div className="b2-preview-panel">
+              <small>PANEL B2HOME</small>
+              <b>Crecimiento del mes</b>
+              <div className="b2-preview-stats">
+                <span>LEADS<strong>47</strong></span>
+                <span>VISITAS<strong>18</strong></span>
+                <span>COTIZACIONES<strong>12</strong></span>
+                <span>VENTAS<strong>6</strong></span>
+              </div>
+              <div className="b2-preview-bars">
+                <i/><i/><i/><i/><i/><i/><i/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="b2-preview-phone">
+          <div className="b2-preview-phone-notch"/>
+          <b>b2home↗</b>
+          <small>DIAGNÓSTICO</small>
+          <strong>¿Qué tan sano está tu proceso comercial?</strong>
+          <span/><span/><span/>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`project-visual project-visual-fallback visual-${visual}`} aria-label={`Vista conceptual de ${name}`}>
       <div className="fallback-grid"/>

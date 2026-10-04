@@ -138,9 +138,9 @@ export function TrainingSection() {
       <div className="container">
         <div className="training-hero reveal">
           <p className="eyebrow">FORMACIÓN CÓMPLICE LAB</p>
-          <h2>Aquí no vienes solamente a tomar apuntes.</h2>
+          <h2>Formación práctica en IA, marketing y publicidad.</h2>
           <p className="training-callout">Aprendes haciendo.<br/><span>Terminas aplicando.</span></p>
-          <p>Cada seminario, taller o capacitación está diseñado para que puedas aplicar lo aprendido sobre tu propia idea, marca, negocio o proyecto.</p>
+          <p>Desarrollamos cursos, talleres, seminarios y capacitaciones de inteligencia artificial, marketing digital, publicidad, contenido, Meta Ads, branding, reels, CapCut y creación web. La formación está pensada para emprendedores, profesionales, empresas y equipos en Colombia, en formatos online y presenciales según cada programa.</p>
         </div>
         <div className="workshop-grid">
           {workshops.map(([title, result], index) => (
@@ -151,7 +151,12 @@ export function TrainingSection() {
             </article>
           ))}
         </div>
-        <a href="#contacto" className="button reveal">Ver próximas formaciones <ArrowRight size={18}/></a>
+        <a
+          href="https://api.whatsapp.com/send?phone=+573161772880&text=Hola.%20Quiero%20informaci%C3%B3n%20sobre%20las%20formaciones%20de%20C%C3%B3mplice%20Lab."
+          target="_blank"
+          rel="noreferrer noopener"
+          className="button reveal"
+        >Quiero información sobre formaciones <ArrowRight size={18}/></a>
       </div>
     </section>
   );

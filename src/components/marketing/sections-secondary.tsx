@@ -171,6 +171,38 @@ function ProjectVisual({ visual, name }: { visual: string; name: string }) {
     );
   }
 
+
+  if (visual === "roots") {
+    return (
+      <div className="project-visual project-visual-miraiz" aria-label="Vista previa del proyecto Mi Raíz">
+        <div className="miraiz-preview-browser">
+          <div className="miraiz-preview-top"><i/><i/><i/><span>miraiz.com.co</span></div>
+          <div className="miraiz-preview-layout">
+            <div className="miraiz-preview-copy">
+              <b><span>M</span>miraiz</b>
+              <small>MANIZALES · PEREIRA · ARMENIA</small>
+              <strong>Encuentra tu hogar en el Eje Cafetero</strong>
+              <span>Compra · Arriendo · Hipotecas · Avalúos</span>
+              <div className="miraiz-preview-search"><i/><i/><i/><b>Buscar</b></div>
+            </div>
+            <div className="miraiz-preview-admin">
+              <small>DASHBOARD</small>
+              <b>Operación inmobiliaria</b>
+              <div><span>LIBRES<strong>30</strong></span><span>NEGOCIOS<strong>1</strong></span><span>ASESORES<strong>•</strong></span><span>AGENDA<strong>•</strong></span></div>
+            </div>
+          </div>
+        </div>
+        <div className="miraiz-preview-phone">
+          <div className="miraiz-preview-phone-notch"/>
+          <b><span>M</span>miraiz</b>
+          <small>INMUEBLES</small>
+          <strong>Gestiona propiedades y procesos</strong>
+          <i/><i/><i/>
+        </div>
+      </div>
+    );
+  }
+
 return (
     <div className={`project-visual project-visual-fallback visual-${visual}`} aria-label={`Vista conceptual de ${name}`}>
       <div className="fallback-grid"/>

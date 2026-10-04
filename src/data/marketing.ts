@@ -95,9 +95,10 @@ export const projects: Project[] = [
   },
   {
     name: "Cómplice Lab",
-    category: "Marca · Producto digital",
-    description: "Nuestra propia marca como laboratorio para aplicar estrategia, publicidad, tecnología y formación.",
-    services: ["Branding", "Estrategia", "Web"],
+    category: "Marca propia · Agencia · Formación",
+    description: "Estrategia, branding, web, formación, SEO, analítica y sistema digital construidos como laboratorio de nuestra propia metodología.",
+    services: ["Estrategia", "Branding", "Web", "Formación", "Analytics"],
+    href: "/proyectos/complice-lab",
     visual: "brand",
   },
   {

@@ -166,7 +166,7 @@ export function MainCtaSection() {
         <h2>Las buenas ideas necesitan un Cómplice.</h2>
         <p>Cuéntanos qué quieres crear, aprender o implementar.</p>
         <div className="hero-actions">
-          <a className="button button-light" href="mailto:"><span>Hablar con Cómplice Lab</span><ArrowRight/></a>
+          <a className="button button-light" href="#footer"><span>Hablar con Cómplice Lab</span><ArrowRight/></a>
           <a className="button button-outline-light" href="#servicios">Conocer nuestros servicios</a>
         </div>
         <small>El canal directo de contacto se configurará cuando esté disponible. No se ha inventado ningún dato.</small>

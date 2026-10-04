@@ -2234,3 +2234,117 @@ a.project-card-pro:hover {
   .b2-panel{min-height:250px}
   .b2-tool-card{min-height:0;padding:22px}
 }
+
+
+/* B2Home portfolio preview + hero clipping hardening */
+.project-visual-b2home{
+  display:flex;
+  align-items:center;
+  padding:7%;
+  background:
+    radial-gradient(circle at 78% 18%,rgba(255,116,45,.10),transparent 34%),
+    linear-gradient(145deg,#080605,#120805 72%,#0b0705);
+}
+.b2-preview-browser{
+  width:82%;
+  aspect-ratio:16/10;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:13px;
+  background:#120805;
+  box-shadow:0 24px 70px rgba(0,0,0,.46);
+}
+.b2-preview-top{
+  height:24px;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  padding:0 9px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  background:#130c09;
+}
+.b2-preview-top i{width:5px;height:5px;border-radius:50%;background:#4a3b34}
+.b2-preview-top span{margin-left:5px;color:#735f53;font-size:.36rem}
+.b2-preview-layout{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:6%;
+  align-items:center;
+  height:calc(100% - 24px);
+  padding:7%;
+}
+.b2-preview-copy{display:flex;flex-direction:column;align-items:flex-start}
+.b2-preview-copy b{font-family:Georgia,serif;font-size:.68rem;margin-bottom:13%}
+.b2-preview-copy small{color:#ff7a2f;font-size:.31rem;letter-spacing:.14em;margin-bottom:5%}
+.b2-preview-copy strong{max-width:96%;font-family:Georgia,serif;font-size:clamp(.68rem,1.35vw,1.22rem);line-height:1.02;letter-spacing:-.035em}
+.b2-preview-copy strong em{font-style:italic}
+.b2-preview-copy > span{margin-top:8%;color:#8f796d;font-size:.31rem}
+.b2-preview-panel{
+  min-height:64%;
+  padding:11%;
+  border:1px solid rgba(255,116,45,.22);
+  border-radius:10px;
+  background:linear-gradient(180deg,#32160e,#1a0c08);
+}
+.b2-preview-panel > small{display:block;color:#9a7562;font-size:.28rem;letter-spacing:.1em}
+.b2-preview-panel > b{display:block;margin:5% 0 8%;font-family:Georgia,serif;font-size:.58rem}
+.b2-preview-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.b2-preview-stats span{padding:6px;border:1px solid rgba(255,116,45,.16);border-radius:5px;color:#8f7569;font-size:.23rem}
+.b2-preview-stats strong{display:block;margin-top:4px;color:#f5eadf;font-size:.48rem}
+.b2-preview-bars{display:flex;align-items:flex-end;gap:4px;height:40px;margin-top:8px}
+.b2-preview-bars i{flex:1;border-radius:2px 2px 0 0;background:#ff7a2f}
+.b2-preview-bars i:nth-child(1){height:28%}.b2-preview-bars i:nth-child(2){height:42%}.b2-preview-bars i:nth-child(3){height:36%}.b2-preview-bars i:nth-child(4){height:58%}.b2-preview-bars i:nth-child(5){height:51%}.b2-preview-bars i:nth-child(6){height:72%}.b2-preview-bars i:nth-child(7){height:86%}
+.b2-preview-phone{
+  position:absolute;
+  right:5%;
+  bottom:7%;
+  width:24%;
+  aspect-ratio:9/17;
+  padding:11% 5% 5%;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:18px;
+  background:#120805;
+  box-shadow:0 20px 55px rgba(0,0,0,.55);
+}
+.b2-preview-phone-notch{position:absolute;top:5px;left:35%;right:35%;height:4px;border-radius:5px;background:#3b2a22}
+.b2-preview-phone b{display:block;font-family:Georgia,serif;font-size:.42rem;margin-bottom:22%}
+.b2-preview-phone small{display:block;color:#ff7a2f;font-size:.27rem;letter-spacing:.13em;margin-bottom:8%}
+.b2-preview-phone strong{display:block;font-family:Georgia,serif;font-size:.48rem;line-height:1.08;margin-bottom:16%}
+.b2-preview-phone span{display:block;height:9%;margin-top:7%;border:1px solid rgba(255,116,45,.16);border-radius:5px;background:#1b0e09}
+.b2-preview-phone span:first-of-type{background:#ff7a2f;border-color:#ff7a2f}
+
+/* Prevent final glyphs in large case titles from being clipped */
+.case-hero-grid{
+  grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);
+}
+.case-hero-grid > div:first-child{
+  min-width:0;
+  padding-right:1.1rem;
+}
+.case-hero h1{
+  width:max-content;
+  max-width:100%;
+  padding-right:.22em;
+  letter-spacing:-.065em;
+}
+.case-hero h1 > span{
+  display:block;
+  width:max-content;
+  max-width:none;
+  padding-right:.22em;
+  padding-bottom:.18em;
+  line-height:.96;
+}
+.b2-case .case-hero h1{
+  padding-right:.28em;
+}
+.b2-case .case-hero h1 > span{
+  padding-right:.30em;
+}
+@media(max-width:640px){
+  .case-hero h1,
+  .case-hero h1 > span{
+    width:auto;
+    max-width:100%;
+  }
+}

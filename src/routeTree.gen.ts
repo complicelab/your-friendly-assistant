@@ -10,33 +10,193 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CapacitacionIaEmpresasRouteImport } from './routes/capacitacion-ia-empresas'
+import { Route as FormacionRouteImport } from './routes/formacion'
+import { Route as OgImageDotjpgRouteImport } from './routes/og-image[.]jpg'
+import { Route as PrivacidadRouteImport } from './routes/privacidad'
+import { Route as TerminosRouteImport } from './routes/terminos'
+import { Route as FoundersCamiloDotjpgRouteImport } from './routes/founders.camilo[.]jpg'
+import { Route as FoundersCristianDotjpgRouteImport } from './routes/founders.cristian[.]jpg'
+import { Route as ProyectosB2homeRouteImport } from './routes/proyectos.b2home'
+import { Route as ProyectosCamiloRespiroRouteImport } from './routes/proyectos.camilo-respiro'
+import { Route as ProyectosCompliceLabRouteImport } from './routes/proyectos.complice-lab'
+import { Route as ProyectosMiRaizRouteImport } from './routes/proyectos.mi-raiz'
+import { Route as ProyectosPulsoDataRouteImport } from './routes/proyectos.pulso-data'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CapacitacionIaEmpresasRoute = CapacitacionIaEmpresasRouteImport.update({
+  id: '/capacitacion-ia-empresas',
+  path: '/capacitacion-ia-empresas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FormacionRoute = FormacionRouteImport.update({
+  id: '/formacion',
+  path: '/formacion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OgImageDotjpgRoute = OgImageDotjpgRouteImport.update({
+  id: '/og-image.jpg',
+  path: '/og-image.jpg',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadRoute = PrivacidadRouteImport.update({
+  id: '/privacidad',
+  path: '/privacidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TerminosRoute = TerminosRouteImport.update({
+  id: '/terminos',
+  path: '/terminos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoundersCamiloDotjpgRoute = FoundersCamiloDotjpgRouteImport.update({
+  id: '/founders/camilo.jpg',
+  path: '/founders/camilo.jpg',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoundersCristianDotjpgRoute = FoundersCristianDotjpgRouteImport.update({
+  id: '/founders/cristian.jpg',
+  path: '/founders/cristian.jpg',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProyectosB2homeRoute = ProyectosB2homeRouteImport.update({
+  id: '/proyectos/b2home',
+  path: '/proyectos/b2home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProyectosCamiloRespiroRoute = ProyectosCamiloRespiroRouteImport.update({
+  id: '/proyectos/camilo-respiro',
+  path: '/proyectos/camilo-respiro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProyectosCompliceLabRoute = ProyectosCompliceLabRouteImport.update({
+  id: '/proyectos/complice-lab',
+  path: '/proyectos/complice-lab',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProyectosMiRaizRoute = ProyectosMiRaizRouteImport.update({
+  id: '/proyectos/mi-raiz',
+  path: '/proyectos/mi-raiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProyectosPulsoDataRoute = ProyectosPulsoDataRouteImport.update({
+  id: '/proyectos/pulso-data',
+  path: '/proyectos/pulso-data',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
+  '/formacion': typeof FormacionRoute
+  '/og-image.jpg': typeof OgImageDotjpgRoute
+  '/privacidad': typeof PrivacidadRoute
+  '/terminos': typeof TerminosRoute
+  '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
+  '/founders/cristian.jpg': typeof FoundersCristianDotjpgRoute
+  '/proyectos/b2home': typeof ProyectosB2homeRoute
+  '/proyectos/camilo-respiro': typeof ProyectosCamiloRespiroRoute
+  '/proyectos/complice-lab': typeof ProyectosCompliceLabRoute
+  '/proyectos/mi-raiz': typeof ProyectosMiRaizRoute
+  '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
+  '/formacion': typeof FormacionRoute
+  '/og-image.jpg': typeof OgImageDotjpgRoute
+  '/privacidad': typeof PrivacidadRoute
+  '/terminos': typeof TerminosRoute
+  '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
+  '/founders/cristian.jpg': typeof FoundersCristianDotjpgRoute
+  '/proyectos/b2home': typeof ProyectosB2homeRoute
+  '/proyectos/camilo-respiro': typeof ProyectosCamiloRespiroRoute
+  '/proyectos/complice-lab': typeof ProyectosCompliceLabRoute
+  '/proyectos/mi-raiz': typeof ProyectosMiRaizRoute
+  '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
+  '/formacion': typeof FormacionRoute
+  '/og-image.jpg': typeof OgImageDotjpgRoute
+  '/privacidad': typeof PrivacidadRoute
+  '/terminos': typeof TerminosRoute
+  '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
+  '/founders/cristian.jpg': typeof FoundersCristianDotjpgRoute
+  '/proyectos/b2home': typeof ProyectosB2homeRoute
+  '/proyectos/camilo-respiro': typeof ProyectosCamiloRespiroRoute
+  '/proyectos/complice-lab': typeof ProyectosCompliceLabRoute
+  '/proyectos/mi-raiz': typeof ProyectosMiRaizRoute
+  '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/capacitacion-ia-empresas'
+    | '/formacion'
+    | '/og-image.jpg'
+    | '/privacidad'
+    | '/terminos'
+    | '/founders/camilo.jpg'
+    | '/founders/cristian.jpg'
+    | '/proyectos/b2home'
+    | '/proyectos/camilo-respiro'
+    | '/proyectos/complice-lab'
+    | '/proyectos/mi-raiz'
+    | '/proyectos/pulso-data'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/capacitacion-ia-empresas'
+    | '/formacion'
+    | '/og-image.jpg'
+    | '/privacidad'
+    | '/terminos'
+    | '/founders/camilo.jpg'
+    | '/founders/cristian.jpg'
+    | '/proyectos/b2home'
+    | '/proyectos/camilo-respiro'
+    | '/proyectos/complice-lab'
+    | '/proyectos/mi-raiz'
+    | '/proyectos/pulso-data'
+  id:
+    | '__root__'
+    | '/'
+    | '/capacitacion-ia-empresas'
+    | '/formacion'
+    | '/og-image.jpg'
+    | '/privacidad'
+    | '/terminos'
+    | '/founders/camilo.jpg'
+    | '/founders/cristian.jpg'
+    | '/proyectos/b2home'
+    | '/proyectos/camilo-respiro'
+    | '/proyectos/complice-lab'
+    | '/proyectos/mi-raiz'
+    | '/proyectos/pulso-data'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CapacitacionIaEmpresasRoute: typeof CapacitacionIaEmpresasRoute
+  FormacionRoute: typeof FormacionRoute
+  OgImageDotjpgRoute: typeof OgImageDotjpgRoute
+  PrivacidadRoute: typeof PrivacidadRoute
+  TerminosRoute: typeof TerminosRoute
+  FoundersCamiloDotjpgRoute: typeof FoundersCamiloDotjpgRoute
+  FoundersCristianDotjpgRoute: typeof FoundersCristianDotjpgRoute
+  ProyectosB2homeRoute: typeof ProyectosB2homeRoute
+  ProyectosCamiloRespiroRoute: typeof ProyectosCamiloRespiroRoute
+  ProyectosCompliceLabRoute: typeof ProyectosCompliceLabRoute
+  ProyectosMiRaizRoute: typeof ProyectosMiRaizRoute
+  ProyectosPulsoDataRoute: typeof ProyectosPulsoDataRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +208,107 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/capacitacion-ia-empresas': {
+      id: '/capacitacion-ia-empresas'
+      path: '/capacitacion-ia-empresas'
+      fullPath: '/capacitacion-ia-empresas'
+      preLoaderRoute: typeof CapacitacionIaEmpresasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/formacion': {
+      id: '/formacion'
+      path: '/formacion'
+      fullPath: '/formacion'
+      preLoaderRoute: typeof FormacionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/og-image.jpg': {
+      id: '/og-image.jpg'
+      path: '/og-image.jpg'
+      fullPath: '/og-image.jpg'
+      preLoaderRoute: typeof OgImageDotjpgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidad': {
+      id: '/privacidad'
+      path: '/privacidad'
+      fullPath: '/privacidad'
+      preLoaderRoute: typeof PrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terminos': {
+      id: '/terminos'
+      path: '/terminos'
+      fullPath: '/terminos'
+      preLoaderRoute: typeof TerminosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/founders/camilo.jpg': {
+      id: '/founders/camilo.jpg'
+      path: '/founders/camilo.jpg'
+      fullPath: '/founders/camilo.jpg'
+      preLoaderRoute: typeof FoundersCamiloDotjpgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/founders/cristian.jpg': {
+      id: '/founders/cristian.jpg'
+      path: '/founders/cristian.jpg'
+      fullPath: '/founders/cristian.jpg'
+      preLoaderRoute: typeof FoundersCristianDotjpgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/proyectos/b2home': {
+      id: '/proyectos/b2home'
+      path: '/proyectos/b2home'
+      fullPath: '/proyectos/b2home'
+      preLoaderRoute: typeof ProyectosB2homeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/proyectos/camilo-respiro': {
+      id: '/proyectos/camilo-respiro'
+      path: '/proyectos/camilo-respiro'
+      fullPath: '/proyectos/camilo-respiro'
+      preLoaderRoute: typeof ProyectosCamiloRespiroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/proyectos/complice-lab': {
+      id: '/proyectos/complice-lab'
+      path: '/proyectos/complice-lab'
+      fullPath: '/proyectos/complice-lab'
+      preLoaderRoute: typeof ProyectosCompliceLabRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/proyectos/mi-raiz': {
+      id: '/proyectos/mi-raiz'
+      path: '/proyectos/mi-raiz'
+      fullPath: '/proyectos/mi-raiz'
+      preLoaderRoute: typeof ProyectosMiRaizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/proyectos/pulso-data': {
+      id: '/proyectos/pulso-data'
+      path: '/proyectos/pulso-data'
+      fullPath: '/proyectos/pulso-data'
+      preLoaderRoute: typeof ProyectosPulsoDataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CapacitacionIaEmpresasRoute: CapacitacionIaEmpresasRoute,
+  FormacionRoute: FormacionRoute,
+  OgImageDotjpgRoute: OgImageDotjpgRoute,
+  PrivacidadRoute: PrivacidadRoute,
+  TerminosRoute: TerminosRoute,
+  FoundersCamiloDotjpgRoute: FoundersCamiloDotjpgRoute,
+  FoundersCristianDotjpgRoute: FoundersCristianDotjpgRoute,
+  ProyectosB2homeRoute: ProyectosB2homeRoute,
+  ProyectosCamiloRespiroRoute: ProyectosCamiloRespiroRoute,
+  ProyectosCompliceLabRoute: ProyectosCompliceLabRoute,
+  ProyectosMiRaizRoute: ProyectosMiRaizRoute,
+  ProyectosPulsoDataRoute: ProyectosPulsoDataRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

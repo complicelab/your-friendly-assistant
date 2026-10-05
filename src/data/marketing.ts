@@ -102,10 +102,11 @@ export const projects: Project[] = [
     visual: "brand",
   },
   {
-    name: "Persianas y Blackouts",
-    category: "Marca · Presencia digital",
-    description: "Proyecto preparado para mostrar su caso a medida que consolidemos el material visual y sus resultados.",
-    services: ["Marca", "Contenido", "Digital"],
+    name: "Persianas & Black Out",
+    category: "Marca · Negocio creado desde cero",
+    description: "Naming, identidad, dirección creativa y comunicación visual desarrollados desde cero para una marca de persianas y soluciones de control de luz.",
+    services: ["Branding", "Identidad", "Dirección creativa", "Contenido", "Comercial"],
+    href: "/proyectos/persianas-blackout",
     visual: "interiors",
   },
   {

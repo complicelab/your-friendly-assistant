@@ -27,8 +27,7 @@ export function AboutSection() {
           <p className="eyebrow">NOSOTROS</p>
           <h2>Dos fundadores. <span>Una visión complementaria.</span></h2>
           <p>
-            Publicidad, estrategia, tecnología y ejecución para crear, enseñar e implementar
-            proyectos con impacto real.
+            Experiencia para pensar, criterio para decidir y capacidad para ejecutar.
           </p>
         </div>
 
@@ -49,8 +48,9 @@ export function AboutSection() {
               <p className="founder-name">CAMILO MORENO</p>
               <h3>Publicista · Emprendedor · Estratega creativo</h3>
               <p className="founder-summary">
-                Publicista de la Universidad Católica de Manizales. Más de 15 años creando
-                marcas, negocios y proyectos desde cero.
+                Más de 15 años convirtiendo ideas en marcas, negocios y proyectos reales.
+                Su experiencia combina visión publicitaria, criterio creativo y ejecución
+                para construir propuestas que no se queden en el papel.
               </p>
 
               <div className="founder-badges founder-badges-circle">
@@ -77,8 +77,9 @@ export function AboutSection() {
               <p className="founder-name">CRISTIAN ROMAN</p>
               <h3>Estrategia · Marcas · Publicidad · Tecnología</h3>
               <p className="founder-summary">
-                Más de 10 años de experiencia. Emprendedor y constructor de marcas,
-                negocios y proyectos desde cero.
+                Más de 10 años conectando estrategia, comunicación y tecnología para transformar
+                ideas en operaciones reales. Su enfoque está en entender el negocio, estructurarlo
+                y llevarlo desde el concepto hasta una solución funcional.
               </p>
 
               <div className="founder-badges founder-badges-circle">

@@ -232,12 +232,49 @@ function ProjectVisual({ visual, name }: { visual: string; name: string }) {
 
   if (visual === "interiors") {
     return (
-      <div className="project-visual project-visual-pb" aria-label="Presentación visual de Persianas & Black Out">
-        <img
-          src="/pb-hero.webp"
-          alt="Persianas & Black Out — presentación de marca aplicada a espacios y formatos digitales"
-          loading="lazy"
-        />
+      <div className="project-visual project-visual-pb" aria-label="Vista previa del proyecto Persianas & Black Out">
+        <div className="pb-preview-browser">
+          <div className="pb-preview-top">
+            <i/><i/><i/><span>persianasyblackout.com</span>
+          </div>
+          <div className="pb-preview-scene">
+            <div className="pb-preview-copy">
+              <div className="pb-preview-logo">
+                <span>P&amp;B</span>
+                <small>PERSIANAS &amp; BLACK OUT</small>
+              </div>
+              <em>ESPACIOS QUE INSPIRAN</em>
+              <strong>Persianas <b>&amp;</b> Black Out</strong>
+              <p>Control de luz, privacidad y diseño para cada espacio.</p>
+              <div className="pb-preview-button">Ver productos <b>→</b></div>
+            </div>
+            <div className="pb-preview-room">
+              <div className="pb-preview-window">
+                <span/><span/><span/>
+              </div>
+              <div className="pb-preview-sofa"><i/><i/><i/></div>
+              <div className="pb-preview-table"><i/></div>
+              <div className="pb-preview-light"/>
+            </div>
+          </div>
+          <div className="pb-preview-benefits">
+            <span><b>☼</b> Control de luz</span>
+            <span><b>◉</b> Privacidad</span>
+            <span><b>◇</b> Diseño a tu medida</span>
+          </div>
+        </div>
+
+        <div className="pb-preview-phone">
+          <div className="pb-preview-notch"/>
+          <div className="pb-phone-logo"><span>P&amp;B</span><small>PERSIANAS &amp; BLACK OUT</small></div>
+          <div className="pb-phone-room">
+            <div className="pb-phone-slats"/>
+            <div className="pb-phone-chair"/>
+          </div>
+          <small>CONFORT EN CADA DETALLE</small>
+          <strong>Persianas <em>&amp; Black Out</em></strong>
+          <div className="pb-phone-cta">Cotizar ahora <b>→</b></div>
+        </div>
       </div>
     );
   }

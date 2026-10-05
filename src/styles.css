@@ -3616,3 +3616,184 @@ a.project-card-pro:hover {
   .pb-preview-logo span{width:32px;height:32px;font-size:.78rem;}
   .pb-preview-benefits span{font-size:.26rem;gap:3px;}
 }
+
+/* Persianas case study: self-contained visuals (no external image assets required) */
+.pb-live-hero{
+  margin-top:64px;
+  border:1px solid rgba(63,134,255,.2);
+  border-radius:30px;
+  overflow:hidden;
+  box-shadow:0 34px 100px rgba(0,0,0,.34),0 0 60px rgba(0,43,212,.06);
+}
+.pb-case-live-mockup{
+  width:100%;
+  border-radius:0;
+}
+.pb-live-hero .pb-case-live-mockup{
+  aspect-ratio:16/8.4;
+}
+.pb-brand-board{
+  margin-top:36px;
+}
+.pb-live-media{
+  min-height:0;
+}
+.pb-live-media .pb-desktop-only-visual{
+  min-height:430px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 25% 18%,rgba(0,43,212,.18),transparent 34%),
+    #050811;
+}
+.pb-live-media .pb-case-live-mockup{
+  width:100%;
+  aspect-ratio:16/10;
+  border-radius:0;
+}
+.pb-live-media .pb-case-live-mockup.is-compact{
+  min-height:430px;
+}
+.pb-mobile-poster{
+  position:relative;
+  min-height:430px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:30px;
+  background:
+    radial-gradient(circle at 72% 20%,rgba(63,134,255,.2),transparent 28%),
+    linear-gradient(165deg,#09111f 0%,#05070b 72%);
+}
+.pb-mobile-poster::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg,transparent 28%,rgba(4,5,7,.88) 80%),
+    linear-gradient(100deg,rgba(0,43,212,.16),transparent 44%);
+  pointer-events:none;
+}
+.pb-mobile-poster-logo{
+  position:absolute;
+  z-index:2;
+  top:28px;
+  left:28px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.pb-mobile-poster-logo span{
+  display:grid;
+  place-items:center;
+  width:48px;
+  height:48px;
+  background:linear-gradient(145deg,#0e43d8,#155dff);
+  color:#fff;
+  font-family:Georgia,serif;
+  font-size:1.05rem;
+}
+.pb-mobile-poster-logo small{
+  max-width:120px;
+  color:#eef3fb;
+  font-family:Georgia,serif;
+  font-size:.48rem;
+  line-height:1.25;
+  letter-spacing:.08em;
+}
+.pb-mobile-poster-room{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  background:linear-gradient(135deg,#1a1a19,#2a251f 58%,#111720);
+}
+.pb-mobile-poster-room::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(5,7,11,.04),rgba(5,7,11,.78));
+}
+.pb-mobile-poster-slats{
+  position:absolute;
+  right:-3%;
+  top:9%;
+  width:72%;
+  height:62%;
+  border:1px solid rgba(255,255,255,.08);
+  background:
+    linear-gradient(90deg,rgba(255,192,118,.18),transparent 35%),
+    repeating-linear-gradient(180deg,#262827 0 10px,#111312 10px 16px);
+  transform:perspective(700px) rotateY(-8deg);
+  box-shadow:-20px 25px 45px rgba(0,0,0,.42);
+}
+.pb-mobile-poster-seat{
+  position:absolute;
+  right:10%;
+  bottom:19%;
+  width:64%;
+  height:25%;
+  border-radius:24px 24px 10px 10px;
+  background:linear-gradient(180deg,#928b82,#5b5650);
+  box-shadow:0 24px 34px rgba(0,0,0,.42);
+}
+.pb-mobile-poster > p,
+.pb-mobile-poster > h3,
+.pb-mobile-poster > small,
+.pb-mobile-poster-cta{
+  position:relative;
+  z-index:3;
+}
+.pb-mobile-poster > p{
+  margin:0 0 8px;
+  color:#6fa0ff;
+  font-size:.68rem;
+  font-weight:800;
+  letter-spacing:.2em;
+}
+.pb-mobile-poster > h3{
+  margin:0;
+  color:#fff;
+  font-family:Georgia,serif;
+  font-size:clamp(2rem,4vw,3.2rem);
+  line-height:.92;
+  font-weight:400;
+}
+.pb-mobile-poster > h3 span{
+  display:block;
+  color:#4e88ff;
+}
+.pb-mobile-poster > small{
+  margin-top:13px;
+  color:#aeb7c4;
+  font-size:.72rem;
+  letter-spacing:.08em;
+}
+.pb-mobile-poster-cta{
+  width:max-content;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:18px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#0e43da,#2c72ff);
+  color:#fff;
+  font-size:.72rem;
+  font-weight:700;
+}
+
+@media(max-width:980px){
+  .pb-live-hero .pb-case-live-mockup{aspect-ratio:16/10;}
+  .pb-live-media .pb-desktop-only-visual,
+  .pb-live-media .pb-case-live-mockup.is-compact,
+  .pb-mobile-poster{min-height:0;}
+}
+@media(max-width:620px){
+  .pb-live-hero{margin-top:42px;border-radius:19px;}
+  .pb-live-hero .pb-case-live-mockup{aspect-ratio:4/3;}
+  .pb-brand-board{grid-template-columns:1fr;}
+  .pb-logo-panel,.pb-material-panel{min-height:320px;}
+  .pb-mobile-poster{min-height:440px;padding:24px;}
+}

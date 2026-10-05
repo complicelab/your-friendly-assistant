@@ -15,8 +15,6 @@ import {
 } from "lucide-react";
 
 import { faqs, principles, projects } from "@/data/marketing";
-import founderCamilo from "@/assets/founders/camilo.webp";
-import founderCristian from "@/assets/founders/cristian.webp";
 import { SectionHeading } from "./brand";
 
 export function AboutSection() {
@@ -36,7 +34,7 @@ export function AboutSection() {
             <div className="founder-avatar-wrap">
               <div className="founder-avatar-ring">
                 <img
-                  src={founderCamilo}
+                  src="/founders/camilo.jpg"
                   alt="Camilo Moreno, cofundador de Cómplice Lab"
                   loading="lazy"
                 />
@@ -65,7 +63,7 @@ export function AboutSection() {
             <div className="founder-avatar-wrap">
               <div className="founder-avatar-ring">
                 <img
-                  src={founderCristian}
+                  src="/founders/cristian.jpg"
                   alt="Cristian Roman, cofundador de Cómplice Lab"
                   loading="lazy"
                 />

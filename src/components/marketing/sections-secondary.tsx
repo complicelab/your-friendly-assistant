@@ -15,13 +15,8 @@ import {
 } from "lucide-react";
 
 import { faqs, principles, projects } from "@/data/marketing";
-import founderCamiloWebp1 from "@/data/founder-camilo-webp600-1";
-import founderCamiloWebp2 from "@/data/founder-camilo-webp600-2";
-import founderCamiloWebp3 from "@/data/founder-camilo-webp600-3";
-import founderCamiloWebp4 from "@/data/founder-camilo-webp600-4";
-import founderCristianWebp1 from "@/data/founder-cristian-webp600-1";
-import founderCristianWebp2 from "@/data/founder-cristian-webp600-2";
-import founderCristianWebp3 from "@/data/founder-cristian-webp600-3";
+import founderCamilo from "@/assets/founders/camilo.webp";
+import founderCristian from "@/assets/founders/cristian.webp";
 import { SectionHeading } from "./brand";
 
 export function AboutSection() {
@@ -42,7 +37,7 @@ export function AboutSection() {
             <div className="founder-avatar-wrap">
               <div className="founder-avatar-ring">
                 <img
-                  src={`data:image/webp;base64,${founderCamiloWebp1}${founderCamiloWebp2}${founderCamiloWebp3}${founderCamiloWebp4}`}
+                  src={founderCamilo}
                   alt="Camilo Moreno, cofundador de Cómplice Lab"
                   loading="lazy"
                 />
@@ -70,7 +65,7 @@ export function AboutSection() {
             <div className="founder-avatar-wrap">
               <div className="founder-avatar-ring">
                 <img
-                  src={`data:image/webp;base64,${founderCristianWebp1}${founderCristianWebp2}${founderCristianWebp3}`}
+                  src={founderCristian}
                   alt="Cristian Roman, cofundador de Cómplice Lab"
                   loading="lazy"
                 />

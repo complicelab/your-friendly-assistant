@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 
 import { faqs, principles, projects } from "@/data/marketing";
+import founderCamiloBase64 from "@/data/founder-camilo-image";
+import founderCristianBase64 from "@/data/founder-cristian-image";
 import { SectionHeading } from "./brand";
 
 export function AboutSection() {
@@ -36,7 +38,7 @@ export function AboutSection() {
             <div className="founder-photo founder-photo-camilo">
               <span className="founder-photo-fallback">CM</span>
               <img
-                src="/founders/camilo.jpg"
+                src={`data:image/jpeg;base64,${founderCamiloBase64}`}
                 alt="Camilo Moreno, cofundador de Cómplice Lab"
                 loading="lazy"
                 onError={(event) => { event.currentTarget.style.display = "none"; }}
@@ -72,7 +74,7 @@ export function AboutSection() {
             <div className="founder-photo founder-photo-cristian">
               <span className="founder-photo-fallback">CR</span>
               <img
-                src="/founders/cristian.jpg"
+                src={`data:image/jpeg;base64,${founderCristianBase64}`}
                 alt="Cristian Roman, cofundador de Cómplice Lab"
                 loading="lazy"
                 onError={(event) => { event.currentTarget.style.display = "none"; }}

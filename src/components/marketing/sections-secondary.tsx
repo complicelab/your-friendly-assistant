@@ -230,6 +230,20 @@ function ProjectVisual({ visual, name }: { visual: string; name: string }) {
   }
 
 
+  if (visual === "interiors") {
+    return (
+      <div className="project-visual project-visual-pb" aria-label="Vista conceptual del proyecto Persianas & Black Out">
+        <div className="pb-room">
+          <div className="pb-window"><div className="pb-blind-top"/><div className="pb-blind"/><div className="pb-pull"><i/></div></div>
+          <div className="pb-light"/>
+          <div className="pb-brand-lockup"><span>P&amp;B</span><strong>PERSIANAS &amp; BLACK OUT</strong><small>CONTROL DE LUZ · PRIVACIDAD · DISEÑO</small></div>
+          <div className="pb-swatches"><i/><i/><i/><i/></div>
+        </div>
+        <div className="pb-mini-card"><small>ESPACIOS QUE CAMBIAN</small><strong>Luz a tu medida.</strong><span>Diseño · Confort · Privacidad</span></div>
+      </div>
+    );
+  }
+
   if (visual === "roots") {
     return (
       <div className="project-visual project-visual-miraiz" aria-label="Vista previa del proyecto Mi Raíz">

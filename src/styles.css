@@ -2756,13 +2756,13 @@ a.project-card-pro:hover {
 }
 
 
-/* Founders — landscape editorial layout */
+/* Founders — circular profile layout */
 .founders-section{
   position:relative;
   overflow:hidden;
   background:
-    radial-gradient(circle at 14% 22%,rgba(0,43,212,.16),transparent 30%),
-    radial-gradient(circle at 86% 72%,rgba(63,134,255,.08),transparent 32%),
+    radial-gradient(circle at 18% 16%,rgba(0,43,212,.16),transparent 30%),
+    radial-gradient(circle at 84% 70%,rgba(63,134,255,.08),transparent 34%),
     #05070b;
 }
 .founders-section::before{
@@ -2770,7 +2770,7 @@ a.project-card-pro:hover {
   position:absolute;
   inset:0;
   pointer-events:none;
-  opacity:.09;
+  opacity:.085;
   background-image:
     linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),
     linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);
@@ -2780,8 +2780,8 @@ a.project-card-pro:hover {
 .founders-heading{
   position:relative;
   z-index:1;
-  max-width:1080px;
-  margin:0 auto 44px;
+  max-width:1040px;
+  margin:0 auto 52px;
   text-align:center;
 }
 .founders-heading .eyebrow{
@@ -2802,195 +2802,183 @@ a.project-card-pro:hover {
 }
 .founders-heading h2{
   margin:12px 0 14px;
-  font-size:clamp(2.55rem,5vw,4.8rem);
-  line-height:.98;
-  letter-spacing:-.055em;
+  font-size:clamp(2.45rem,4.8vw,4.5rem);
+  line-height:.99;
+  letter-spacing:-.05em;
   font-weight:800;
 }
 .founders-heading h2 span{
-  background:linear-gradient(100deg,#fff 0%,#a7c7ff 40%,#4f8fff 74%,#1f5dff 100%);
+  background:linear-gradient(100deg,#fff 0%,#b8d1ff 34%,#5795ff 70%,#1f5dff 100%);
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
 }
 .founders-heading > p:last-child{
-  max-width:780px;
+  max-width:760px;
   margin:0 auto;
-  color:#b1bac8;
-  font-size:1.02rem;
+  color:#aeb7c5;
+  font-size:1rem;
   line-height:1.65;
 }
 
-.founders-grid-landscape{
+.founders-grid-circles{
   position:relative;
   z-index:1;
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:22px;
+  gap:26px;
+  max-width:1080px;
+  margin:0 auto;
 }
-.founder-card-landscape{
-  display:flex;
-  flex-direction:column;
+.founder-card-circle{
+  position:relative;
+  display:grid;
+  grid-template-columns:210px minmax(0,1fr);
+  align-items:center;
+  gap:28px;
   min-width:0;
-  overflow:hidden;
-  border:1px solid rgba(63,134,255,.48);
-  border-radius:24px;
+  padding:30px;
+  border:1px solid rgba(63,134,255,.32);
+  border-radius:26px;
   background:
-    linear-gradient(145deg,rgba(255,255,255,.028),rgba(255,255,255,.012)),
+    radial-gradient(circle at 18% 15%,rgba(63,134,255,.08),transparent 34%),
+    linear-gradient(145deg,rgba(255,255,255,.026),rgba(255,255,255,.012)),
     #070a10;
   box-shadow:
     inset 0 1px rgba(255,255,255,.05),
-    0 25px 80px rgba(0,43,212,.09);
+    0 28px 90px rgba(0,43,212,.09);
   transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease;
 }
-.founder-card-landscape:hover{
+.founder-card-circle:hover{
   transform:translateY(-4px);
-  border-color:rgba(80,145,255,.78);
+  border-color:rgba(80,145,255,.7);
   box-shadow:
     inset 0 1px rgba(255,255,255,.07),
-    0 34px 100px rgba(0,43,212,.15);
+    0 36px 110px rgba(0,43,212,.15);
 }
-.founder-photo-landscape{
+.founder-avatar-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-width:0;
+}
+.founder-avatar-ring{
   position:relative;
-  width:calc(100% - 28px);
-  margin:14px 14px 0;
-  aspect-ratio:16/9;
-  min-height:0;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:18px;
-  background:#0a0f18;
+  width:190px;
+  height:190px;
+  border-radius:50%;
+  padding:5px;
+  background:linear-gradient(135deg,#dce9ff 0%,#7eabff 34%,#3f86ff 66%,#002bd4 100%);
+  box-shadow:
+    0 0 0 9px rgba(63,134,255,.055),
+    0 18px 60px rgba(0,43,212,.22);
 }
-.founder-photo-landscape::after{
+.founder-avatar-ring::after{
   content:"";
   position:absolute;
-  inset:0;
+  inset:-13px;
+  border:1px solid rgba(63,134,255,.16);
+  border-radius:50%;
   pointer-events:none;
-  background:linear-gradient(180deg,transparent 68%,rgba(4,6,10,.12));
 }
-.founder-photo-landscape img{
-  display:block;
+.founder-avatar-ring img{
   width:100%;
   height:100%;
+  display:block;
   object-fit:cover;
+  border-radius:50%;
   image-rendering:auto;
-  filter:saturate(.98) contrast(1.02);
+  background:#0a0f18;
 }
-.founder-photo-camilo img{
-  object-position:center 27%;
-}
-.founder-photo-cristian img{
-  object-position:center 44%;
-}
-.founder-photo-fallback{
-  position:absolute;
-  left:20px;
-  bottom:18px;
-  z-index:0;
-  font-size:3rem;
+.founder-role-pill{
+  margin-top:18px;
+  padding:6px 12px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  color:#dfe7f5;
+  font-size:.6rem;
+  line-height:1;
   font-weight:800;
-  color:rgba(255,255,255,.16);
+  letter-spacing:.14em;
+  background:rgba(255,255,255,.025);
 }
-
-.founder-profile-landscape{
+.founder-profile-circle{
   display:flex;
-  flex:1;
   flex-direction:column;
-  padding:20px 24px 18px;
+  min-width:0;
 }
 .founder-name{
   margin:0 0 7px!important;
   color:#fff!important;
-  font-size:.82rem!important;
+  font-size:.8rem!important;
   line-height:1.2!important;
   font-weight:800!important;
-  letter-spacing:.08em;
+  letter-spacing:.09em;
 }
-.founder-profile-landscape h3{
-  margin:0 0 10px;
-  font-size:clamp(1.2rem,1.8vw,1.55rem);
-  line-height:1.14;
+.founder-profile-circle h3{
+  max-width:430px;
+  margin:0 0 11px;
+  font-size:clamp(1.25rem,1.8vw,1.6rem);
+  line-height:1.15;
   letter-spacing:-.025em;
   font-weight:800;
 }
-.founder-profile-landscape .founder-summary{
-  max-width:92%;
+.founder-profile-circle .founder-summary{
+  max-width:470px;
   margin:0!important;
-  color:#b6bfcc!important;
+  color:#b2bcc9!important;
   font-size:.9rem!important;
-  line-height:1.5!important;
+  line-height:1.55!important;
 }
-.founder-badges-landscape{
+.founder-badges-circle{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:9px;
-  margin-top:17px;
-  padding-top:0;
+  gap:8px;
+  margin-top:18px;
 }
-.founder-badges-landscape > div,
-.founder-badges-landscape > div:last-child{
+.founder-badges-circle > div,
+.founder-badges-circle > div:last-child{
   grid-column:auto;
+  min-width:0;
   min-height:76px;
   display:grid;
-  grid-template-columns:auto 1fr;
+  grid-template-columns:auto minmax(0,1fr);
   grid-template-rows:auto auto;
-  column-gap:10px;
+  column-gap:9px;
   align-content:center;
-  padding:12px 13px;
-  border:1px solid rgba(63,134,255,.2);
+  padding:11px 12px;
+  border:1px solid rgba(63,134,255,.18);
   border-radius:13px;
   background:
-    radial-gradient(circle at 18% 18%,rgba(63,134,255,.10),transparent 48%),
-    rgba(255,255,255,.018);
+    radial-gradient(circle at 18% 18%,rgba(63,134,255,.09),transparent 48%),
+    rgba(255,255,255,.017);
 }
-.founder-badges-landscape svg{
+.founder-badges-circle svg{
   grid-row:1/3;
   align-self:center;
-  margin:0;
   color:#3f86ff;
 }
-.founder-badges-landscape strong{
-  margin:0;
+.founder-badges-circle strong{
+  min-width:0;
   color:#fff;
-  font-size:.76rem;
+  font-size:.72rem;
   line-height:1.15;
 }
-.founder-badges-landscape span{
-  margin:2px 0 0;
+.founder-badges-circle span{
+  min-width:0;
+  margin-top:2px;
   color:#8d97a7;
-  font-size:.62rem;
-  line-height:1.2;
-}
-.founder-card-footer{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  gap:14px;
-  margin-top:auto;
-  padding-top:16px;
-}
-.founder-card-footer span{
-  height:1px;
-  background:linear-gradient(90deg,transparent,rgba(63,134,255,.55));
-}
-.founder-card-footer span:last-child{
-  background:linear-gradient(90deg,rgba(63,134,255,.55),transparent);
-}
-.founder-card-footer b{
-  padding:5px 13px;
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:999px;
-  color:#e3e9f3;
-  font-size:.58rem;
-  letter-spacing:.15em;
+  font-size:.59rem;
+  line-height:1.22;
 }
 
 .founders-manifesto{
   position:relative;
   z-index:1;
   max-width:980px;
-  margin:54px auto 0;
-  padding:38px 44px;
+  margin:50px auto 0;
+  padding:36px 42px;
   border:1px solid rgba(63,134,255,.17);
   border-radius:24px;
   background:
@@ -3000,7 +2988,7 @@ a.project-card-pro:hover {
 .founders-manifesto h3{
   max-width:870px;
   margin:14px 0 18px;
-  font-size:clamp(1.8rem,4vw,3.1rem);
+  font-size:clamp(1.8rem,4vw,3rem);
   line-height:1.05;
   letter-spacing:-.045em;
   font-weight:800;
@@ -3019,19 +3007,20 @@ a.project-card-pro:hover {
   line-height:1.6;
 }
 
-@media(max-width:980px){
-  .founders-grid-landscape{
+@media(max-width:1120px){
+  .founders-grid-circles{
     grid-template-columns:1fr;
   }
-  .founder-card-landscape{
-    max-width:720px;
+  .founder-card-circle{
+    max-width:820px;
     width:100%;
     margin-inline:auto;
+    grid-template-columns:200px minmax(0,1fr);
   }
 }
-@media(max-width:640px){
+@media(max-width:700px){
   .founders-heading{
-    margin-bottom:30px;
+    margin-bottom:34px;
     text-align:left;
   }
   .founders-heading .eyebrow{
@@ -3039,37 +3028,43 @@ a.project-card-pro:hover {
   }
   .founders-heading .eyebrow::before{display:none}
   .founders-heading h2{
-    font-size:clamp(2.6rem,12.5vw,4rem);
+    font-size:clamp(2.45rem,12vw,3.8rem);
   }
   .founders-heading > p:last-child{
     font-size:.94rem;
   }
-  .founder-card-landscape{
-    border-radius:20px;
+  .founder-card-circle{
+    grid-template-columns:1fr;
+    gap:22px;
+    padding:24px 20px 22px;
+    text-align:center;
+    border-radius:22px;
   }
-  .founder-photo-landscape{
-    width:calc(100% - 20px);
-    margin:10px 10px 0;
-    aspect-ratio:4/3;
-    border-radius:15px;
+  .founder-avatar-ring{
+    width:162px;
+    height:162px;
   }
-  .founder-photo-camilo img{object-position:center 24%}
-  .founder-photo-cristian img{object-position:center 43%}
-  .founder-profile-landscape{
-    padding:18px 18px 16px;
+  .founder-role-pill{
+    margin-top:15px;
   }
-  .founder-profile-landscape h3{
+  .founder-profile-circle{
+    align-items:center;
+  }
+  .founder-profile-circle h3{
+    max-width:340px;
     font-size:1.34rem;
   }
-  .founder-profile-landscape .founder-summary{
-    max-width:100%;
+  .founder-profile-circle .founder-summary{
+    max-width:420px;
     font-size:.88rem!important;
   }
-  .founder-badges-landscape{
+  .founder-badges-circle{
+    width:100%;
     grid-template-columns:1fr;
   }
-  .founder-badges-landscape > div{
-    min-height:68px;
+  .founder-badges-circle > div{
+    min-height:66px;
+    text-align:left;
   }
   .founders-manifesto{
     margin-top:34px;

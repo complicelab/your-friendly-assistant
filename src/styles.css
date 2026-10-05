@@ -2887,6 +2887,7 @@ a.project-card-pro:hover {
   height:100%;
   display:block;
   object-fit:cover;
+  object-position:50% 50%;
   border-radius:50%;
   image-rendering:auto;
   background:#0a0f18;

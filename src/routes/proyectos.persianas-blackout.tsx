@@ -31,9 +31,9 @@ export const Route = createFileRoute("/proyectos/persianas-blackout")({
           "Creamos desde cero una marca de persianas y soluciones de control de luz con identidad, concepto y sistema visual propio.",
       },
       { property: "og:url", content: "https://complicelab.com/proyectos/persianas-blackout" },
-      { property: "og:image", content: "https://complicelab.com/pb-hero.webp" },
+      { property: "og:image", content: "https://complicelab.com/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://complicelab.com/pb-hero.webp" },
+      { name: "twitter:image", content: "https://complicelab.com/og-image.jpg" },
     ],
     links: [{ rel: "canonical", href: "https://complicelab.com/proyectos/persianas-blackout" }],
   }),
@@ -51,6 +51,53 @@ const capabilities = [
   ["Comunicación comercial", Target, "Mensajes enfocados en beneficios, estética y funcionalidad para presentar mejor la oferta."],
   ["Aplicación digital", MonitorSmartphone, "Una identidad preparada para piezas, redes y futuros puntos de contacto digitales."],
 ] as const;
+
+function PersianasResponsiveMockup({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className={`project-visual project-visual-pb pb-case-live-mockup ${compact ? "is-compact" : ""}`} aria-label="Presentación visual de Persianas & Black Out">
+      <div className="pb-preview-browser">
+        <div className="pb-preview-top">
+          <i/><i/><i/><span>persianasyblackout.com</span>
+        </div>
+        <div className="pb-preview-scene">
+          <div className="pb-preview-copy">
+            <div className="pb-preview-logo">
+              <span>P&amp;B</span>
+              <small>PERSIANAS &amp; BLACK OUT</small>
+            </div>
+            <em>ESPACIOS QUE INSPIRAN</em>
+            <strong>Persianas <b>&amp;</b> Black Out</strong>
+            <p>Control de luz, privacidad y diseño para cada espacio.</p>
+            <div className="pb-preview-button">Ver productos <b>→</b></div>
+          </div>
+          <div className="pb-preview-room">
+            <div className="pb-preview-window"><span/><span/><span/></div>
+            <div className="pb-preview-sofa"><i/><i/><i/></div>
+            <div className="pb-preview-table"><i/></div>
+            <div className="pb-preview-light"/>
+          </div>
+        </div>
+        <div className="pb-preview-benefits">
+          <span><b>☼</b> Control de luz</span>
+          <span><b>◉</b> Privacidad</span>
+          <span><b>◇</b> Diseño a tu medida</span>
+        </div>
+      </div>
+
+      <div className="pb-preview-phone">
+        <div className="pb-preview-notch"/>
+        <div className="pb-phone-logo"><span>P&amp;B</span><small>PERSIANAS &amp; BLACK OUT</small></div>
+        <div className="pb-phone-room">
+          <div className="pb-phone-slats"/>
+          <div className="pb-phone-chair"/>
+        </div>
+        <small>CONFORT EN CADA DETALLE</small>
+        <strong>Persianas <em>&amp; Black Out</em></strong>
+        <div className="pb-phone-cta">Cotizar ahora <b>→</b></div>
+      </div>
+    </div>
+  );
+}
 
 function PersianasCase() {
   return (
@@ -97,12 +144,9 @@ function PersianasCase() {
               </div>
             </div>
 
-            <figure className="pb-image-frame pb-image-frame-hero">
-              <img
-                src="/pb-hero.webp"
-                alt="Presentación visual premium de Persianas & Black Out con aplicaciones de marca"
-              />
-            </figure>
+            <div className="pb-live-hero">
+              <PersianasResponsiveMockup />
+            </div>
           </div>
         </section>
 
@@ -144,14 +188,21 @@ function PersianasCase() {
                 y los convierte en una presencia visual sobria y reconocible.
               </p>
             </div>
-            <figure className="pb-image-frame pb-image-frame-editorial">
-              <img
-                src="/pb-hero.webp"
-                alt="Dirección visual de Persianas & Black Out aplicada a interiores, escritorio y móvil"
-                loading="lazy"
-              />
-              <figcaption>Visualización conceptual creada para presentar la dirección de marca.</figcaption>
-            </figure>
+            <div className="pb-brand-board" aria-label="Sistema visual de Persianas & Black Out">
+              <div className="pb-logo-panel">
+                <div>
+                  <div className="pb-mark">P&amp;B</div>
+                  <h3>PERSIANAS &amp; BLACK OUT</h3>
+                  <p>Diseño · Privacidad · Control de luz</p>
+                </div>
+              </div>
+              <div className="pb-material-panel" aria-label="Paleta visual de la marca">
+                <div className="pb-material" />
+                <div className="pb-material" />
+                <div className="pb-material" />
+                <div className="pb-material" />
+              </div>
+            </div>
           </div>
         </section>
 
@@ -191,21 +242,25 @@ function PersianasCase() {
             </div>
 
             <div className="pb-media-grid">
-              <figure className="pb-image-frame pb-media-main">
-                <img
-                  src="/pb-web.webp"
-                  alt="Concepto de experiencia web para Persianas & Black Out en computador"
-                  loading="lazy"
-                />
+              <figure className="pb-image-frame pb-media-main pb-live-media">
+                <div className="pb-desktop-only-visual">
+                  <PersianasResponsiveMockup compact />
+                </div>
                 <figcaption>Exploración de experiencia web en formato desktop.</figcaption>
               </figure>
-              <figure className="pb-image-frame pb-media-mobile">
-                <img
-                  src="/pb-hero.webp"
-                  alt="Aplicaciones responsive y móviles de Persianas & Black Out"
-                  loading="lazy"
-                />
-                <figcaption>Aplicaciones móviles integradas dentro del sistema visual.</figcaption>
+              <figure className="pb-image-frame pb-media-mobile pb-live-media">
+                <div className="pb-mobile-poster">
+                  <div className="pb-mobile-poster-logo"><span>P&amp;B</span><small>PERSIANAS &amp; BLACK OUT</small></div>
+                  <div className="pb-mobile-poster-room">
+                    <div className="pb-mobile-poster-slats" />
+                    <div className="pb-mobile-poster-seat" />
+                  </div>
+                  <p>ESPACIOS QUE INSPIRAN</p>
+                  <h3>Persianas <span>&amp; Black Out</span></h3>
+                  <small>Control de luz · Privacidad · Diseño</small>
+                  <div className="pb-mobile-poster-cta">Cotiza a tu medida <ArrowRight size={15} /></div>
+                </div>
+                <figcaption>Aplicación móvil conceptual dentro del sistema visual.</figcaption>
               </figure>
             </div>
           </div>

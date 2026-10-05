@@ -2922,10 +2922,13 @@ a.project-card-pro:hover {
 }
 .founder-badges{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:8px;
   margin-top:auto;
   padding-top:20px;
+}
+.founder-badges > div:last-child{
+  grid-column:1/-1;
 }
 .founder-badges > div{
   min-height:110px;
@@ -2996,12 +2999,12 @@ a.project-card-pro:hover {
     min-height:430px;
   }
 }
-@media(max-width:860px){
+@media(max-width:980px){
   .founders-grid-premium{
     grid-template-columns:1fr;
   }
   .founder-card-premium{
-    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+    grid-template-columns:minmax(280px,.9fr) minmax(0,1.1fr);
     min-height:600px;
   }
 }

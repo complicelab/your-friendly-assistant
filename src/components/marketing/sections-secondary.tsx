@@ -16,7 +16,9 @@ import {
 
 import { faqs, principles, projects } from "@/data/marketing";
 import founderCamiloBase64 from "@/data/founder-camilo-image";
-import founderCristianBase64 from "@/data/founder-cristian-image";
+import founderCristianWebp1 from "@/data/founder-cristian-webp600-1";
+import founderCristianWebp2 from "@/data/founder-cristian-webp600-2";
+import founderCristianWebp3 from "@/data/founder-cristian-webp600-3";
 import { SectionHeading } from "./brand";
 
 export function AboutSection() {
@@ -70,7 +72,7 @@ export function AboutSection() {
             <div className="founder-photo founder-photo-landscape founder-photo-cristian">
               <span className="founder-photo-fallback">CR</span>
               <img
-                src={`data:image/jpeg;base64,${founderCristianBase64}`}
+                src={`data:image/webp;base64,${founderCristianWebp1}${founderCristianWebp2}${founderCristianWebp3}`}
                 alt="Cristian Roman, cofundador de Cómplice Lab"
                 loading="lazy"
                 onError={(event) => { event.currentTarget.style.display = "none"; }}

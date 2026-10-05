@@ -15,17 +15,13 @@ import {
 } from "lucide-react";
 
 import { faqs, principles, projects } from "@/data/marketing";
-import founderCamiloBase64 from "@/data/founder-camilo-image";
-import founderCristianWebp1 from "@/data/founder-cristian-webp600-1";
-import founderCristianWebp2 from "@/data/founder-cristian-webp600-2";
-import founderCristianWebp3 from "@/data/founder-cristian-webp600-3";
 import { SectionHeading } from "./brand";
 
 export function AboutSection() {
   return (
     <section id="nosotros" className="section section-deep founders-section">
       <div className="container">
-        <div className="founders-heading founders-heading-compact reveal">
+        <div className="founders-heading reveal">
           <p className="eyebrow">NOSOTROS</p>
           <h2>Dos fundadores. <span>Una visión complementaria.</span></h2>
           <p>
@@ -34,19 +30,20 @@ export function AboutSection() {
           </p>
         </div>
 
-        <div className="founders-grid founders-grid-landscape">
-          <article className="founder-card founder-card-landscape reveal">
-            <div className="founder-photo founder-photo-landscape founder-photo-camilo">
-              <span className="founder-photo-fallback">CM</span>
-              <img
-                src={`data:image/webp;base64,${founderCamiloBase64}`}
-                alt="Camilo Moreno, cofundador de Cómplice Lab"
-                loading="lazy"
-                onError={(event) => { event.currentTarget.style.display = "none"; }}
-              />
+        <div className="founders-grid founders-grid-circles">
+          <article className="founder-card founder-card-circle reveal">
+            <div className="founder-avatar-wrap">
+              <div className="founder-avatar-ring">
+                <img
+                  src="/brand/founders/camilo.webp"
+                  alt="Camilo Moreno, cofundador de Cómplice Lab"
+                  loading="lazy"
+                />
+              </div>
+              <span className="founder-role-pill">COFUNDADOR</span>
             </div>
 
-            <div className="founder-profile founder-profile-landscape">
+            <div className="founder-profile founder-profile-circle">
               <p className="founder-name">CAMILO MORENO</p>
               <h3>Publicista · Emprendedor · Estratega creativo</h3>
               <p className="founder-summary">
@@ -54,32 +51,27 @@ export function AboutSection() {
                 marcas, negocios y proyectos desde cero.
               </p>
 
-              <div className="founder-badges founder-badges-landscape">
-                <div><BriefcaseBusiness size={20}/><strong>+15 años</strong><span>de experiencia</span></div>
-                <div><GraduationCap size={20}/><strong>U. Católica</strong><span>de Manizales</span></div>
-                <div><Rocket size={20}/><strong>Negocios</strong><span>desde cero</span></div>
-              </div>
-
-              <div className="founder-card-footer">
-                <span aria-hidden="true"/>
-                <b>COFUNDADOR</b>
-                <span aria-hidden="true"/>
+              <div className="founder-badges founder-badges-circle">
+                <div><BriefcaseBusiness size={19}/><strong>+15 años</strong><span>de experiencia</span></div>
+                <div><GraduationCap size={19}/><strong>Publicista</strong><span>U. Católica de Manizales</span></div>
+                <div><Rocket size={19}/><strong>Emprendedor</strong><span>negocios desde cero</span></div>
               </div>
             </div>
           </article>
 
-          <article className="founder-card founder-card-landscape reveal">
-            <div className="founder-photo founder-photo-landscape founder-photo-cristian">
-              <span className="founder-photo-fallback">CR</span>
-              <img
-                src={`data:image/webp;base64,${founderCristianWebp1}${founderCristianWebp2}${founderCristianWebp3}`}
-                alt="Cristian Roman, cofundador de Cómplice Lab"
-                loading="lazy"
-                onError={(event) => { event.currentTarget.style.display = "none"; }}
-              />
+          <article className="founder-card founder-card-circle reveal">
+            <div className="founder-avatar-wrap">
+              <div className="founder-avatar-ring">
+                <img
+                  src="/brand/founders/cristian.webp"
+                  alt="Cristian Roman, cofundador de Cómplice Lab"
+                  loading="lazy"
+                />
+              </div>
+              <span className="founder-role-pill">COFUNDADOR</span>
             </div>
 
-            <div className="founder-profile founder-profile-landscape">
+            <div className="founder-profile founder-profile-circle">
               <p className="founder-name">CRISTIAN ROMAN</p>
               <h3>Estrategia · Marcas · Publicidad · Tecnología</h3>
               <p className="founder-summary">
@@ -87,16 +79,10 @@ export function AboutSection() {
                 negocios y proyectos desde cero.
               </p>
 
-              <div className="founder-badges founder-badges-landscape">
-                <div><BriefcaseBusiness size={20}/><strong>+10 años</strong><span>de experiencia</span></div>
-                <div><Rocket size={20}/><strong>Emprendedor</strong><span>desde cero</span></div>
-                <div><Network size={20}/><strong>Marcas &</strong><span>tecnología</span></div>
-              </div>
-
-              <div className="founder-card-footer">
-                <span aria-hidden="true"/>
-                <b>COFUNDADOR</b>
-                <span aria-hidden="true"/>
+              <div className="founder-badges founder-badges-circle">
+                <div><BriefcaseBusiness size={19}/><strong>+10 años</strong><span>de experiencia</span></div>
+                <div><Rocket size={19}/><strong>Emprendedor</strong><span>negocios desde cero</span></div>
+                <div><Network size={19}/><strong>Estrategia</strong><span>marcas + tecnología</span></div>
               </div>
             </div>
           </article>

@@ -1,8 +1,10 @@
 import {
   ArrowRight,
+  BriefcaseBusiness,
   Check,
   ChevronDown,
   Compass,
+  GraduationCap,
   Lightbulb,
   MapPin,
   Network,
@@ -17,31 +19,103 @@ import { SectionHeading } from "./brand";
 
 export function AboutSection() {
   return (
-    <section id="nosotros" className="section section-deep">
+    <section id="nosotros" className="section section-deep founders-section">
       <div className="container">
-        <SectionHeading
-          eyebrow="POR QUÉ CÓMPLICE LAB"
-          title="No aprendimos esto solamente en un salón de clases."
-          copy="Cómplice Lab nace de años de aprender, emprender, equivocarnos, volver a intentar y descubrir qué funciona realmente."
-        />
-        <p className="about-intro reveal">Detrás del Lab estamos Camilo y Cristian. Dos caminos diferentes que terminaron encontrándose alrededor de la publicidad, las marcas, los negocios, la tecnología y la enseñanza.</p>
-        <div className="founders-grid">
-          <article className="founder-card reveal">
-            <div className="founder-avatar"><span>CM</span></div>
-            <div><p className="eyebrow">CAMILO</p><h3>Publicista · Emprendedor · Estratega creativo</h3>
-              <p>Camilo es publicista de profesión y emprendedor desde joven. Ha creado y participado en diferentes negocios. Algunos funcionaron y otros no, y precisamente esas experiencias le permitieron entender que emprender también significa probar, equivocarse, aprender y volver a construir.</p>
-              <p>Con los años desarrolló habilidades en diferentes áreas creativas, publicitarias y empresariales, aprendiendo qué herramientas realmente aportan resultados.</p>
+        <div className="founders-heading reveal">
+          <p className="eyebrow">FUNDADORES</p>
+          <h2>Dos emprendedores,<br/><span>una visión.</span></h2>
+          <p>
+            Cómplice Lab nace de experiencia real construyendo negocios desde cero:
+            años de probar, aprender, crear marcas, desarrollar productos y entender
+            qué herramientas realmente ayudan a convertir una idea en algo que funciona.
+          </p>
+        </div>
+
+        <div className="founders-grid founders-grid-premium">
+          <article className="founder-card founder-card-premium reveal">
+            <div className="founder-photo founder-photo-camilo">
+              <span className="founder-photo-fallback">CM</span>
+              <img
+                src="/founders/camilo.jpg"
+                alt="Camilo Moreno, cofundador de Cómplice Lab"
+                loading="lazy"
+                onError={(event) => { event.currentTarget.style.display = "none"; }}
+              />
+              <div className="founder-photo-shade"/>
+              <span className="founder-photo-label">COFUNDADOR</span>
+            </div>
+
+            <div className="founder-profile">
+              <p className="eyebrow">CAMILO MORENO</p>
+              <h3>Publicista · Emprendedor · Estratega creativo</h3>
+              <p className="founder-degree">Publicista de la Universidad Católica de Manizales.</p>
+              <p>
+                Camilo lleva más de 15 años emprendiendo y construyendo proyectos desde cero.
+                A lo largo de ese camino ha creado y participado en diferentes negocios,
+                aprendiendo desde la experiencia qué funciona, qué no y cómo volver una idea
+                una marca, un producto o una operación real.
+              </p>
+              <p>
+                Su experiencia combina publicidad, estrategia, creación de marca, contenido,
+                producto digital y tecnología aplicada a negocios.
+              </p>
+
+              <div className="founder-badges">
+                <div><BriefcaseBusiness size={19}/><strong>+15 años</strong><span>emprendiendo</span></div>
+                <div><GraduationCap size={19}/><strong>Publicista</strong><span>U. Católica de Manizales</span></div>
+                <div><Rocket size={19}/><strong>Negocios</strong><span>creados desde cero</span></div>
+              </div>
             </div>
           </article>
-          <article className="founder-card reveal">
-            <div className="founder-avatar"><span>CR</span></div>
-            <div><p className="eyebrow">CRISTIAN</p><h3>Estrategia · Marcas · Publicidad · Tecnología</h3>
-              <p>Cristian cuenta con más de 15 años de experiencia alrededor de la publicidad, el marketing, la creación de marcas y el desarrollo de proyectos.</p>
-              <p>Aunque su formación profesional no comenzó directamente en publicidad, ha dedicado años a estudiar, experimentar y aplicar conocimientos relacionados con estrategia, comunicación, diseño, contenido, tecnología y negocios.</p>
+
+          <article className="founder-card founder-card-premium reveal">
+            <div className="founder-photo founder-photo-cristian">
+              <span className="founder-photo-fallback">CR</span>
+              <img
+                src="/founders/cristian.jpg"
+                alt="Cristian Roman, cofundador de Cómplice Lab"
+                loading="lazy"
+                onError={(event) => { event.currentTarget.style.display = "none"; }}
+              />
+              <div className="founder-photo-shade"/>
+              <span className="founder-photo-label">COFUNDADOR</span>
+            </div>
+
+            <div className="founder-profile">
+              <p className="eyebrow">CRISTIAN ROMAN</p>
+              <h3>Estrategia · Marcas · Publicidad · Tecnología</h3>
+              <p>
+                Cristian lleva más de 10 años desarrollando experiencia alrededor de marcas,
+                publicidad, estrategia, tecnología y negocios. También es emprendedor y ha
+                construido proyectos y empresas desde cero, participando directamente en el
+                proceso de convertir ideas en operaciones reales.
+              </p>
+              <p>
+                Su recorrido se ha formado estudiando, experimentando y aplicando conocimientos
+                de comunicación, diseño, contenido, tecnología, desarrollo digital y análisis,
+                con una visión especialmente orientada a conectar herramientas y ejecución.
+              </p>
+
+              <div className="founder-badges">
+                <div><BriefcaseBusiness size={19}/><strong>+10 años</strong><span>de experiencia</span></div>
+                <div><Rocket size={19}/><strong>Emprendedor</strong><span>negocios desde cero</span></div>
+                <div><Network size={19}/><strong>Estrategia</strong><span>marca + tecnología</span></div>
+              </div>
             </div>
           </article>
         </div>
-        <div className="joint-quote reveal"><span>Dos experiencias diferentes.</span><strong>Una misma obsesión: entender cómo hacer las cosas mejor.</strong><em>La teoría ayuda. Hacer las cosas es lo que realmente enseña.</em></div>
+
+        <div className="founders-manifesto reveal">
+          <p className="eyebrow">POR QUÉ CÓMPLICE</p>
+          <h3>Sabemos lo que significa empezar con una idea y tener que aprender a hacer de todo.</h3>
+          <p>
+            Los dos hemos construido negocios desde cero. Hemos tenido que vender, diseñar,
+            comunicar, aprender herramientas, tomar decisiones, equivocarnos y volver a intentar.
+            Por eso Cómplice Lab no nace desde la teoría solamente: nace desde haber estado del
+            otro lado de la mesa.
+          </p>
+          <strong>La experiencia nos enseñó. La tecnología nos permite hacer más. El criterio sigue siendo humano.</strong>
+        </div>
       </div>
     </section>
   );

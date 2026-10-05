@@ -23,19 +23,18 @@ export function AboutSection() {
   return (
     <section id="nosotros" className="section section-deep founders-section">
       <div className="container">
-        <div className="founders-heading reveal">
-          <p className="eyebrow">FUNDADORES</p>
-          <h2>Dos emprendedores,<br/><span>una visión.</span></h2>
+        <div className="founders-heading founders-heading-compact reveal">
+          <p className="eyebrow">NOSOTROS</p>
+          <h2>Dos fundadores. <span>Una visión complementaria.</span></h2>
           <p>
-            Cómplice Lab nace de experiencia real construyendo negocios desde cero:
-            años de probar, aprender, crear marcas, desarrollar productos y entender
-            qué herramientas realmente ayudan a convertir una idea en algo que funciona.
+            Publicidad, estrategia, tecnología y ejecución para crear, enseñar e implementar
+            proyectos con impacto real.
           </p>
         </div>
 
-        <div className="founders-grid founders-grid-premium">
-          <article className="founder-card founder-card-premium reveal">
-            <div className="founder-photo founder-photo-camilo">
+        <div className="founders-grid founders-grid-landscape">
+          <article className="founder-card founder-card-landscape reveal">
+            <div className="founder-photo founder-photo-landscape founder-photo-camilo">
               <span className="founder-photo-fallback">CM</span>
               <img
                 src={`data:image/webp;base64,${founderCamiloBase64}`}
@@ -43,35 +42,32 @@ export function AboutSection() {
                 loading="lazy"
                 onError={(event) => { event.currentTarget.style.display = "none"; }}
               />
-              <div className="founder-photo-shade"/>
-              <span className="founder-photo-label">COFUNDADOR</span>
             </div>
 
-            <div className="founder-profile">
-              <p className="eyebrow">CAMILO MORENO</p>
+            <div className="founder-profile founder-profile-landscape">
+              <p className="founder-name">CAMILO MORENO</p>
               <h3>Publicista · Emprendedor · Estratega creativo</h3>
-              <p className="founder-degree">Publicista de la Universidad Católica de Manizales.</p>
-              <p>
-                Camilo lleva más de 15 años emprendiendo y construyendo proyectos desde cero.
-                A lo largo de ese camino ha creado y participado en diferentes negocios,
-                aprendiendo desde la experiencia qué funciona, qué no y cómo volver una idea
-                una marca, un producto o una operación real.
-              </p>
-              <p>
-                Su experiencia combina publicidad, estrategia, creación de marca, contenido,
-                producto digital y tecnología aplicada a negocios.
+              <p className="founder-summary">
+                Publicista de la Universidad Católica de Manizales. Más de 15 años creando
+                marcas, negocios y proyectos desde cero.
               </p>
 
-              <div className="founder-badges">
-                <div><BriefcaseBusiness size={19}/><strong>+15 años</strong><span>emprendiendo</span></div>
-                <div><GraduationCap size={19}/><strong>Publicista</strong><span>U. Católica de Manizales</span></div>
-                <div><Rocket size={19}/><strong>Negocios</strong><span>creados desde cero</span></div>
+              <div className="founder-badges founder-badges-landscape">
+                <div><BriefcaseBusiness size={20}/><strong>+15 años</strong><span>de experiencia</span></div>
+                <div><GraduationCap size={20}/><strong>U. Católica</strong><span>de Manizales</span></div>
+                <div><Rocket size={20}/><strong>Negocios</strong><span>desde cero</span></div>
+              </div>
+
+              <div className="founder-card-footer">
+                <span aria-hidden="true"/>
+                <b>COFUNDADOR</b>
+                <span aria-hidden="true"/>
               </div>
             </div>
           </article>
 
-          <article className="founder-card founder-card-premium reveal">
-            <div className="founder-photo founder-photo-cristian">
+          <article className="founder-card founder-card-landscape reveal">
+            <div className="founder-photo founder-photo-landscape founder-photo-cristian">
               <span className="founder-photo-fallback">CR</span>
               <img
                 src={`data:image/jpeg;base64,${founderCristianBase64}`}
@@ -79,29 +75,26 @@ export function AboutSection() {
                 loading="lazy"
                 onError={(event) => { event.currentTarget.style.display = "none"; }}
               />
-              <div className="founder-photo-shade"/>
-              <span className="founder-photo-label">COFUNDADOR</span>
             </div>
 
-            <div className="founder-profile">
-              <p className="eyebrow">CRISTIAN ROMAN</p>
+            <div className="founder-profile founder-profile-landscape">
+              <p className="founder-name">CRISTIAN ROMAN</p>
               <h3>Estrategia · Marcas · Publicidad · Tecnología</h3>
-              <p>
-                Cristian lleva más de 10 años desarrollando experiencia alrededor de marcas,
-                publicidad, estrategia, tecnología y negocios. También es emprendedor y ha
-                construido proyectos y empresas desde cero, participando directamente en el
-                proceso de convertir ideas en operaciones reales.
-              </p>
-              <p>
-                Su recorrido se ha formado estudiando, experimentando y aplicando conocimientos
-                de comunicación, diseño, contenido, tecnología, desarrollo digital y análisis,
-                con una visión especialmente orientada a conectar herramientas y ejecución.
+              <p className="founder-summary">
+                Más de 10 años de experiencia. Emprendedor y constructor de marcas,
+                negocios y proyectos desde cero.
               </p>
 
-              <div className="founder-badges">
-                <div><BriefcaseBusiness size={19}/><strong>+10 años</strong><span>de experiencia</span></div>
-                <div><Rocket size={19}/><strong>Emprendedor</strong><span>negocios desde cero</span></div>
-                <div><Network size={19}/><strong>Estrategia</strong><span>marca + tecnología</span></div>
+              <div className="founder-badges founder-badges-landscape">
+                <div><BriefcaseBusiness size={20}/><strong>+10 años</strong><span>de experiencia</span></div>
+                <div><Rocket size={20}/><strong>Emprendedor</strong><span>desde cero</span></div>
+                <div><Network size={20}/><strong>Marcas &</strong><span>tecnología</span></div>
+              </div>
+
+              <div className="founder-card-footer">
+                <span aria-hidden="true"/>
+                <b>COFUNDADOR</b>
+                <span aria-hidden="true"/>
               </div>
             </div>
           </article>

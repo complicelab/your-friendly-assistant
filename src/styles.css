@@ -2857,18 +2857,20 @@ a.project-card-pro:hover {
   width:100%;
   height:100%;
   object-fit:cover;
-  object-position:center 34%;
-  filter:saturate(.94) contrast(1.03);
+  object-position:center 32%;
+  image-rendering:auto;
+  filter:saturate(.98) contrast(1.025);
 }
-.founder-photo-cristian img{ object-position:center 38%; }
+.founder-photo-camilo img{ object-position:center 30%; }
+.founder-photo-cristian img{ object-position:52% 36%; }
 .founder-photo-shade{
   position:absolute;
   inset:0;
   z-index:1;
   pointer-events:none;
   background:
-    linear-gradient(180deg,transparent 48%,rgba(3,5,9,.22) 75%,rgba(3,5,9,.78) 100%),
-    linear-gradient(90deg,transparent 72%,rgba(4,5,7,.28));
+    linear-gradient(180deg,rgba(4,5,7,.02) 0%,transparent 52%,rgba(3,5,9,.18) 76%,rgba(3,5,9,.72) 100%),
+    linear-gradient(90deg,transparent 76%,rgba(4,5,7,.22));
 }
 .founder-photo-fallback{
   position:absolute;
@@ -3020,9 +3022,11 @@ a.project-card-pro:hover {
     border-radius:22px;
   }
   .founder-photo{
-    min-height:500px;
+    min-height:520px;
     aspect-ratio:4/5;
   }
+  .founder-photo-camilo img{ object-position:center 24%; }
+  .founder-photo-cristian img{ object-position:50% 34%; }
   .founder-photo::after{
     box-shadow:inset 0 -35px 55px rgba(4,5,7,.34);
   }

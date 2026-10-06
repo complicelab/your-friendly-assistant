@@ -2892,6 +2892,27 @@ a.project-card-pro:hover {
   image-rendering:auto;
   background:#0a0f18;
 }
+
+.founder-avatar-clip{
+  position:absolute;
+  inset:5px;
+  overflow:hidden;
+  border-radius:50%;
+  background:#0a0f18;
+}
+.founder-avatar-clip img{
+  position:absolute;
+  max-width:none;
+  border-radius:0;
+}
+.founder-avatar-clip-cristian img{
+  width:165%;
+  height:165%;
+  left:-16%;
+  top:0;
+  object-fit:cover;
+  object-position:50% 50%;
+}
 .founder-role-pill{
   margin-top:18px;
   padding:6px 12px;

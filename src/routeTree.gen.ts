@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CapacitacionIaEmpresasRouteImport } from './routes/capacitacion-ia-empresas'
 import { Route as FormacionRouteImport } from './routes/formacion'
 import { Route as OgImageDotjpgRouteImport } from './routes/og-image[.]jpg'
+import { Route as PbHeroDotwebpRouteImport } from './routes/pb-hero[.]webp'
+import { Route as PbWebDotwebpRouteImport } from './routes/pb-web[.]webp'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as FoundersCamiloDotjpgRouteImport } from './routes/founders.camilo[.]jpg'
@@ -21,6 +23,7 @@ import { Route as ProyectosB2homeRouteImport } from './routes/proyectos.b2home'
 import { Route as ProyectosCamiloRespiroRouteImport } from './routes/proyectos.camilo-respiro'
 import { Route as ProyectosCompliceLabRouteImport } from './routes/proyectos.complice-lab'
 import { Route as ProyectosMiRaizRouteImport } from './routes/proyectos.mi-raiz'
+import { Route as ProyectosPersianasBlackoutRouteImport } from './routes/proyectos.persianas-blackout'
 import { Route as ProyectosPulsoDataRouteImport } from './routes/proyectos.pulso-data'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +44,16 @@ const FormacionRoute = FormacionRouteImport.update({
 const OgImageDotjpgRoute = OgImageDotjpgRouteImport.update({
   id: '/og-image.jpg',
   path: '/og-image.jpg',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PbHeroDotwebpRoute = PbHeroDotwebpRouteImport.update({
+  id: '/pb-hero.webp',
+  path: '/pb-hero.webp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PbWebDotwebpRoute = PbWebDotwebpRouteImport.update({
+  id: '/pb-web.webp',
+  path: '/pb-web.webp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacidadRoute = PrivacidadRouteImport.update({
@@ -83,6 +96,12 @@ const ProyectosMiRaizRoute = ProyectosMiRaizRouteImport.update({
   path: '/proyectos/mi-raiz',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProyectosPersianasBlackoutRoute =
+  ProyectosPersianasBlackoutRouteImport.update({
+    id: '/proyectos/persianas-blackout',
+    path: '/proyectos/persianas-blackout',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ProyectosPulsoDataRoute = ProyectosPulsoDataRouteImport.update({
   id: '/proyectos/pulso-data',
   path: '/proyectos/pulso-data',
@@ -94,6 +113,8 @@ export interface FileRoutesByFullPath {
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/formacion': typeof FormacionRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
+  '/pb-hero.webp': typeof PbHeroDotwebpRoute
+  '/pb-web.webp': typeof PbWebDotwebpRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
   '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
@@ -102,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/proyectos/camilo-respiro': typeof ProyectosCamiloRespiroRoute
   '/proyectos/complice-lab': typeof ProyectosCompliceLabRoute
   '/proyectos/mi-raiz': typeof ProyectosMiRaizRoute
+  '/proyectos/persianas-blackout': typeof ProyectosPersianasBlackoutRoute
   '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRoutesByTo {
@@ -109,6 +131,8 @@ export interface FileRoutesByTo {
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/formacion': typeof FormacionRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
+  '/pb-hero.webp': typeof PbHeroDotwebpRoute
+  '/pb-web.webp': typeof PbWebDotwebpRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
   '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
@@ -117,6 +141,7 @@ export interface FileRoutesByTo {
   '/proyectos/camilo-respiro': typeof ProyectosCamiloRespiroRoute
   '/proyectos/complice-lab': typeof ProyectosCompliceLabRoute
   '/proyectos/mi-raiz': typeof ProyectosMiRaizRoute
+  '/proyectos/persianas-blackout': typeof ProyectosPersianasBlackoutRoute
   '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRoutesById {
@@ -125,6 +150,8 @@ export interface FileRoutesById {
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/formacion': typeof FormacionRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
+  '/pb-hero.webp': typeof PbHeroDotwebpRoute
+  '/pb-web.webp': typeof PbWebDotwebpRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
   '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
@@ -133,6 +160,7 @@ export interface FileRoutesById {
   '/proyectos/camilo-respiro': typeof ProyectosCamiloRespiroRoute
   '/proyectos/complice-lab': typeof ProyectosCompliceLabRoute
   '/proyectos/mi-raiz': typeof ProyectosMiRaizRoute
+  '/proyectos/persianas-blackout': typeof ProyectosPersianasBlackoutRoute
   '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRouteTypes {
@@ -142,6 +170,8 @@ export interface FileRouteTypes {
     | '/capacitacion-ia-empresas'
     | '/formacion'
     | '/og-image.jpg'
+    | '/pb-hero.webp'
+    | '/pb-web.webp'
     | '/privacidad'
     | '/terminos'
     | '/founders/camilo.jpg'
@@ -150,6 +180,7 @@ export interface FileRouteTypes {
     | '/proyectos/camilo-respiro'
     | '/proyectos/complice-lab'
     | '/proyectos/mi-raiz'
+    | '/proyectos/persianas-blackout'
     | '/proyectos/pulso-data'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -157,6 +188,8 @@ export interface FileRouteTypes {
     | '/capacitacion-ia-empresas'
     | '/formacion'
     | '/og-image.jpg'
+    | '/pb-hero.webp'
+    | '/pb-web.webp'
     | '/privacidad'
     | '/terminos'
     | '/founders/camilo.jpg'
@@ -165,6 +198,7 @@ export interface FileRouteTypes {
     | '/proyectos/camilo-respiro'
     | '/proyectos/complice-lab'
     | '/proyectos/mi-raiz'
+    | '/proyectos/persianas-blackout'
     | '/proyectos/pulso-data'
   id:
     | '__root__'
@@ -172,6 +206,8 @@ export interface FileRouteTypes {
     | '/capacitacion-ia-empresas'
     | '/formacion'
     | '/og-image.jpg'
+    | '/pb-hero.webp'
+    | '/pb-web.webp'
     | '/privacidad'
     | '/terminos'
     | '/founders/camilo.jpg'
@@ -180,6 +216,7 @@ export interface FileRouteTypes {
     | '/proyectos/camilo-respiro'
     | '/proyectos/complice-lab'
     | '/proyectos/mi-raiz'
+    | '/proyectos/persianas-blackout'
     | '/proyectos/pulso-data'
   fileRoutesById: FileRoutesById
 }
@@ -188,6 +225,8 @@ export interface RootRouteChildren {
   CapacitacionIaEmpresasRoute: typeof CapacitacionIaEmpresasRoute
   FormacionRoute: typeof FormacionRoute
   OgImageDotjpgRoute: typeof OgImageDotjpgRoute
+  PbHeroDotwebpRoute: typeof PbHeroDotwebpRoute
+  PbWebDotwebpRoute: typeof PbWebDotwebpRoute
   PrivacidadRoute: typeof PrivacidadRoute
   TerminosRoute: typeof TerminosRoute
   FoundersCamiloDotjpgRoute: typeof FoundersCamiloDotjpgRoute
@@ -196,6 +235,7 @@ export interface RootRouteChildren {
   ProyectosCamiloRespiroRoute: typeof ProyectosCamiloRespiroRoute
   ProyectosCompliceLabRoute: typeof ProyectosCompliceLabRoute
   ProyectosMiRaizRoute: typeof ProyectosMiRaizRoute
+  ProyectosPersianasBlackoutRoute: typeof ProyectosPersianasBlackoutRoute
   ProyectosPulsoDataRoute: typeof ProyectosPulsoDataRoute
 }
 
@@ -227,6 +267,20 @@ declare module '@tanstack/react-router' {
       path: '/og-image.jpg'
       fullPath: '/og-image.jpg'
       preLoaderRoute: typeof OgImageDotjpgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pb-hero.webp': {
+      id: '/pb-hero.webp'
+      path: '/pb-hero.webp'
+      fullPath: '/pb-hero.webp'
+      preLoaderRoute: typeof PbHeroDotwebpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pb-web.webp': {
+      id: '/pb-web.webp'
+      path: '/pb-web.webp'
+      fullPath: '/pb-web.webp'
+      preLoaderRoute: typeof PbWebDotwebpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacidad': {
@@ -285,6 +339,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProyectosMiRaizRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/proyectos/persianas-blackout': {
+      id: '/proyectos/persianas-blackout'
+      path: '/proyectos/persianas-blackout'
+      fullPath: '/proyectos/persianas-blackout'
+      preLoaderRoute: typeof ProyectosPersianasBlackoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/proyectos/pulso-data': {
       id: '/proyectos/pulso-data'
       path: '/proyectos/pulso-data'
@@ -300,6 +361,8 @@ const rootRouteChildren: RootRouteChildren = {
   CapacitacionIaEmpresasRoute: CapacitacionIaEmpresasRoute,
   FormacionRoute: FormacionRoute,
   OgImageDotjpgRoute: OgImageDotjpgRoute,
+  PbHeroDotwebpRoute: PbHeroDotwebpRoute,
+  PbWebDotwebpRoute: PbWebDotwebpRoute,
   PrivacidadRoute: PrivacidadRoute,
   TerminosRoute: TerminosRoute,
   FoundersCamiloDotjpgRoute: FoundersCamiloDotjpgRoute,
@@ -308,6 +371,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProyectosCamiloRespiroRoute: ProyectosCamiloRespiroRoute,
   ProyectosCompliceLabRoute: ProyectosCompliceLabRoute,
   ProyectosMiRaizRoute: ProyectosMiRaizRoute,
+  ProyectosPersianasBlackoutRoute: ProyectosPersianasBlackoutRoute,
   ProyectosPulsoDataRoute: ProyectosPulsoDataRoute,
 }
 export const routeTree = rootRouteImport

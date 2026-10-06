@@ -62,13 +62,11 @@ export function AboutSection() {
           <article className="founder-card founder-card-circle reveal">
             <div className="founder-avatar-wrap">
               <div className="founder-avatar-ring">
-                <div className="founder-avatar-clip founder-avatar-clip-cristian">
-                  <img
-                    src="/founders/cristian.jpg?v=20261005-final"
-                    alt="Cristian Roman, cofundador de Cómplice Lab"
-                    loading="lazy"
-                  />
-                </div>
+                <img
+                  src="/founders/cristian.jpg?v=20261005-centered"
+                  alt="Cristian Roman, cofundador de Cómplice Lab"
+                  loading="lazy"
+                />
               </div>
               <span className="founder-role-pill">COFUNDADOR</span>
             </div>

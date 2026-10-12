@@ -68,7 +68,7 @@ function FormationPage() {
                 <a className="button button-ghost" href="#programas">Ver temas de formación</a>
               </div>
             </div>
-            <div className="fp-image-wrap"><img src={peopleImages.entrepreneur.src} alt={peopleImages.entrepreneur.alt} loading="eager" width={630} height={660}/><span>Aprende aunque empieces desde cero</span><small>Fotografía ilustrativa</small></div>
+            <div className="fp-image-wrap"><img src={peopleImages.entrepreneur.src} alt={peopleImages.entrepreneur.alt} loading="eager" width={630} height={660}/><span>Aprende aunque empieces desde cero</span></div>
           </div>
         </section>
 

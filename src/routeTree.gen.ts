@@ -10,6 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ServiciosDiagnosticoNegocioManizalesRouteImport } from './routes/servicios.diagnostico-negocio-manizales'
+import { Route as ServiciosContenidoPublicitarioManizalesRouteImport } from './routes/servicios.contenido-publicitario-manizales'
+import { Route as ServiciosCrearMarcaNegocioDesdeCeroRouteImport } from './routes/servicios.crear-marca-negocio-desde-cero'
 import { Route as TodosLosServiciosRouteImport } from './routes/todos-los-servicios'
 import { Route as ServiciosSlugRouteImport } from './routes/servicios.$slug'
 import { Route as ServiciosDisenoGraficoPublicitarioRouteImport } from './routes/servicios.diseno-grafico-publicitario'
@@ -79,6 +82,21 @@ const TodosLosServiciosRoute = TodosLosServiciosRouteImport.update({
   id: '/todos-los-servicios',
   path: '/todos-los-servicios',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ServiciosDiagnosticoNegocioManizalesRoute = ServiciosDiagnosticoNegocioManizalesRouteImport.update({
+ id:'/servicios/diagnostico-negocio-manizales',
+ path:'/servicios/diagnostico-negocio-manizales',
+ getParentRoute:()=>rootRouteImport,
+} as any)
+const ServiciosContenidoPublicitarioManizalesRoute = ServiciosContenidoPublicitarioManizalesRouteImport.update({
+ id:'/servicios/contenido-publicitario-manizales',
+ path:'/servicios/contenido-publicitario-manizales',
+ getParentRoute:()=>rootRouteImport,
+} as any)
+const ServiciosCrearMarcaNegocioDesdeCeroRoute = ServiciosCrearMarcaNegocioDesdeCeroRouteImport.update({
+ id:'/servicios/crear-marca-negocio-desde-cero',
+ path:'/servicios/crear-marca-negocio-desde-cero',
+ getParentRoute:()=>rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -163,6 +181,9 @@ const ProyectosPulsoDataRoute = ProyectosPulsoDataRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/servicios/diagnostico-negocio-manizales': typeof ServiciosDiagnosticoNegocioManizalesRoute
+  '/servicios/contenido-publicitario-manizales': typeof ServiciosContenidoPublicitarioManizalesRoute
+  '/servicios/crear-marca-negocio-desde-cero': typeof ServiciosCrearMarcaNegocioDesdeCeroRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/servicios/diseno-grafico-publicitario': typeof ServiciosDisenoGraficoPublicitarioRoute
   '/servicios/contenido-redes-sociales': typeof ServiciosContenidoRedesSocialesRoute
@@ -190,6 +211,9 @@ export interface FileRoutesByFullPath {
   '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRoutesByTo {
+  '/servicios/diagnostico-negocio-manizales': typeof ServiciosDiagnosticoNegocioManizalesRoute
+  '/servicios/contenido-publicitario-manizales': typeof ServiciosContenidoPublicitarioManizalesRoute
+  '/servicios/crear-marca-negocio-desde-cero': typeof ServiciosCrearMarcaNegocioDesdeCeroRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/servicios/diseno-grafico-publicitario': typeof ServiciosDisenoGraficoPublicitarioRoute
   '/servicios/contenido-redes-sociales': typeof ServiciosContenidoRedesSocialesRoute
@@ -217,6 +241,9 @@ export interface FileRoutesByTo {
   '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRoutesById {
+  '/servicios/diagnostico-negocio-manizales': typeof ServiciosDiagnosticoNegocioManizalesRoute
+  '/servicios/contenido-publicitario-manizales': typeof ServiciosContenidoPublicitarioManizalesRoute
+  '/servicios/crear-marca-negocio-desde-cero': typeof ServiciosCrearMarcaNegocioDesdeCeroRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/servicios/diseno-grafico-publicitario': typeof ServiciosDisenoGraficoPublicitarioRoute
   '/servicios/contenido-redes-sociales': typeof ServiciosContenidoRedesSocialesRoute
@@ -247,6 +274,9 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/servicios/diagnostico-negocio-manizales'
+    | '/servicios/contenido-publicitario-manizales'
+    | '/servicios/crear-marca-negocio-desde-cero'
     | '/todos-los-servicios'
     | '/servicios/diseno-grafico-publicitario'
     | '/servicios/contenido-redes-sociales'
@@ -274,6 +304,9 @@ export interface FileRouteTypes {
     | '/proyectos/pulso-data'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/servicios/diagnostico-negocio-manizales'
+    | '/servicios/contenido-publicitario-manizales'
+    | '/servicios/crear-marca-negocio-desde-cero'
     | '/todos-los-servicios'
     | '/servicios/diseno-grafico-publicitario'
     | '/servicios/contenido-redes-sociales'
@@ -300,6 +333,9 @@ export interface FileRouteTypes {
     | '/proyectos/persianas-blackout'
     | '/proyectos/pulso-data'
   id:
+    | '/servicios/diagnostico-negocio-manizales'
+    | '/servicios/contenido-publicitario-manizales'
+    | '/servicios/crear-marca-negocio-desde-cero'
     | '/todos-los-servicios'
     | '/servicios/diseno-grafico-publicitario'
     | '/servicios/contenido-redes-sociales'
@@ -329,6 +365,9 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  ServiciosDiagnosticoNegocioManizalesRoute: typeof ServiciosDiagnosticoNegocioManizalesRoute
+  ServiciosContenidoPublicitarioManizalesRoute: typeof ServiciosContenidoPublicitarioManizalesRoute
+  ServiciosCrearMarcaNegocioDesdeCeroRoute: typeof ServiciosCrearMarcaNegocioDesdeCeroRoute
   TodosLosServiciosRoute: typeof TodosLosServiciosRoute
   ServiciosDisenoGraficoPublicitarioRoute: typeof ServiciosDisenoGraficoPublicitarioRoute
   ServiciosContenidoRedesSocialesRoute: typeof ServiciosContenidoRedesSocialesRoute
@@ -358,6 +397,27 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/servicios/diagnostico-negocio-manizales': {
+      id:'/servicios/diagnostico-negocio-manizales'
+      path:'/servicios/diagnostico-negocio-manizales'
+      fullPath:'/servicios/diagnostico-negocio-manizales'
+      preLoaderRoute:typeof ServiciosDiagnosticoNegocioManizalesRouteImport
+      parentRoute:typeof rootRouteImport
+    }
+    '/servicios/contenido-publicitario-manizales': {
+      id:'/servicios/contenido-publicitario-manizales'
+      path:'/servicios/contenido-publicitario-manizales'
+      fullPath:'/servicios/contenido-publicitario-manizales'
+      preLoaderRoute:typeof ServiciosContenidoPublicitarioManizalesRouteImport
+      parentRoute:typeof rootRouteImport
+    }
+    '/servicios/crear-marca-negocio-desde-cero': {
+      id:'/servicios/crear-marca-negocio-desde-cero'
+      path:'/servicios/crear-marca-negocio-desde-cero'
+      fullPath:'/servicios/crear-marca-negocio-desde-cero'
+      preLoaderRoute:typeof ServiciosCrearMarcaNegocioDesdeCeroRouteImport
+      parentRoute:typeof rootRouteImport
+    }
     '/todos-los-servicios': {
       id: '/todos-los-servicios'
       path: '/todos-los-servicios'
@@ -537,6 +597,9 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  ServiciosDiagnosticoNegocioManizalesRoute: ServiciosDiagnosticoNegocioManizalesRoute,
+  ServiciosContenidoPublicitarioManizalesRoute: ServiciosContenidoPublicitarioManizalesRoute,
+  ServiciosCrearMarcaNegocioDesdeCeroRoute: ServiciosCrearMarcaNegocioDesdeCeroRoute,
   TodosLosServiciosRoute: TodosLosServiciosRoute,
   ServiciosDisenoGraficoPublicitarioRoute: ServiciosDisenoGraficoPublicitarioRoute,
   ServiciosContenidoRedesSocialesRoute: ServiciosContenidoRedesSocialesRoute,

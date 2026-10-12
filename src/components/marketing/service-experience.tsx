@@ -1,5 +1,5 @@
 import { ArrowRight, ArrowUpRight, CalendarDays, CheckCircle2, ChevronDown, ClipboardList, Globe2, MessageCircle, ShoppingBag, Sparkles, Users } from "lucide-react";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { BrandMark } from "@/components/marketing/brand";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { WhatsAppFloat } from "@/components/marketing/whatsapp-float";
@@ -9,7 +9,7 @@ import "./service-experience.css";
 import "./conversion-landing.css";
 
 function chat(service:CommercialService,interest=""){return "https://api.whatsapp.com/send?phone=573161772880&text="+encodeURIComponent(`Hola, vi ${service.name} en Cómplice Lab. ${interest||"Quiero un diagnóstico para mi negocio."} ¿Podemos conversar?`)}
-function CTA({service,children,interest,className=""}:{service:CommercialService;children:React.ReactNode;interest?:string;className?:string}){return <a className={`cl-cta ${className}`} href={chat(service,interest)} target="_blank" rel="noopener noreferrer">{children}<ArrowUpRight size={19}/></a>}
+function CTA({service,children,interest,className=""}:{service:CommercialService;children:ReactNode;interest?:string;className?:string}){return <a className={`cl-cta ${className}`} href={chat(service,interest)} target="_blank" rel="noopener noreferrer">{children}<ArrowUpRight size={19}/></a>}
 function Photo({image,className="",priority=false}:{image:StoryImageKey;className?:string;priority?:boolean}){const pic=peopleImages[image];return <img className={className} src={pic.src} alt={pic.alt} loading={priority?"eager":"lazy"} width={850} height={1000}/>}
 const theme:Record<string,{headline:string;accent:string;hook:string;closing:string}> = {
 "diagnostico-negocio-manizales":{headline:"¿Por qué tu negocio no está consiguiendo las oportunidades que esperas?",accent:"Descubramos qué mejorar.",hook:"No necesitas contratar de todo. Necesitas saber qué hace falta.",closing:"Empecemos por entender tu negocio."},

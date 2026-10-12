@@ -477,7 +477,7 @@ export function MainCtaSection() {
             target="_blank"
             rel="noreferrer noopener"
           ><span>Quiero un diagnóstico para mi negocio</span><ArrowRight/></a>
-          <a className="button button-outline-light" href="#servicios">Conocer nuestros servicios</a>
+          <a className="button button-outline-light" href="/todos-los-servicios">Conocer nuestros servicios</a>
         </div>
       </div>
     </section>

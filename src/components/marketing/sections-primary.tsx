@@ -53,7 +53,7 @@ export function ChangeSection() {
 export function ServicesSection() {
   const icons = [Layers3, Brush, PenTool, Megaphone, Code2];
   return (
-    <section id="servicios" className="section">
+    <section id="catalogo-servicios" className="section">
       <div className="container">
         <SectionHeading
           eyebrow="SERVICIOS"

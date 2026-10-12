@@ -804,7 +804,7 @@ svg { flex: 0 0 auto; }
 .faq-item p { margin:0; padding:0 42px 24px 0; color:var(--cl-muted); line-height:1.75; font-size:.86rem; }
 
 .footer { padding:78px 0 24px; background:#020304; border-top:1px solid rgba(255,255,255,.08); }
-.footer-grid { display:grid; grid-template-columns:1.5fr .6fr .8fr; gap:60px; }
+.footer-grid { display:grid; grid-template-columns:1.4fr .8fr .9fr .8fr; gap:36px; }
 .footer-grid p { color:#7f8999; font-size:.78rem; line-height:1.7; max-width:520px; }
 .footer-grid b { display:block; margin-bottom:16px; font-size:.72rem; letter-spacing:.1em; }
 .footer-tag { margin-top:22px; color:white!important; font-weight:700; }

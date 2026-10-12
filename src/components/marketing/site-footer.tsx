@@ -42,6 +42,7 @@ export function SiteFooter() {
 
         <div>
           <b>SERVICIOS</b>
+          <a className="footer-link" href="/todos-los-servicios">Ver todos los servicios →</a>
           {commercialServices.map((service) => <a className="footer-link" key={service.slug} href={serviceHref(service.slug)}>{service.name}</a>)}
         </div>
 

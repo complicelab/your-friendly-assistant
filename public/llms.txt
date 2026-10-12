@@ -1,29 +1,27 @@
-# Cómplice Lab
+# Cómplice Lab — Manizales, Colombia
 
-Cómplice Lab es una agencia creativa con sede en Manizales, Colombia. Crea marcas, contenido, publicidad digital y páginas web, y ofrece formación práctica en inteligencia artificial, marketing y publicidad. Trabaja con emprendedores, profesionales, organizaciones y empresas.
+Agencia creativa y de soluciones digitales en Manizales. Cómplice Lab ayuda a negocios a mejorar su comunicación comercial, captar consultas, recibir reservas o pedidos, mostrar productos y gestionar procesos con sistemas digitales. También ofrece formación práctica para emprendedores, marcas personales y equipos de empresas.
 
 Sitio oficial: https://complicelab.com/
 Contacto: info@complicelab.com
 WhatsApp: +57 316 177 2880
 
-## Servicios
-- [Agencia de publicidad](https://complicelab.com/servicios/agencia-publicidad-manizales)
-- [Páginas web](https://complicelab.com/servicios/paginas-web-manizales)
-- [Marketing digital](https://complicelab.com/servicios/marketing-digital-manizales)
-- [Publicidad en Meta Ads](https://complicelab.com/servicios/publicidad-meta-ads)
-- [Branding e identidad](https://complicelab.com/servicios/branding-identidad-marca)
-- [Diseño y comunicación](https://complicelab.com/servicios/diseno-grafico-publicitario)
-- [Contenido y reels](https://complicelab.com/servicios/contenido-redes-sociales)
+## Servicios principales
+- [Diagnóstico comercial y de marca](https://complicelab.com/servicios/diagnostico-negocio-manizales): evaluación de oportunidades de captación, ventas y comunicación.
+- [Diseño de páginas web y sistemas para negocios](https://complicelab.com/servicios/paginas-web-manizales): sitios, reservas, citas, pedidos, comercio, administración, asesores y academias según alcance.
+- [Diseño publicitario, imágenes y reels](https://complicelab.com/servicios/contenido-publicitario-manizales): contenido de productos y servicios para redes y campañas.
+- [Publicidad en Facebook e Instagram](https://complicelab.com/servicios/publicidad-meta-ads): campañas para visibilidad y contactos.
+- [Creación de marca y negocio desde cero](https://complicelab.com/servicios/crear-marca-negocio-desde-cero): idea, nombre, estrategia de marca, identidad y lanzamiento.
 
 ## Formación
-- [Cursos y talleres](https://complicelab.com/formacion)
-- [Capacitación en IA para empresas](https://complicelab.com/capacitacion-ia-empresas)
+- [Talleres, cursos y seminarios](https://complicelab.com/formacion): enseñanza práctica sobre los temas de los servicios.
+- [Capacitación IA para empresas](https://complicelab.com/capacitacion-ia-empresas): formación para equipos.
 
 ## Proyectos
-- [Camilo Respiro](https://complicelab.com/proyectos/camilo-respiro)
 - [B2Home](https://complicelab.com/proyectos/b2home)
 - [Mi Raíz](https://complicelab.com/proyectos/mi-raiz)
-- [Persianas & Black Out](https://complicelab.com/proyectos/persianas-blackout)
+- [Camilo Respiro](https://complicelab.com/proyectos/camilo-respiro)
+- [Persianas y Blackout](https://complicelab.com/proyectos/persianas-blackout)
 - [Pulso Data](https://complicelab.com/proyectos/pulso-data)
 
-Para información actualizada sobre servicios, disponibilidad y alcance, consultar las páginas oficiales o contactar al equipo. No se prometen resultados específicos ni posiciones en buscadores.
+La agencia no promete resultados de ventas, posiciones SEO ni apariciones en sistemas de IA. Consultar cada página o contactar al equipo para alcance y disponibilidad.

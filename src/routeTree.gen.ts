@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ServiciosSlugRouteImport } from './routes/servicios.$slug'
 import { Route as CapacitacionIaEmpresasRouteImport } from './routes/capacitacion-ia-empresas'
 import { Route as FormacionRouteImport } from './routes/formacion'
 import { Route as OgImageDotjpgRouteImport } from './routes/og-image[.]jpg'
@@ -26,6 +27,11 @@ import { Route as ProyectosMiRaizRouteImport } from './routes/proyectos.mi-raiz'
 import { Route as ProyectosPersianasBlackoutRouteImport } from './routes/proyectos.persianas-blackout'
 import { Route as ProyectosPulsoDataRouteImport } from './routes/proyectos.pulso-data'
 
+const ServiciosSlugRoute = ServiciosSlugRouteImport.update({
+  id: '/servicios/$slug',
+  path: '/servicios/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -109,6 +115,7 @@ const ProyectosPulsoDataRoute = ProyectosPulsoDataRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/servicios/$slug': typeof ServiciosSlugRoute
   '/': typeof IndexRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/formacion': typeof FormacionRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRoutesByTo {
+  '/servicios/$slug': typeof ServiciosSlugRoute
   '/': typeof IndexRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/formacion': typeof FormacionRoute
@@ -145,6 +153,7 @@ export interface FileRoutesByTo {
   '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRoutesById {
+  '/servicios/$slug': typeof ServiciosSlugRoute
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
@@ -166,6 +175,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/servicios/$slug'
     | '/'
     | '/capacitacion-ia-empresas'
     | '/formacion'
@@ -184,6 +194,7 @@ export interface FileRouteTypes {
     | '/proyectos/pulso-data'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/servicios/$slug'
     | '/'
     | '/capacitacion-ia-empresas'
     | '/formacion'
@@ -201,6 +212,7 @@ export interface FileRouteTypes {
     | '/proyectos/persianas-blackout'
     | '/proyectos/pulso-data'
   id:
+    | '/servicios/$slug'
     | '__root__'
     | '/'
     | '/capacitacion-ia-empresas'
@@ -221,6 +233,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  ServiciosSlugRoute: typeof ServiciosSlugRoute
   IndexRoute: typeof IndexRoute
   CapacitacionIaEmpresasRoute: typeof CapacitacionIaEmpresasRoute
   FormacionRoute: typeof FormacionRoute
@@ -241,6 +254,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/servicios/$slug': {
+      id: '/servicios/$slug'
+      path: '/servicios/$slug'
+      fullPath: '/servicios/$slug'
+      preLoaderRoute: typeof ServiciosSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -357,6 +377,7 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  ServiciosSlugRoute: ServiciosSlugRoute,
   IndexRoute: IndexRoute,
   CapacitacionIaEmpresasRoute: CapacitacionIaEmpresasRoute,
   FormacionRoute: FormacionRoute,

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TodosLosServiciosRouteImport } from './routes/todos-los-servicios'
 import { Route as ServiciosSlugRouteImport } from './routes/servicios.$slug'
 import { Route as ServiciosDisenoGraficoPublicitarioRouteImport } from './routes/servicios.diseno-grafico-publicitario'
 import { Route as ServiciosContenidoRedesSocialesRouteImport } from './routes/servicios.contenido-redes-sociales'
@@ -72,6 +73,11 @@ const ServiciosBrandingIdentidadMarcaRoute = ServiciosBrandingIdentidadMarcaRout
 const ServiciosSlugRoute = ServiciosSlugRouteImport.update({
   id: '/servicios/$slug',
   path: '/servicios/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TodosLosServiciosRoute = TodosLosServiciosRouteImport.update({
+  id: '/todos-los-servicios',
+  path: '/todos-los-servicios',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -157,6 +163,7 @@ const ProyectosPulsoDataRoute = ProyectosPulsoDataRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/servicios/diseno-grafico-publicitario': typeof ServiciosDisenoGraficoPublicitarioRoute
   '/servicios/contenido-redes-sociales': typeof ServiciosContenidoRedesSocialesRoute
   '/servicios/paginas-web-manizales': typeof ServiciosPaginasWebManizalesRoute
@@ -183,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRoutesByTo {
+  '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/servicios/diseno-grafico-publicitario': typeof ServiciosDisenoGraficoPublicitarioRoute
   '/servicios/contenido-redes-sociales': typeof ServiciosContenidoRedesSocialesRoute
   '/servicios/paginas-web-manizales': typeof ServiciosPaginasWebManizalesRoute
@@ -209,6 +217,7 @@ export interface FileRoutesByTo {
   '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRoutesById {
+  '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/servicios/diseno-grafico-publicitario': typeof ServiciosDisenoGraficoPublicitarioRoute
   '/servicios/contenido-redes-sociales': typeof ServiciosContenidoRedesSocialesRoute
   '/servicios/paginas-web-manizales': typeof ServiciosPaginasWebManizalesRoute
@@ -238,6 +247,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/todos-los-servicios'
     | '/servicios/diseno-grafico-publicitario'
     | '/servicios/contenido-redes-sociales'
     | '/servicios/paginas-web-manizales'
@@ -264,6 +274,7 @@ export interface FileRouteTypes {
     | '/proyectos/pulso-data'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/todos-los-servicios'
     | '/servicios/diseno-grafico-publicitario'
     | '/servicios/contenido-redes-sociales'
     | '/servicios/paginas-web-manizales'
@@ -289,6 +300,7 @@ export interface FileRouteTypes {
     | '/proyectos/persianas-blackout'
     | '/proyectos/pulso-data'
   id:
+    | '/todos-los-servicios'
     | '/servicios/diseno-grafico-publicitario'
     | '/servicios/contenido-redes-sociales'
     | '/servicios/paginas-web-manizales'
@@ -317,6 +329,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  TodosLosServiciosRoute: typeof TodosLosServiciosRoute
   ServiciosDisenoGraficoPublicitarioRoute: typeof ServiciosDisenoGraficoPublicitarioRoute
   ServiciosContenidoRedesSocialesRoute: typeof ServiciosContenidoRedesSocialesRoute
   ServiciosPaginasWebManizalesRoute: typeof ServiciosPaginasWebManizalesRoute
@@ -345,6 +358,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/todos-los-servicios': {
+      id: '/todos-los-servicios'
+      path: '/todos-los-servicios'
+      fullPath: '/todos-los-servicios'
+      preLoaderRoute: typeof TodosLosServiciosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/servicios/diseno-grafico-publicitario': {
       id: '/servicios/diseno-grafico-publicitario'
       path: '/servicios/diseno-grafico-publicitario'
@@ -517,6 +537,7 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  TodosLosServiciosRoute: TodosLosServiciosRoute,
   ServiciosDisenoGraficoPublicitarioRoute: ServiciosDisenoGraficoPublicitarioRoute,
   ServiciosContenidoRedesSocialesRoute: ServiciosContenidoRedesSocialesRoute,
   ServiciosPaginasWebManizalesRoute: ServiciosPaginasWebManizalesRoute,

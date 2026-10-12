@@ -37,11 +37,11 @@ export function SiteHeader() {
         </nav>
         <a
           className="button button-sm desktop-cta"
-          href="https://api.whatsapp.com/send?phone=+573161772880&text=Hola.%20Me%20interesa%20sus%20servicios%20de..."
+          href="https://api.whatsapp.com/send?phone=573161772880&text=Hola%2C%20quiero%20un%20diagn%C3%B3stico%20de%20mi%20negocio%20con%20C%C3%B3mplice%20Lab.%20%C2%BFPodemos%20hablar%3F"
           target="_blank"
           rel="noreferrer noopener"
         >
-          Hablemos
+          Pedir diagnóstico
         </a>
         <button
           className="menu-button"

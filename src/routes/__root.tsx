@@ -119,10 +119,10 @@ const organizationSchema = {
       telephone: "+573161772880",
       description:
         "Formación práctica en inteligencia artificial, marketing y publicidad, junto con servicios de branding, contenido, publicidad digital y desarrollo web.",
-      areaServed: {
-        "@type": "Country",
-        name: "Colombia",
-      },
+      areaServed: [
+        { "@type": "City", name: "Manizales" },
+        { "@type": "Country", name: "Colombia" },
+      ],
       sameAs: [
         "https://www.instagram.com/complicelab",
         "https://www.tiktok.com/@complicelab",

@@ -9,25 +9,25 @@ import { peopleImages, photoForService } from "@/data/visual-story";
 
 const visualLanguage: Record<string, { eyebrow: string; title: string; highlight: string; subtitle: string; punch: string; insight: string; elements: [string,string,string]; }> = {
   "paginas-web-manizales": {
-    eyebrow: "PÁGINAS WEB PARA NEGOCIOS", title: "Tu negocio merece una web que", highlight: "trabaje por ti.", subtitle: "No otra página bonita que nadie usa. Diseñamos experiencias que muestran tu valor y facilitan que te contacten, compren o reserven.", punch: "Deja de enviar clientes a una página que no los convence.", insight: "Tu próxima oportunidad puede comenzar con un clic.", elements: ["UNA MARCA QUE DESTACA","UNA EXPERIENCIA CLARA","UN SIGUIENTE PASO"],
+    eyebrow: "PÁGINAS WEB PARA NEGOCIOS", title: "Haz que más personas conozcan tu negocio y", highlight: "te escriban más fácil.", subtitle: "Muestra lo que vendes, recibe preguntas por WhatsApp y facilita citas, pedidos o reservas desde un mismo lugar.", punch: "Deja de enviar clientes a una página que no los convence.", insight: "Tu próxima oportunidad puede comenzar con un clic.", elements: ["UNA MARCA QUE DESTACA","UNA EXPERIENCIA CLARA","UN SIGUIENTE PASO"],
   },
   "agencia-publicidad-manizales": {
-    eyebrow: "IDEAS + ESTRATEGIA + PUBLICIDAD", title: "No necesitas más anuncios.", highlight: "Necesitas mejores ideas.", subtitle: "Convertimos lo que hace diferente a tu marca en mensajes, experiencias y campañas que merezcan atención.", punch: "Que te vean no basta. Que te recuerden importa.", insight: "La creatividad sin estrategia hace ruido. Juntas generan dirección.", elements: ["DESCUBRIMOS TU DIFERENCIA","CREAMOS EL CONCEPTO","ACTIVAMOS TU MENSAJE"],
+    eyebrow: "IDEAS + ESTRATEGIA + PUBLICIDAD", title: "Tu negocio merece", highlight: "que más personas lo conozcan.", subtitle: "Creamos publicidad que explica por qué elegirte y anima a las personas interesadas a conocer tus productos o escribirte.", punch: "Que te vean no basta. Que te recuerden importa.", insight: "La creatividad sin estrategia hace ruido. Juntas generan dirección.", elements: ["DESCUBRIMOS TU DIFERENCIA","CREAMOS EL CONCEPTO","ACTIVAMOS TU MENSAJE"],
   },
   "marketing-digital-manizales": {
-    eyebrow: "MÁS PERSONAS CONOCIENDO TU NEGOCIO", title: "Que cada canal tenga", highlight: "un propósito.", subtitle: "Conectamos tus mensajes, contenidos y campañas para que el camino entre descubrir tu negocio y contactarte sea más sencillo.", punch: "Menos acciones aisladas. Más claridad para crecer.", insight: "El crecimiento no comienza publicando más. Comienza entendiendo mejor.", elements: ["ATRAER","CONECTAR","CONVERTIR"],
+    eyebrow: "MÁS PERSONAS CONOCIENDO TU NEGOCIO", title: "Haz que las personas", highlight: "encuentren tu negocio.", subtitle: "Te ayudamos a organizar tus redes, publicidad y página web para que tus posibles clientes sepan qué ofreces y cómo contactarte.", punch: "Menos acciones aisladas. Más claridad para crecer.", insight: "El crecimiento no comienza publicando más. Comienza entendiendo mejor.", elements: ["ATRAER","CONECTAR","CONVERTIR"],
   },
   "publicidad-meta-ads": {
-    eyebrow: "PUBLICIDAD EN FACEBOOK E INSTAGRAM", title: "No se trata de gastar en anuncios.", highlight: "Se trata de tener dirección.", subtitle: "Desarrollamos campañas de Facebook e Instagram con una oferta clara, piezas relevantes y decisiones basadas en datos.", punch: "Tu presupuesto necesita una estrategia, no improvisación.", insight: "Cada campaña tiene una hipótesis. Cada resultado, algo que enseñarnos.", elements: ["MENSAJE","AUDIENCIA","OPTIMIZACIÓN"],
+    eyebrow: "PUBLICIDAD EN FACEBOOK E INSTAGRAM", title: "Que más personas descubran", highlight: "lo que ofreces.", subtitle: "Promocionamos tus productos o servicios en Facebook e Instagram para acercarte a personas interesadas. Revisamos los resultados para mejorar.", punch: "Tu presupuesto necesita una estrategia, no improvisación.", insight: "Cada campaña tiene una hipótesis. Cada resultado, algo que enseñarnos.", elements: ["MENSAJE","AUDIENCIA","OPTIMIZACIÓN"],
   },
   "branding-identidad-marca": {
-    eyebrow: "IDENTIDAD + ESTRATEGIA + DISEÑO", title: "Una marca no es solo un logo.", highlight: "Es lo que haces sentir.", subtitle: "Diseñamos marcas con personalidad, coherencia y una idea que las personas puedan reconocer y recordar.", punch: "Que tu marca se vea como lo que quieres construir.", insight: "Primero definimos qué significa tu marca. Después cómo se ve.", elements: ["ESENCIA","IDENTIDAD","EXPRESIÓN"],
+    eyebrow: "IDENTIDAD + ESTRATEGIA + DISEÑO", title: "Haz que tu negocio", highlight: "inspire confianza.", subtitle: "Creamos una imagen profesional y reconocible para que tus clientes recuerden tu negocio y sientan confianza desde el primer vistazo.", punch: "Que tu marca se vea como lo que quieres construir.", insight: "Primero definimos qué significa tu marca. Después cómo se ve.", elements: ["ESENCIA","IDENTIDAD","EXPRESIÓN"],
   },
   "diseno-grafico-publicitario": {
-    eyebrow: "DISEÑO + MENSAJE + IMPACTO", title: "No es llenar espacios.", highlight: "Es captar miradas.", subtitle: "Hacemos diseño publicitario que organiza ideas, comunica beneficios y le da carácter a cada punto de contacto con tu marca.", punch: "Diseños que no solo se ven. Se entienden.", insight: "Una buena pieza comunica antes de que alguien termine de leer.", elements: ["CONCEPTO","COMPOSICIÓN","IMPACTO"],
+    eyebrow: "DISEÑO + MENSAJE + IMPACTO", title: "Muestra tus productos", highlight: "como se merecen.", subtitle: "Creamos imágenes, anuncios, catálogos y piezas que hacen que tus productos y servicios se vean atractivos y fáciles de entender.", punch: "Diseños que no solo se ven. Se entienden.", insight: "Una buena pieza comunica antes de que alguien termine de leer.", elements: ["CONCEPTO","COMPOSICIÓN","IMPACTO"],
   },
   "contenido-redes-sociales": {
-    eyebrow: "REDES SOCIALES QUE CONECTAN", title: "No publiques por publicar.", highlight: "Haz que importe.", subtitle: "Transformamos ideas en guiones, contenido y reels que conectan la personalidad de tu marca con las personas que quieres alcanzar.", punch: "Más historias que vale la pena contar. Menos relleno.", insight: "El mejor contenido no empieza con la cámara. Empieza con una idea.", elements: ["IDEA","HISTORIA","ACCIÓN"],
+    eyebrow: "REDES SOCIALES QUE CONECTAN", title: "Que tus redes dejen", highlight: "de pasar desapercibidas.", subtitle: "Te ayudamos con ideas, videos y publicaciones que muestran tus productos, cuentan tu historia y despiertan interés.", punch: "Más historias que vale la pena contar. Menos relleno.", insight: "El mejor contenido no empieza con la cámara. Empieza con una idea.", elements: ["IDEA","HISTORIA","ACCIÓN"],
   },
 };
 const cases = [
@@ -88,7 +88,7 @@ export function ServiceExperience({service}: {service:CommercialService}) {
       </div></section>
       <section className="sx-statement"><div className="sx-wrap"><span>EL OBJETIVO</span><h2>“{creative.insight}”</h2><div className="sx-statement-line"/></div></section>
       <section className="sx-section sx-method"><div className="sx-wrap">
-        <div className="sx-section-label"><span>03 / NUESTRO PROCESO</span><span>DE LA PRIMERA CONVERSACIÓN A LA ENTREGA</span></div>
+        <div className="sx-section-label"><span>03 / NUESTRO PROCESO</span><span>TE ACOMPAÑAMOS DESDE EL PRIMER MENSAJE</span></div>
         <div className="sx-method-layout"><div><h2>Así de sencillo.<br/><em>Hablemos y empecemos.</em></h2><p>Empezamos por conocer tu negocio. El alcance y los entregables se definen antes de comenzar.</p><Action service={service}>Empezar con un diagnóstico</Action></div>
         <div className="sx-steps">{service.process.map((step,i)=><div className="sx-step" key={step}><div className="sx-step-num">0{i+1}</div><div><span>ETAPA {i+1}</span><h3>{step}</h3></div><ChevronRight size={22}/></div>)}</div></div>
       </div></section>

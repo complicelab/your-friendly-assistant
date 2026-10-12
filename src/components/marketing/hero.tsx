@@ -1,44 +1,18 @@
 import { ArrowDown, ArrowUpRight, BarChart3, Check, Globe2, Layers3, Megaphone, MousePointer2, Palette, Sparkles, WandSparkles } from "lucide-react";
 import "./hero-creative.css";
+import { peopleImages } from "@/data/visual-story";
 
 const whatsapp = "https://api.whatsapp.com/send?phone=573161772880&text=" + encodeURIComponent("Hola, vi la web de Cómplice Lab. Quiero contarles mi negocio y recibir orientación sobre cómo mejorar mi marca, publicidad o página web.");
 
 function ExperienceScene() {
-  return (
-    <div className="hc-scene" aria-label="Composición creativa con ejemplos conceptuales de páginas web, branding y publicidad">
-      <div className="hc-glow" aria-hidden="true" />
-      <div className="hc-outline hc-outline-one" aria-hidden="true" />
-      <div className="hc-outline hc-outline-two" aria-hidden="true" />
-      <div className="hc-browser">
-        <div className="hc-browser-bar"><div className="hc-dots"><i/><i/><i/></div><span>UNA MARCA · UNA EXPERIENCIA</span><Globe2 size={14}/></div>
-        <div className="hc-browser-display">
-          <div className="hc-demo-nav"><strong>crea<span>↗</span></strong><span>ESTRATEGIA · DISEÑO · WEB</span></div>
-          <div className="hc-demo-body">
-            <span className="hc-demo-kicker">DISEÑO CON INTENCIÓN</span>
-            <h3>Ideas que<br/><em>se hacen realidad.</em></h3>
-            <span className="hc-demo-button">Comencemos <ArrowUpRight size={12}/></span>
-          </div>
-          <div className="hc-demo-graphic"><div className="hc-demo-sphere"/><span>01 / INNOVACIÓN</span></div>
-        </div>
-        <div className="hc-browser-footer"><span><Check size={12}/> DISEÑO RESPONSIVE</span><span>EXPERIENCIAS DIGITALES</span></div>
-      </div>
-      <div className="hc-brand-piece">
-        <span>IDENTIDAD / 02</span>
-        <div className="hc-brand-symbol"><span>C</span><div/></div>
-        <strong>Una marca.<br/>Mil posibilidades.</strong>
-        <div className="hc-palette"><i/><i/><i/><i/></div>
-      </div>
-      <div className="hc-social-piece">
-        <div className="hc-social-tag"><Megaphone size={13}/> CAMPAÑAS QUE CONECTAN</div>
-        <div className="hc-social-center"><Sparkles size={34}/><strong>QUE SE<br/>NOTE.</strong></div>
-        <div className="hc-social-bottom">IDEAS · CONTENIDO · PUBLICIDAD <ArrowUpRight size={16}/></div>
-      </div>
-      <div className="hc-floating hc-floating-a"><MousePointer2 size={15}/> EXPERIENCIA WEB</div>
-      <div className="hc-floating hc-floating-b"><Palette size={15}/> BRANDING</div>
-      <div className="hc-floating hc-floating-c"><BarChart3 size={15}/> ESTRATEGIA</div>
-      <div className="hc-scene-caption">DIRECCIÓN DE ARTE · CÓMPLICE LAB ®</div>
-    </div>
-  );
+  return <div className="hc-human-scene" aria-label="Fotografías ilustrativas de emprendedores y negocios, no clientes de Cómplice Lab">
+    <div className="hc-human-main"><img src={peopleImages.entrepreneur.src} alt={peopleImages.entrepreneur.alt} loading="eager" fetchPriority="high" width={610} height={700} /><span>UNA IDEA PUEDE LLEGAR MUY LEJOS.</span></div>
+    <div className="hc-human-small"><img src={peopleImages.salon.src} alt={peopleImages.salon.alt} loading="lazy" width={320} height={400}/><span>NEGOCIOS REALES. SUEÑOS REALES.</span></div>
+    <div className="hc-human-pill hc-pill-one"><Globe2 size={15}/> Que te encuentren</div>
+    <div className="hc-human-pill hc-pill-two"><Megaphone size={15}/> Que te recuerden</div>
+    <div className="hc-human-pill hc-pill-three"><Sparkles size={15}/> Que te elijan</div>
+    <span className="hc-photo-disclaimer">Fotografías ilustrativas</span>
+  </div>;
 }
 export function Hero() {
   return (
@@ -47,10 +21,10 @@ export function Hero() {
       <div className="container hc-hero-inner">
         <div className="hc-copy">
           <p className="hc-eyebrow"><WandSparkles size={16}/> AGENCIA CREATIVA EN MANIZALES · COLOMBIA</p>
-          <h1>Tu negocio tiene algo especial.<br/><em>Hagamos que se note.</em></h1>
-          <p className="hc-description">Creamos marcas que se recuerdan, páginas web que invitan a contactar y publicidad con ideas que conectan. También te enseñamos a aprovechar la inteligencia artificial para llevar tus proyectos más lejos.</p>
+          <h1>Tu negocio merece<br/><em>más clientes y una gran imagen.</em></h1>
+          <p className="hc-description">Te ayudamos a mostrar lo mejor de tu negocio, atraer personas interesadas y facilitar que te escriban o compren. Creamos marcas, páginas web, publicidad y contenido; también te enseñamos a hacerlo con IA.</p>
           <div className="hc-actions">
-            <a className="button hc-primary-cta" href={whatsapp} target="_blank" rel="noopener noreferrer">Quiero transformar mi negocio <ArrowUpRight size={18}/></a>
+            <a className="button hc-primary-cta" href={whatsapp} target="_blank" rel="noopener noreferrer">Quiero más clientes para mi negocio <ArrowUpRight size={18}/></a>
             <a className="hc-explore-link" href="#servicios">Descubre lo que podemos crear <ArrowDown size={17}/></a>
           </div>
           <a className="hc-team-proof" href="#nosotros"><span className="hc-team-portraits"><img src="/founders/camilo-latest.webp" alt="Camilo Moreno, cofundador" width={43} height={43}/><img src="/founders/cristian.jpg?v=20261005-centered" alt="Cristian Roman, cofundador" width={43} height={43}/></span><span><strong>Personas reales detrás de cada idea.</strong><small>Conoce a Camilo y Cristian, los fundadores <ArrowUpRight size={12}/></small></span></a>

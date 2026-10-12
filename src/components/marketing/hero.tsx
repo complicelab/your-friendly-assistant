@@ -53,6 +53,7 @@ export function Hero() {
             <a className="button hc-primary-cta" href={whatsapp} target="_blank" rel="noopener noreferrer">Quiero transformar mi negocio <ArrowUpRight size={18}/></a>
             <a className="hc-explore-link" href="#servicios">Descubre lo que podemos crear <ArrowDown size={17}/></a>
           </div>
+          <a className="hc-team-proof" href="#nosotros"><span className="hc-team-portraits"><img src="/founders/camilo-latest.webp" alt="Camilo Moreno, cofundador" width={43} height={43}/><img src="/founders/cristian.jpg?v=20261005-centered" alt="Cristian Roman, cofundador" width={43} height={43}/></span><span><strong>Personas reales detrás de cada idea.</strong><small>Conoce a Camilo y Cristian, los fundadores <ArrowUpRight size={12}/></small></span></a>
           <div className="hc-trust"><span className="hc-trust-stamp"><Layers3 size={17}/></span><span>CREAMOS <b>·</b> ENSEÑAMOS <b>·</b> IMPLEMENTAMOS</span></div>
         </div>
         <ExperienceScene/>

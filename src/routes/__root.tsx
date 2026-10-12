@@ -243,7 +243,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Cómplice Lab" },
-      { property: "og:url", content: "https://complicelab.com/" },
       { property: "og:locale", content: "es_CO" },
       { property: "og:image", content: "https://complicelab.com/og-image.jpg" },
       { property: "og:image:secure_url", content: "https://complicelab.com/og-image.jpg" },

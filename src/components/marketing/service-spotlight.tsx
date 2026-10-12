@@ -8,7 +8,7 @@ const featured = [
   { label: "BRANDING & IDENTIDAD", head: "Una marca para recordar. No para confundir.", desc: "Identidad visual y estrategia para que tu negocio tenga una personalidad propia.", slug: "branding-identidad-marca", icon: Palette, theme: "brand", cta: "Quiero construir mi marca" },
 ];
 export function ServiceSpotlight() {
-  return <section className="ss-section" aria-labelledby="ss-title"><div className="container">
+  return <section id="servicios" className="ss-section" aria-labelledby="ss-title"><div className="container">
     <div className="ss-kicker"><Sparkles size={16}/> IDEAS QUE HACEN QUE LAS COSAS PASEN</div>
     <div className="ss-heading"><h2 id="ss-title">Lo que haces es importante.<br/><em>Cómo lo muestras también.</em></h2><p>Explora nuestras soluciones, conoce cómo trabajamos y elige por dónde quieres comenzar.</p></div>
     <div className="ss-grid">{featured.map(({label,head,desc,slug,icon:Icon,theme,cta},i)=><a className={`ss-card ss-${theme}`} href={serviceHref(slug)} key={slug}>

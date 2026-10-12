@@ -57,14 +57,14 @@ export const ways = [
 ] as const;
 
 export const workshops = [
-  ["IA aplicada a negocios", "Herramientas que puedes comenzar a utilizar en tu trabajo desde el mismo día."],
-  ["Creación de contenido con IA", "Convierte ideas en conceptos, guiones y piezas con un proceso más ágil."],
-  ["Prompts", "Aprende a pedir mejor para obtener resultados más útiles."],
-  ["Reels desde cero", "No solamente aprendes cómo se hace. Terminas creando uno."],
-  ["CapCut", "Edita contenido con un flujo práctico y replicable."],
-  ["Meta Ads", "No solamente ves la plataforma. Terminas entendiendo cómo estructurar una campaña."],
-  ["Branding", "Construye decisiones visuales con criterio de marca."],
-  ["Creación de páginas web con IA", "Aprendes cómo convertir una idea en una página funcional."],
+ ["Diagnóstico de negocio y ventas","Aprende a revisar tu marca, tu oferta y qué puedes mejorar para captar consultas y oportunidades."],
+ ["Diseño de páginas web con IA","Crea sitios que presenten servicios, reciban citas, pedidos o ventas, sin empezar programando."],
+ ["Sistemas y academias online","Conoce cómo plantear paneles administrativos, áreas privadas y cursos digitales."],
+ ["Imágenes publicitarias y contenido","Aprende a crear anuncios, catálogos, ideas visuales y piezas atractivas para tus productos."],
+ ["Reels y video para redes","Guion, grabación y edición práctica para comunicar tus servicios."],
+ ["Publicidad en Facebook e Instagram","Aprende a estructurar anuncios, públicos y objetivos con Meta Ads."],
+ ["Construcción de marca desde cero","De la idea al nombre, identidad visual, comunicación y primeros pasos del negocio."],
+ ["IA aplicada al trabajo","Aprende a utilizar herramientas, prompts y flujos que faciliten las tareas de tu negocio o equipo."]
 ] as const;
 
 export type Project = {

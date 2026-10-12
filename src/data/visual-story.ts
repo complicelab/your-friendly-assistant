@@ -11,10 +11,10 @@ export const peopleImages = {
   fastfood: {src:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1000&q=80",alt:"Hamburguesa presentada para una promoción de comida rápida"},
   fastfoodDetail:{src:"https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1000&q=80",alt:"Hamburguesa para pedidos y domicilios"},
   consultancy:{src:"https://images.unsplash.com/photo-1758518727077-ffb66ffccced?auto=format&fit=crop&w=1000&q=80",alt:"Empresarios conversando sobre oportunidades comerciales"},
-  brand:{src:"https://images.unsplash.com/photo-1758873268745-dd2cf0d677b5?auto=format&fit=crop&w=1000&q=80",alt:"Equipo creativo trabajando en una propuesta de marca"},
+  brand:{src:pexels(7598019),alt:"Mesa de trabajo con referencias visuales, identidad y colores de marca"},
   entrepreneur:{src:"https://images.unsplash.com/photo-1765648580808-76d75e4f3833?auto=format&fit=crop&w=1000&q=80",alt:"Emprendedora usando un computador para su negocio"},
   salon:{src:"https://images.unsplash.com/photo-1746723372913-5bd18f616e3a?auto=format&fit=crop&w=1000&q=80",alt:"Atención a clientes en un establecimiento comercial"},
-  teamwork:{src:"https://images.unsplash.com/photo-1758873268745-dd2cf0d677b5?auto=format&fit=crop&w=1000&q=80",alt:"Equipo colaborando en un proyecto"},
+  teamwork:{src:pexels(8117471),alt:"Equipo desarrollando ideas en una sesión creativa"},
   business:{src:"https://images.unsplash.com/photo-1758519290803-f2b25952a5d7?auto=format&fit=crop&w=1000&q=80",alt:"Emprendedor trabajando en un establecimiento"},
   appointment:{src:pexels(3884101),alt:"Profesional de salud y paciente"},
 } as const;

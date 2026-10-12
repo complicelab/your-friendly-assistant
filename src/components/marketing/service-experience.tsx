@@ -1,105 +1,29 @@
-import { ArrowRight, ArrowUpRight, Check, ChevronDown, ChevronRight, Globe2, Layers3, MousePointer2, Play, Sparkles, Target, WandSparkles } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { ArrowRight, ArrowUpRight, CalendarDays, CheckCircle2, ChevronDown, ClipboardList, Globe2, MessageCircle, ShoppingBag, Sparkles, Users } from "lucide-react";
+import { useState } from "react";
 import { BrandMark } from "@/components/marketing/brand";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { WhatsAppFloat } from "@/components/marketing/whatsapp-float";
 import { commercialServices, serviceHref, type CommercialService } from "@/data/commercial-services";
+import { peopleImages, photoForService, type StoryImageKey } from "@/data/visual-story";
 import "./service-experience.css";
-import { peopleImages, photoForService } from "@/data/visual-story";
+import "./conversion-landing.css";
 
-const visualLanguage: Record<string, { eyebrow: string; title: string; highlight: string; subtitle: string; punch: string; insight: string; elements: [string,string,string]; }> = {
-  "paginas-web-manizales": {
-    eyebrow: "PÁGINAS WEB PARA NEGOCIOS", title: "Haz que más personas conozcan tu negocio y", highlight: "te escriban más fácil.", subtitle: "Muestra lo que vendes, recibe preguntas por WhatsApp y facilita citas, pedidos o reservas desde un mismo lugar.", punch: "Deja de enviar clientes a una página que no los convence.", insight: "Tu próxima oportunidad puede comenzar con un clic.", elements: ["UNA MARCA QUE DESTACA","UNA EXPERIENCIA CLARA","UN SIGUIENTE PASO"],
-  },
-  "agencia-publicidad-manizales": {
-    eyebrow: "IDEAS + ESTRATEGIA + PUBLICIDAD", title: "Tu negocio merece", highlight: "que más personas lo conozcan.", subtitle: "Creamos publicidad que explica por qué elegirte y anima a las personas interesadas a conocer tus productos o escribirte.", punch: "Que te vean no basta. Que te recuerden importa.", insight: "La creatividad sin estrategia hace ruido. Juntas generan dirección.", elements: ["DESCUBRIMOS TU DIFERENCIA","CREAMOS EL CONCEPTO","ACTIVAMOS TU MENSAJE"],
-  },
-  "marketing-digital-manizales": {
-    eyebrow: "MÁS PERSONAS CONOCIENDO TU NEGOCIO", title: "Haz que las personas", highlight: "encuentren tu negocio.", subtitle: "Te ayudamos a organizar tus redes, publicidad y página web para que tus posibles clientes sepan qué ofreces y cómo contactarte.", punch: "Menos acciones aisladas. Más claridad para crecer.", insight: "El crecimiento no comienza publicando más. Comienza entendiendo mejor.", elements: ["ATRAER","CONECTAR","CONVERTIR"],
-  },
-  "publicidad-meta-ads": {
-    eyebrow: "PUBLICIDAD EN FACEBOOK E INSTAGRAM", title: "Que más personas descubran", highlight: "lo que ofreces.", subtitle: "Promocionamos tus productos o servicios en Facebook e Instagram para acercarte a personas interesadas. Revisamos los resultados para mejorar.", punch: "Tu presupuesto necesita una estrategia, no improvisación.", insight: "Cada campaña tiene una hipótesis. Cada resultado, algo que enseñarnos.", elements: ["MENSAJE","AUDIENCIA","OPTIMIZACIÓN"],
-  },
-  "branding-identidad-marca": {
-    eyebrow: "IDENTIDAD + ESTRATEGIA + DISEÑO", title: "Haz que tu negocio", highlight: "inspire confianza.", subtitle: "Creamos una imagen profesional y reconocible para que tus clientes recuerden tu negocio y sientan confianza desde el primer vistazo.", punch: "Que tu marca se vea como lo que quieres construir.", insight: "Primero definimos qué significa tu marca. Después cómo se ve.", elements: ["ESENCIA","IDENTIDAD","EXPRESIÓN"],
-  },
-  "diseno-grafico-publicitario": {
-    eyebrow: "DISEÑO + MENSAJE + IMPACTO", title: "Muestra tus productos", highlight: "como se merecen.", subtitle: "Creamos imágenes, anuncios, catálogos y piezas que hacen que tus productos y servicios se vean atractivos y fáciles de entender.", punch: "Diseños que no solo se ven. Se entienden.", insight: "Una buena pieza comunica antes de que alguien termine de leer.", elements: ["CONCEPTO","COMPOSICIÓN","IMPACTO"],
-  },
-  "contenido-redes-sociales": {
-    eyebrow: "REDES SOCIALES QUE CONECTAN", title: "Que tus redes dejen", highlight: "de pasar desapercibidas.", subtitle: "Te ayudamos con ideas, videos y publicaciones que muestran tus productos, cuentan tu historia y despiertan interés.", punch: "Más historias que vale la pena contar. Menos relleno.", insight: "El mejor contenido no empieza con la cámara. Empieza con una idea.", elements: ["IDEA","HISTORIA","ACCIÓN"],
-  },
+function chat(service:CommercialService,interest=""){return "https://api.whatsapp.com/send?phone=573161772880&text="+encodeURIComponent(`Hola, vi ${service.name} en Cómplice Lab. ${interest||"Quiero un diagnóstico para mi negocio."} ¿Podemos conversar?`)}
+function CTA({service,children,interest,className=""}:{service:CommercialService;children:React.ReactNode;interest?:string;className?:string}){return <a className={`cl-cta ${className}`} href={chat(service,interest)} target="_blank" rel="noopener noreferrer">{children}<ArrowUpRight size={19}/></a>}
+function Photo({image,className="",priority=false}:{image:StoryImageKey;className?:string;priority?:boolean}){const pic=peopleImages[image];return <img className={className} src={pic.src} alt={pic.alt} loading={priority?"eager":"lazy"} width={850} height={1000}/>}
+const theme:Record<string,{headline:string;accent:string;hook:string;closing:string}> = {
+"diagnostico-negocio-manizales":{headline:"¿Por qué tu negocio no está consiguiendo las oportunidades que esperas?",accent:"Descubramos qué mejorar.",hook:"No necesitas contratar de todo. Necesitas saber qué hace falta.",closing:"Empecemos por entender tu negocio."},
+"paginas-web-manizales":{headline:"Tu próxima página web puede recibir citas, pedidos y nuevos interesados.",accent:"Que tu web trabaje para tu negocio.",hook:"Tu cliente quiere agendar, comprar o preguntar. Hagámoselo fácil.",closing:"Hagamos que tu web tenga una función real."},
+"contenido-publicitario-manizales":{headline:"Tus productos merecen imágenes y videos que provoquen interés.",accent:"Haz que todos quieran conocerlos.",hook:"La primera impresión de un producto también vende.",closing:"Mostremos lo mejor de lo que vendes."},
+"publicidad-meta-ads":{headline:"Tus próximos clientes pueden estar en Facebook e Instagram.",accent:"Que descubran tu negocio.",hook:"No se trata de publicar más: se trata de anunciar tu oferta con intención.",closing:"Démosle visibilidad a tu negocio."},
+"crear-marca-negocio-desde-cero":{headline:"¿Tienes una idea y no sabes por dónde empezar?",accent:"Construyamos tu marca desde cero.",hook:"Tu idea merece un nombre, una imagen y un plan.",closing:"Tu gran idea puede comenzar hoy."},
 };
-const cases = [
-  { name: "B2Home", note: "Marca, estrategia y experiencia web", url: "/proyectos/b2home", tone:"blue" },
-  { name: "Mi Raíz", note: "Identidad y plataforma digital", url: "/proyectos/mi-raiz", tone:"purple" },
-  { name: "Camilo Respiro", note: "Marca y ecosistema digital", url: "/proyectos/camilo-respiro", tone:"cyan" },
-];
-function makeWhatsapp(service: CommercialService, context: string) {
-  return "https://api.whatsapp.com/send?phone=573161772880&text=" + encodeURIComponent("Hola, vi el servicio de " + service.name + " en la web de Cómplice Lab. " + context + " ¿Podemos conversar?");
-}
-function Action({ service, children, context = "Quiero agendar un diagnóstico para mi negocio.", light = false }: { service: CommercialService; children: ReactNode; context?: string; light?: boolean }) {
-  return <a className={light ? "sx-btn sx-btn-light" : "sx-btn"} href={makeWhatsapp(service,context)} target="_blank" rel="noopener noreferrer">{children}<ArrowUpRight size={19} aria-hidden="true"/></a>;
-}
-const getPhoto = (slug: string, index: number) => peopleImages[photoForService[slug]?.[index] ?? "entrepreneur"];
-function CreativeVisual({ service }: {service:CommercialService}) {
-  const main=getPhoto(service.slug,0);
-  const secondary=getPhoto(service.slug,1);
-  return <div className="sx-human-visual" aria-label="Fotografías ilustrativas de personas y negocios">
-    <div className="sx-human-main"><img src={main.src} alt={main.alt} loading="eager" width={680} height={730}/></div>
-    <div className="sx-human-secondary"><img src={secondary.src} alt={secondary.alt} loading="lazy" width={350} height={410}/></div>
-    <div className="sx-human-message"><span>PARA TU NEGOCIO</span><strong>{service.slug==="paginas-web-manizales"?"Más consultas. Más posibilidades.":service.slug==="branding-identidad-marca"?"Que te reconozcan y te recuerden.":service.slug==="contenido-redes-sociales"?"Que tu contenido conecte.":service.slug==="publicidad-meta-ads"?"Que más personas conozcan tu negocio.":"Que tu negocio destaque."}</strong></div>
-    <span className="sx-human-label">Fotografías ilustrativas</span>
-  </div>;
-}
-export function ServiceExperience({service}: {service:CommercialService}) {
-  const [openFaq,setOpenFaq]=useState<number|null>(0);
-  const creative=visualLanguage[service.slug];
-  const otherServices=commercialServices.filter(s=>s.slug!==service.slug).slice(0,3);
-  return <div className={`sx-page sx-theme-${service.slug}`}>
-    <header className="sx-header"><div className="sx-nav">
-      <BrandMark/>
-      <nav aria-label="Navegación de servicios"><a href="/">Inicio</a><a href="/#servicios">Servicios</a><a href="/#proyectos">Proyectos</a><a href="/formacion">Formación</a></nav>
-      <Action service={service} context="Quiero información sobre este servicio.">Hablemos <span className="sx-desktop-only">de tu proyecto</span></Action>
-    </div></header>
-    <main>
-      <section className="sx-hero"><div className="sx-hero-noise" aria-hidden="true"/>
-        <div className="sx-wrap sx-hero-layout">
-          <div className="sx-hero-copy">
-            <div className="sx-eyebrow"><span className="sx-star">✳</span> {creative.eyebrow} <span className="sx-location">MANIZALES · COLOMBIA</span></div>
-            <h1>{creative.title} <em>{creative.highlight}</em></h1>
-            <p className="sx-lead">{creative.subtitle}</p>
-            <div className="sx-hero-actions"><Action service={service}>{service.cta}</Action><a className="sx-secondary-link" href="#como-lo-hacemos">Descubre cómo lo hacemos <ArrowRight size={17}/></a></div>
-            <div className="sx-microproof"><span className="sx-microproof-icon"><Check size={15}/></span> Te explicamos las opciones sin términos complicados.</div>
-          </div>
-          <CreativeVisual service={service}/>
-        </div>
-        <div className="sx-scroll-line"><span>DESCUBRE TU PRÓXIMO PASO</span><ChevronDown size={18}/></div>
-      </section>
-      <section className="sx-marquee" aria-label="Nuestra propuesta"><div>TU NEGOCIO <span>✳</span> TU MARCA <span>✳</span> TUS CLIENTES <span>✳</span> TU PRÓXIMO PASO</div></section>
-      <section className="sx-section sx-promise" id="como-lo-hacemos"><div className="sx-wrap sx-promise-layout">
-        <div><div className="sx-section-label"><span>01 / TU OPORTUNIDAD</span></div><h2>{creative.punch}</h2><p>{service.intro}</p><Action service={service}>Solicitar una propuesta</Action></div>
-        <div className="sx-real-photo"><img src={getPhoto(service.slug,2).src} alt={peopleImages[(photoForService[service.slug]||["entrepreneur","teamwork","salon"])[2]].alt} loading="lazy" width={700} height={500}/><span>Tu negocio es el protagonista</span><small>Fotografía ilustrativa</small></div>
-      </div></section>
-      <section className="sx-section sx-offer" id="incluye"><div className="sx-wrap">
-        <div className="sx-section-label"><span>02 / QUÉ PODEMOS CREAR</span><span>SOLUCIONES CONCRETAS SEGÚN LO QUE NECESITES</span></div>
-        <div className="sx-offer-heading"><h2>¿Qué podemos hacer<br/><em>por tu negocio?</em></h2><p>{service.audience}</p></div>
-        <div className="sx-offer-grid">{service.deliverables.map((item,i)=><article className={`sx-offer-tile sx-tile-${i+1}`} key={item}><span className="sx-tile-number">0{i+1} /</span><div className="sx-tile-glyph">{i===0?<Target/>:i===1?<Layers3/>:i===2?<Globe2/>:i===3?<MousePointer2/>:<Sparkles/>}</div><h3>{item}</h3><ArrowUpRight className="sx-tile-arrow" size={24}/></article>)}</div>
-      </div></section>
-      <section className="sx-statement"><div className="sx-wrap"><span>EL OBJETIVO</span><h2>“{creative.insight}”</h2><div className="sx-statement-line"/></div></section>
-      <section className="sx-section sx-method"><div className="sx-wrap">
-        <div className="sx-section-label"><span>03 / NUESTRO PROCESO</span><span>TE ACOMPAÑAMOS DESDE EL PRIMER MENSAJE</span></div>
-        <div className="sx-method-layout"><div><h2>Así de sencillo.<br/><em>Hablemos y empecemos.</em></h2><p>Empezamos por conocer tu negocio. El alcance y los entregables se definen antes de comenzar.</p><Action service={service}>Empezar con un diagnóstico</Action></div>
-        <div className="sx-steps">{service.process.map((step,i)=><div className="sx-step" key={step}><div className="sx-step-num">0{i+1}</div><div><span>ETAPA {i+1}</span><h3>{step}</h3></div><ChevronRight size={22}/></div>)}</div></div>
-      </div></section>
-      <section className="sx-section sx-work"><div className="sx-wrap">
-        <div className="sx-section-label"><span>04 / PROYECTOS</span><span>ALGUNOS PROYECTOS EN LOS QUE HEMOS TRABAJADO</span></div>
-        <div className="sx-work-heading"><h2>Mira lo que<br/><em>podemos construir.</em></h2><p>Conoce algunos de los proyectos que forman parte de nuestra experiencia creativa y digital.</p></div>
-        <div className="sx-cases">{cases.map((item,i)=><a key={item.url} className={`sx-case sx-case-${item.tone}`} href={item.url}><div className="sx-case-art"><span className="sx-case-watermark">{item.name.slice(0,2).toUpperCase()}</span><div className="sx-case-grid"/><span className="sx-case-index">0{i+1} / PROYECTO</span></div><div className="sx-case-caption"><div><h3>{item.name}</h3><p>{item.note}</p></div><ArrowUpRight size={25}/></div></a>)}</div>
-      </div></section>
-      <section className="sx-section sx-faq"><div className="sx-wrap sx-faq-layout"><div><div className="sx-section-label"><span>05 / SIN VUELTAS</span></div><h2>Preguntas claras.<br/><em>Respuestas directas.</em></h2><p>Queremos que sepas qué esperar antes de comenzar.</p></div><div className="sx-faq-items">{service.questions.map(([q,a],i)=><div className={`sx-faq-item ${openFaq===i?"is-open":""}`} key={q}><button type="button" aria-expanded={openFaq===i} onClick={()=>setOpenFaq(openFaq===i?null:i)}><span>{q}</span><ChevronDown size={21}/></button>{openFaq===i&&<p>{a}</p>}</div>)}</div></div></section>
-      <section className="sx-final"><div className="sx-final-orb" aria-hidden="true"/><div className="sx-wrap sx-final-inner"><div className="sx-section-label"><span>TU SIGUIENTE PASO COMIENZA AQUÍ</span></div><h2>Tu negocio puede<br/><em>dar el siguiente paso.</em></h2><p>Cuéntanos qué quieres lograr. Te ayudamos a identificar por dónde empezar y qué tiene sentido para tu negocio.</p><Action service={service} light>{service.cta}</Action><span className="sx-final-note">Conversamos sobre tu necesidad y definimos juntos los próximos pasos.</span></div></section>
-      <section className="sx-related"><div className="sx-wrap"><div className="sx-section-label"><span>EXPLORA MÁS CÓMPLICE</span></div><h2>Tu próxima idea puede estar aquí.</h2><div className="sx-related-links">{otherServices.map(other=><a href={serviceHref(other.slug)} key={other.slug}><span>{other.name}</span><ArrowUpRight size={22}/></a>)}</div></div></section>
-    </main><SiteFooter/><WhatsAppFloat/>
-  </div>;
-}
+const sceneLabels:Record<string,string>={dentist:"Citas para consultorios",realtor:"Consultas para inmobiliarias",restaurant:"Reservas para restaurantes",fastfood:"Pedidos y domicilios",doctor:"Citas médicas",brand:"Marcas que se recuerdan",consultancy:"Ideas para vender mejor",entrepreneur:"Emprendimientos con identidad",realtorDetail:"Más interesados por inmueble",dentistDetail:"Más solicitudes de atención",fastfoodDetail:"Promociones que abren el apetito"};
+function IndustryScenes({service}:{service:CommercialService}){const slides=service.scenarios;return <div className="cl-scenarios">{slides.map((sc,i)=> <article className={`cl-scenario cl-scenario-${i%3}`} key={sc.title}><div className="cl-scene-photo"><Photo image={sc.kind as StoryImageKey}/><div className="cl-scene-shade"/><div className="cl-scene-stamp">{sceneLabels[sc.kind]||"Negocios con futuro"}</div></div><div className="cl-scene-content"><span>0{i+1} / UNA POSIBILIDAD PARA TU NEGOCIO</span><h3>{sc.title}</h3><p>{sc.detail}</p><CTA service={service} interest={sc.action}>{sc.action}</CTA></div></article>)}</div>}
+function HumanHero({service}:{service:CommercialService}){const imgs=photoForService[service.slug]||["entrepreneur","brand"];const d=theme[service.slug];return <section className={`cl-hero cl-hero-${service.slug}`}><div className="cl-hero-grid"/><div className="cl-container cl-hero-layout"><div className="cl-hero-copy"><span className="cl-kicker">CÓMPLICE LAB · MANIZALES · COLOMBIA</span><h1>{d.headline}<em>{d.accent}</em></h1><p>{service.intro}</p><div className="cl-actions"><CTA service={service}>{service.cta}</CTA><a href="#soluciones" className="cl-secondary">Mira cómo podemos ayudarte <ArrowRight size={17}/></a></div><div className="cl-proofline"><CheckCircle2 size={17}/> Te escuchamos y definimos lo que tu negocio necesita.</div></div><div className="cl-hero-gallery"><div className="cl-picture-main"><Photo image={imgs[0]} priority/><span>{service.benefits[0]}</span></div><div className="cl-picture-secondary"><Photo image={imgs[1]}/></div><div className="cl-float-label cl-float-a"><CalendarDays size={17}/>{service.benefits[1]}</div><div className="cl-float-label cl-float-b"><ShoppingBag size={17}/>{service.benefits[2]}</div></div></div></section>}
+function Options({service}:{service:CommercialService}){return <section className="cl-section cl-options" id="soluciones"><div className="cl-container"><div className="cl-section-top"><span>01 / POSIBILIDADES REALES</span><span>NO TODOS LOS NEGOCIOS NECESITAN LO MISMO</span></div><div className="cl-headline-row"><h2>{theme[service.slug].hook}</h2><p>{service.audience}</p></div><IndustryScenes service={service}/></div></section>}
+function Outcomes({service}:{service:CommercialService}){const kind=service.slug;return <section className="cl-section cl-outcomes"><div className="cl-container"><div className="cl-section-top"><span>02 / LO QUE HACEMOS</span></div><h2>{kind==="paginas-web-manizales"?"Desde tu vitrina digital hasta un sistema para tu equipo.":kind==="contenido-publicitario-manizales"?"Cada imagen y cada video tienen algo que contar.":kind==="publicidad-meta-ads"?"Anuncios que llevan a una acción clara.":kind==="diagnostico-negocio-manizales"?"Primero las oportunidades. Después las soluciones.":"De la idea a una marca con personalidad."}</h2><div className="cl-benefit-grid">{service.deliverables.map((item,i)=><div className={`cl-benefit cl-benefit-${i}`} key={item}><span>0{i+1}</span><div className="cl-benefit-symbol">{i===0?<Globe2/>:i===1?<CalendarDays/>:i===2?<MessageCircle/>:i===3?<Users/>:<Sparkles/>}</div><h3>{item}</h3></div>)}</div><div className="cl-inline-cta"><div><strong>¿Tu negocio necesita algo diferente?</strong><span>Cuéntanos tu idea y definimos el alcance.</span></div><CTA service={service}>Consultar mi proyecto</CTA></div></div></section>}
+function Process({service}:{service:CommercialService}){return <section className="cl-section cl-process"><div className="cl-container"><div className="cl-section-top"><span>03 / ASÍ EMPEZAMOS</span></div><div className="cl-process-grid"><div><h2>Primero hablemos.<em>Después creamos.</em></h2><p>No necesitas saber de diseño, publicidad ni programación. Cuéntanos qué quieres conseguir y nosotros te ayudamos a definir el camino.</p><CTA service={service}>Quiero hablar de mi negocio</CTA></div><div className="cl-step-stack">{service.process.map((text,i)=><div key={text} className="cl-process-step"><span>0{i+1}</span><h3>{text}</h3><ArrowUpRight size={19}/></div>)}</div></div></div></section>}
+function QA({service}:{service:CommercialService}){const [open,setOpen]=useState<number|null>(0);return <section className="cl-section cl-faq"><div className="cl-container cl-faq-layout"><div><div className="cl-section-top"><span>04 / RESPUESTAS CLARAS</span></div><h2>Sin enredos.<em>Sin tecnicismos.</em></h2><p>Queremos que tengas claro qué podemos hacer por ti.</p></div><div>{service.questions.map(([q,a],i)=><div className="cl-question" key={q}><button type="button" aria-expanded={open===i} onClick={()=>setOpen(open===i?null:i)}>{q}<ChevronDown size={21}/></button>{open===i&&<p>{a}</p>}</div>)}</div></div></section>}
+function ExtraWebFeatures({service}:{service:CommercialService}){if(service.slug!=="paginas-web-manizales")return null;return <section className="cl-section cl-web-systems"><div className="cl-container"><div className="cl-section-top"><span>UN SITIO O UN SISTEMA COMPLETO</span></div><h2>Tu página puede hacer mucho más que mostrar fotos.</h2><div className="cl-web-layout">{[{icon:CalendarDays,title:"Citas y reservas",text:"Para consultorios, profesionales y restaurantes."},{icon:ShoppingBag,title:"Ventas, pedidos y domicilios",text:"Catálogos y procesos comerciales desde el celular."},{icon:Users,title:"Paneles para tu equipo",text:"Accesos para administración, asesores y operación interna."},{icon:ClipboardList,title:"Academias y plataformas",text:"Cursos, áreas privadas y herramientas según necesidades."}].map(x=><div className="cl-web-feature" key={x.title}><x.icon size={29}/><h3>{x.title}</h3><p>{x.text}</p></div>)}</div><CTA service={service}>Quiero hablar de mi sistema</CTA></div></section>}
+export function ServiceExperience({service}:{service:CommercialService}){const d=theme[service.slug];const related=commercialServices.filter(x=>x.slug!==service.slug).slice(0,3);return <div className={`cl-site cl-theme-${service.slug}`}><header className="cl-navigation"><BrandMark/><nav><a href="/">Inicio</a><a href="/todos-los-servicios">Todos los servicios</a><a href="/formacion">Formación</a></nav><CTA service={service}>Pedir diagnóstico</CTA></header><main><HumanHero service={service}/><Options service={service}/><ExtraWebFeatures service={service}/><Outcomes service={service}/><Process service={service}/><QA service={service}/><section className="cl-end"><div className="cl-container"><span>¿HABLAMOS DE TU NEGOCIO?</span><h2>{d.closing}</h2><p>Escríbenos y cuéntanos qué deseas vender, mejorar, crear o automatizar. Te ayudamos a definir por dónde empezar.</p><CTA service={service}>{service.cta}</CTA></div></section><div className="cl-related cl-container"><h2>Otros servicios que pueden ayudarte</h2><div>{related.map(x=><a href={serviceHref(x.slug)} key={x.slug}>{x.name}<ArrowUpRight size={19}/></a>)}</div></div></main><SiteFooter/><WhatsAppFloat/></div>}

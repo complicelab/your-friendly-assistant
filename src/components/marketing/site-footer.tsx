@@ -1,6 +1,7 @@
 import { Facebook, Instagram, Mail, Phone, Youtube } from "lucide-react";
 
 import { BrandMark } from "./brand";
+import { commercialServices, serviceHref } from "@/data/commercial-services";
 
 const socialLinks = [
   { label: "Instagram", href: "https://www.instagram.com/complicelab", icon: Instagram },
@@ -37,6 +38,11 @@ export function SiteFooter() {
           <a className="footer-link" href="https://complicelab.com">
             complicelab.com
           </a>
+        </div>
+
+        <div>
+          <b>SERVICIOS</b>
+          {commercialServices.map((service) => <a className="footer-link" key={service.slug} href={serviceHref(service.slug)}>{service.name}</a>)}
         </div>
 
         <div>

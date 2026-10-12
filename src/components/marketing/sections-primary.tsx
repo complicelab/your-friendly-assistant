@@ -72,7 +72,7 @@ export function ServicesSection() {
                 <div className="tag-cloud">
                   {service.items.map((item) => <span key={item}>{item}</span>)}
                 </div>
-                <a className="text-link" href={serviceHref(commercialServices[[4,0,2,3,0][index]].slug)}>Conoce este servicio <ArrowRight size={17}/></a>
+                <a className="text-link" href={serviceHref(commercialServices[[6,0,1,5,2][index]].slug)}>Conoce este servicio <ArrowRight size={17}/></a>
               </article>
             );
           })}

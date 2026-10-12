@@ -77,8 +77,6 @@ export function LandingPage() {
         <ServiceIndex />
         <AboutSection />
         <TrainingSection />
-        <AiMethodSection />
-        <ProcessSection />
         <MainCtaSection />
         <FaqSection />
       </main>

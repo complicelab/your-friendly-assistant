@@ -13,6 +13,28 @@ export type CommercialService = {
 };
 export const commercialServices: CommercialService[] = [
   {
+    slug: "diseno-grafico-publicitario", name: "Diseño y comunicación", title: "Diseño gráfico publicitario en Manizales | Cómplice Lab",
+    description: "Diseño gráfico para marcas y negocios: piezas publicitarias, carruseles, catálogos, presentaciones y comunicación visual en Manizales.",
+    headline: "Diseño publicitario que comunica antes de decorar.",
+    intro: "Creamos piezas gráficas que responden al mensaje, al público y al canal. Buscamos consistencia visual para que tu marca se vea profesional en cada punto de contacto.",
+    audience: "Negocios que necesitan materiales gráficos para campañas, redes sociales, propuestas comerciales y comunicación de marca.",
+    deliverables: ["Piezas publicitarias digitales e impresas según alcance", "Carruseles, posts y materiales para redes", "Presentaciones y catálogos", "Adaptaciones a formatos y canales", "Consistencia con la identidad de marca"],
+    process: ["Entendemos objetivo y mensaje", "Definimos estilo y formatos", "Diseñamos propuestas para revisión", "Entregamos los archivos acordados"],
+    questions: [["¿Diseñan piezas sin crear la marca?", "Sí. Podemos trabajar con tu identidad existente y sus lineamientos."],["¿También realizan catálogos?", "Sí, según contenido, cantidad de productos y formatos requeridos."]],
+    cta: "Solicitar propuesta de diseño"
+  },
+  {
+    slug: "contenido-redes-sociales", name: "Contenido para redes", title: "Creación de contenido y reels en Manizales | Cómplice Lab",
+    description: "Estrategia y creación de contenido para redes sociales en Manizales: ideas, guiones, reels, grabación, edición y piezas para marcas.",
+    headline: "Contenido con una idea clara detrás de cada publicación.",
+    intro: "Diseñamos contenido que conecta la personalidad de tu marca con lo que le interesa a tu público. Desde el concepto y el guion hasta las piezas y reels según el proyecto.",
+    audience: "Marcas, emprendimientos y empresas que quieren comunicar mejor sus productos y servicios en redes sociales.",
+    deliverables: ["Ideas y estrategia de contenido", "Conceptos y guiones", "Reels y edición según alcance", "Piezas para redes y publicaciones", "Calendario y recomendaciones de comunicación"],
+    process: ["Conocemos marca y audiencia", "Planeamos temas y formatos", "Producimos las piezas acordadas", "Revisamos resultados y aprendizajes"],
+    questions: [["¿Graban y editan reels?", "Sí, la grabación y edición pueden incluirse en la propuesta según necesidades y logística."],["¿El servicio incluye publicación?", "Definimos si la programación y publicación forman parte del alcance antes de comenzar."]],
+    cta: "Hablar sobre mi contenido"
+  },
+  {
     slug: "paginas-web-manizales", name: "Páginas web", title: "Creación de páginas web en Manizales | Cómplice Lab",
     description: "Diseño y creación de páginas web, landing pages y sitios comerciales en Manizales y Colombia. Hablemos de una web clara, rápida y orientada a clientes.",
     headline: "Páginas web pensadas para convertir visitas en oportunidades.",

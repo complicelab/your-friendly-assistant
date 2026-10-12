@@ -11,6 +11,8 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 
 import { BrandMark } from "@/components/marketing/brand";
+import { peopleImages } from "@/data/visual-story";
+import "@/components/marketing/formation-photos.css";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { WhatsAppFloat } from "@/components/marketing/whatsapp-float";
 
@@ -83,12 +85,8 @@ function CompanyTrainingPage() {
           <div className="container formation-hero-inner">
             <div>
               <p className="eyebrow">CAPACITACIÓN EN IA PARA EMPRESAS · COLOMBIA</p>
-              <h1>Que tu equipo no solo conozca la IA. Que sepa usarla.</h1>
-              <p className="formation-lead">
-                Diseñamos capacitaciones prácticas para que empresas y equipos entiendan cómo aplicar
-                inteligencia artificial a situaciones reales de marketing, contenido, comunicación,
-                productividad y trabajo diario.
-              </p>
+              <h1>Que tu equipo ahorre tiempo y aprenda a trabajar mejor con IA.</h1>
+              <p className="formation-lead">Capacitamos a tu equipo para crear contenido, organizar tareas, mejorar comunicaciones y aplicar inteligencia artificial en su trabajo cotidiano. Sin tecnicismos innecesarios.</p>
               <div className="hero-actions">
                 <a className="button" href={whatsapp} target="_blank" rel="noreferrer noopener">
                   Quiero capacitar a mi equipo <ArrowRight size={18} />

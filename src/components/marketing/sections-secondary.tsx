@@ -468,15 +468,15 @@ export function MainCtaSection() {
       <div className="cta-orb" aria-hidden="true"/>
       <div className="container reveal">
         <p className="eyebrow">HABLEMOS</p>
-        <h2>Las buenas ideas necesitan un Cómplice.</h2>
-        <p>Cuéntanos qué quieres crear, aprender o implementar.</p>
+        <h2>Tu próxima gran idea merece hacerse realidad.</h2>
+        <p>¿Una marca, una página web, una campaña o una nueva forma de crecer? Cuéntanos en qué estás trabajando y descubramos por dónde comenzar.</p>
         <div className="hero-actions">
           <a
             className="button button-light"
-            href="https://api.whatsapp.com/send?phone=+573161772880&text=Hola.%20Me%20interesa%20sus%20servicios%20de..."
+            href="https://api.whatsapp.com/send?phone=573161772880&text=Hola%2C%20quiero%20conversar%20sobre%20mi%20negocio%20y%20solicitar%20un%20diagn%C3%B3stico%20con%20C%C3%B3mplice%20Lab."
             target="_blank"
             rel="noreferrer noopener"
-          ><span>Hablar con Cómplice Lab</span><ArrowRight/></a>
+          ><span>Quiero un diagnóstico para mi negocio</span><ArrowRight/></a>
           <a className="button button-outline-light" href="#servicios">Conocer nuestros servicios</a>
         </div>
       </div>

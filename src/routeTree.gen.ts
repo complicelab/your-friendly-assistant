@@ -11,6 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServiciosSlugRouteImport } from './routes/servicios.$slug'
+import { Route as ServiciosDisenoGraficoPublicitarioRouteImport } from './routes/servicios.diseno-grafico-publicitario'
+import { Route as ServiciosContenidoRedesSocialesRouteImport } from './routes/servicios.contenido-redes-sociales'
+import { Route as ServiciosPaginasWebManizalesRouteImport } from './routes/servicios.paginas-web-manizales'
+import { Route as ServiciosAgenciaPublicidadManizalesRouteImport } from './routes/servicios.agencia-publicidad-manizales'
+import { Route as ServiciosMarketingDigitalManizalesRouteImport } from './routes/servicios.marketing-digital-manizales'
+import { Route as ServiciosPublicidadMetaAdsRouteImport } from './routes/servicios.publicidad-meta-ads'
+import { Route as ServiciosBrandingIdentidadMarcaRouteImport } from './routes/servicios.branding-identidad-marca'
 import { Route as CapacitacionIaEmpresasRouteImport } from './routes/capacitacion-ia-empresas'
 import { Route as FormacionRouteImport } from './routes/formacion'
 import { Route as OgImageDotjpgRouteImport } from './routes/og-image[.]jpg'
@@ -27,6 +34,41 @@ import { Route as ProyectosMiRaizRouteImport } from './routes/proyectos.mi-raiz'
 import { Route as ProyectosPersianasBlackoutRouteImport } from './routes/proyectos.persianas-blackout'
 import { Route as ProyectosPulsoDataRouteImport } from './routes/proyectos.pulso-data'
 
+const ServiciosDisenoGraficoPublicitarioRoute = ServiciosDisenoGraficoPublicitarioRouteImport.update({
+  id: '/servicios/diseno-grafico-publicitario',
+  path: '/servicios/diseno-grafico-publicitario',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiciosContenidoRedesSocialesRoute = ServiciosContenidoRedesSocialesRouteImport.update({
+  id: '/servicios/contenido-redes-sociales',
+  path: '/servicios/contenido-redes-sociales',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiciosPaginasWebManizalesRoute = ServiciosPaginasWebManizalesRouteImport.update({
+  id: '/servicios/paginas-web-manizales',
+  path: '/servicios/paginas-web-manizales',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiciosAgenciaPublicidadManizalesRoute = ServiciosAgenciaPublicidadManizalesRouteImport.update({
+  id: '/servicios/agencia-publicidad-manizales',
+  path: '/servicios/agencia-publicidad-manizales',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiciosMarketingDigitalManizalesRoute = ServiciosMarketingDigitalManizalesRouteImport.update({
+  id: '/servicios/marketing-digital-manizales',
+  path: '/servicios/marketing-digital-manizales',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiciosPublicidadMetaAdsRoute = ServiciosPublicidadMetaAdsRouteImport.update({
+  id: '/servicios/publicidad-meta-ads',
+  path: '/servicios/publicidad-meta-ads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiciosBrandingIdentidadMarcaRoute = ServiciosBrandingIdentidadMarcaRouteImport.update({
+  id: '/servicios/branding-identidad-marca',
+  path: '/servicios/branding-identidad-marca',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServiciosSlugRoute = ServiciosSlugRouteImport.update({
   id: '/servicios/$slug',
   path: '/servicios/$slug',
@@ -115,6 +157,13 @@ const ProyectosPulsoDataRoute = ProyectosPulsoDataRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/servicios/diseno-grafico-publicitario': typeof ServiciosDisenoGraficoPublicitarioRoute
+  '/servicios/contenido-redes-sociales': typeof ServiciosContenidoRedesSocialesRoute
+  '/servicios/paginas-web-manizales': typeof ServiciosPaginasWebManizalesRoute
+  '/servicios/agencia-publicidad-manizales': typeof ServiciosAgenciaPublicidadManizalesRoute
+  '/servicios/marketing-digital-manizales': typeof ServiciosMarketingDigitalManizalesRoute
+  '/servicios/publicidad-meta-ads': typeof ServiciosPublicidadMetaAdsRoute
+  '/servicios/branding-identidad-marca': typeof ServiciosBrandingIdentidadMarcaRoute
   '/servicios/$slug': typeof ServiciosSlugRoute
   '/': typeof IndexRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
@@ -134,6 +183,13 @@ export interface FileRoutesByFullPath {
   '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRoutesByTo {
+  '/servicios/diseno-grafico-publicitario': typeof ServiciosDisenoGraficoPublicitarioRoute
+  '/servicios/contenido-redes-sociales': typeof ServiciosContenidoRedesSocialesRoute
+  '/servicios/paginas-web-manizales': typeof ServiciosPaginasWebManizalesRoute
+  '/servicios/agencia-publicidad-manizales': typeof ServiciosAgenciaPublicidadManizalesRoute
+  '/servicios/marketing-digital-manizales': typeof ServiciosMarketingDigitalManizalesRoute
+  '/servicios/publicidad-meta-ads': typeof ServiciosPublicidadMetaAdsRoute
+  '/servicios/branding-identidad-marca': typeof ServiciosBrandingIdentidadMarcaRoute
   '/servicios/$slug': typeof ServiciosSlugRoute
   '/': typeof IndexRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
@@ -153,6 +209,13 @@ export interface FileRoutesByTo {
   '/proyectos/pulso-data': typeof ProyectosPulsoDataRoute
 }
 export interface FileRoutesById {
+  '/servicios/diseno-grafico-publicitario': typeof ServiciosDisenoGraficoPublicitarioRoute
+  '/servicios/contenido-redes-sociales': typeof ServiciosContenidoRedesSocialesRoute
+  '/servicios/paginas-web-manizales': typeof ServiciosPaginasWebManizalesRoute
+  '/servicios/agencia-publicidad-manizales': typeof ServiciosAgenciaPublicidadManizalesRoute
+  '/servicios/marketing-digital-manizales': typeof ServiciosMarketingDigitalManizalesRoute
+  '/servicios/publicidad-meta-ads': typeof ServiciosPublicidadMetaAdsRoute
+  '/servicios/branding-identidad-marca': typeof ServiciosBrandingIdentidadMarcaRoute
   '/servicios/$slug': typeof ServiciosSlugRoute
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
@@ -175,6 +238,13 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/servicios/diseno-grafico-publicitario'
+    | '/servicios/contenido-redes-sociales'
+    | '/servicios/paginas-web-manizales'
+    | '/servicios/agencia-publicidad-manizales'
+    | '/servicios/marketing-digital-manizales'
+    | '/servicios/publicidad-meta-ads'
+    | '/servicios/branding-identidad-marca'
     | '/servicios/$slug'
     | '/'
     | '/capacitacion-ia-empresas'
@@ -194,6 +264,13 @@ export interface FileRouteTypes {
     | '/proyectos/pulso-data'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/servicios/diseno-grafico-publicitario'
+    | '/servicios/contenido-redes-sociales'
+    | '/servicios/paginas-web-manizales'
+    | '/servicios/agencia-publicidad-manizales'
+    | '/servicios/marketing-digital-manizales'
+    | '/servicios/publicidad-meta-ads'
+    | '/servicios/branding-identidad-marca'
     | '/servicios/$slug'
     | '/'
     | '/capacitacion-ia-empresas'
@@ -212,6 +289,13 @@ export interface FileRouteTypes {
     | '/proyectos/persianas-blackout'
     | '/proyectos/pulso-data'
   id:
+    | '/servicios/diseno-grafico-publicitario'
+    | '/servicios/contenido-redes-sociales'
+    | '/servicios/paginas-web-manizales'
+    | '/servicios/agencia-publicidad-manizales'
+    | '/servicios/marketing-digital-manizales'
+    | '/servicios/publicidad-meta-ads'
+    | '/servicios/branding-identidad-marca'
     | '/servicios/$slug'
     | '__root__'
     | '/'
@@ -233,6 +317,13 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  ServiciosDisenoGraficoPublicitarioRoute: typeof ServiciosDisenoGraficoPublicitarioRoute
+  ServiciosContenidoRedesSocialesRoute: typeof ServiciosContenidoRedesSocialesRoute
+  ServiciosPaginasWebManizalesRoute: typeof ServiciosPaginasWebManizalesRoute
+  ServiciosAgenciaPublicidadManizalesRoute: typeof ServiciosAgenciaPublicidadManizalesRoute
+  ServiciosMarketingDigitalManizalesRoute: typeof ServiciosMarketingDigitalManizalesRoute
+  ServiciosPublicidadMetaAdsRoute: typeof ServiciosPublicidadMetaAdsRoute
+  ServiciosBrandingIdentidadMarcaRoute: typeof ServiciosBrandingIdentidadMarcaRoute
   ServiciosSlugRoute: typeof ServiciosSlugRoute
   IndexRoute: typeof IndexRoute
   CapacitacionIaEmpresasRoute: typeof CapacitacionIaEmpresasRoute
@@ -254,6 +345,55 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/servicios/diseno-grafico-publicitario': {
+      id: '/servicios/diseno-grafico-publicitario'
+      path: '/servicios/diseno-grafico-publicitario'
+      fullPath: '/servicios/diseno-grafico-publicitario'
+      preLoaderRoute: typeof ServiciosDisenoGraficoPublicitarioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servicios/contenido-redes-sociales': {
+      id: '/servicios/contenido-redes-sociales'
+      path: '/servicios/contenido-redes-sociales'
+      fullPath: '/servicios/contenido-redes-sociales'
+      preLoaderRoute: typeof ServiciosContenidoRedesSocialesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servicios/paginas-web-manizales': {
+      id: '/servicios/paginas-web-manizales'
+      path: '/servicios/paginas-web-manizales'
+      fullPath: '/servicios/paginas-web-manizales'
+      preLoaderRoute: typeof ServiciosPaginasWebManizalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servicios/agencia-publicidad-manizales': {
+      id: '/servicios/agencia-publicidad-manizales'
+      path: '/servicios/agencia-publicidad-manizales'
+      fullPath: '/servicios/agencia-publicidad-manizales'
+      preLoaderRoute: typeof ServiciosAgenciaPublicidadManizalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servicios/marketing-digital-manizales': {
+      id: '/servicios/marketing-digital-manizales'
+      path: '/servicios/marketing-digital-manizales'
+      fullPath: '/servicios/marketing-digital-manizales'
+      preLoaderRoute: typeof ServiciosMarketingDigitalManizalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servicios/publicidad-meta-ads': {
+      id: '/servicios/publicidad-meta-ads'
+      path: '/servicios/publicidad-meta-ads'
+      fullPath: '/servicios/publicidad-meta-ads'
+      preLoaderRoute: typeof ServiciosPublicidadMetaAdsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servicios/branding-identidad-marca': {
+      id: '/servicios/branding-identidad-marca'
+      path: '/servicios/branding-identidad-marca'
+      fullPath: '/servicios/branding-identidad-marca'
+      preLoaderRoute: typeof ServiciosBrandingIdentidadMarcaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/servicios/$slug': {
       id: '/servicios/$slug'
       path: '/servicios/$slug'
@@ -377,6 +517,13 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  ServiciosDisenoGraficoPublicitarioRoute: ServiciosDisenoGraficoPublicitarioRoute,
+  ServiciosContenidoRedesSocialesRoute: ServiciosContenidoRedesSocialesRoute,
+  ServiciosPaginasWebManizalesRoute: ServiciosPaginasWebManizalesRoute,
+  ServiciosAgenciaPublicidadManizalesRoute: ServiciosAgenciaPublicidadManizalesRoute,
+  ServiciosMarketingDigitalManizalesRoute: ServiciosMarketingDigitalManizalesRoute,
+  ServiciosPublicidadMetaAdsRoute: ServiciosPublicidadMetaAdsRoute,
+  ServiciosBrandingIdentidadMarcaRoute: ServiciosBrandingIdentidadMarcaRoute,
   ServiciosSlugRoute: ServiciosSlugRoute,
   IndexRoute: IndexRoute,
   CapacitacionIaEmpresasRoute: CapacitacionIaEmpresasRoute,

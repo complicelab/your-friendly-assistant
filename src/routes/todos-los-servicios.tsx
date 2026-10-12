@@ -25,7 +25,7 @@ function ServiceDirectory() {
     <main>
       <section className="sd-hero"><div><p>CÓMPLICE LAB · MANIZALES</p><h1>¿Qué necesita<br/><em>tu negocio hoy?</em></h1><span>Desde una imagen más profesional hasta una página web o publicidad para llegar a más personas. Encuentra cómo podemos ayudarte.</span></div><img src={peopleImages.consultancy.src} alt={peopleImages.consultancy.alt} loading="eager" width={580} height={550}/></section>
       <section className="sd-grid" aria-label="Nuestros servicios">{commercialServices.map((service,i)=>{
-        const image=peopleImages[(photoForService[service.slug]||["entrepreneur"])[0]];
+        const image=peopleImages[photoForService[service.slug]?.[0] ?? "entrepreneur"];
         return <a className="sd-card" href={serviceHref(service.slug)} key={service.slug}><div className="sd-card-photo"><img src={image.src} alt={image.alt} loading="lazy" width={500} height={340}/></div><div className="sd-card-body"><span>0{i+1} / CÓMPLICE LAB</span><h2>{service.name}</h2><p>{service.intro}</p><strong>Conocer cómo podemos ayudarte <ArrowUpRight size={16}/></strong></div></a>;
       })}</section>
       <div className="sd-bottom"><h2>¿No sabes qué elegir?<br/><em>Te ayudamos.</em></h2><p>Cuéntanos tu negocio y te orientamos para dar el siguiente paso.</p><a href={whatsapp} target="_blank" rel="noopener noreferrer"><MessageCircle size={20}/> Hablar con Cómplice Lab</a></div>

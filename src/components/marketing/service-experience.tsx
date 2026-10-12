@@ -1,5 +1,5 @@
 import { ArrowRight, ArrowUpRight, Check, ChevronDown, ChevronRight, Globe2, Layers3, MessageCircle, MousePointer2, Play, Sparkles, Target, WandSparkles } from "lucide-react";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { BrandMark } from "@/components/marketing/brand";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { WhatsAppFloat } from "@/components/marketing/whatsapp-float";
@@ -37,7 +37,7 @@ const cases = [
 function makeWhatsapp(service: CommercialService, context: string) {
   return "https://api.whatsapp.com/send?phone=573161772880&text=" + encodeURIComponent("Hola, vi el servicio de " + service.name + " en la web de Cómplice Lab. " + context + " ¿Podemos conversar?");
 }
-function Action({ service, children, context = "Quiero agendar un diagnóstico para mi negocio.", light = false }: { service: CommercialService; children: React.ReactNode; context?: string; light?: boolean }) {
+function Action({ service, children, context = "Quiero agendar un diagnóstico para mi negocio.", light = false }: { service: CommercialService; children: ReactNode; context?: string; light?: boolean }) {
   return <a className={light ? "sx-btn sx-btn-light" : "sx-btn"} href={makeWhatsapp(service,context)} target="_blank" rel="noopener noreferrer">{children}<ArrowUpRight size={19} aria-hidden="true"/></a>;
 }
 function CreativeVisual({ service }: {service:CommercialService}) {

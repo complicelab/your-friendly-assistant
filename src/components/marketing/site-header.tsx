@@ -5,7 +5,7 @@ import { BrandMark } from "./brand";
 
 const links = [
   ["Inicio", "/#inicio"],
-  ["Servicios", "/#servicios"],
+  ["Servicios", "/todos-los-servicios"],
   ["Creamos", "/#formas"],
   ["Enseñamos", "/formacion"],
   ["Implementamos", "/#formas"],

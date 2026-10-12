@@ -41,10 +41,10 @@ function makeWhatsapp(service: CommercialService, context: string) {
 function Action({ service, children, context = "Quiero agendar un diagnóstico para mi negocio.", light = false }: { service: CommercialService; children: ReactNode; context?: string; light?: boolean }) {
   return <a className={light ? "sx-btn sx-btn-light" : "sx-btn"} href={makeWhatsapp(service,context)} target="_blank" rel="noopener noreferrer">{children}<ArrowUpRight size={19} aria-hidden="true"/></a>;
 }
+const getPhoto = (slug: string, index: number) => peopleImages[photoForService[slug]?.[index] ?? "entrepreneur"];
 function CreativeVisual({ service }: {service:CommercialService}) {
-  const photoKeys=photoForService[service.slug] || ["entrepreneur","teamwork","salon"];
-  const main=peopleImages[photoKeys[0]];
-  const secondary=peopleImages[photoKeys[1]];
+  const main=getPhoto(service.slug,0);
+  const secondary=getPhoto(service.slug,1);
   return <div className="sx-human-visual" aria-label="Fotografías ilustrativas de personas y negocios">
     <div className="sx-human-main"><img src={main.src} alt={main.alt} loading="eager" width={680} height={730}/></div>
     <div className="sx-human-secondary"><img src={secondary.src} alt={secondary.alt} loading="lazy" width={350} height={410}/></div>
@@ -79,7 +79,7 @@ export function ServiceExperience({service}: {service:CommercialService}) {
       <section className="sx-marquee" aria-label="Nuestra propuesta"><div>TU NEGOCIO <span>✳</span> TU MARCA <span>✳</span> TUS CLIENTES <span>✳</span> TU PRÓXIMO PASO</div></section>
       <section className="sx-section sx-promise" id="como-lo-hacemos"><div className="sx-wrap sx-promise-layout">
         <div><div className="sx-section-label"><span>01 / TU OPORTUNIDAD</span></div><h2>{creative.punch}</h2><p>{service.intro}</p><Action service={service}>Solicitar una propuesta</Action></div>
-        <div className="sx-real-photo"><img src={peopleImages[(photoForService[service.slug]||["entrepreneur","teamwork","salon"])[2]].src} alt={peopleImages[(photoForService[service.slug]||["entrepreneur","teamwork","salon"])[2]].alt} loading="lazy" width={700} height={500}/><span>Tu negocio es el protagonista</span><small>Fotografía ilustrativa</small></div>
+        <div className="sx-real-photo"><img src={getPhoto(service.slug,2).src} alt={peopleImages[(photoForService[service.slug]||["entrepreneur","teamwork","salon"])[2]].alt} loading="lazy" width={700} height={500}/><span>Tu negocio es el protagonista</span><small>Fotografía ilustrativa</small></div>
       </div></section>
       <section className="sx-section sx-offer" id="incluye"><div className="sx-wrap">
         <div className="sx-section-label"><span>02 / QUÉ PODEMOS CREAR</span><span>SOLUCIONES CONCRETAS SEGÚN LO QUE NECESITES</span></div>

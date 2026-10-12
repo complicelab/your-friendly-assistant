@@ -2,6 +2,8 @@ import { ArrowRight, BrainCircuit, Building2, CheckCircle2, Laptop2, Sparkles, U
 import { createFileRoute } from "@tanstack/react-router";
 
 import { BrandMark } from "@/components/marketing/brand";
+import { peopleImages } from "@/data/visual-story";
+import "@/components/marketing/formation-photos.css";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { WhatsAppFloat } from "@/components/marketing/whatsapp-float";
 import { workshops } from "@/data/marketing";
@@ -57,12 +59,8 @@ function FormationPage() {
           <div className="container formation-hero-inner">
             <div>
               <p className="eyebrow">FORMACIÓN CÓMPLICE LAB · COLOMBIA + ONLINE</p>
-              <h1>Aprende a usar IA, marketing y publicidad para hacer cosas reales.</h1>
-              <p className="formation-lead">
-                Cursos, talleres, seminarios y capacitaciones prácticas para emprendedores,
-                profesionales, empresas y equipos. No se trata de acumular teoría: se trata de
-                salir con herramientas, procesos y resultados que puedas aplicar.
-              </p>
+              <h1>Aprende a crear contenido, publicidad y páginas web para tu negocio.</h1>
+              <p className="formation-lead">Aprende paso a paso, aunque hoy no sepas de diseño, publicidad o inteligencia artificial. Talleres prácticos para crear cosas útiles para tu trabajo o emprendimiento.</p>
               <div className="hero-actions">
                 <a className="button" href={whatsapp} target="_blank" rel="noreferrer noopener">
                   Quiero información <ArrowRight size={18} />

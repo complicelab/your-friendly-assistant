@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Hero } from "./hero";
 import { ServiceSpotlight } from "./service-spotlight";
 import { ServiceIndex } from "./service-index";
+import { BusinessPathways } from "./business-pathways";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 import { WhatsAppFloat } from "./whatsapp-float";
@@ -73,7 +74,7 @@ export function LandingPage() {
         <Hero />
         <ServiceSpotlight />
         <ProjectsSection />
-        <WaysSection />
+        <BusinessPathways />
         <ServiceIndex />
         <AboutSection />
         <TrainingSection />

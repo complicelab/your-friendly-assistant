@@ -227,11 +227,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Formación en IA, Marketing y Publicidad | Cómplice Lab" },
+      { title: "Agencia de Publicidad en Manizales e IA | Cómplice Lab" },
       {
         name: "description",
         content:
-          "Formación práctica en inteligencia artificial, marketing y publicidad para emprendedores, profesionales, empresas y equipos en Colombia. También creamos e implementamos estrategias, contenido, branding y web.",
+          "Agencia creativa en Manizales: publicidad digital, branding, páginas web, marketing y formación práctica en IA. Creamos, enseñamos e implementamos.",
       },
       { name: "author", content: "Cómplice Lab" },
       { name: "theme-color", content: "#040507" },
@@ -261,7 +261,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.svg?v=4", type: "image/svg+xml" },
       { rel: "apple-touch-icon", href: "/favicon.svg?v=4" },
-      { rel: "canonical", href: "https://complicelab.com/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

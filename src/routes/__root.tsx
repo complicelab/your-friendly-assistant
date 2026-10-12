@@ -227,7 +227,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Agencia de Publicidad en Manizales e IA | Cómplice Lab" },
+      { title: "Páginas Web, Publicidad y Branding en Manizales | Cómplice Lab" },
       {
         name: "description",
         content:
@@ -235,11 +235,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "Cómplice Lab" },
       { name: "theme-color", content: "#040507" },
-      { property: "og:title", content: "Formación en IA, Marketing y Publicidad | Cómplice Lab" },
+      { property: "og:title", content: "Páginas web, publicidad y marcas en Manizales | Cómplice Lab" },
       {
         property: "og:description",
         content:
-          "Formación práctica en inteligencia artificial, marketing y publicidad para emprendedores, profesionales, empresas y equipos en Colombia. También creamos e implementamos estrategias, contenido, branding y web.",
+          "Creamos páginas web para citas, ventas, reservas y pedidos; anuncios en Facebook e Instagram, contenido publicitario y marcas desde cero en Manizales.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Cómplice Lab" },
@@ -249,7 +249,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image:type", content: "image/jpeg" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Cómplice Lab — IA aplicada a tu negocio" },
+      { property: "og:image:alt", content: "Cómplice Lab — servicios creativos y digitales para negocios" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: "https://complicelab.com/og-image.jpg" },
       { name: "twitter:image:alt", content: "Cómplice Lab — IA aplicada a tu negocio" },

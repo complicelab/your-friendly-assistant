@@ -95,14 +95,7 @@ function CompanyTrainingPage() {
               </div>
             </div>
 
-            <div className="company-training-visual" aria-hidden="true">
-              <BrainCircuit />
-              <div>
-                <span>EQUIPO</span>
-                <strong>+ IA</strong>
-                <small>+ CRITERIO</small>
-              </div>
-            </div>
+            <div className="fp-image-wrap"><img src={peopleImages.teamwork.src} alt={peopleImages.teamwork.alt} loading="eager" width={630} height={660}/><span>Aprender juntos. Aplicar en el trabajo.</span><small>Fotografía ilustrativa</small></div>
           </div>
         </section>
 

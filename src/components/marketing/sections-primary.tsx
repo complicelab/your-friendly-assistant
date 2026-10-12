@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { services, ways, workshops } from "@/data/marketing";
+import { commercialServices, serviceHref } from "@/data/commercial-services";
 import { SectionHeading } from "./brand";
 
 const before = ["Procesos lentos", "Horas investigando", "Muchas herramientas", "Más tareas manuales", "Mayor dependencia técnica"];
@@ -71,6 +72,7 @@ export function ServicesSection() {
                 <div className="tag-cloud">
                   {service.items.map((item) => <span key={item}>{item}</span>)}
                 </div>
+                <a className="text-link" href={serviceHref(commercialServices[[4,0,2,3,0][index]].slug)}>Conoce este servicio <ArrowRight size={17}/></a>
               </article>
             );
           })}

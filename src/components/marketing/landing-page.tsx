@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { Hero } from "./hero";
+import { ServiceSpotlight } from "./service-spotlight";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 import { WhatsAppFloat } from "./whatsapp-float";
@@ -71,6 +72,7 @@ export function LandingPage() {
         <Hero />
         <ChangeSection />
         <ServicesSection />
+        <ServiceSpotlight />
         <WaysSection />
         <AiMethodSection />
         <TrainingSection />

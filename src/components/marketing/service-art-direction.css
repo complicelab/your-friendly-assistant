@@ -1,0 +1,107 @@
+/* Distinct art direction for each offer. Existing photographs stay untouched until final imagery phase. */
+.cl-hero-gallery{perspective:1100px}
+.cl-hero-gallery>div{transition:transform .55s ease,box-shadow .55s ease}
+.cl-visual-ui,.cl-visual-phone,.cl-visual-reel,.cl-visual-moodboard,.cl-visual-consult{position:absolute;z-index:7;pointer-events:none}
+.cl-theme-diagnostico-negocio-manizales .cl-hero-layout{grid-template-columns:.95fr 1.05fr}
+.cl-theme-diagnostico-negocio-manizales .cl-picture-main{right:4%;top:3%;height:75%;width:70%;border-radius:22px;transform:rotate(0deg)}
+.cl-theme-diagnostico-negocio-manizales .cl-picture-secondary{left:0;bottom:10%;width:43%;height:46%;border-radius:18px;transform:rotate(-7deg)}
+.cl-visual-consult{left:12%;top:3%;width:62%;transform:rotate(-6deg);display:flex;flex-direction:column;gap:7px}
+.cl-consult-line{background:#071c28e8;color:#e8fff9;border:1px solid #73dbcb87;border-radius:12px;padding:11px 14px;display:flex;gap:12px;align-items:center;font-size:10px;letter-spacing:.04em;font-weight:800;backdrop-filter:blur(12px)}
+.cl-consult-line span{color:#88e3cd;font-size:11px}
+.cl-consult-seal{position:absolute;top:390px;right:-62%;border-radius:50%;height:125px;width:125px;border:1px solid #b1fff2;background:linear-gradient(130deg,#147a82,#102e3e);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;box-shadow:0 0 55px #35dccd55;font-size:10px;font-weight:800;text-align:center}
+.cl-theme-diagnostico-negocio-manizales .cl-float-label{display:none}
+.cl-theme-diagnostico-negocio-manizales .cl-scenarios{grid-template-columns:repeat(12,1fr)}
+.cl-theme-diagnostico-negocio-manizales .cl-scenario{grid-column:span 12;display:grid;grid-template-columns:.8fr 1fr;min-height:350px}
+.cl-theme-diagnostico-negocio-manizales .cl-scene-photo{height:100%}
+.cl-theme-diagnostico-negocio-manizales .cl-scenario:nth-child(3n) .cl-scene-photo{height:100%}
+.cl-theme-diagnostico-negocio-manizales .cl-benefit{border-radius:9px 40px 9px 40px}
+.cl-theme-paginas-web-manizales .cl-hero-layout{grid-template-columns:1fr 1.1fr}
+.cl-theme-paginas-web-manizales .cl-picture-main{width:56%;height:72%;right:4%;top:14%;border-radius:24px;transform:rotate(4deg) translateZ(-35px)}
+.cl-theme-paginas-web-manizales .cl-picture-secondary{width:35%;height:43%;left:3%;bottom:3%;border-radius:22px;transform:rotate(-9deg)}
+.cl-visual-ui{width:65%;top:0;left:0;overflow:hidden;border:1px solid #9bbfff85;border-radius:16px;background:linear-gradient(150deg,#0d235a,#0a1236);box-shadow:0 28px 65px #0009;transform:rotate(-8deg) rotateY(8deg)}
+.cl-ui-toolbar{height:37px;background:#112b65;color:#bad5ff;font-size:9px;display:flex;align-items:center;justify-content:space-between;padding:0 14px}
+.cl-ui-toolbar>span:first-child{color:#6ca7ff;letter-spacing:.4em}
+.cl-ui-body{padding:23px 20px 26px;display:flex;flex-direction:column;gap:14px}
+.cl-ui-body>span{font-size:9px;font-weight:900;letter-spacing:.14em;color:#8bc4ff}
+.cl-ui-body>strong{font-size:clamp(15px,2vw,28px);max-width:270px;line-height:1.12}
+.cl-ui-body>div{display:flex;gap:7px;flex-wrap:wrap}
+.cl-ui-body>div span{display:flex;align-items:center;gap:5px;border:1px solid #8fb8ff77;background:#214caa70;padding:8px;border-radius:9px;font-size:9px}
+.cl-theme-paginas-web-manizales .cl-float-a{left:53%;top:15%}
+.cl-theme-paginas-web-manizales .cl-float-b{right:-1%;bottom:1%}
+.cl-theme-paginas-web-manizales .cl-web-feature:nth-child(2n){transform:translateY(18px)}
+.cl-theme-paginas-web-manizales .cl-benefit{border-radius:32px 10px 32px 10px}
+.cl-theme-contenido-publicitario-manizales .cl-hero-layout{grid-template-columns:1.06fr .94fr}
+.cl-theme-contenido-publicitario-manizales .cl-picture-main{right:8%;top:8%;height:67%;width:72%;border-radius:15px;transform:rotate(8deg)}
+.cl-theme-contenido-publicitario-manizales .cl-picture-secondary{bottom:5%;left:-1%;width:47%;height:53%;border-radius:15px;transform:rotate(-13deg)}
+.cl-visual-reel{top:0;right:1%;width:36%;height:62%;transform:rotate(-9deg)}
+.cl-reel-photo{border:5px solid #192b56;border-radius:20px;overflow:hidden;height:100%;position:relative;box-shadow:0 24px 55px #0009}
+.cl-reel-photo img{width:100%;height:100%;object-fit:cover}
+.cl-reel-photo span{position:absolute;left:8px;top:12px;color:white;font-size:8px;font-weight:900;background:#0009;border-radius:10px;padding:7px}
+.cl-reel-burst{position:absolute;right:-50%;bottom:11%;transform:rotate(17deg);font-size:clamp(16px,2.5vw,36px);font-weight:950;letter-spacing:-.06em;line-height:1;color:#1b0d0c;background:#ffd681;border-radius:50%;width:133px;height:133px;display:grid;place-items:center;text-align:center;box-shadow:0 12px 40px #f1963955}
+.cl-reel-mark{position:absolute;left:-51%;top:20%;font-size:80px;line-height:1;color:#ffca70;animation:cl-spin 25s linear infinite}
+.cl-theme-contenido-publicitario-manizales .cl-float-a{top:78%;left:23%}
+.cl-theme-contenido-publicitario-manizales .cl-float-b{display:none}
+.cl-theme-contenido-publicitario-manizales .cl-scenarios{grid-template-columns:repeat(3,1fr)}
+.cl-theme-contenido-publicitario-manizales .cl-scenario,.cl-theme-contenido-publicitario-manizales .cl-scenario:nth-child(3n){grid-column:span 4;display:block;transform:rotate(-1.5deg)}
+.cl-theme-contenido-publicitario-manizales .cl-scenario:nth-child(2){transform:rotate(2deg) translateY(23px)}
+.cl-theme-contenido-publicitario-manizales .cl-scenario:nth-child(3){transform:rotate(-2deg)}
+.cl-theme-contenido-publicitario-manizales .cl-scenario:hover{transform:translateY(-8px) rotate(0)}
+.cl-theme-contenido-publicitario-manizales .cl-scene-photo{height:290px}
+.cl-theme-contenido-publicitario-manizales .cl-benefit:nth-child(even){background:linear-gradient(150deg,#41251d,#100c13)}
+.cl-theme-publicidad-meta-ads .cl-hero-layout{grid-template-columns:1fr 1.05fr}
+.cl-theme-publicidad-meta-ads .cl-picture-main{width:61%;height:68%;right:10%;top:11%;border-radius:45px;transform:rotate(-7deg)}
+.cl-theme-publicidad-meta-ads .cl-picture-secondary{width:40%;height:43%;left:-2%;bottom:8%;border-radius:18px;transform:rotate(8deg)}
+.cl-visual-phone{right:-3%;bottom:0;width:46%;min-height:365px;border:8px solid #111630;background:#fff;color:#152039;border-radius:36px;overflow:hidden;box-shadow:0 20px 75px #000a;transform:rotate(7deg)}
+.cl-phone-bar{background:#fff;display:flex;justify-content:space-between;gap:5px;font-size:8px;color:#12245b;font-weight:900;padding:15px 12px}
+.cl-phone-image{height:160px;overflow:hidden}
+.cl-phone-image img{width:100%;height:100%;object-fit:cover}
+.cl-phone-content{padding:15px;display:flex;flex-direction:column;gap:8px}
+.cl-phone-content strong{font-size:14px;line-height:1.2}
+.cl-phone-content>span{font-size:9px;line-height:1.5;color:#5d697e}
+.cl-phone-content b{font-size:9px;color:#fff;border-radius:7px;background:#295eee;padding:10px;display:flex;align-items:center;justify-content:space-between}
+.cl-theme-publicidad-meta-ads .cl-float-a{top:13%;left:0}
+.cl-theme-publicidad-meta-ads .cl-float-b{bottom:6%;left:13%;right:auto}
+.cl-theme-publicidad-meta-ads .cl-scenario{border-radius:35px 12px 35px 12px}
+.cl-theme-publicidad-meta-ads .cl-benefit{border-radius:60px 15px 15px 15px}
+.cl-theme-crear-marca-negocio-desde-cero .cl-hero-layout{grid-template-columns:1.05fr .95fr}
+.cl-theme-crear-marca-negocio-desde-cero .cl-picture-main{width:58%;height:64%;right:15%;top:8%;border-radius:6px;transform:rotate(-9deg)}
+.cl-theme-crear-marca-negocio-desde-cero .cl-picture-secondary{width:41%;height:48%;left:1%;bottom:4%;border-radius:8px;transform:rotate(13deg)}
+.cl-visual-moodboard{width:60%;height:53%;top:7%;right:-6%;transform:rotate(8deg)}
+.cl-mood-tile{position:absolute;background:#e7dafa;color:#241048;box-shadow:0 15px 40px #0006;padding:22px;border-radius:3px}
+.cl-mood-a{right:2%;top:6%;height:70%;width:80%;display:flex;flex-direction:column;justify-content:space-between}
+.cl-mood-a span,.cl-mood-b span{font-size:10px;letter-spacing:.2em;font-weight:900}
+.cl-mood-a strong{font-size:clamp(19px,2.5vw,32px);line-height:1.04;letter-spacing:-.06em}
+.cl-mood-b{bottom:0;left:-10%;background:#6c3ab1;color:white;height:52%;width:45%;display:flex;flex-direction:column;justify-content:space-between;transform:rotate(-12deg)}
+.cl-mood-b strong{font-size:65px}
+.cl-mood-colors{position:absolute;right:5%;bottom:-15%;display:flex;gap:7px;transform:rotate(-8deg)}
+.cl-mood-colors i{width:35px;height:35px;border:3px solid white;border-radius:50%;background:#783bc4;box-shadow:0 7px 20px #0006}
+.cl-mood-colors i:nth-child(2){background:#d5a7fa}.cl-mood-colors i:nth-child(3){background:#26124d}.cl-mood-colors i:nth-child(4){background:#ffe0c2}
+.cl-theme-crear-marca-negocio-desde-cero .cl-float-a{display:none}
+.cl-theme-crear-marca-negocio-desde-cero .cl-float-b{right:0;bottom:5%}
+.cl-theme-crear-marca-negocio-desde-cero .cl-scenario:first-child{grid-column:span 7}
+.cl-theme-crear-marca-negocio-desde-cero .cl-scenario:nth-child(2){grid-column:span 5}
+.cl-theme-crear-marca-negocio-desde-cero .cl-scenario:nth-child(2) .cl-scene-photo{height:335px}
+.cl-theme-crear-marca-negocio-desde-cero .cl-benefit{background:linear-gradient(135deg,#2b1c4c,#101020);border-radius:12px 40px 12px 40px}
+.cl-theme-crear-marca-negocio-desde-cero .cl-process-step{border-left:2px solid #9f6edd;padding-left:20px}
+@keyframes cl-spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){
+.cl-theme-diagnostico-negocio-manizales .cl-hero-layout,.cl-theme-paginas-web-manizales .cl-hero-layout,.cl-theme-contenido-publicitario-manizales .cl-hero-layout,.cl-theme-publicidad-meta-ads .cl-hero-layout,.cl-theme-crear-marca-negocio-desde-cero .cl-hero-layout{grid-template-columns:1fr}
+.cl-theme-contenido-publicitario-manizales .cl-scenarios{display:grid;grid-template-columns:repeat(2,1fr)}
+.cl-theme-contenido-publicitario-manizales .cl-scenario,.cl-theme-contenido-publicitario-manizales .cl-scenario:nth-child(3n){grid-column:span 1}
+.cl-theme-diagnostico-negocio-manizales .cl-scenario{grid-template-columns:1fr}
+.cl-theme-diagnostico-negocio-manizales .cl-scene-photo{height:300px}
+}
+@media(max-width:600px){
+.cl-hero-gallery{max-width:100%;min-height:390px}
+.cl-visual-ui{width:69%;top:0;left:0}.cl-ui-body{padding:12px}.cl-ui-body>strong{font-size:17px}
+.cl-ui-body>div span{font-size:8px;padding:5px}
+.cl-visual-phone{width:49%;min-height:0;border-width:5px;border-radius:23px;right:0;bottom:2%}.cl-phone-image{height:110px}.cl-phone-content{padding:9px;gap:5px}.cl-phone-content strong{font-size:11px}
+.cl-reel-burst{height:80px;width:80px;font-size:17px;right:-22%}.cl-reel-mark{font-size:45px;left:-30%}
+.cl-visual-moodboard{width:58%;height:45%;top:6%;right:0}.cl-mood-a{padding:10px}.cl-mood-a strong{font-size:17px}.cl-mood-b{padding:9px}.cl-mood-b strong{font-size:40px}.cl-mood-colors i{width:21px;height:21px}
+.cl-visual-consult{width:72%;left:0}.cl-consult-line{font-size:8px;padding:7px}.cl-consult-seal{height:75px;width:75px;top:260px;right:-30%;font-size:7px}
+.cl-theme-contenido-publicitario-manizales .cl-scenarios{display:block}
+.cl-theme-contenido-publicitario-manizales .cl-scenario,.cl-theme-contenido-publicitario-manizales .cl-scenario:nth-child(2),.cl-theme-contenido-publicitario-manizales .cl-scenario:nth-child(3){transform:none}
+.cl-theme-crear-marca-negocio-desde-cero .cl-scenario:first-child,.cl-theme-crear-marca-negocio-desde-cero .cl-scenario:nth-child(2){grid-column:span 12}
+.cl-theme-paginas-web-manizales .cl-web-feature:nth-child(2n){transform:none}
+}
+@media(prefers-reduced-motion:reduce){.cl-reel-mark{animation:none}.cl-hero-gallery>div{transition:none}}

@@ -1,4 +1,4 @@
-import { ArrowRight, ArrowUpRight, Check, ChevronDown, ChevronRight, Globe2, Layers3, MessageCircle, MousePointer2, Play, Sparkles, Target, WandSparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, ChevronDown, ChevronRight, Globe2, Layers3, MousePointer2, Play, Sparkles, Target, WandSparkles } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { BrandMark } from "@/components/marketing/brand";
 import { SiteFooter } from "@/components/marketing/site-footer";
@@ -75,7 +75,7 @@ export function ServiceExperience({service}: {service:CommercialService}) {
             <div className="sx-eyebrow"><span className="sx-star">✳</span> {creative.eyebrow} <span className="sx-location">MANIZALES · COLOMBIA</span></div>
             <h1>{creative.title} <em>{creative.highlight}</em></h1>
             <p className="sx-lead">{creative.subtitle}</p>
-            <div className="sx-hero-actions"><Action service={service}>Quiero hablar de mi proyecto</Action><a className="sx-secondary-link" href="#como-lo-hacemos">Descubre cómo lo hacemos <ArrowRight size={17}/></a></div>
+            <div className="sx-hero-actions"><Action service={service}>{service.cta}</Action><a className="sx-secondary-link" href="#como-lo-hacemos">Descubre cómo lo hacemos <ArrowRight size={17}/></a></div>
             <div className="sx-microproof"><span className="sx-microproof-icon"><Check size={15}/></span> Estrategia, criterio humano e IA aplicada donde aporta valor.</div>
           </div>
           <CreativeVisual service={service}/>
@@ -84,7 +84,7 @@ export function ServiceExperience({service}: {service:CommercialService}) {
       </section>
       <section className="sx-marquee" aria-label="Nuestra propuesta"><div>C R E A M O S <span>✳</span> E N S E Ñ A M O S <span>✳</span> I M P L E M E N T A M O S <span>✳</span> C R E A M O S <span>✳</span> E N S E Ñ A M O S</div></section>
       <section className="sx-section sx-promise" id="como-lo-hacemos"><div className="sx-wrap sx-promise-layout">
-        <div><div className="sx-section-label"><span>01 / TU OPORTUNIDAD</span></div><h2>{creative.punch}</h2><p>{service.intro}</p><Action service={service}>Quiero explorar una solución</Action></div>
+        <div><div className="sx-section-label"><span>01 / TU OPORTUNIDAD</span></div><h2>{creative.punch}</h2><p>{service.intro}</p><Action service={service}>Solicitar una propuesta</Action></div>
         <div className="sx-promise-art"><div className="sx-promise-ring"><span>DE LA IDEA</span><strong>A LA ACCIÓN</strong><ArrowUpRight size={38}/></div><div className="sx-art-corner">CÓMPLICE LAB ®</div></div>
       </div></section>
       <section className="sx-section sx-offer" id="incluye"><div className="sx-wrap">
@@ -104,7 +104,7 @@ export function ServiceExperience({service}: {service:CommercialService}) {
         <div className="sx-cases">{cases.map((item,i)=><a key={item.url} className={`sx-case sx-case-${item.tone}`} href={item.url}><div className="sx-case-art"><span className="sx-case-watermark">{item.name.slice(0,2).toUpperCase()}</span><div className="sx-case-grid"/><span className="sx-case-index">0{i+1} / PROYECTO</span></div><div className="sx-case-caption"><div><h3>{item.name}</h3><p>{item.note}</p></div><ArrowUpRight size={25}/></div></a>)}</div>
       </div></section>
       <section className="sx-section sx-faq"><div className="sx-wrap sx-faq-layout"><div><div className="sx-section-label"><span>05 / SIN VUELTAS</span></div><h2>Preguntas claras.<br/><em>Respuestas directas.</em></h2><p>Queremos que sepas qué esperar antes de comenzar.</p></div><div className="sx-faq-items">{service.questions.map(([q,a],i)=><div className={`sx-faq-item ${openFaq===i?"is-open":""}`} key={q}><button type="button" aria-expanded={openFaq===i} onClick={()=>setOpenFaq(openFaq===i?null:i)}><span>{q}</span><ChevronDown size={21}/></button>{openFaq===i&&<p>{a}</p>}</div>)}</div></div></section>
-      <section className="sx-final"><div className="sx-final-orb" aria-hidden="true"/><div className="sx-wrap sx-final-inner"><div className="sx-section-label"><span>TU SIGUIENTE PASO COMIENZA AQUÍ</span></div><h2>¿Y si hacemos<br/><em>que pase?</em></h2><p>Cuéntanos qué quieres lograr. Te ayudamos a identificar por dónde empezar y qué tiene sentido para tu negocio.</p><Action service={service} light>Quiero mi diagnóstico <MessageCircle size={20}/></Action><span className="sx-final-note">Conversamos sobre tu necesidad y definimos juntos los próximos pasos.</span></div></section>
+      <section className="sx-final"><div className="sx-final-orb" aria-hidden="true"/><div className="sx-wrap sx-final-inner"><div className="sx-section-label"><span>TU SIGUIENTE PASO COMIENZA AQUÍ</span></div><h2>¿Y si hacemos<br/><em>que pase?</em></h2><p>Cuéntanos qué quieres lograr. Te ayudamos a identificar por dónde empezar y qué tiene sentido para tu negocio.</p><Action service={service} light>{service.cta}</Action><span className="sx-final-note">Conversamos sobre tu necesidad y definimos juntos los próximos pasos.</span></div></section>
       <section className="sx-related"><div className="sx-wrap"><div className="sx-section-label"><span>EXPLORA MÁS CÓMPLICE</span></div><h2>Tu próxima idea puede estar aquí.</h2><div className="sx-related-links">{otherServices.map(other=><a href={serviceHref(other.slug)} key={other.slug}><span>{other.name}</span><ArrowUpRight size={22}/></a>)}</div></div></section>
     </main><SiteFooter/><WhatsAppFloat/>
   </div>;

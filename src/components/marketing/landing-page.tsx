@@ -70,19 +70,14 @@ export function LandingPage() {
       <SiteHeader />
       <main>
         <Hero />
-        <ChangeSection />
-        <ServicesSection />
         <ServiceSpotlight />
-        <WaysSection />
-        <AiMethodSection />
-        <TrainingSection />
-        <SimpleSection />
-        <AboutSection />
-        <EntrepreneurSection />
         <ProjectsSection />
+        <WaysSection />
+        <ServicesSection />
+        <AboutSection />
+        <TrainingSection />
+        <AiMethodSection />
         <ProcessSection />
-        <ReachSection />
-        <PrinciplesSection />
         <MainCtaSection />
         <FaqSection />
       </main>

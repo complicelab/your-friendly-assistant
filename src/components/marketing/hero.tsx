@@ -17,18 +17,18 @@ export function Hero() {
       <div className="orb orb-two" aria-hidden="true" />
       <div className="container hero-inner">
         <div className="hero-copy">
-          <p className="eyebrow reveal">FORMACIÓN · PUBLICIDAD · CREATIVIDAD · IA</p>
+          <p className="eyebrow reveal">AGENCIA CREATIVA EN MANIZALES · COLOMBIA</p>
           <h1 className="reveal">
             Aprende. Crea. Haz más.
             <br />
             Hazlo <span className="gradient-text">con IA.</span>
           </h1>
           <p className="hero-lead reveal">
-            Formación práctica en inteligencia artificial, marketing y publicidad para emprendedores, profesionales, empresas y equipos. También creamos e implementamos marcas, contenido, campañas y experiencias digitales.
+            Somos una agencia creativa en Manizales. Diseñamos marcas, páginas web, contenido y publicidad digital; también ofrecemos formación práctica en inteligencia artificial y marketing para emprendedores y empresas.
           </p>
           <p className="hero-triad reveal">CREAMOS. ENSEÑAMOS. IMPLEMENTAMOS.</p>
           <div className="hero-actions reveal">
-            <a className="button" href="#formas">
+            <a className="button" href="/servicios/agencia-publicidad-manizales">
               Quiero que lo hagan por mí <ArrowUpRight size={18} />
             </a>
             <a className="button button-ghost" href="#formacion">

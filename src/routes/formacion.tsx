@@ -66,6 +66,7 @@ function FormationPage() {
                   Quiero información <ArrowRight size={18} />
                 </a>
                 <a className="button button-ghost" href="#programas">Ver temas de formación</a>
+                <a className="button button-ghost" href="/codigo-cero">Probar CÓDIGO CERO <ArrowRight size={18}/></a>
               </div>
             </div>
             <div className="fp-image-wrap"><img src={peopleImages.entrepreneur.src} alt={peopleImages.entrepreneur.alt} loading="eager" width={630} height={660}/><span>Aprende aunque empieces desde cero</span></div>

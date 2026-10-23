@@ -111,9 +111,7 @@ const CapacitacionIaEmpresasRoute = CapacitacionIaEmpresasRouteImport.update({
 } as any)
 const FormacionRoute = FormacionRouteImport.update({
   id: '/formacion',
-  id: '/codigo-cero',
   path: '/formacion',
-  path: '/codigo-cero',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CodigoCeroRoute = CodigoCeroRouteImport.update({
@@ -511,14 +509,17 @@ declare module '@tanstack/react-router' {
       parentRoute: typeof rootRouteImport
     }
     '/formacion': {
-    '/codigo-cero': {
       id: '/formacion'
-      id: '/codigo-cero'
       path: '/formacion'
-      path: '/codigo-cero'
       fullPath: '/formacion'
-      fullPath: '/codigo-cero'
       preLoaderRoute: typeof FormacionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/codigo-cero': {
+      id: '/codigo-cero'
+      path: '/codigo-cero'
+      fullPath: '/codigo-cero'
+      preLoaderRoute: typeof CodigoCeroRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/og-image.jpg': {

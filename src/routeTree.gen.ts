@@ -24,6 +24,7 @@ import { Route as ServiciosPublicidadMetaAdsRouteImport } from './routes/servici
 import { Route as ServiciosBrandingIdentidadMarcaRouteImport } from './routes/servicios.branding-identidad-marca'
 import { Route as CapacitacionIaEmpresasRouteImport } from './routes/capacitacion-ia-empresas'
 import { Route as FormacionRouteImport } from './routes/formacion'
+import { Route as CodigoCeroRouteImport } from './routes/codigo-cero'
 import { Route as OgImageDotjpgRouteImport } from './routes/og-image[.]jpg'
 import { Route as PbHeroDotwebpRouteImport } from './routes/pb-hero[.]webp'
 import { Route as PbWebDotwebpRouteImport } from './routes/pb-web[.]webp'
@@ -110,7 +111,14 @@ const CapacitacionIaEmpresasRoute = CapacitacionIaEmpresasRouteImport.update({
 } as any)
 const FormacionRoute = FormacionRouteImport.update({
   id: '/formacion',
+  id: '/codigo-cero',
   path: '/formacion',
+  path: '/codigo-cero',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CodigoCeroRoute = CodigoCeroRouteImport.update({
+  id: '/codigo-cero',
+  path: '/codigo-cero',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OgImageDotjpgRoute = OgImageDotjpgRouteImport.update({
@@ -196,6 +204,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/formacion': typeof FormacionRoute
+  '/codigo-cero': typeof CodigoCeroRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
@@ -226,6 +235,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/formacion': typeof FormacionRoute
+  '/codigo-cero': typeof CodigoCeroRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
@@ -257,6 +267,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/formacion': typeof FormacionRoute
+  '/codigo-cero': typeof CodigoCeroRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
@@ -289,6 +300,7 @@ export interface FileRouteTypes {
     | '/'
     | '/capacitacion-ia-empresas'
     | '/formacion'
+    | '/codigo-cero'
     | '/og-image.jpg'
     | '/pb-hero.webp'
     | '/pb-web.webp'
@@ -319,6 +331,7 @@ export interface FileRouteTypes {
     | '/'
     | '/capacitacion-ia-empresas'
     | '/formacion'
+    | '/codigo-cero'
     | '/og-image.jpg'
     | '/pb-hero.webp'
     | '/pb-web.webp'
@@ -349,6 +362,7 @@ export interface FileRouteTypes {
     | '/'
     | '/capacitacion-ia-empresas'
     | '/formacion'
+    | '/codigo-cero'
     | '/og-image.jpg'
     | '/pb-hero.webp'
     | '/pb-web.webp'
@@ -380,6 +394,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CapacitacionIaEmpresasRoute: typeof CapacitacionIaEmpresasRoute
   FormacionRoute: typeof FormacionRoute
+  CodigoCeroRoute: typeof CodigoCeroRoute
   OgImageDotjpgRoute: typeof OgImageDotjpgRoute
   PbHeroDotwebpRoute: typeof PbHeroDotwebpRoute
   PbWebDotwebpRoute: typeof PbWebDotwebpRoute
@@ -496,9 +511,13 @@ declare module '@tanstack/react-router' {
       parentRoute: typeof rootRouteImport
     }
     '/formacion': {
+    '/codigo-cero': {
       id: '/formacion'
+      id: '/codigo-cero'
       path: '/formacion'
+      path: '/codigo-cero'
       fullPath: '/formacion'
+      fullPath: '/codigo-cero'
       preLoaderRoute: typeof FormacionRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -612,6 +631,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CapacitacionIaEmpresasRoute: CapacitacionIaEmpresasRoute,
   FormacionRoute: FormacionRoute,
+  CodigoCeroRoute: CodigoCeroRoute,
   OgImageDotjpgRoute: OgImageDotjpgRoute,
   PbHeroDotwebpRoute: PbHeroDotwebpRoute,
   PbWebDotwebpRoute: PbWebDotwebpRoute,

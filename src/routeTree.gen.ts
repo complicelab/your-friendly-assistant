@@ -24,7 +24,7 @@ import { Route as ServiciosPublicidadMetaAdsRouteImport } from './routes/servici
 import { Route as ServiciosBrandingIdentidadMarcaRouteImport } from './routes/servicios.branding-identidad-marca'
 import { Route as CapacitacionIaEmpresasRouteImport } from './routes/capacitacion-ia-empresas'
 import { Route as FormacionRouteImport } from './routes/formacion'
-import { Route as CodigoCeroRouteImport } from './routes/codigo-cero'
+import { Route as CodigoceroRouteImport } from './routes/codigocero'
 import { Route as OgImageDotjpgRouteImport } from './routes/og-image[.]jpg'
 import { Route as PbHeroDotwebpRouteImport } from './routes/pb-hero[.]webp'
 import { Route as PbWebDotwebpRouteImport } from './routes/pb-web[.]webp'
@@ -114,9 +114,9 @@ const FormacionRoute = FormacionRouteImport.update({
   path: '/formacion',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CodigoCeroRoute = CodigoCeroRouteImport.update({
-  id: '/codigo-cero',
-  path: '/codigo-cero',
+const CodigoceroRoute = CodigoceroRouteImport.update({
+  id: '/codigocero',
+  path: '/codigocero',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OgImageDotjpgRoute = OgImageDotjpgRouteImport.update({
@@ -202,7 +202,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/formacion': typeof FormacionRoute
-  '/codigo-cero': typeof CodigoCeroRoute
+  '/codigocero': typeof CodigoceroRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
@@ -233,7 +233,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/formacion': typeof FormacionRoute
-  '/codigo-cero': typeof CodigoCeroRoute
+  '/codigocero': typeof CodigoceroRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
@@ -265,7 +265,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/formacion': typeof FormacionRoute
-  '/codigo-cero': typeof CodigoCeroRoute
+  '/codigocero': typeof CodigoceroRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
@@ -298,7 +298,7 @@ export interface FileRouteTypes {
     | '/'
     | '/capacitacion-ia-empresas'
     | '/formacion'
-    | '/codigo-cero'
+    | '/codigocero'
     | '/og-image.jpg'
     | '/pb-hero.webp'
     | '/pb-web.webp'
@@ -329,7 +329,7 @@ export interface FileRouteTypes {
     | '/'
     | '/capacitacion-ia-empresas'
     | '/formacion'
-    | '/codigo-cero'
+    | '/codigocero'
     | '/og-image.jpg'
     | '/pb-hero.webp'
     | '/pb-web.webp'
@@ -360,7 +360,7 @@ export interface FileRouteTypes {
     | '/'
     | '/capacitacion-ia-empresas'
     | '/formacion'
-    | '/codigo-cero'
+    | '/codigocero'
     | '/og-image.jpg'
     | '/pb-hero.webp'
     | '/pb-web.webp'
@@ -392,7 +392,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CapacitacionIaEmpresasRoute: typeof CapacitacionIaEmpresasRoute
   FormacionRoute: typeof FormacionRoute
-  CodigoCeroRoute: typeof CodigoCeroRoute
+  CodigoceroRoute: typeof CodigoceroRoute
   OgImageDotjpgRoute: typeof OgImageDotjpgRoute
   PbHeroDotwebpRoute: typeof PbHeroDotwebpRoute
   PbWebDotwebpRoute: typeof PbWebDotwebpRoute
@@ -515,11 +515,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FormacionRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/codigo-cero': {
-      id: '/codigo-cero'
-      path: '/codigo-cero'
-      fullPath: '/codigo-cero'
-      preLoaderRoute: typeof CodigoCeroRouteImport
+    '/codigocero': {
+      id: '/codigocero'
+      path: '/codigocero'
+      fullPath: '/codigocero'
+      preLoaderRoute: typeof CodigoceroRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/og-image.jpg': {
@@ -632,7 +632,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CapacitacionIaEmpresasRoute: CapacitacionIaEmpresasRoute,
   FormacionRoute: FormacionRoute,
-  CodigoCeroRoute: CodigoCeroRoute,
+  CodigoceroRoute: CodigoceroRoute,
   OgImageDotjpgRoute: OgImageDotjpgRoute,
   PbHeroDotwebpRoute: PbHeroDotwebpRoute,
   PbWebDotwebpRoute: PbWebDotwebpRoute,

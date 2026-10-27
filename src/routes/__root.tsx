@@ -118,7 +118,7 @@ const organizationSchema = {
       email: "info@complicelab.com",
       telephone: "+573161772880",
       description:
-        "Formación práctica en inteligencia artificial, marketing y publicidad, junto con servicios de branding, contenido, publicidad digital y desarrollo web.",
+        "Diseñamos páginas, sistemas comerciales y automatizaciones para profesionales y negocios de alto valor que quieren convertir reputación en oportunidades.",
       areaServed: [
         { "@type": "City", name: "Manizales" },
         { "@type": "Country", name: "Colombia" },
@@ -130,15 +130,14 @@ const organizationSchema = {
         "https://www.youtube.com/@complicelab",
       ],
       knowsAbout: [
-        "Inteligencia artificial aplicada a negocios",
-        "Marketing digital",
-        "Publicidad digital",
-        "Meta Ads",
-        "Creación de contenido",
-        "Branding",
-        "Reels",
-        "CapCut",
-        "Páginas web con inteligencia artificial",
+        "Diseño de experiencias digitales",
+        "Páginas web de conversión",
+        "Landing pages",
+        "Sistemas comerciales",
+        "CRM",
+        "Automatización de procesos",
+        "Agendamiento digital",
+        "Experiencia de usuario",
       ],
       contactPoint: {
         "@type": "ContactPoint",
@@ -227,19 +226,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Páginas Web, Publicidad y Branding en Manizales | Cómplice Lab" },
+      { title: "Cómplice Lab | Sistemas digitales para profesionales de alto valor" },
       {
         name: "description",
         content:
-          "Agencia creativa en Manizales: publicidad digital, branding, páginas web, marketing y formación práctica en IA. Creamos, enseñamos e implementamos.",
+          "Páginas, sistemas comerciales y automatizaciones para profesionales de alto valor que necesitan atraer, convertir y gestionar mejores oportunidades.",
       },
       { name: "author", content: "Cómplice Lab" },
-      { name: "theme-color", content: "#040507" },
-      { property: "og:title", content: "Páginas web, publicidad y marcas en Manizales | Cómplice Lab" },
+      { name: "theme-color", content: "#F6F8FC" },
+      { property: "og:title", content: "Tu reputación ya vale mucho | Cómplice Lab" },
       {
         property: "og:description",
         content:
-          "Creamos páginas web para citas, ventas, reservas y pedidos; anuncios en Facebook e Instagram, contenido publicitario y marcas desde cero en Manizales.",
+          "Creamos experiencias y sistemas digitales para convertir reputación en confianza, citas, clientes y oportunidades reales.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Cómplice Lab" },

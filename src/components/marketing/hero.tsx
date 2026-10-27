@@ -20,11 +20,11 @@ export function Hero() {
       <div className="hc-grid" aria-hidden="true"/>
       <div className="container hc-hero-inner">
         <div className="hc-copy">
-          <p className="hc-eyebrow"><WandSparkles size={16}/> AGENCIA CREATIVA EN MANIZALES · COLOMBIA</p>
-          <h1>Haz que tu negocio<br/><em>reciba más consultas, citas y pedidos.</em></h1>
-          <p className="hc-description">Diseñamos páginas web para vender y agendar, campañas que dan a conocer tus servicios e imágenes que hacen lucir tus productos. Si tienes un negocio o apenas una idea, podemos ayudarte a dar el siguiente paso.</p>
+          <p className="hc-eyebrow"><WandSparkles size={16}/> MARCAS · PUBLICIDAD · WEB · SISTEMAS DIGITALES · IA</p>
+          <h1>Haz que tu negocio<br/><em>se vea mejor, funcione mejor y venda más.</em></h1>
+          <p className="hc-description">Creamos marcas, páginas web, campañas, contenido, plataformas y sistemas digitales. Podemos construir tu proyecto desde cero, mejorar lo que ya existe o enseñarte a hacerlo con herramientas actuales e inteligencia artificial.</p>
           <div className="hc-actions">
-            <a className="button hc-primary-cta" href={whatsapp} target="_blank" rel="noopener noreferrer">Quiero más clientes para mi negocio <ArrowUpRight size={18}/></a>
+            <a className="button hc-primary-cta" href={whatsapp} target="_blank" rel="noopener noreferrer">Quiero impulsar mi negocio <ArrowUpRight size={18}/></a>
             <a className="hc-explore-link" href="#servicios">Descubre lo que podemos crear <ArrowDown size={17}/></a>
           </div>
           <a className="hc-team-proof" href="#nosotros"><span className="hc-team-portraits"><img src="/founders/camilo-latest.webp" alt="Camilo Moreno, cofundador" width={43} height={43}/><img src="/founders/cristian.jpg?v=20261005-centered" alt="Cristian Roman, cofundador" width={43} height={43}/></span><span><strong>Personas reales detrás de cada idea.</strong><small>Conoce a Camilo y Cristian, los fundadores <ArrowUpRight size={12}/></small></span></a>
@@ -32,7 +32,7 @@ export function Hero() {
         </div>
         <ExperienceScene/>
       </div>
-      <div className="container hc-underhero"><div className="hc-underhero-left"><span className="hc-pulse"/><span>TU NEGOCIO NECESITA MÁS QUE UNA PÁGINA BONITA.</span></div><span>CONSTRUIMOS EXPERIENCIAS CON CRITERIO.</span><a href="#proyectos">Ver proyectos <ArrowUpRight size={14}/></a></div>
+      <div className="container hc-underhero"><div className="hc-underhero-left"><span className="hc-pulse"/><span>TU NEGOCIO NECESITA MÁS QUE VERSE BIEN.</span></div><span>CONSTRUIMOS MARCAS, EXPERIENCIAS Y SISTEMAS CON CRITERIO.</span><a href="#proyectos">Ver proyectos <ArrowUpRight size={14}/></a></div>
     </section>
   );
 }

@@ -140,22 +140,47 @@ export function LabHome() {
 
       <section className="lab-manifesto" id="enfoque">
         <div className="lab-manifesto-orb" />
+
         <div className="lab-manifesto-copy">
-          <p className="lab-kicker light"><span /> NUESTRO ENFOQUE</p>
+          <p className="lab-kicker light"><span /> EL PROBLEMA NO SIEMPRE ES TU SERVICIO</p>
           <h2>
-            La gente no compra tecnología.
-            <em>Compra lo que esa tecnología hace posible.</em>
+            Puedes ser excelente y aun así
+            <em>parecer una opción más.</em>
           </h2>
           <p>
-            Tranquilidad. Estatus. Tiempo. Confianza. Resultados. Por eso no empezamos preguntando
-            “qué color te gusta”. Empezamos entendiendo qué necesita creer, sentir y hacer la persona
-            que te va a contratar.
+            Antes de llamarte, tu cliente ya comparó, dudó y descartó. Si tu presencia digital no transmite
+            autoridad, claridad y nivel, puedes perder la oportunidad sin siquiera saber que existió.
           </p>
+
+          <div className="lab-pain-list">
+            <div><span>01</span><b>Te encuentran, pero no entienden por qué elegirte.</b></div>
+            <div><span>02</span><b>Ven tu perfil, pero no sienten suficiente confianza para escribir.</b></div>
+            <div><span>03</span><b>Preguntan, pero el seguimiento se enfría o se pierde.</b></div>
+          </div>
         </div>
-        <div className="lab-manifesto-quote">
-          <span>LA META</span>
-          <strong>“Estos sí están a mi nivel.”</strong>
-          <em>“Quiero trabajar con ellos.”</em>
+
+        <div className="lab-perception-panel">
+          <div className="lab-perception-before">
+            <span>ASÍ SE PIERDE UNA OPORTUNIDAD</span>
+            <div className="lab-fake-search">
+              <small>Especialista recomendado</small>
+              <strong>Tu nombre aparece.</strong>
+              <p>Pero la experiencia no confirma el nivel que prometes.</p>
+            </div>
+            <div className="lab-drop-row"><i/>Confianza <b>↓</b></div>
+            <div className="lab-drop-row"><i/>Diferenciación <b>↓</b></div>
+            <div className="lab-drop-row"><i/>Probabilidad de contacto <b>↓</b></div>
+          </div>
+
+          <div className="lab-perception-arrow">→</div>
+
+          <div className="lab-perception-after">
+            <span>LO QUE DEBERÍA PASAR</span>
+            <div className="lab-signal-orb"><Sparkles size={20}/></div>
+            <strong>“Se ve serio. Se ve diferente. Quiero hablar con ellos.”</strong>
+            <p>Eso es lo que diseñamos: percepción que mueve a la acción.</p>
+            <a href="#sistema">Ver cómo lo conectamos <ArrowUpRight size={14}/></a>
+          </div>
         </div>
       </section>
 

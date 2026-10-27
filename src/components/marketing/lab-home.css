@@ -553,3 +553,137 @@
     font-size:1.55rem;
   }
 }
+
+/* === Simplified conversion section === */
+.lab-system{
+  background:
+    radial-gradient(circle at 8% 15%,rgba(78,210,255,.11),transparent 22%),
+    radial-gradient(circle at 88% 12%,rgba(114,83,255,.10),transparent 26%),
+    linear-gradient(180deg,#FAFCFF 0%,#F2F6FF 100%);
+  color:#0A142A;
+}
+.lab-system:before{display:none}
+.lab-system-intro{max-width:900px}
+.lab-system .lab-kicker{color:#596A84}
+.lab-system .lab-kicker span{background:linear-gradient(90deg,#002BD4,#58D9FF)}
+.lab-system-intro h2{
+  font-size:clamp(3rem,5.5vw,5.8rem);
+  line-height:.94;
+  letter-spacing:-.06em;
+  color:#0A142A;
+}
+.lab-system-intro h2 em{
+  font-style:normal;
+  background:linear-gradient(90deg,#002BD4,#5E52FF,#00AEEF);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.lab-system-intro>p:last-child{
+  color:#53627A;
+  font-size:16px;
+  line-height:1.75;
+  max-width:620px;
+}
+
+.lab-conversion-map{margin-top:54px}
+.conversion-path{
+  display:grid;
+  grid-template-columns:1fr 46px 1fr 46px 1fr;
+  align-items:center;
+  gap:14px;
+}
+.conversion-node{
+  position:relative;
+  min-height:230px;
+  padding:24px;
+  border-radius:28px;
+  background:#fff;
+  border:1px solid #DCE5F2;
+  box-shadow:0 22px 55px rgba(38,63,117,.08);
+  overflow:hidden;
+}
+.conversion-node:after{
+  content:"";
+  position:absolute;
+  width:180px;height:180px;border-radius:50%;
+  right:-80px;top:-80px;
+  opacity:.22
+}
+.conversion-node.n1:after{background:radial-gradient(circle,#53D9FF,transparent 70%)}
+.conversion-node.n2:after{background:radial-gradient(circle,#5A78FF,transparent 70%)}
+.conversion-node.n3:after{background:radial-gradient(circle,#8A5CFF,transparent 70%)}
+.conversion-node>span{
+  display:block;font-size:9px;font-weight:900;letter-spacing:.13em;color:#6B7890
+}
+.conversion-node svg{color:#154BFF;margin-top:34px}
+.conversion-node b{
+  display:block;
+  font-family:"Poppins";
+  font-size:28px;
+  letter-spacing:-.045em;
+  margin-top:18px;
+}
+.conversion-node small{
+  display:block;
+  margin-top:8px;
+  color:#59677F;
+  font-size:11px;
+  line-height:1.5;
+}
+.conversion-arrow{
+  width:40px;height:40px;border-radius:50%;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,#002BD4,#6A4CFF);
+  color:white;
+  font-size:20px;
+  box-shadow:0 12px 30px rgba(36,75,220,.18)
+}
+
+.conversion-result{
+  position:relative;
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:auto 1fr 280px;
+  gap:22px;
+  align-items:center;
+  padding:28px;
+  border-radius:30px;
+  background:
+    radial-gradient(circle at 90% 20%,rgba(126,92,255,.16),transparent 28%),
+    linear-gradient(135deg,#0B1630,#13224A);
+  color:white;
+  overflow:hidden;
+  box-shadow:0 28px 70px rgba(23,40,82,.18)
+}
+.conversion-result-icon{
+  width:62px;height:62px;border-radius:18px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#00B7E8,#2457FF 55%,#7A4DFF)
+}
+.conversion-result span{font-size:8px;letter-spacing:.16em;font-weight:900;color:#9DBAFF}
+.conversion-result h3{font-size:30px;letter-spacing:-.045em;margin:5px 0 6px}
+.conversion-result p{margin:0;color:#C5D0E4;font-size:12px;line-height:1.7;max-width:570px}
+.conversion-mini-ui{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  padding:12px;
+  border-radius:20px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1)
+}
+.conversion-mini-ui i{
+  height:46px;border-radius:10px;
+  background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.05))
+}
+
+@media(max-width:900px){
+  .conversion-path{grid-template-columns:1fr}
+  .conversion-arrow{transform:rotate(90deg);margin:auto}
+  .conversion-result{grid-template-columns:auto 1fr}
+  .conversion-mini-ui{grid-column:1/-1}
+}
+@media(max-width:560px){
+  .lab-system-intro h2{font-size:clamp(2.35rem,10vw,3.4rem)}
+  .conversion-node{min-height:200px}
+  .conversion-result{grid-template-columns:1fr}
+  .conversion-result-icon{width:52px;height:52px}
+}

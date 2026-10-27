@@ -257,11 +257,17 @@ export function LabHome() {
       </section>
 
       <section className="lab-proof-strip" aria-label="Posicionamiento">
-        <div className="lab-marquee">
-          <span>NO HACEMOS WEBS PARA “ESTAR EN INTERNET”</span><i>✦</i>
-          <span>DISEÑAMOS PARA SER ELEGIDOS</span><i>✦</i>
-          <span>NO HACEMOS WEBS PARA “ESTAR EN INTERNET”</span><i>✦</i>
-          <span>DISEÑAMOS PARA SER ELEGIDOS</span><i>✦</i>
+        <div className="lab-marquee-track">
+          <div className="lab-marquee-group">
+            <span>NO HACEMOS WEBS PARA “ESTAR EN INTERNET”</span><i>✦</i>
+            <span>DISEÑAMOS PARA SER ELEGIDOS</span><i>✦</i>
+            <span>ESTRATEGIA · DISEÑO · TECNOLOGÍA · CONVERSIÓN</span><i>✦</i>
+          </div>
+          <div className="lab-marquee-group" aria-hidden="true">
+            <span>NO HACEMOS WEBS PARA “ESTAR EN INTERNET”</span><i>✦</i>
+            <span>DISEÑAMOS PARA SER ELEGIDOS</span><i>✦</i>
+            <span>ESTRATEGIA · DISEÑO · TECNOLOGÍA · CONVERSIÓN</span><i>✦</i>
+          </div>
         </div>
       </section>
 

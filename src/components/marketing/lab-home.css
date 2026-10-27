@@ -419,3 +419,137 @@
   .lab-perception-before,.lab-perception-after{min-height:auto}
   .lab-perception-after{padding-bottom:80px}
 }
+
+/* === Responsive safety pass for manifesto/pain section === */
+.lab-manifesto{
+  align-items:start;
+}
+.lab-manifesto-copy{
+  min-width:0;
+  width:100%;
+}
+.lab-manifesto h2{
+  font-size:clamp(2.7rem,4.9vw,5.35rem);
+  line-height:.96;
+  letter-spacing:-.055em;
+  overflow-wrap:break-word;
+  text-wrap:balance;
+}
+.lab-manifesto-copy>p:last-of-type{
+  font-size:clamp(.92rem,1.15vw,1rem);
+  line-height:1.75;
+}
+.lab-perception-panel{
+  min-width:0;
+  width:100%;
+}
+.lab-perception-before,
+.lab-perception-after{
+  min-width:0;
+  width:100%;
+}
+.lab-perception-after strong{
+  font-size:clamp(1.55rem,2vw,2.25rem);
+  line-height:1.08;
+  overflow-wrap:break-word;
+  text-wrap:balance;
+}
+.lab-fake-search strong{
+  font-size:clamp(1.15rem,1.7vw,1.45rem);
+  line-height:1.1;
+}
+.lab-manifesto-orb{
+  opacity:.72;
+  z-index:0;
+}
+.lab-manifesto-copy,
+.lab-perception-panel{
+  position:relative;
+  z-index:2;
+}
+
+@media(max-width:1180px){
+  .lab-manifesto{
+    grid-template-columns:1fr;
+    gap:44px;
+    padding-top:96px;
+    padding-bottom:96px;
+  }
+  .lab-manifesto-copy{
+    max-width:900px;
+  }
+  .lab-manifesto h2{
+    max-width:860px;
+    font-size:clamp(2.8rem,6vw,4.7rem);
+  }
+  .lab-perception-panel{
+    grid-template-columns:1fr 54px 1fr;
+    max-width:100%;
+  }
+  .lab-perception-before,
+  .lab-perception-after{
+    min-height:420px;
+  }
+}
+
+@media(max-width:820px){
+  .lab-manifesto{
+    padding-top:80px;
+    padding-bottom:80px;
+    gap:34px;
+  }
+  .lab-manifesto h2{
+    font-size:clamp(2.45rem,8vw,4rem);
+  }
+  .lab-perception-panel{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .lab-perception-arrow{
+    transform:rotate(90deg);
+    margin:0 auto;
+  }
+  .lab-perception-before,
+  .lab-perception-after{
+    min-height:0;
+    padding:22px;
+  }
+  .lab-fake-search{
+    margin-top:28px;
+  }
+  .lab-signal-orb{
+    margin-top:36px;
+  }
+  .lab-perception-after{
+    padding-bottom:78px;
+  }
+}
+
+@media(max-width:560px){
+  .lab-manifesto{
+    padding-left:18px;
+    padding-right:18px;
+  }
+  .lab-manifesto h2{
+    font-size:clamp(2.15rem,10.4vw,3.2rem);
+    line-height:.98;
+    letter-spacing:-.045em;
+  }
+  .lab-manifesto-copy>p:last-of-type{
+    font-size:.92rem;
+  }
+  .lab-pain-list{
+    margin-top:24px;
+  }
+  .lab-pain-list>div{
+    grid-template-columns:30px 1fr;
+    padding:12px 13px;
+  }
+  .lab-perception-before>span,
+  .lab-perception-after>span{
+    font-size:7px;
+  }
+  .lab-perception-after strong{
+    font-size:1.55rem;
+  }
+}

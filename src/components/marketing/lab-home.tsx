@@ -385,61 +385,73 @@ export function LabHome() {
       <section className="lab-projects" id="proyectos">
         <div className="lab-projects-head">
           <p className="lab-kicker"><span /> SISTEMAS REALES</p>
-          <h2>No hablamos de posibilidades.<br/><span>Mostramos lo que ya sabemos construir.</span></h2>
-          <p>Tres sistemas, tres negocios distintos y una misma idea: que la tecnología ayude a vender, operar y crecer.</p>
+          <h2>Proyectos que no solo se ven bien.<br/><span>Se sienten hechos para vender.</span></h2>
+          <p>Cada sistema parte de un negocio distinto. Por eso cada experiencia también debe sentirse distinta.</p>
         </div>
 
-        <div className="lab-project-stage">
-          <a href="https://complicedental.com" target="_blank" rel="noreferrer" className="lab-case-feature">
-            <div className="case-feature-copy">
-              <span>01 · HEALTH TECH / ODONTOLOGÍA</span>
-              <h3>CÓMPLICE DENTAL</h3>
-              <p>Un ecosistema para captar pacientes, agendar, gestionar contactos y hacer seguimiento desde un mismo sistema.</p>
-              <div className="case-pills"><i>Web</i><i>CRM</i><i>Citas</i><i>Seguimiento</i></div>
-              <b>Explorar sistema <ArrowUpRight size={16}/></b>
+        <div className="lab-showcase-editorial">
+          <a href="https://complicedental.com" target="_blank" rel="noreferrer" className="showcase-hero dental-editorial">
+            <div className="showcase-copy">
+              <span>01 · CÓMPLICE DENTAL</span>
+              <h3>Captar pacientes.<br/>Gestionar mejor.<br/><em>Vender con sistema.</em></h3>
+              <p>Una experiencia para odontólogos que conecta presencia digital, citas, contactos y seguimiento comercial.</p>
+              <div className="showcase-meta"><i>Web</i><i>CRM</i><i>Agenda</i><i>Seguimiento</i></div>
+              <b>Explorar Cómplice Dental <ArrowUpRight size={16}/></b>
             </div>
-            <div className="case-feature-ui">
-              <div className="case-window">
-                <div className="case-window-bar"><i/><i/><i/><span>dashboard.complicedental</span></div>
-                <div className="case-window-body">
-                  <div className="case-sidebar"><div/><div/><div/><div/></div>
-                  <div className="case-dashboard">
-                    <div className="case-kpis"><span/><span/><span/></div>
-                    <div className="case-chart"><i/><i/><i/><i/><i/><i/></div>
-                    <div className="case-list"><span/><span/><span/></div>
+
+            <div className="showcase-visual">
+              <div className="device-backplate"/>
+              <div className="showcase-screen">
+                <div className="screen-top"><i/><i/><i/><span>complicedental / dashboard</span></div>
+                <div className="screen-body">
+                  <aside><span/><span/><span/><span/></aside>
+                  <div className="screen-main">
+                    <div className="screen-headline"><small>HOY</small><strong>Tu operación en un solo lugar.</strong></div>
+                    <div className="screen-metrics"><div/><div/><div/></div>
+                    <div className="screen-lower"><div className="screen-graph"/><div className="screen-queue"/></div>
                   </div>
                 </div>
               </div>
-              <div className="case-floating-metric m1"><small>CONTACTOS</small><strong>CRM activo</strong></div>
-              <div className="case-floating-metric m2"><small>FLUJO</small><strong>Citas →</strong></div>
+              <div className="showcase-bubble bubble-one"><small>NUEVO LEAD</small><strong>Paciente interesado</strong></div>
+              <div className="showcase-bubble bubble-two"><small>AGENDA</small><strong>Valoración confirmada ✓</strong></div>
             </div>
           </a>
 
-          <div className="lab-case-side">
-            <a href="https://demo.complicedental.com" target="_blank" rel="noreferrer" className="lab-case-mini showroom-v2">
-              <div className="mini-browser">
-                <div className="mini-browser-top"><i/><i/><i/></div>
-                <div className="mini-browser-hero"/>
-                <div className="mini-browser-grid"><span/><span/><span/></div>
+          <div className="showcase-secondary-grid">
+            <a href="https://demo.complicedental.com" target="_blank" rel="noreferrer" className="showcase-secondary showroom-editorial">
+              <div className="secondary-art showroom-art">
+                <div className="showroom-sheet s1"/>
+                <div className="showroom-sheet s2"/>
+                <div className="showroom-sheet s3">
+                  <span>PROPUESTA</span>
+                  <strong>Tu futura web,<br/>antes de comprarla.</strong>
+                </div>
               </div>
-              <div className="mini-copy">
+              <div className="secondary-copy">
                 <span>02 · SHOWROOM INTERACTIVO</span>
-                <h3>Que el cliente vea su futuro antes de comprar.</h3>
-                <p>Propuestas personalizadas con identidad, contenido y experiencia propia.</p>
+                <h3>Una propuesta que se siente real.</h3>
+                <p>El cliente ve su marca, su estilo y su experiencia antes de tomar la decisión.</p>
                 <b>Ver showroom <ArrowUpRight size={15}/></b>
               </div>
             </a>
 
-            <a href="https://miraiz.com.co" target="_blank" rel="noreferrer" className="lab-case-mini raiz-v2">
-              <div className="raiz-map">
-                <div className="raiz-map-grid"/>
-                <div className="raiz-pin p1"/><div className="raiz-pin p2"/><div className="raiz-pin p3"/>
-                <div className="raiz-card"><small>OPERACIÓN</small><strong>Panel + catálogo + comisiones</strong></div>
+            <a href="https://miraiz.com.co" target="_blank" rel="noreferrer" className="showcase-secondary raiz-editorial">
+              <div className="secondary-art raiz-art">
+                <div className="raiz-orbit"/>
+                <div className="raiz-house-card">
+                  <small>INMUEBLE</small>
+                  <strong>$ 480 M</strong>
+                  <span>3 hab · 2 baños · 96 m²</span>
+                </div>
+                <div className="raiz-ops-card">
+                  <small>OPERACIÓN</small>
+                  <strong>Comisiones + asesores + catálogo</strong>
+                </div>
               </div>
-              <div className="mini-copy">
-                <span>03 · REAL ESTATE SYSTEM</span>
-                <h3>Mi Raíz</h3>
-                <p>Un sistema inmobiliario con presencia comercial y operación integrada.</p>
+              <div className="secondary-copy">
+                <span>03 · MI RAÍZ</span>
+                <h3>Una inmobiliaria, convertida en sistema.</h3>
+                <p>Catálogo, operación, asesores y gestión comercial en una experiencia integrada.</p>
                 <b>Ver proyecto <ArrowUpRight size={15}/></b>
               </div>
             </a>

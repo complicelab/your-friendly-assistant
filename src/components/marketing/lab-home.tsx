@@ -272,7 +272,9 @@ export function LabHome() {
       </section>
 
       <section className="lab-manifesto" id="enfoque">
-        <div className="lab-manifesto-orb" />
+        <div className="perception-grid"/>
+        <div className="perception-glow pg1"/>
+        <div className="perception-glow pg2"/>
 
         <div className="lab-manifesto-copy">
           <p className="lab-kicker light"><span /> EL PROBLEMA NO SIEMPRE ES TU SERVICIO</p>
@@ -292,28 +294,42 @@ export function LabHome() {
           </div>
         </div>
 
-        <div className="lab-perception-panel">
-          <div className="lab-perception-before">
-            <span>ASÍ SE PIERDE UNA OPORTUNIDAD</span>
-            <div className="lab-fake-search">
-              <small>Especialista recomendado</small>
-              <strong>Tu nombre aparece.</strong>
-              <p>Pero la experiencia no confirma el nivel que prometes.</p>
+        <div className="perception-stage" aria-hidden="true">
+          <div className="perception-orbit po1"/>
+          <div className="perception-orbit po2"/>
+          <div className="perception-core">
+            <div className="core-face front">
+              <span>PERCEPCIÓN</span>
+              <strong>¿TE ELIGEN?</strong>
             </div>
-            <div className="lab-drop-row"><i/>Confianza <b>↓</b></div>
-            <div className="lab-drop-row"><i/>Diferenciación <b>↓</b></div>
-            <div className="lab-drop-row"><i/>Probabilidad de contacto <b>↓</b></div>
+            <div className="core-face back">
+              <span>REALIDAD</span>
+              <strong>ERES BUENO</strong>
+            </div>
           </div>
 
-          <div className="lab-perception-arrow">→</div>
-
-          <div className="lab-perception-after">
-            <span>LO QUE DEBERÍA PASAR</span>
-            <div className="lab-signal-orb"><Sparkles size={20}/></div>
-            <strong>“Se ve serio. Se ve diferente. Quiero hablar con ellos.”</strong>
-            <p>Eso es lo que diseñamos: percepción que mueve a la acción.</p>
-            <a href="#sistema">Ver cómo lo conectamos <ArrowUpRight size={14}/></a>
+          <div className="float-signal fs1">
+            <small>01 · DESCUBRIMIENTO</small>
+            <strong>Te vio.</strong>
+            <span>Pero todavía no sabe por qué tú.</span>
           </div>
+          <div className="float-signal fs2">
+            <small>02 · COMPARACIÓN</small>
+            <strong>Te comparó.</strong>
+            <span>La percepción decide antes que el precio.</span>
+          </div>
+          <div className="float-signal fs3">
+            <small>03 · DECISIÓN</small>
+            <strong>Te escribió.</strong>
+            <span>Ahora toca no perder la oportunidad.</span>
+          </div>
+
+          <div className="perception-chip chip-bad"><i/>SE VE GENÉRICO</div>
+          <div className="perception-chip chip-good"><i/>SE SIENTE PREMIUM</div>
+          <div className="perception-chip chip-trust"><i/>GENERA CONFIANZA</div>
+
+          <div className="perception-scanline"/>
+          <div className="perception-caption">LA DECISIÓN EMPIEZA ANTES DEL PRIMER MENSAJE</div>
         </div>
       </section>
 

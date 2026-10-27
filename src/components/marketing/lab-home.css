@@ -267,3 +267,155 @@
   .lab-flow-result{width:100%;padding:20px;align-items:flex-start}
   .lab-flow-result strong{font-size:18px}
 }
+
+/* === Manifesto rebuilt as pain -> perception -> action === */
+.lab-manifesto{
+  grid-template-columns:.92fr 1.08fr;
+  gap:64px;
+  min-height:760px;
+  background:
+    radial-gradient(circle at 12% 20%,rgba(76,198,255,.16),transparent 22%),
+    radial-gradient(circle at 86% 30%,rgba(127,86,255,.23),transparent 28%),
+    linear-gradient(145deg,#07111F 0%,#0A1730 52%,#121A43 100%);
+}
+.lab-manifesto-copy{max-width:720px}
+.lab-manifesto h2{max-width:700px}
+.lab-manifesto-copy>p:last-of-type{max-width:660px}
+
+.lab-pain-list{
+  margin-top:34px;
+  display:grid;
+  gap:10px;
+}
+.lab-pain-list>div{
+  display:grid;
+  grid-template-columns:38px 1fr;
+  gap:12px;
+  align-items:start;
+  padding:14px 16px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+  backdrop-filter:blur(8px);
+}
+.lab-pain-list span{font-size:8px;letter-spacing:.12em;color:#75A7FF;font-weight:900;padding-top:3px}
+.lab-pain-list b{font-size:12px;line-height:1.55;color:#D7E0F2;font-weight:600}
+
+.lab-perception-panel{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:1fr 44px 1fr;
+  gap:14px;
+  align-items:stretch;
+}
+.lab-perception-before,
+.lab-perception-after{
+  position:relative;
+  min-height:510px;
+  border-radius:30px;
+  padding:26px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 30px 80px rgba(0,0,0,.22);
+}
+.lab-perception-before{
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025)),
+    rgba(7,14,28,.54);
+}
+.lab-perception-before:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,transparent 0 48%,rgba(255,89,122,.045) 48% 52%,transparent 52%);
+  pointer-events:none;
+}
+.lab-perception-after{
+  background:
+    radial-gradient(circle at 80% 10%,rgba(122,95,255,.34),transparent 32%),
+    linear-gradient(145deg,rgba(33,66,145,.72),rgba(27,32,92,.78));
+}
+.lab-perception-before>span,
+.lab-perception-after>span{
+  display:block;
+  font-size:8px;
+  letter-spacing:.17em;
+  font-weight:900;
+  color:#AFC5ED;
+}
+.lab-fake-search{
+  margin-top:54px;
+  padding:20px;
+  border-radius:22px;
+  background:#F6F8FC;
+  color:#0A1430;
+  box-shadow:0 18px 45px rgba(0,0,0,.2);
+}
+.lab-fake-search small{display:block;font-size:8px;letter-spacing:.12em;color:#7B879B}
+.lab-fake-search strong{display:block;font-family:"Poppins";font-size:22px;letter-spacing:-.04em;margin:8px 0 6px}
+.lab-fake-search p{margin:0;color:#6D788A;font-size:11px;line-height:1.6}
+.lab-drop-row{
+  display:grid;
+  grid-template-columns:10px 1fr auto;
+  gap:10px;
+  align-items:center;
+  padding:13px 0;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  font-size:11px;
+  color:#C9D4E8;
+}
+.lab-drop-row i{width:7px;height:7px;border-radius:50%;background:#FF6A88;box-shadow:0 0 14px rgba(255,106,136,.5)}
+.lab-drop-row b{color:#FF8BA2;font-size:14px}
+
+.lab-perception-arrow{
+  align-self:center;
+  justify-self:center;
+  width:38px;height:38px;
+  border-radius:50%;
+  display:grid;place-items:center;
+  color:#08132C;
+  background:linear-gradient(135deg,#FFFFFF,#CFE0FF);
+  font-weight:900;
+  box-shadow:0 10px 30px rgba(0,0,0,.22);
+}
+.lab-signal-orb{
+  margin-top:72px;
+  width:58px;height:58px;
+  border-radius:18px;
+  display:grid;place-items:center;
+  color:#fff;
+  background:linear-gradient(135deg,#00B7E8,#2E60FF 55%,#8A5DFF);
+  box-shadow:0 18px 42px rgba(48,89,255,.36)
+}
+.lab-perception-after strong{
+  display:block;
+  font-family:"Poppins";
+  font-size:clamp(1.7rem,2.4vw,2.6rem);
+  line-height:1.03;
+  letter-spacing:-.045em;
+  margin-top:26px;
+  color:#fff;
+}
+.lab-perception-after p{font-size:12px;line-height:1.7;color:#C8D6F2;margin-top:16px}
+.lab-perception-after a{
+  position:absolute;
+  left:26px;bottom:26px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:10px;
+  font-weight:900;
+  color:#fff;
+}
+
+@media(max-width:980px){
+  .lab-manifesto{grid-template-columns:1fr}
+  .lab-perception-panel{grid-template-columns:1fr 40px 1fr}
+}
+@media(max-width:640px){
+  .lab-perception-panel{grid-template-columns:1fr}
+  .lab-perception-arrow{transform:rotate(90deg)}
+  .lab-perception-before,.lab-perception-after{min-height:auto}
+  .lab-perception-after{padding-bottom:80px}
+}

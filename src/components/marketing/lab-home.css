@@ -1496,3 +1496,42 @@
   .showcase-screen{width:96%;height:76%;left:2%;transform:rotate(-1deg)}
   .bubble-one{right:2%}.bubble-two{left:2%}
 }
+
+/* === Seamless marquee fix === */
+.lab-proof-strip{
+  overflow:hidden;
+  white-space:nowrap;
+}
+.lab-marquee{display:none!important}
+.lab-marquee-track{
+  display:flex;
+  width:max-content;
+  min-width:100%;
+  animation:marqueeSeamless 24s linear infinite;
+  will-change:transform;
+}
+.lab-marquee-group{
+  flex:none;
+  display:flex;
+  align-items:center;
+  gap:36px;
+  min-width:max-content;
+  padding:17px 36px 17px 0;
+  font-family:"Poppins",sans-serif;
+  font-size:13px;
+  letter-spacing:.08em;
+  font-weight:800;
+}
+.lab-marquee-group span{flex:none}
+.lab-marquee-group i{
+  flex:none;
+  font-style:normal;
+  color:#C4D8FF;
+}
+@keyframes marqueeSeamless{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+@media(prefers-reduced-motion:reduce){
+  .lab-marquee-track{animation:none}
+}

@@ -362,7 +362,7 @@ export function ProjectsSection() {
         <SectionHeading
           eyebrow="CASOS Y PROYECTOS"
           title="Proyectos que diseñamos, construimos e implementamos."
-          copy="Marcas, webs, plataformas y ecosistemas digitales desarrollados con una estructura visual preparada para mostrar cada caso con la profundidad que realmente tenga."
+          copy="Desde marcas creadas desde cero hasta plataformas, membresías, sistemas administrativos y productos digitales. Cada proyecto responde a un negocio, una necesidad y una forma distinta de crecer."
         />
         <div className="projects-grid projects-grid-pro">
           {projects.map((project,index)=>{
@@ -394,7 +394,7 @@ export function ProjectsSection() {
             );
           })}
         </div>
-        <p className="project-note reveal">Cada caso puede crecer con imágenes, proceso, funcionalidades y resultados sin romper la consistencia visual del portafolio.</p>
+        <p className="project-note reveal">No repetimos una fórmula. Diseñamos la solución que cada negocio realmente necesita.</p>
       </div>
     </section>
   );
@@ -468,8 +468,8 @@ export function MainCtaSection() {
       <div className="cta-orb" aria-hidden="true"/>
       <div className="container reveal">
         <p className="eyebrow">HABLEMOS</p>
-        <h2>Tu próxima gran idea merece hacerse realidad.</h2>
-        <p>¿Una marca, una página web, una campaña o una nueva forma de crecer? Cuéntanos en qué estás trabajando y descubramos por dónde comenzar.</p>
+        <h2>De una idea a algo que realmente funcione.</h2>
+        <p>Puede ser una marca, una campaña, una página web, una plataforma, un sistema para tu operación o una formación para tu equipo. Cuéntanos qué quieres lograr y definimos el mejor camino para construirlo.</p>
         <div className="hero-actions">
           <a
             className="button button-light"

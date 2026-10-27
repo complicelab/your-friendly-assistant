@@ -208,56 +208,48 @@ export function LabHome() {
 
       <section className="lab-system" id="sistema">
         <div className="lab-system-intro">
-          <p className="lab-kicker light"><span /> QUÉ CONSTRUIMOS</p>
-          <h2>Un sistema que lleva a tu cliente<br/><em>de “te vi” a “quiero trabajar contigo”.</em></h2>
-          <p>No son módulos aislados. Cada pieza empuja a la siguiente y todo termina conectado a un mismo objetivo comercial.</p>
+          <p className="lab-kicker"><span /> CÓMO FUNCIONA</p>
+          <h2>De visitante a cliente.<br/><em>Sin perderlo en el camino.</em></h2>
+          <p>Una experiencia simple para la persona. Un sistema claro para tu negocio.</p>
         </div>
 
-        <div className="lab-system-flow">
-          <div className="lab-flow-line" />
+        <div className="lab-conversion-map">
+          <div className="conversion-path">
+            <div className="conversion-node n1">
+              <span>01</span>
+              <MousePointer2 size={21}/>
+              <b>Te descubre</b>
+              <small>Web · campaña · búsqueda</small>
+            </div>
 
-          <article className="lab-flow-step attract">
-            <div className="lab-flow-number">01</div>
-            <div className="lab-flow-icon"><MousePointer2 size={22}/></div>
-            <span>ATRAER</span>
-            <h3>Presencia que llama la atención correcta.</h3>
-            <p>Webs y landings con dirección visual, mensaje y estructura para que el prospecto entienda rápido por qué tú.</p>
-            <div className="lab-flow-tags"><i>Web</i><i>Landing</i><i>Posicionamiento</i></div>
-          </article>
+            <div className="conversion-arrow">→</div>
 
-          <article className="lab-flow-step convert">
-            <div className="lab-flow-number">02</div>
-            <div className="lab-flow-icon"><CalendarDays size={22}/></div>
-            <span>CONVERTIR</span>
-            <h3>Que la atención termine en una acción.</h3>
-            <p>Agenda, WhatsApp, formularios, solicitudes y rutas de conversión sin fricción.</p>
-            <div className="lab-flow-tags"><i>Citas</i><i>Leads</i><i>WhatsApp</i></div>
-          </article>
+            <div className="conversion-node n2">
+              <span>02</span>
+              <Sparkles size={21}/>
+              <b>Confía</b>
+              <small>Mensaje · diseño · autoridad</small>
+            </div>
 
-          <article className="lab-flow-step manage">
-            <div className="lab-flow-number">03</div>
-            <div className="lab-flow-icon"><Workflow size={22}/></div>
-            <span>GESTIONAR</span>
-            <h3>Que ninguna oportunidad se pierda después del clic.</h3>
-            <p>CRM, paneles, estados, seguimiento, cotizaciones y operación comercial en un mismo lugar.</p>
-            <div className="lab-flow-tags"><i>CRM</i><i>Panel</i><i>Seguimiento</i></div>
-          </article>
+            <div className="conversion-arrow">→</div>
 
-          <article className="lab-flow-step grow">
-            <div className="lab-flow-number">04</div>
-            <div className="lab-flow-icon"><Sparkles size={22}/></div>
-            <span>CRECER</span>
-            <h3>Menos trabajo repetitivo. Más capacidad para vender.</h3>
-            <p>Automatizaciones y conexiones que aceleran respuestas, tareas internas y continuidad comercial.</p>
-            <div className="lab-flow-tags"><i>Automatización</i><i>Integraciones</i><i>IA</i></div>
-          </article>
+            <div className="conversion-node n3">
+              <span>03</span>
+              <CalendarDays size={21}/>
+              <b>Actúa</b>
+              <small>Cita · WhatsApp · formulario</small>
+            </div>
+          </div>
 
-          <div className="lab-flow-result">
-            <div className="lab-flow-result-orb"><Network size={26}/></div>
+          <div className="conversion-result">
+            <div className="conversion-result-icon"><Workflow size={25}/></div>
             <div>
-              <small>TODO CONECTA EN</small>
-              <strong>UN SOLO SISTEMA</strong>
-              <p>Tu presencia, tus contactos, tus citas y tu operación trabajando juntos.</p>
+              <span>Y DESPUÉS DEL CLIC</span>
+              <h3>Todo queda organizado.</h3>
+              <p>CRM, seguimiento, estados y automatizaciones para que la oportunidad no se pierda.</p>
+            </div>
+            <div className="conversion-mini-ui">
+              <i/><i/><i/><i/>
             </div>
           </div>
         </div>

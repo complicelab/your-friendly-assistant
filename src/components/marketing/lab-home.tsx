@@ -184,32 +184,57 @@ export function LabHome() {
       <section className="lab-system" id="sistema">
         <div className="lab-system-intro">
           <p className="lab-kicker light"><span /> QUÉ CONSTRUIMOS</p>
-          <h2>Un ecosistema digital.<br/><em>No piezas sueltas.</em></h2>
-          <p>Diseñamos la experiencia de punta a punta: atraer, convertir, organizar y dar seguimiento.</p>
+          <h2>Un sistema que lleva a tu cliente<br/><em>de “te vi” a “quiero trabajar contigo”.</em></h2>
+          <p>No son módulos aislados. Cada pieza empuja a la siguiente y todo termina conectado a un mismo objetivo comercial.</p>
         </div>
 
-        <div className="lab-system-canvas">
-          <div className="lab-system-node node-center">
-            <Network size={30}/>
-            <strong>TU NEGOCIO</strong>
-            <span>Sistema central</span>
+        <div className="lab-system-flow">
+          <div className="lab-flow-line" />
+
+          <article className="lab-flow-step attract">
+            <div className="lab-flow-number">01</div>
+            <div className="lab-flow-icon"><MousePointer2 size={22}/></div>
+            <span>ATRAER</span>
+            <h3>Presencia que llama la atención correcta.</h3>
+            <p>Webs y landings con dirección visual, mensaje y estructura para que el prospecto entienda rápido por qué tú.</p>
+            <div className="lab-flow-tags"><i>Web</i><i>Landing</i><i>Posicionamiento</i></div>
+          </article>
+
+          <article className="lab-flow-step convert">
+            <div className="lab-flow-number">02</div>
+            <div className="lab-flow-icon"><CalendarDays size={22}/></div>
+            <span>CONVERTIR</span>
+            <h3>Que la atención termine en una acción.</h3>
+            <p>Agenda, WhatsApp, formularios, solicitudes y rutas de conversión sin fricción.</p>
+            <div className="lab-flow-tags"><i>Citas</i><i>Leads</i><i>WhatsApp</i></div>
+          </article>
+
+          <article className="lab-flow-step manage">
+            <div className="lab-flow-number">03</div>
+            <div className="lab-flow-icon"><Workflow size={22}/></div>
+            <span>GESTIONAR</span>
+            <h3>Que ninguna oportunidad se pierda después del clic.</h3>
+            <p>CRM, paneles, estados, seguimiento, cotizaciones y operación comercial en un mismo lugar.</p>
+            <div className="lab-flow-tags"><i>CRM</i><i>Panel</i><i>Seguimiento</i></div>
+          </article>
+
+          <article className="lab-flow-step grow">
+            <div className="lab-flow-number">04</div>
+            <div className="lab-flow-icon"><Sparkles size={22}/></div>
+            <span>CRECER</span>
+            <h3>Menos trabajo repetitivo. Más capacidad para vender.</h3>
+            <p>Automatizaciones y conexiones que aceleran respuestas, tareas internas y continuidad comercial.</p>
+            <div className="lab-flow-tags"><i>Automatización</i><i>Integraciones</i><i>IA</i></div>
+          </article>
+
+          <div className="lab-flow-result">
+            <div className="lab-flow-result-orb"><Network size={26}/></div>
+            <div>
+              <small>TODO CONECTA EN</small>
+              <strong>UN SOLO SISTEMA</strong>
+              <p>Tu presencia, tus contactos, tus citas y tu operación trabajando juntos.</p>
+            </div>
           </div>
-          <article className="lab-system-card system-web">
-            <small>01</small><Layers3 size={24}/>
-            <h3>Webs de alto impacto</h3>
-            <p>Experiencias visuales memorables, narrativas y diseñadas para convertir.</p>
-          </article>
-          <article className="lab-system-card system-crm">
-            <small>02</small><Workflow size={24}/>
-            <h3>Sistemas comerciales</h3>
-            <p>CRM, agendas, formularios, paneles, cotizaciones y flujos internos.</p>
-          </article>
-          <article className="lab-system-card system-auto">
-            <small>03</small><Sparkles size={24}/>
-            <h3>Automatización útil</h3>
-            <p>Menos tareas repetidas. Más velocidad de respuesta y mejor seguimiento.</p>
-          </article>
-          <div className="lab-system-beam b1"/><div className="lab-system-beam b2"/><div className="lab-system-beam b3"/>
         </div>
       </section>
 

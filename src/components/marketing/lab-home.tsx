@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
   CalendarDays,
@@ -53,6 +53,116 @@ function Magnetic({ children, className = "", href }: { children: React.ReactNod
     >
       {children}
     </a>
+  );
+}
+
+
+const countries = [
+  { name: "Colombia", code: "+57" },
+  { name: "México", code: "+52" },
+  { name: "Estados Unidos", code: "+1" },
+  { name: "España", code: "+34" },
+  { name: "Perú", code: "+51" },
+  { name: "Chile", code: "+56" },
+  { name: "Argentina", code: "+54" },
+  { name: "Ecuador", code: "+593" },
+  { name: "Panamá", code: "+507" },
+  { name: "Costa Rica", code: "+506" },
+  { name: "Rep. Dominicana", code: "+1" },
+  { name: "Otro", code: "+" },
+];
+
+function LeadCaptureForm() {
+  const [country, setCountry] = useState("Colombia");
+  const [dialCode, setDialCode] = useState("+57");
+
+  function handleCountryChange(value: string) {
+    setCountry(value);
+    const match = countries.find((item) => item.name === value);
+    if (match) setDialCode(match.code);
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const message = [
+      "Hola Cómplice Lab, quiero que revisen mi caso.",
+      "",
+      "Nombre: " + String(data.get("name") || ""),
+      "País: " + country,
+      "WhatsApp: " + dialCode + " " + String(data.get("phone") || ""),
+      "Profesión / negocio: " + String(data.get("business") || ""),
+      "Quiero resolver: " + String(data.get("need") || ""),
+      "Tipo de solución: " + String(data.get("solution") || ""),
+    ].join("\n");
+
+    window.open(
+      "https://wa.me/573161772880?text=" + encodeURIComponent(message),
+      "_blank",
+      "noopener,noreferrer",
+    );
+  }
+
+  return (
+    <form className="lab-lead-form" onSubmit={handleSubmit}>
+      <div className="lead-form-topline">
+        <span>DIAGNÓSTICO INICIAL</span>
+        <small>≈ 60 segundos</small>
+      </div>
+
+      <div className="lead-field-grid">
+        <label className="lead-field lead-field-wide">
+          <span>¿Cómo te llamas?</span>
+          <input name="name" placeholder="Tu nombre" required />
+        </label>
+
+        <label className="lead-field">
+          <span>País</span>
+          <select value={country} onChange={(e) => handleCountryChange(e.target.value)}>
+            {countries.map((item) => <option key={item.name} value={item.name}>{item.name}</option>)}
+          </select>
+        </label>
+
+        <label className="lead-field">
+          <span>WhatsApp</span>
+          <div className="lead-phone">
+            <input className="lead-code" value={dialCode} onChange={(e) => setDialCode(e.target.value)} aria-label="Indicativo" />
+            <input name="phone" placeholder="300 000 0000" inputMode="tel" required />
+          </div>
+        </label>
+
+        <label className="lead-field lead-field-wide">
+          <span>¿A qué te dedicas?</span>
+          <input name="business" placeholder="Ej. odontólogo, cirujano, abogado, clínica..." required />
+        </label>
+
+        <label className="lead-field lead-field-wide">
+          <span>¿Qué quieres que deje de pasar?</span>
+          <textarea name="need" placeholder="Ej. tengo visitas pero no me escriben, pierdo leads, mi web no refleja mi nivel..." required />
+        </label>
+
+        <label className="lead-field lead-field-wide">
+          <span>¿Qué te gustaría construir?</span>
+          <select name="solution" defaultValue="Página + sistema comercial">
+            <option>Página + sistema comercial</option>
+            <option>Landing para captar clientes</option>
+            <option>CRM / seguimiento de leads</option>
+            <option>Automatización de procesos</option>
+            <option>Rediseño de mi presencia actual</option>
+            <option>No estoy seguro, necesito diagnóstico</option>
+          </select>
+        </label>
+      </div>
+
+      <button type="submit" className="lead-submit">
+        <span>Quiero que revisen mi caso</span>
+        <ArrowUpRight size={20}/>
+      </button>
+
+      <p className="lead-form-note">
+        Te llevamos a WhatsApp con tu información organizada para continuar la conversación sin hacerte repetir todo.
+      </p>
+    </form>
   );
 }
 
@@ -362,12 +472,37 @@ export function LabHome() {
       <section className="lab-cta" id="contacto">
         <div className="lab-cta-mesh"/>
         <div className="lab-cta-disc"/>
-        <p className="lab-kicker light"><span /> PRÓXIMO PROYECTO</p>
-        <h2>Que tu primera impresión<br/><em>parezca una ventaja competitiva.</em></h2>
-        <p>Cuéntanos qué vendes, a quién quieres atraer y qué debería empezar a pasar gracias a tu presencia digital.</p>
-        <Magnetic href="https://wa.me/573161772880?text=Hola%20Cómplice%20Lab,%20quiero%20hablar%20sobre%20mi%20proyecto." className="lab-cta-button">
-          Hablemos de tu proyecto <ArrowUpRight size={20}/>
-        </Magnetic>
+
+        <div className="lab-cta-layout">
+          <div className="lab-cta-copy">
+            <p className="lab-kicker light"><span /> HABLEMOS DE TU NEGOCIO</p>
+            <h2>Cuéntanos dónde se está perdiendo <em>la oportunidad.</em></h2>
+            <p>
+              No queremos venderte “una página” antes de entenderte. Danos contexto y te diremos qué parte de tu presencia o sistema deberíamos solucionar primero.
+            </p>
+
+            <div className="lab-cta-signals">
+              <div><span>01</span><b>Entendemos tu situación</b></div>
+              <div><span>02</span><b>Detectamos el cuello de botella</b></div>
+              <div><span>03</span><b>Te proponemos una solución concreta</b></div>
+            </div>
+
+            <div className="lab-contact-badge">
+              <div className="contact-dot"/>
+              <div>
+                <small>CONTACTO DIRECTO</small>
+                <strong>WhatsApp · Cómplice Lab</strong>
+              </div>
+            </div>
+          </div>
+
+          <div className="lab-cta-form-wrap">
+            <div className="lab-form-glow g1"/>
+            <div className="lab-form-glow g2"/>
+            <LeadCaptureForm />
+          </div>
+        </div>
+
         <div className="lab-cta-footer"><span>complicelab.com</span><span>Manizales · Colombia</span><span>Proyectos selectos</span></div>
       </section>
     </main>

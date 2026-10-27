@@ -58,18 +58,18 @@ function Magnetic({ children, className = "", href }: { children: React.ReactNod
 
 
 const countries = [
-  { name: "Colombia", code: "+57" },
-  { name: "México", code: "+52" },
-  { name: "Estados Unidos", code: "+1" },
-  { name: "España", code: "+34" },
-  { name: "Perú", code: "+51" },
-  { name: "Chile", code: "+56" },
-  { name: "Argentina", code: "+54" },
-  { name: "Ecuador", code: "+593" },
-  { name: "Panamá", code: "+507" },
-  { name: "Costa Rica", code: "+506" },
-  { name: "Rep. Dominicana", code: "+1" },
-  { name: "Otro", code: "+" },
+  { name: "Colombia", code: "+57", flag: "🇨🇴" },
+  { name: "México", code: "+52", flag: "🇲🇽" },
+  { name: "Estados Unidos", code: "+1", flag: "🇺🇸" },
+  { name: "España", code: "+34", flag: "🇪🇸" },
+  { name: "Perú", code: "+51", flag: "🇵🇪" },
+  { name: "Chile", code: "+56", flag: "🇨🇱" },
+  { name: "Argentina", code: "+54", flag: "🇦🇷" },
+  { name: "Ecuador", code: "+593", flag: "🇪🇨" },
+  { name: "Panamá", code: "+507", flag: "🇵🇦" },
+  { name: "Costa Rica", code: "+506", flag: "🇨🇷" },
+  { name: "Rep. Dominicana", code: "+1", flag: "🇩🇴" },
+  { name: "Otro", code: "+", flag: "🌎" },
 ];
 
 function LeadCaptureForm() {
@@ -88,7 +88,8 @@ function LeadCaptureForm() {
     const message = [
       "Hola Cómplice Lab, quiero que revisen mi caso.",
       "",
-      "Nombre: " + String(data.get("name") || ""),
+      "Nombre y apellido: " + String(data.get("name") || ""),
+      "Marca personal / empresa: " + String(data.get("brand") || ""),
       "País: " + country,
       "WhatsApp: " + dialCode + " " + String(data.get("phone") || ""),
       "Profesión / negocio: " + String(data.get("business") || ""),
@@ -112,28 +113,44 @@ function LeadCaptureForm() {
 
       <div className="lead-field-grid">
         <label className="lead-field lead-field-wide">
-          <span>¿Cómo te llamas?</span>
-          <input name="name" placeholder="Tu nombre" required />
+          <span>Nombre y apellido</span>
+          <input name="name" placeholder="Ej. Camilo Roman" required />
+        </label>
+
+        <label className="lead-field lead-field-wide">
+          <span>Marca personal o empresa</span>
+          <input name="brand" placeholder="Ej. Clínica Sonríe / Dra. Laura Gómez" required />
         </label>
 
         <label className="lead-field">
           <span>País</span>
           <select value={country} onChange={(e) => handleCountryChange(e.target.value)}>
-            {countries.map((item) => <option key={item.name} value={item.name}>{item.name}</option>)}
+            {countries.map((item) => <option key={item.name} value={item.name}>{item.flag} {item.name}</option>)}
           </select>
         </label>
 
         <label className="lead-field">
           <span>WhatsApp</span>
           <div className="lead-phone">
-            <input className="lead-code" value={dialCode} onChange={(e) => setDialCode(e.target.value)} aria-label="Indicativo" />
+            <select
+              className="lead-code-select"
+              value={dialCode}
+              onChange={(e) => {
+                const selected = countries.find((item) => item.code === e.target.value);
+                setDialCode(e.target.value);
+                if (selected) setCountry(selected.name);
+              }}
+              aria-label="Indicativo del país"
+            >
+              {countries.map((item) => <option key={item.name + item.code} value={item.code}>{item.flag} {item.code}</option>)}
+            </select>
             <input name="phone" placeholder="300 000 0000" inputMode="tel" required />
           </div>
         </label>
 
         <label className="lead-field lead-field-wide">
-          <span>¿A qué te dedicas?</span>
-          <input name="business" placeholder="Ej. odontólogo, cirujano, abogado, clínica..." required />
+          <span>Profesión o tipo de negocio</span>
+          <input name="business" placeholder="Ej. odontología, cirugía plástica, derecho, inmobiliaria..." required />
         </label>
 
         <label className="lead-field lead-field-wide">
@@ -475,10 +492,10 @@ export function LabHome() {
 
         <div className="lab-cta-layout">
           <div className="lab-cta-copy">
-            <p className="lab-kicker light"><span /> HABLEMOS DE TU NEGOCIO</p>
-            <h2>Cuéntanos dónde se está perdiendo <em>la oportunidad.</em></h2>
+            <p className="lab-kicker light"><span /> CÓMO HACEMOS TU DIAGNÓSTICO</p>
+            <h2>Primero entendemos <em>qué está frenando tu crecimiento.</em></h2>
             <p>
-              No queremos venderte “una página” antes de entenderte. Danos contexto y te diremos qué parte de tu presencia o sistema deberíamos solucionar primero.
+              Llena esta información y podremos llegar a la conversación con contexto: quién eres, desde dónde nos escribes, qué vendes y qué problema quieres solucionar.
             </p>
 
             <div className="lab-cta-signals">

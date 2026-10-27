@@ -1535,3 +1535,55 @@
 @media(prefers-reduced-motion:reduce){
   .lab-marquee-track{animation:none}
 }
+
+/* === Marquee hardening: one row only === */
+.lab-proof-strip{
+  height:48px;
+  min-height:48px;
+  display:block;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+}
+.lab-marquee-track{
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  width:max-content!important;
+  min-width:0!important;
+  height:48px!important;
+  white-space:nowrap!important;
+  animation:marqueeSeamless 26s linear infinite!important;
+  will-change:transform;
+}
+.lab-marquee-group{
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  flex:0 0 auto!important;
+  width:max-content!important;
+  min-width:max-content!important;
+  height:48px!important;
+  padding:0 36px 0 0!important;
+  margin:0!important;
+  gap:36px!important;
+  white-space:nowrap!important;
+  line-height:1!important;
+}
+.lab-marquee-group span,
+.lab-marquee-group i{
+  display:inline-block!important;
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+  margin:0!important;
+  line-height:1!important;
+}
+@keyframes marqueeSeamless{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-50%,0,0)}
+}
+@media(max-width:640px){
+  .lab-proof-strip,.lab-marquee-track,.lab-marquee-group{height:44px!important;min-height:44px!important}
+  .lab-marquee-group{gap:26px!important;padding-right:26px!important;font-size:11px!important}
+}

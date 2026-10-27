@@ -17,13 +17,10 @@ import {
 } from "./sections-primary";
 import {
   AboutSection,
-  EntrepreneurSection,
   FaqSection,
   MainCtaSection,
-  PrinciplesSection,
   ProcessSection,
   ProjectsSection,
-  ReachSection,
 } from "./sections-secondary";
 
 function ExperienceRuntime() {
@@ -75,9 +72,10 @@ export function LandingPage() {
         <ServiceSpotlight />
         <ProjectsSection />
         <BusinessPathways />
+        <ProcessSection />
         <ServiceIndex />
-        <AboutSection />
         <TrainingSection />
+        <AboutSection />
         <MainCtaSection />
         <FaqSection />
       </main>

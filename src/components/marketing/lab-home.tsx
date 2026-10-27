@@ -265,64 +265,105 @@ export function LabHome() {
 
       <section className="lab-projects" id="proyectos">
         <div className="lab-projects-head">
-          <p className="lab-kicker"><span /> SISTEMAS QUE YA EXISTEN</p>
-          <h2>Esto no es una promesa.<br/><span>Ya lo estamos construyendo.</span></h2>
-          <p>Productos reales, pensados para negocios que necesitan vender, agendar, gestionar y crecer.</p>
+          <p className="lab-kicker"><span /> SISTEMAS REALES</p>
+          <h2>No hablamos de posibilidades.<br/><span>Mostramos lo que ya sabemos construir.</span></h2>
+          <p>Tres sistemas, tres negocios distintos y una misma idea: que la tecnología ayude a vender, operar y crecer.</p>
         </div>
 
-        <div className="lab-project-showcase">
-          <a href="https://complicedental.com" target="_blank" rel="noreferrer" className="lab-project-card dental">
-            <div className="project-glow" />
-            <div className="project-ui">
-              <div className="project-ui-bar"><i/><i/><i/></div>
-              <div className="project-ui-shell">
-                <div className="project-ui-side"/>
-                <div className="project-ui-main">
-                  <div className="project-ui-kpi"/><div className="project-ui-kpi"/><div className="project-ui-kpi"/>
-                  <div className="project-ui-chart"/>
+        <div className="lab-project-stage">
+          <a href="https://complicedental.com" target="_blank" rel="noreferrer" className="lab-case-feature">
+            <div className="case-feature-copy">
+              <span>01 · HEALTH TECH / ODONTOLOGÍA</span>
+              <h3>CÓMPLICE DENTAL</h3>
+              <p>Un ecosistema para captar pacientes, agendar, gestionar contactos y hacer seguimiento desde un mismo sistema.</p>
+              <div className="case-pills"><i>Web</i><i>CRM</i><i>Citas</i><i>Seguimiento</i></div>
+              <b>Explorar sistema <ArrowUpRight size={16}/></b>
+            </div>
+            <div className="case-feature-ui">
+              <div className="case-window">
+                <div className="case-window-bar"><i/><i/><i/><span>dashboard.complicedental</span></div>
+                <div className="case-window-body">
+                  <div className="case-sidebar"><div/><div/><div/><div/></div>
+                  <div className="case-dashboard">
+                    <div className="case-kpis"><span/><span/><span/></div>
+                    <div className="case-chart"><i/><i/><i/><i/><i/><i/></div>
+                    <div className="case-list"><span/><span/><span/></div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="project-copy">
-              <span>ECOSISTEMA PARA ODONTÓLOGOS</span>
-              <h3>CÓMPLICE<br/>DENTAL</h3>
-              <p>Web + CRM + citas + seguimiento + gestión comercial.</p>
-              <b>Ver sistema <ArrowUpRight size={16}/></b>
+              <div className="case-floating-metric m1"><small>CONTACTOS</small><strong>CRM activo</strong></div>
+              <div className="case-floating-metric m2"><small>FLUJO</small><strong>Citas →</strong></div>
             </div>
           </a>
 
-          <a href="https://demo.complicedental.com" target="_blank" rel="noreferrer" className="lab-project-card showroom">
-            <div className="project-grid-art"/>
-            <div className="project-copy">
-              <span>SHOWROOM INTERACTIVO</span>
-              <h3>PROPUESTAS QUE SE VENDEN SOLAS</h3>
-              <p>Demostraciones personalizadas para que cada profesional vea su futura experiencia antes de comprarla.</p>
-              <b>Explorar showroom <ArrowUpRight size={16}/></b>
-            </div>
-          </a>
+          <div className="lab-case-side">
+            <a href="https://demo.complicedental.com" target="_blank" rel="noreferrer" className="lab-case-mini showroom-v2">
+              <div className="mini-browser">
+                <div className="mini-browser-top"><i/><i/><i/></div>
+                <div className="mini-browser-hero"/>
+                <div className="mini-browser-grid"><span/><span/><span/></div>
+              </div>
+              <div className="mini-copy">
+                <span>02 · SHOWROOM INTERACTIVO</span>
+                <h3>Que el cliente vea su futuro antes de comprar.</h3>
+                <p>Propuestas personalizadas con identidad, contenido y experiencia propia.</p>
+                <b>Ver showroom <ArrowUpRight size={15}/></b>
+              </div>
+            </a>
 
-          <a href="https://miraiz.com.co" target="_blank" rel="noreferrer" className="lab-project-card raiz">
-            <div className="project-rings"/>
-            <div className="project-copy">
-              <span>SISTEMA INMOBILIARIO</span>
-              <h3>MI RAÍZ</h3>
-              <p>Catálogo, gestión, comisiones, operación y presencia comercial en una sola experiencia.</p>
-              <b>Ver proyecto <ArrowUpRight size={16}/></b>
-            </div>
-          </a>
+            <a href="https://miraiz.com.co" target="_blank" rel="noreferrer" className="lab-case-mini raiz-v2">
+              <div className="raiz-map">
+                <div className="raiz-map-grid"/>
+                <div className="raiz-pin p1"/><div className="raiz-pin p2"/><div className="raiz-pin p3"/>
+                <div className="raiz-card"><small>OPERACIÓN</small><strong>Panel + catálogo + comisiones</strong></div>
+              </div>
+              <div className="mini-copy">
+                <span>03 · REAL ESTATE SYSTEM</span>
+                <h3>Mi Raíz</h3>
+                <p>Un sistema inmobiliario con presencia comercial y operación integrada.</p>
+                <b>Ver proyecto <ArrowUpRight size={15}/></b>
+              </div>
+            </a>
+          </div>
         </div>
       </section>
 
       <section className="lab-standard">
-        <div className="lab-standard-left">
-          <p className="lab-kicker"><span /> EL ESTÁNDAR</p>
-          <h2>Si tu servicio es premium, tu presencia no puede sentirse genérica.</h2>
+        <div className="lab-standard-head">
+          <p className="lab-kicker"><span /> EL ESTÁNDAR CÓMPLICE</p>
+          <h2>Que se vea premium no es decoración.<br/><em>Es parte de cómo te eligen.</em></h2>
+          <p>Diseñamos cada proyecto para que estrategia, percepción y operación trabajen juntas.</p>
         </div>
-        <div className="lab-standard-stack">
-          <div><span>01</span><b>Dirección creativa</b><p>Una idea visual que se siente propia, no una plantilla.</p></div>
-          <div><span>02</span><b>Arquitectura comercial</b><p>Cada sección cumple una función dentro de la decisión.</p></div>
-          <div><span>03</span><b>Tecnología visible e invisible</b><p>Lo complejo trabaja por debajo; para el cliente todo se siente simple.</p></div>
-          <div><span>04</span><b>Detalle obsesivo</b><p>Microinteracciones, ritmo, jerarquía, respuesta y consistencia.</p></div>
+
+        <div className="lab-standard-orbit">
+          <div className="standard-core">
+            <span>CÓMPLICE</span>
+            <strong>LAB</strong>
+            <small>SISTEMA DE VALOR</small>
+          </div>
+
+          <article className="standard-card sc1">
+            <span>01</span>
+            <b>Dirección creativa</b>
+            <p>Una identidad visual que se siente propia desde el primer segundo.</p>
+          </article>
+          <article className="standard-card sc2">
+            <span>02</span>
+            <b>Arquitectura comercial</b>
+            <p>Cada bloque guía una decisión: entender, confiar, actuar.</p>
+          </article>
+          <article className="standard-card sc3">
+            <span>03</span>
+            <b>Tecnología útil</b>
+            <p>Lo complejo sucede detrás; el cliente solo siente que todo funciona.</p>
+          </article>
+          <article className="standard-card sc4">
+            <span>04</span>
+            <b>Detalle obsesivo</b>
+            <p>Movimiento, jerarquía, contraste, velocidad y consistencia.</p>
+          </article>
+
+          <div className="standard-orbit-ring r1"/><div className="standard-orbit-ring r2"/>
         </div>
       </section>
 

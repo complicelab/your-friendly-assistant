@@ -14,3 +14,7 @@
 .ss-heading p{color:#53627a}.ss-card{color:#0a142a!important;background:linear-gradient(145deg,#fff,#eef4ff);border-color:#d8e3f1;box-shadow:0 22px 58px rgba(40,64,116,.1)}
 .ss-ads{background:linear-gradient(145deg,#fff7f4,#fceff5)}.ss-brand{background:linear-gradient(145deg,#faf5ff,#f0ebff)}
 .ss-top{color:#526078}.ss-card-copy p{color:#53627a}.ss-card-copy strong,.ss-bottom a{color:#0a142a}.ss-bottom{border-top-color:#d7e0ee}.ss-bottom span{color:#69768b}
+
+/* Heading rhythm */
+.ss-heading p{margin-top:0}
+@media(max-width:900px){.ss-heading p{margin-top:24px!important}}

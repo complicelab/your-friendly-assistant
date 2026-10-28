@@ -4,3 +4,7 @@
 .si-section{background:radial-gradient(ellipse at top right,rgba(111,81,255,.1),transparent 55%),linear-gradient(180deg,#fff,#f4f7ff)!important;color:#0a142a!important}
 .si-intro>p,.si-description,.si-footnote{color:#53627a}.si-list{border-top-color:#d6dfed}.si-item{color:#0a142a;border-bottom-color:#dce4f0}
 .si-item:hover{background:linear-gradient(90deg,rgba(61,111,255,.08),rgba(120,85,255,.04))}.si-footnote a{color:#2148b8}
+
+/* Heading rhythm */
+.si-intro>p{margin-top:26px}
+@media(max-width:560px){.si-intro>p{margin-top:20px}}

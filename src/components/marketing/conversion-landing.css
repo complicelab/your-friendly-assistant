@@ -29,3 +29,9 @@
 .cl-web-feature p{color:#526078}.cl-web-feature>svg{color:#315eff}
 .cl-question button{color:#0a142a}.cl-question p,.cl-faq-layout>div:first-child>p{color:#53627a}
 .cl-related a{color:#0a142a;border-color:#d5deec;background:#fff}
+
+/* Heading rhythm */
+.cl-headline-row p{margin-top:0}
+@media(max-width:800px){.cl-headline-row p{margin-top:24px!important}}
+.cl-process-grid>div:first-child>p{margin-top:26px!important}
+.cl-faq-layout>div:first-child>p{margin-top:24px!important}

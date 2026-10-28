@@ -61,3 +61,9 @@
 .sx-steps,.sx-faq-items{border-color:#d7e0ee}.sx-step,.sx-faq-item{border-color:#d7e0ee}.sx-faq-item button{color:#0a142a}.sx-faq-item p{color:#53627a}
 .sx-case{color:#0a142a!important}.sx-case-caption p{color:#53627a}
 .sx-related-links a{background:#fff;color:#0a142a;border-color:#d6dfed}
+
+/* Heading rhythm */
+.sx-promise p,.sx-method p,.sx-work-heading p,.sx-faq-layout>div>p{margin-top:26px!important}
+@media(max-width:800px){
+  .sx-offer-heading p,.sx-work-heading p{margin-top:24px!important}
+}

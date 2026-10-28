@@ -1790,3 +1790,207 @@
 @media(prefers-reduced-motion:reduce){
   .perception-core,.perception-orbit,.float-signal,.perception-scanline{animation:none!important}
 }
+
+/* === Light creative perception section === */
+.lab-manifesto-light{
+  position:relative;
+  min-height:820px;
+  display:grid;
+  grid-template-columns:.92fr 1.08fr;
+  gap:60px;
+  align-items:center;
+  padding:120px clamp(22px,7vw,110px);
+  color:#0A142A;
+  background:
+    radial-gradient(circle at 8% 18%,rgba(74,211,255,.17),transparent 22%),
+    radial-gradient(circle at 88% 18%,rgba(143,101,255,.18),transparent 24%),
+    radial-gradient(circle at 70% 82%,rgba(98,163,255,.12),transparent 22%),
+    linear-gradient(180deg,#FFFFFF 0%,#F8F8FF 46%,#F2F7FF 100%);
+  overflow:hidden;
+}
+.lab-manifesto-light:after{
+  content:"";
+  position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:linear-gradient(90deg,transparent,#B8C9F2,transparent)
+}
+.light-field-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(28,61,127,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(28,61,127,.045) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:linear-gradient(90deg,#000 0 44%,transparent 88%);
+}
+.light-blob{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none}
+.lb1{width:340px;height:340px;background:#68DFFF;left:-160px;bottom:-90px;opacity:.22}
+.lb2{width:430px;height:430px;background:#A77AFF;right:-150px;top:-100px;opacity:.20}
+
+.lab-manifesto-light .lab-manifesto-copy{position:relative;z-index:3;max-width:720px}
+.lab-manifesto-light .lab-kicker{color:#43536D!important}
+.lab-manifesto-light h2{
+  color:#0B1529;
+  font-size:clamp(3.15rem,5.25vw,5.8rem);
+  line-height:.93;
+  letter-spacing:-.062em;
+  margin:0;
+}
+.lab-manifesto-light h2 em{
+  display:block;
+  font-style:normal;
+  background:linear-gradient(90deg,#0054E8 0%,#5A4FFF 48%,#9B5BFF 78%,#1BB6E8 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.lab-manifesto-light .lab-manifesto-copy>p:last-of-type{
+  color:#44546E!important;
+  font-size:16px;
+  line-height:1.78;
+  max-width:650px;
+}
+.light-list{margin-top:30px}
+.light-list>div{
+  background:rgba(255,255,255,.72)!important;
+  border:1px solid #D9E3F1!important;
+  box-shadow:0 10px 28px rgba(37,62,112,.05);
+}
+.light-list span{color:#184DE8!important}
+.light-list b{color:#1C2A42!important;font-size:12.5px!important}
+
+.light-perception-stage{
+  position:relative;
+  z-index:3;
+  height:610px;
+  perspective:1500px;
+}
+.light-floor{
+  position:absolute;
+  left:7%;right:3%;bottom:5%;
+  height:180px;
+  border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(72,89,255,.18),rgba(118,91,255,.07) 38%,transparent 70%);
+  filter:blur(8px);
+  transform:rotateX(70deg);
+}
+.light-sculpture{
+  position:absolute;
+  left:50%;top:50%;
+  width:260px;height:300px;
+  transform-style:preserve-3d;
+  transform:translate(-50%,-50%) rotateX(8deg) rotateY(-10deg);
+  animation:lightSculptureFloat 6s ease-in-out infinite;
+}
+.sculpture-card-main{
+  position:absolute;
+  inset:38px 12px 18px;
+  z-index:4;
+  border-radius:34px;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  background:
+    radial-gradient(circle at 25% 16%,rgba(116,229,255,.85),transparent 22%),
+    linear-gradient(145deg,#0C62EF,#5146F4 58%,#9A55FF);
+  color:#fff;
+  box-shadow:0 38px 90px rgba(58,67,210,.30),inset 0 1px 0 rgba(255,255,255,.44);
+  border:1px solid rgba(255,255,255,.55);
+}
+.sculpture-card-main:before{
+  content:"";
+  position:absolute;inset:14px;border-radius:25px;
+  border:1px solid rgba(255,255,255,.18)
+}
+.sculpture-card-main small,.sculpture-card-main strong,.sculpture-card-main span{position:relative;z-index:2}
+.sculpture-card-main small{font-size:7px;letter-spacing:.18em;color:#E3ECFF}
+.sculpture-card-main strong{font-family:"Poppins";font-size:23px;line-height:1.08;letter-spacing:-.04em;margin:10px 0}
+.sculpture-card-main span{font-size:9px;line-height:1.5;color:#DCE7FF}
+.sculpture-disc{
+  position:absolute;border-radius:50%;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+}
+.sculpture-disc.d1{
+  width:360px;height:360px;
+  border:1px solid rgba(72,92,235,.18);
+  box-shadow:0 0 0 42px rgba(91,75,245,.035);
+  transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-12deg);
+}
+.sculpture-disc.d2{
+  width:250px;height:250px;
+  background:conic-gradient(from 20deg,rgba(51,205,255,.20),rgba(95,79,255,.18),rgba(168,90,255,.16),rgba(51,205,255,.20));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 18px),#000 0);
+  transform:translate(-50%,-50%) rotateX(68deg) rotateZ(28deg);
+}
+
+.light-float-card{
+  position:absolute;
+  width:205px;
+  padding:15px 16px;
+  border-radius:20px;
+  background:rgba(255,255,255,.91);
+  border:1px solid rgba(215,224,241,.95);
+  box-shadow:0 20px 52px rgba(43,66,119,.14);
+  backdrop-filter:blur(14px);
+  color:#0A142A;
+}
+.light-float-card small{display:block;font-size:7px;letter-spacing:.13em;font-weight:900;color:#62718A}
+.light-float-card strong{display:block;font-family:"Poppins";font-size:17px;letter-spacing:-.04em;margin:7px 0 3px}
+.light-float-card span{font-size:9.5px;line-height:1.5;color:#56647A}
+.lfc1{left:0;top:12%;transform:rotate(-6deg);animation:lightCard1 6s ease-in-out infinite}
+.lfc2{right:0;top:18%;transform:rotate(5deg);animation:lightCard2 7s ease-in-out infinite}
+.lfc3{right:7%;bottom:9%;transform:rotate(-3deg);animation:lightCard3 6.5s ease-in-out infinite}
+
+.light-status{
+  position:absolute;
+  display:flex;align-items:center;gap:7px;
+  padding:8px 11px;
+  border-radius:999px;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.09em;
+  box-shadow:0 10px 28px rgba(41,61,109,.08);
+}
+.light-status i{width:7px;height:7px;border-radius:50%}
+.status-a{left:3%;bottom:20%;background:#FFF1F5;color:#A33A58;border:1px solid #F8D6E0}.status-a i{background:#FF688B}
+.status-b{right:0;top:5%;background:#EFFAFF;color:#176D87;border:1px solid #D2F0F8}.status-b i{background:#47CFEA}
+.status-c{left:39%;top:2%;background:#F2F0FF;color:#5945B4;border:1px solid #E1DCF8}.status-c i{background:#8068F4}
+.light-beam{
+  position:absolute;
+  left:9%;right:8%;top:53%;
+  height:2px;
+  background:linear-gradient(90deg,transparent,#35CFF4 22%,#5266FF 52%,#A15DFF 78%,transparent);
+  opacity:.55;
+  box-shadow:0 0 18px rgba(81,101,255,.28);
+  animation:lightBeamPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes lightSculptureFloat{
+  0%,100%{transform:translate(-50%,-50%) rotateX(8deg) rotateY(-10deg) translateY(0)}
+  50%{transform:translate(-50%,-50%) rotateX(4deg) rotateY(8deg) translateY(-10px)}
+}
+@keyframes lightCard1{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(-3deg) translateY(-12px)}}
+@keyframes lightCard2{0%,100%{transform:rotate(5deg) translateY(0)}50%{transform:rotate(2deg) translateY(10px)}}
+@keyframes lightCard3{0%,100%{transform:rotate(-3deg) translateY(0)}50%{transform:rotate(0deg) translateY(-9px)}}
+@keyframes lightBeamPulse{0%,100%{opacity:.28;transform:scaleX(.94)}50%{opacity:.75;transform:scaleX(1.03)}}
+
+@media(max-width:1180px){
+  .lab-manifesto-light{grid-template-columns:1fr;gap:48px}
+  .light-perception-stage{height:560px}
+  .lab-manifesto-light .lab-manifesto-copy{max-width:900px}
+}
+@media(max-width:760px){
+  .lab-manifesto-light{padding-top:90px;padding-bottom:90px}
+  .lab-manifesto-light h2{font-size:clamp(2.6rem,8.5vw,4rem)}
+  .light-perception-stage{height:540px}
+  .light-sculpture{width:220px;height:270px}
+  .light-float-card{width:180px}
+  .lfc1{left:0}.lfc2{right:0}.lfc3{right:2%}
+}
+@media(max-width:560px){
+  .light-perception-stage{height:650px}
+  .light-sculpture{width:180px;height:240px}
+  .sculpture-disc.d1{width:260px;height:260px}
+  .sculpture-disc.d2{width:190px;height:190px}
+  .light-float-card{width:158px;padding:12px}
+  .lfc1{left:0;top:8%}.lfc2{right:0;top:30%}.lfc3{left:8%;right:auto;bottom:8%}
+  .status-c{left:48%;top:1%}
+}
+@media(prefers-reduced-motion:reduce){
+  .light-sculpture,.light-float-card,.light-beam{animation:none!important}
+}

@@ -44,3 +44,20 @@
 .sx-hero-layout{grid-template-columns:1fr 1fr;gap:35px}.sx-hero h1{font-size:clamp(3.2rem,5.1vw,5.9rem)}
 @media(max-width:800px){.sx-hero-layout{grid-template-columns:1fr}.sx-human-visual{max-width:580px;height:500px;margin:10px auto 0}.sx-real-photo{height:360px}}
 @media(max-width:600px){.sx-human-visual{height:380px;max-width:100%;margin:12px auto 0}.sx-human-main{left:20%;right:4%}.sx-human-secondary{left:0;border-width:3px}.sx-human-message{padding:13px;right:0;max-width:160px}.sx-human-message strong{font-size:13px}.sx-human-message>span{font-size:7px}.sx-real-photo{height:310px;transform:none}.sx-hero h1{font-size:clamp(2.9rem,11vw,4.6rem)}}
+
+/* Complice Lab light-first compatibility */
+.sx-page{--sx-bg:#f8faff;--sx-ink:#0a142a;background:#f8faff;color:#0a142a}
+.sx-header{background:rgba(255,255,255,.93);border-bottom-color:#dce5f2;backdrop-filter:blur(16px)}
+.sx-nav nav a{color:#42516a}.sx-nav nav a:hover{color:var(--sx-hot)}
+.sx-hero{background:radial-gradient(ellipse at 78% 35%,color-mix(in srgb,var(--sx-hot) 12%,transparent),transparent 50%),radial-gradient(ellipse at 13% 12%,#edf3ff 0%,transparent 45%),#fff}
+.sx-lead,.sx-location,.sx-microproof,.sx-visual-top,.sx-visual-bottom{color:#53627a}
+.sx-secondary-link{color:#243653;border-bottom-color:#9aa9bf}
+.sx-showcase{background:linear-gradient(140deg,#fff,#eef3ff);color:#0a142a;box-shadow:0 34px 90px rgba(37,58,110,.18)}
+.sx-floating-chip{background:#fff;color:#0a142a;box-shadow:0 18px 45px rgba(37,58,110,.12)}
+.sx-promise,.sx-offer,.sx-method,.sx-work,.sx-faq,.sx-related{background:linear-gradient(180deg,#fff,#f3f6ff);color:#0a142a}
+.sx-promise p,.sx-method p,.sx-work-heading p,.sx-faq-layout>div>p,.sx-offer-heading p{color:#53627a}
+.sx-promise-art{background:radial-gradient(circle at center,color-mix(in srgb,var(--sx-hot) 15%,#eef3ff),#f7f9ff 70%);border-color:#d8e2f0}
+.sx-offer-tile{background:linear-gradient(135deg,#fff,#eef3ff);border-color:#d8e2f0;color:#0a142a;box-shadow:0 16px 40px rgba(37,58,110,.07)}
+.sx-steps,.sx-faq-items{border-color:#d7e0ee}.sx-step,.sx-faq-item{border-color:#d7e0ee}.sx-faq-item button{color:#0a142a}.sx-faq-item p{color:#53627a}
+.sx-case{color:#0a142a!important}.sx-case-caption p{color:#53627a}
+.sx-related-links a{background:#fff;color:#0a142a;border-color:#d6dfed}

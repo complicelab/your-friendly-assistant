@@ -256,178 +256,127 @@ export function LabHome() {
         </div>
       </section>
 
-      <section className="clx-index-strip" aria-label="Posicionamiento">
-        <span>ESTRATEGIA</span><i>✦</i>
-        <span>DISEÑO</span><i>✦</i>
-        <span>TECNOLOGÍA</span><i>✦</i>
-        <span>CONVERSIÓN</span>
-        <strong>NO HACEMOS WEBS PARA “ESTAR”. DISEÑAMOS PARA SER ELEGIDOS.</strong>
+      <section className="nx-pulsebar" aria-label="Posicionamiento">
+        <div className="nx-pulse-track">
+          <span>ESTRATEGIA</span><i>✦</i><span>DISEÑO</span><i>✦</i><span>TECNOLOGÍA</span><i>✦</i><span>CONVERSIÓN</span><i>✦</i>
+          <b>DISEÑAMOS PARA QUE TE ELIJAN ANTES DE HABLAR CONTIGO</b>
+        </div>
       </section>
 
-      <section className="clx-problem" id="enfoque">
-        <div className="clx-problem-copy">
-          <p className="clx-eyebrow">EL PROBLEMA NO SIEMPRE ES TU SERVICIO</p>
-          <h2>Puedes ser excelente<br/>y aun así <em>parecer reemplazable.</em></h2>
-          <p className="clx-body">
-            Antes de hablar contigo, una persona ya te encontró, te comparó y formó una impresión.
-            Diseñamos esa experiencia para que tu nivel se entienda antes de que tengas que explicarlo.
-          </p>
-          <div className="clx-proof-lines">
-            <span><b>01</b> Que entiendan por qué tú.</span>
-            <span><b>02</b> Que sientan confianza antes de escribir.</span>
-            <span><b>03</b> Que la oportunidad no se pierda después.</span>
+      <section className="nx-manifesto" id="enfoque">
+        <div className="nx-manifesto-copy">
+          <p className="nx-kicker">EL PROBLEMA NO SIEMPRE ES TU SERVICIO</p>
+          <h2>Ser excelente no basta<br/>si <em>nadie lo percibe.</em></h2>
+          <p>Tu cliente no empieza comparando funciones. Empieza comparando sensaciones: quién se ve más claro, más serio, más confiable y más fácil de elegir.</p>
+          <div className="nx-manifesto-points">
+            <span><b>01</b> Te encuentra</span>
+            <span><b>02</b> Te interpreta</span>
+            <span><b>03</b> Te compara</span>
+            <span><b>04</b> Decide si avanza</span>
           </div>
         </div>
-
-        <div className="clx-perception-machine" aria-hidden="true">
-          <div className="clx-orbital-disc disc-one"/>
-          <div className="clx-orbital-disc disc-two"/>
-          <div className="clx-perception-object">
-            <small>PERCEPCIÓN</small>
-            <strong>Tu presencia<br/>habla primero.</strong>
-            <span>Y puede subir o bajar el valor que perciben.</span>
+        <div className="nx-signal-stage" aria-hidden="true">
+          <div className="nx-signal-ring ring1"/><div className="nx-signal-ring ring2"/><div className="nx-signal-ring ring3"/>
+          <div className="nx-signal-core">
+            <small>SEÑAL DIGITAL</small>
+            <strong>¿Se nota<br/>tu nivel?</strong>
           </div>
-          <div className="clx-float-note note-a"><small>TE ENCUENTRA</small><b>Primera impresión</b></div>
-          <div className="clx-float-note note-b"><small>TE COMPARA</small><b>Valor percibido</b></div>
-          <div className="clx-float-note note-c"><small>DECIDE</small><b>Confianza</b></div>
-          <div className="clx-perception-pulse"/>
+          <div className="nx-signal-card sc-a"><span>PERCEPCIÓN</span><b>Autoridad</b></div>
+          <div className="nx-signal-card sc-b"><span>CLARIDAD</span><b>Entiende rápido</b></div>
+          <div className="nx-signal-card sc-c"><span>ACCIÓN</span><b>Da el paso</b></div>
+          <div className="nx-light-sweep"/>
         </div>
       </section>
 
-      <section className="clx-decisions">
-        <div className="clx-decisions-intro">
-          <p className="clx-eyebrow light">ANTES DEL PRIMER MENSAJE</p>
-          <h2>Tu cliente ya está<br/><em>tomando decisiones.</em></h2>
-          <p>Cada punto digital debe empujar una decisión distinta. No llenamos páginas: construimos secuencias.</p>
+      <section className="nx-journey">
+        <div className="nx-journey-head">
+          <p className="nx-kicker light">ANTES DEL PRIMER MENSAJE</p>
+          <h2>Diseñamos la secuencia<br/>que convierte atención <em>en acción.</em></h2>
         </div>
-
-        <div className="clx-decision-rail">
-          <article>
-            <span>01</span><MousePointer2 size={24}/>
-            <h3>Te descubre</h3>
-            <p>Una presencia que consigue atención correcta, no solo tráfico.</p>
-          </article>
-          <article>
-            <span>02</span><Sparkles size={24}/>
-            <h3>Te cree</h3>
-            <p>Diseño, mensaje y prueba visual reducen la duda.</p>
-          </article>
-          <article>
-            <span>03</span><CalendarDays size={24}/>
-            <h3>Da el paso</h3>
-            <p>Agendar, escribir o cotizar se vuelve obvio y simple.</p>
-          </article>
-          <article>
-            <span>04</span><Workflow size={24}/>
-            <h3>No se pierde</h3>
-            <p>El sistema conserva contexto, seguimiento y oportunidad.</p>
-          </article>
-          <div className="clx-rail-light"/>
+        <div className="nx-timeline">
+          <div className="nx-line"/>
+          <article className="nx-stop s1"><span>01</span><MousePointer2 size={22}/><h3>Te descubre</h3><p>La primera impresión filtra si sigues o no en la conversación.</p></article>
+          <article className="nx-stop s2"><span>02</span><Sparkles size={22}/><h3>Te cree</h3><p>La experiencia confirma que estás a la altura de lo que prometes.</p></article>
+          <article className="nx-stop s3"><span>03</span><CalendarDays size={22}/><h3>Actúa</h3><p>Agendar, escribir o cotizar se vuelve evidente y simple.</p></article>
+          <article className="nx-stop s4"><span>04</span><Workflow size={22}/><h3>No se pierde</h3><p>El sistema conserva contexto, seguimiento y oportunidad.</p></article>
         </div>
       </section>
 
-      <section className="clx-system" id="sistema">
-        <div className="clx-system-head">
-          <p className="clx-eyebrow">UN SISTEMA, NO PIEZAS SUELTAS</p>
-          <h2>Por fuera se siente simple.<br/><em>Por dentro todo está conectado.</em></h2>
-          <p>La persona ve una experiencia clara. Tu negocio recibe estructura, información y continuidad.</p>
+      <section className="nx-engine" id="sistema">
+        <div className="nx-engine-copy">
+          <p className="nx-kicker">LO QUE CONSTRUIMOS</p>
+          <h2>Una experiencia por fuera.<br/><em>Un motor comercial por dentro.</em></h2>
+          <p>No entregamos piezas aisladas. Conectamos presencia, captación, citas, seguimiento y operación para que todo empuje en la misma dirección.</p>
+          <div className="nx-engine-tags"><span>WEB</span><span>CRM</span><span>AGENDA</span><span>AUTOMATIZACIÓN</span><span>SEGUIMIENTO</span></div>
         </div>
-
-        <div className="clx-system-map">
-          <div className="clx-map-core">
-            <Network size={34}/>
-            <strong>TU NEGOCIO</strong>
-            <small>un solo sistema</small>
-          </div>
-          <div className="clx-map-node node-web"><Layers3 size={20}/><b>Web</b><span>atrae</span></div>
-          <div className="clx-map-node node-lead"><MousePointer2 size={20}/><b>Lead</b><span>entra</span></div>
-          <div className="clx-map-node node-book"><CalendarDays size={20}/><b>Cita</b><span>avanza</span></div>
-          <div className="clx-map-node node-crm"><Workflow size={20}/><b>CRM</b><span>organiza</span></div>
-          <div className="clx-map-node node-follow"><Sparkles size={20}/><b>Seguimiento</b><span>continúa</span></div>
-          <svg className="clx-map-lines" viewBox="0 0 1000 520" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M120 180 C250 80 360 150 500 260" />
-            <path d="M215 400 C310 320 390 340 500 260" />
-            <path d="M500 260 C630 150 750 120 870 185" />
-            <path d="M500 260 C640 350 750 375 875 390" />
-          </svg>
-          <div className="clx-map-beam"/>
-        </div>
-      </section>
-
-      <section className="clx-projects" id="proyectos">
-        <div className="clx-projects-head">
-          <p className="clx-eyebrow">SISTEMAS REALES</p>
-          <h2>No mostramos “portafolio”.<br/><em>Mostramos negocios funcionando.</em></h2>
-        </div>
-
-        <div className="clx-project-spread">
-          <a className="clx-project-main" href="https://complicedental.com" target="_blank" rel="noreferrer">
-            <div className="clx-project-copy">
-              <span>01 / HEALTH TECH</span>
-              <h3>CÓMPLICE<br/>DENTAL</h3>
-              <p>Web, CRM, citas, seguimiento y gestión comercial para odontólogos.</p>
-              <b>Explorar sistema <ArrowUpRight size={16}/></b>
+        <div className="nx-engine-ui">
+          <div className="nx-engine-window">
+            <div className="nx-window-top"><i/><i/><i/><small>ecosistema comercial</small></div>
+            <div className="nx-window-body">
+              <aside><span/><span/><span/><span/></aside>
+              <main>
+                <div className="nx-metric-row"><i/><i/><i/></div>
+                <div className="nx-flow-panel">
+                  <div className="nx-flow-node n1">Visita</div>
+                  <div className="nx-flow-node n2">Lead</div>
+                  <div className="nx-flow-node n3">Cita</div>
+                  <div className="nx-flow-node n4">Seguimiento</div>
+                  <svg viewBox="0 0 600 220" preserveAspectRatio="none"><path d="M70 110 C150 20 230 200 300 110 S450 20 530 110"/></svg>
+                </div>
+              </main>
             </div>
-            <div className="clx-dental-ui">
-              <div className="clx-window-bar"><i/><i/><i/><small>panel comercial</small></div>
-              <div className="clx-dashboard-shell">
-                <aside><i/><i/><i/><i/></aside>
-                <div><span/><span/><span/><strong/><strong/></div>
-              </div>
-              <div className="clx-ui-chip chip-lead">Nuevo lead</div>
-              <div className="clx-ui-chip chip-cita">Cita confirmada</div>
+          </div>
+          <div className="nx-float-stat stat1"><small>LEADS</small><strong>Organizados</strong></div>
+          <div className="nx-float-stat stat2"><small>CITAS</small><strong>Visibles</strong></div>
+        </div>
+      </section>
+
+      <section className="nx-work" id="proyectos">
+        <div className="nx-work-head">
+          <p className="nx-kicker light">SISTEMAS REALES</p>
+          <h2>Ideas que ya están<br/><em>trabajando en negocios reales.</em></h2>
+        </div>
+        <div className="nx-work-stage">
+          <a href="https://complicedental.com" target="_blank" rel="noreferrer" className="nx-work-feature">
+            <div className="nx-work-copy"><span>01 / HEALTH TECH</span><h3>CÓMPLICE<br/>DENTAL</h3><p>Captación, CRM, citas y seguimiento para odontólogos.</p><b>Explorar sistema <ArrowUpRight size={16}/></b></div>
+            <div className="nx-work-screen">
+              <div className="nx-screen-top"><i/><i/><i/></div>
+              <div className="nx-screen-body"><aside/><div><span/><span/><span/><strong/></div></div>
             </div>
           </a>
-
-          <div className="clx-project-side">
-            <a href="https://demo.complicedental.com" target="_blank" rel="noreferrer" className="clx-project-mini clx-showroom">
-              <span>02 / SHOWROOM</span>
-              <div className="clx-paper-stack"><i/><i/><i/></div>
-              <h3>Que vea su futuro<br/>antes de comprar.</h3>
-              <b>Ver showroom <ArrowUpRight size={15}/></b>
-            </a>
-            <a href="https://miraiz.com.co" target="_blank" rel="noreferrer" className="clx-project-mini clx-raiz">
-              <span>03 / REAL ESTATE SYSTEM</span>
-              <div className="clx-raiz-symbol"><i/><i/></div>
-              <h3>Mi Raíz</h3>
-              <p>Catálogo, asesores, comisiones y operación conectada.</p>
-              <b>Ver proyecto <ArrowUpRight size={15}/></b>
-            </a>
-          </div>
+          <a href="https://demo.complicedental.com" target="_blank" rel="noreferrer" className="nx-work-card nx-wc-show"><span>02 / SHOWROOM</span><div className="nx-stack"><i/><i/><i/></div><h3>Que el cliente vea su futuro antes de comprar.</h3><b>Ver showroom <ArrowUpRight size={15}/></b></a>
+          <a href="https://miraiz.com.co" target="_blank" rel="noreferrer" className="nx-work-card nx-wc-raiz"><span>03 / REAL ESTATE</span><div className="nx-rings"><i/><i/></div><h3>Mi Raíz</h3><p>Catálogo, operación, asesores y comisiones.</p><b>Ver proyecto <ArrowUpRight size={15}/></b></a>
         </div>
       </section>
 
-      <section className="clx-standard">
-        <div className="clx-standard-type">
-          <p className="clx-eyebrow">EL ESTÁNDAR CÓMPLICE</p>
-          <h2>Diseño que se ve.<br/>Estrategia que se siente.<br/><em>Tecnología que trabaja.</em></h2>
+      <section className="nx-code">
+        <div className="nx-code-copy">
+          <p className="nx-kicker">EL ESTÁNDAR CÓMPLICE</p>
+          <h2>No diseñamos para decorar.<br/><em>Diseñamos para posicionar.</em></h2>
+          <p>Dirección creativa, arquitectura comercial y tecnología útil trabajando como una sola cosa.</p>
         </div>
-        <div className="clx-standard-stage" aria-hidden="true">
-          <div className="clx-standard-ring ring-a"/>
-          <div className="clx-standard-ring ring-b"/>
-          <div className="clx-standard-core"><span>CÓMPLICE</span><strong>LAB</strong></div>
-          <div className="clx-standard-label sl1"><b>Dirección creativa</b><small>que no parece plantilla</small></div>
-          <div className="clx-standard-label sl2"><b>Arquitectura comercial</b><small>cada bloque mueve una decisión</small></div>
-          <div className="clx-standard-label sl3"><b>Tecnología útil</b><small>lo complejo sucede detrás</small></div>
-          <div className="clx-standard-label sl4"><b>Detalle obsesivo</b><small>jerarquía, ritmo y consistencia</small></div>
+        <div className="nx-code-object" aria-hidden="true">
+          <div className="nx-code-cube">
+            <div className="nx-face front"><span>CÓMPLICE</span><b>LAB</b></div>
+            <div className="nx-face side"><span>ESTRATEGIA</span></div>
+            <div className="nx-face top"><span>DISEÑO</span></div>
+          </div>
+          <div className="nx-code-label l1">Dirección creativa</div>
+          <div className="nx-code-label l2">Arquitectura comercial</div>
+          <div className="nx-code-label l3">Tecnología útil</div>
+          <div className="nx-code-label l4">Detalle obsesivo</div>
         </div>
       </section>
 
-      <section className="clx-contact" id="contacto">
-        <div className="clx-contact-copy">
-          <p className="clx-eyebrow light">CÓMO HACEMOS TU DIAGNÓSTICO</p>
-          <h2>Antes de proponerte algo,<br/><em>entendemos qué está frenando tu crecimiento.</em></h2>
-          <p>Cuéntanos quién eres, qué vendes y qué debería empezar a pasar. Llegamos a la conversación con contexto, no con un discurso genérico.</p>
-          <div className="clx-contact-steps">
-            <span><b>01</b> Entendemos tu situación.</span>
-            <span><b>02</b> Detectamos el cuello de botella.</span>
-            <span><b>03</b> Te proponemos una solución concreta.</span>
-          </div>
+      <section className="nx-contact" id="contacto">
+        <div className="nx-contact-copy">
+          <p className="nx-kicker light">DIAGNÓSTICO INICIAL</p>
+          <h2>Cuéntanos qué debería<br/><em>empezar a pasar.</em></h2>
+          <p>Primero entendemos tu negocio. Después decidimos qué construir, qué conectar y qué debe cambiar para que tu presencia digital empiece a trabajar a tu favor.</p>
+          <div className="nx-contact-notes"><span><b>01</b> Contexto</span><span><b>02</b> Cuello de botella</span><span><b>03</b> Solución concreta</span></div>
         </div>
-        <div className="clx-contact-form">
-          <LeadCaptureForm />
-        </div>
-        <div className="clx-contact-orb orb-a"/><div className="clx-contact-orb orb-b"/>
+        <div className="nx-contact-form"><LeadCaptureForm /></div>
+        <div className="nx-contact-beam"/>
       </section>
     </main>
   );

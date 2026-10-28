@@ -3811,3 +3811,9 @@ a.project-card-pro:hover {
   .pb-logo-panel,.pb-material-panel{min-height:320px;}
   .pb-mobile-poster{min-height:440px;padding:24px;}
 }
+
+/* === Shared marketing heading rhythm === */
+.section-heading > p:last-child{margin-top:26px!important}
+@media(max-width:640px){
+  .section-heading > p:last-child{margin-top:20px!important}
+}

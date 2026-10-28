@@ -2639,3 +2639,209 @@
 .standard-card{
   box-shadow:0 24px 58px rgba(38,60,108,.12)!important;
 }
+
+/* ==========================================================================
+   HOME VISUAL ENERGY V3 — saturated scenes + motion graphics
+   ========================================================================== */
+
+/* Problem / perception: saturated violet-blue field */
+.lab-manifesto-light{
+  color:#fff!important;
+  background:
+    radial-gradient(circle at 12% 18%,rgba(52,212,255,.34),transparent 26%),
+    radial-gradient(circle at 88% 14%,rgba(178,92,255,.36),transparent 30%),
+    linear-gradient(135deg,#1648E8 0%,#4F46F2 48%,#8B4FFF 100%)!important;
+}
+.lab-manifesto-light .lab-kicker,
+.lab-manifesto-light .lab-manifesto-copy>p:last-of-type,
+.lab-manifesto-light .light-list b{
+  color:#fff!important;
+}
+.lab-manifesto-light h2{color:#fff!important}
+.lab-manifesto-light h2 em{
+  background:linear-gradient(90deg,#FFFFFF,#C9D7FF 42%,#7FE7FF 100%)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;
+}
+.lab-manifesto-light .lab-manifesto-copy{
+  background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.05))!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  box-shadow:0 32px 90px rgba(24,24,116,.22)!important;
+  backdrop-filter:blur(18px);
+}
+.light-list>div{
+  background:rgba(255,255,255,.08)!important;
+  border-color:rgba(255,255,255,.16)!important;
+  box-shadow:none!important;
+}
+.light-list span{color:#9EEBFF!important}
+.light-perception-stage{
+  background:
+    radial-gradient(circle at center,rgba(255,255,255,.09),transparent 36%),
+    rgba(255,255,255,.04)!important;
+  border-color:rgba(255,255,255,.15)!important;
+}
+.light-float-card{
+  background:rgba(255,255,255,.92)!important;
+}
+.light-field-grid{
+  opacity:.36!important;
+  background-image:
+    linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px)!important;
+}
+.lb1{background:#43D9FF!important;opacity:.34!important}
+.lb2{background:#C35BFF!important;opacity:.34!important}
+
+/* Decisions: energetic cyan-blue section */
+.lab-decisions{
+  color:#fff!important;
+  background:
+    radial-gradient(circle at 7% 12%,rgba(81,232,255,.28),transparent 26%),
+    radial-gradient(circle at 92% 72%,rgba(123,79,255,.34),transparent 30%),
+    linear-gradient(135deg,#0D8EDB 0%,#2464E8 48%,#694CF1 100%)!important;
+}
+.lab-decisions .lab-kicker,
+.lab-decisions .lab-section-head h2,
+.lab-decisions .lab-section-head>p:last-child{
+  color:#fff!important;
+}
+.lab-decision{
+  background:rgba(255,255,255,.94)!important;
+  border-color:rgba(255,255,255,.72)!important;
+  box-shadow:0 30px 75px rgba(18,43,120,.24)!important;
+}
+.lab-decision:nth-child(1){background:linear-gradient(145deg,#FFFFFF,#DDF8FF)!important}
+.lab-decision:nth-child(2){background:linear-gradient(145deg,#FFFFFF,#E9E3FF)!important}
+.lab-decision:nth-child(3){background:linear-gradient(145deg,#FFFFFF,#DDF5FF)!important}
+.lab-decision:nth-child(4){background:linear-gradient(145deg,#FFFFFF,#EEE1FF)!important}
+
+/* Visitor -> client: electric blue-violet with white cards */
+.lab-system-light{
+  color:#fff!important;
+  background:
+    radial-gradient(circle at 12% 20%,rgba(52,220,255,.30),transparent 28%),
+    radial-gradient(circle at 88% 22%,rgba(169,87,255,.33),transparent 30%),
+    linear-gradient(135deg,#0C52D8 0%,#3151EC 50%,#7A4CF0 100%)!important;
+}
+.lab-system-light .lab-kicker,
+.lab-system-light .lab-system-intro h2,
+.lab-system-light .lab-system-intro>p:last-child{
+  color:#fff!important;
+}
+.lab-system-light .lab-system-intro h2 em{
+  background:linear-gradient(90deg,#FFFFFF,#BFD8FF,#8FE9FF)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;
+}
+.lab-system-light:before{
+  opacity:.45!important;
+  background-image:
+    linear-gradient(rgba(255,255,255,.10) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.10) 1px,transparent 1px)!important;
+}
+.conversion-journey{
+  background:rgba(255,255,255,.08)!important;
+  border-color:rgba(255,255,255,.16)!important;
+  backdrop-filter:blur(14px);
+}
+.journey-step{
+  background:rgba(255,255,255,.96)!important;
+  border-color:rgba(255,255,255,.85)!important;
+  box-shadow:0 30px 75px rgba(20,42,112,.24)!important;
+}
+.journey-result{
+  background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(237,240,255,.92))!important;
+}
+
+/* Projects: rich violet editorial field */
+.lab-projects{
+  background:
+    radial-gradient(circle at 10% 12%,rgba(64,216,255,.24),transparent 26%),
+    radial-gradient(circle at 88% 18%,rgba(179,85,255,.28),transparent 30%),
+    linear-gradient(135deg,#2E43E7 0%,#5B46EE 52%,#9A4EF5 100%)!important;
+}
+.lab-projects-head .lab-kicker,
+.lab-projects-head h2,
+.lab-projects-head>p:last-child{
+  color:#fff!important;
+}
+.lab-projects-head h2 span{
+  background:linear-gradient(90deg,#FFFFFF,#B9DAFF,#86EAFF)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;
+}
+
+/* Standard: cyan-electric scene */
+.lab-standard{
+  color:#fff!important;
+  background:
+    radial-gradient(circle at 10% 15%,rgba(86,236,255,.30),transparent 28%),
+    radial-gradient(circle at 88% 72%,rgba(139,87,255,.30),transparent 30%),
+    linear-gradient(135deg,#0E9DD4 0%,#286EE6 48%,#6651ED 100%)!important;
+}
+.lab-standard .lab-kicker,
+.lab-standard-head h2,
+.lab-standard-head>p:last-child{
+  color:#fff!important;
+}
+.lab-standard-head h2 em{
+  background:linear-gradient(90deg,#FFFFFF,#D5D7FF,#89EFFF)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;
+}
+.lab-standard-orbit{
+  background:rgba(255,255,255,.12)!important;
+  border-color:rgba(255,255,255,.18)!important;
+  backdrop-filter:blur(16px);
+}
+
+/* Motion graphics layers */
+.lab-manifesto-light:before,
+.lab-decisions:before,
+.lab-system-light:after,
+.lab-projects:before,
+.lab-standard:before{
+  content:"";
+  position:absolute;
+  width:520px;
+  height:520px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:
+    0 0 0 48px rgba(255,255,255,.035),
+    0 0 0 96px rgba(255,255,255,.018);
+  pointer-events:none;
+  animation:sceneOrbit 18s linear infinite;
+}
+.lab-manifesto-light:before{right:-180px;top:-120px}
+.lab-decisions:before{left:-190px;bottom:-210px}
+.lab-system-light:after{right:-180px;top:80px}
+.lab-projects:before{left:-170px;top:110px}
+.lab-standard:before{right:-180px;bottom:-190px}
+
+.lab-manifesto-light .lb1,
+.lab-manifesto-light .lb2,
+.lab-decisions:after,
+.lab-projects .lab-showcase-editorial:before{
+  animation:ambientFloat 7s ease-in-out infinite alternate;
+}
+
+@keyframes sceneOrbit{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+@keyframes ambientFloat{
+  from{transform:translate3d(0,0,0) scale(.96)}
+  to{transform:translate3d(0,-16px,0) scale(1.05)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .lab-manifesto-light:before,
+  .lab-decisions:before,
+  .lab-system-light:after,
+  .lab-projects:before,
+  .lab-standard:before,
+  .lab-manifesto-light .lb1,
+  .lab-manifesto-light .lb2,
+  .lab-decisions:after,
+  .lab-projects .lab-showcase-editorial:before{
+    animation:none!important;
+  }
+}

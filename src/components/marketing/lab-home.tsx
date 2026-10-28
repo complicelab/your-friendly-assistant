@@ -271,13 +271,13 @@ export function LabHome() {
         </div>
       </section>
 
-      <section className="lab-manifesto" id="enfoque">
-        <div className="perception-grid"/>
-        <div className="perception-glow pg1"/>
-        <div className="perception-glow pg2"/>
+      <section className="lab-manifesto lab-manifesto-light" id="enfoque">
+        <div className="light-field-grid"/>
+        <div className="light-blob lb1"/>
+        <div className="light-blob lb2"/>
 
         <div className="lab-manifesto-copy">
-          <p className="lab-kicker light"><span /> EL PROBLEMA NO SIEMPRE ES TU SERVICIO</p>
+          <p className="lab-kicker"><span /> EL PROBLEMA NO SIEMPRE ES TU SERVICIO</p>
           <h2>
             Puedes ser excelente y aun así
             <em>parecer una opción más.</em>
@@ -287,49 +287,45 @@ export function LabHome() {
             autoridad, claridad y nivel, puedes perder la oportunidad sin siquiera saber que existió.
           </p>
 
-          <div className="lab-pain-list">
+          <div className="lab-pain-list light-list">
             <div><span>01</span><b>Te encuentran, pero no entienden por qué elegirte.</b></div>
             <div><span>02</span><b>Ven tu perfil, pero no sienten suficiente confianza para escribir.</b></div>
             <div><span>03</span><b>Preguntan, pero el seguimiento se enfría o se pierde.</b></div>
           </div>
         </div>
 
-        <div className="perception-stage" aria-hidden="true">
-          <div className="perception-orbit po1"/>
-          <div className="perception-orbit po2"/>
-          <div className="perception-core">
-            <div className="core-face front">
-              <span>PERCEPCIÓN</span>
-              <strong>¿TE ELIGEN?</strong>
-            </div>
-            <div className="core-face back">
-              <span>REALIDAD</span>
-              <strong>ERES BUENO</strong>
+        <div className="light-perception-stage" aria-hidden="true">
+          <div className="light-floor"/>
+          <div className="light-sculpture">
+            <div className="sculpture-disc d1"/>
+            <div className="sculpture-disc d2"/>
+            <div className="sculpture-card-main">
+              <small>PERCEPCIÓN DIGITAL</small>
+              <strong>¿Tu presencia confirma lo bueno que eres?</strong>
+              <span>La decisión empieza antes del primer mensaje.</span>
             </div>
           </div>
 
-          <div className="float-signal fs1">
-            <small>01 · DESCUBRIMIENTO</small>
-            <strong>Te vio.</strong>
-            <span>Pero todavía no sabe por qué tú.</span>
+          <div className="light-float-card lfc1">
+            <small>TE ENCONTRÓ</small>
+            <strong>Primera impresión</strong>
+            <span>3 segundos para parecer relevante.</span>
           </div>
-          <div className="float-signal fs2">
-            <small>02 · COMPARACIÓN</small>
-            <strong>Te comparó.</strong>
-            <span>La percepción decide antes que el precio.</span>
+          <div className="light-float-card lfc2">
+            <small>TE COMPARÓ</small>
+            <strong>Valor percibido</strong>
+            <span>No compites solo por precio.</span>
           </div>
-          <div className="float-signal fs3">
-            <small>03 · DECISIÓN</small>
-            <strong>Te escribió.</strong>
-            <span>Ahora toca no perder la oportunidad.</span>
+          <div className="light-float-card lfc3">
+            <small>TE ELIGIÓ</small>
+            <strong>Confianza</strong>
+            <span>Tu presencia hizo su trabajo.</span>
           </div>
 
-          <div className="perception-chip chip-bad"><i/>SE VE GENÉRICO</div>
-          <div className="perception-chip chip-good"><i/>SE SIENTE PREMIUM</div>
-          <div className="perception-chip chip-trust"><i/>GENERA CONFIANZA</div>
-
-          <div className="perception-scanline"/>
-          <div className="perception-caption">LA DECISIÓN EMPIEZA ANTES DEL PRIMER MENSAJE</div>
+          <div className="light-status status-a"><i/>SE VE GENÉRICO</div>
+          <div className="light-status status-b"><i/>SE SIENTE PREMIUM</div>
+          <div className="light-status status-c"><i/>GENERA CONFIANZA</div>
+          <div className="light-beam"/>
         </div>
       </section>
 

@@ -1994,3 +1994,28 @@
 @media(prefers-reduced-motion:reduce){
   .light-sculpture,.light-float-card,.light-beam{animation:none!important}
 }
+
+/* === Global heading-to-support spacing audit === */
+.lab-manifesto-light .lab-manifesto-copy>p:last-of-type,
+.lab-projects-head>p:last-child,
+.lab-section-head>p:last-child,
+.lab-system-intro>p:last-child,
+.lab-standard-head>p:last-child,
+.lab-projects-head>p:last-child{
+  margin-top:26px!important;
+}
+.lab-manifesto-copy>p:last-of-type{margin-top:26px!important}
+.lab-section-head{margin-bottom:50px}
+.lab-projects-head{margin-bottom:54px}
+.lab-system-intro>p:last-child{margin-bottom:0}
+.lab-standard-head>p:last-child{margin-bottom:0}
+@media(max-width:640px){
+  .lab-manifesto-light .lab-manifesto-copy>p:last-of-type,
+  .lab-projects-head>p:last-child,
+  .lab-section-head>p:last-child,
+  .lab-system-intro>p:last-child,
+  .lab-standard-head>p:last-child,
+  .lab-manifesto-copy>p:last-of-type{
+    margin-top:20px!important;
+  }
+}

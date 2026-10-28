@@ -256,321 +256,178 @@ export function LabHome() {
         </div>
       </section>
 
-      <section className="lab-proof-strip" aria-label="Posicionamiento">
-        <div className="lab-marquee-track">
-          <div className="lab-marquee-group">
-            <span>NO HACEMOS WEBS PARA “ESTAR EN INTERNET”</span><i>✦</i>
-            <span>DISEÑAMOS PARA SER ELEGIDOS</span><i>✦</i>
-            <span>ESTRATEGIA · DISEÑO · TECNOLOGÍA · CONVERSIÓN</span><i>✦</i>
-          </div>
-          <div className="lab-marquee-group" aria-hidden="true">
-            <span>NO HACEMOS WEBS PARA “ESTAR EN INTERNET”</span><i>✦</i>
-            <span>DISEÑAMOS PARA SER ELEGIDOS</span><i>✦</i>
-            <span>ESTRATEGIA · DISEÑO · TECNOLOGÍA · CONVERSIÓN</span><i>✦</i>
-          </div>
-        </div>
+      <section className="clx-index-strip" aria-label="Posicionamiento">
+        <span>ESTRATEGIA</span><i>✦</i>
+        <span>DISEÑO</span><i>✦</i>
+        <span>TECNOLOGÍA</span><i>✦</i>
+        <span>CONVERSIÓN</span>
+        <strong>NO HACEMOS WEBS PARA “ESTAR”. DISEÑAMOS PARA SER ELEGIDOS.</strong>
       </section>
 
-      <section className="lab-manifesto lab-manifesto-light" id="enfoque">
-        <div className="light-field-grid"/>
-        <div className="light-blob lb1"/>
-        <div className="light-blob lb2"/>
-
-        <div className="lab-manifesto-copy">
-          <p className="lab-kicker"><span /> EL PROBLEMA NO SIEMPRE ES TU SERVICIO</p>
-          <h2>
-            Puedes ser excelente y aun así
-            <em>parecer una opción más.</em>
-          </h2>
-          <p>
-            Antes de llamarte, tu cliente ya comparó, dudó y descartó. Si tu presencia digital no transmite
-            autoridad, claridad y nivel, puedes perder la oportunidad sin siquiera saber que existió.
+      <section className="clx-problem" id="enfoque">
+        <div className="clx-problem-copy">
+          <p className="clx-eyebrow">EL PROBLEMA NO SIEMPRE ES TU SERVICIO</p>
+          <h2>Puedes ser excelente<br/>y aun así <em>parecer reemplazable.</em></h2>
+          <p className="clx-body">
+            Antes de hablar contigo, una persona ya te encontró, te comparó y formó una impresión.
+            Diseñamos esa experiencia para que tu nivel se entienda antes de que tengas que explicarlo.
           </p>
-
-          <div className="lab-pain-list light-list">
-            <div><span>01</span><b>Te encuentran, pero no entienden por qué elegirte.</b></div>
-            <div><span>02</span><b>Ven tu perfil, pero no sienten suficiente confianza para escribir.</b></div>
-            <div><span>03</span><b>Preguntan, pero el seguimiento se enfría o se pierde.</b></div>
+          <div className="clx-proof-lines">
+            <span><b>01</b> Que entiendan por qué tú.</span>
+            <span><b>02</b> Que sientan confianza antes de escribir.</span>
+            <span><b>03</b> Que la oportunidad no se pierda después.</span>
           </div>
         </div>
 
-        <div className="light-perception-stage" aria-hidden="true">
-          <div className="light-floor"/>
-          <div className="light-sculpture">
-            <div className="sculpture-disc d1"/>
-            <div className="sculpture-disc d2"/>
-            <div className="sculpture-card-main">
-              <small>PERCEPCIÓN DIGITAL</small>
-              <strong>¿Tu presencia confirma lo bueno que eres?</strong>
-              <span>La decisión empieza antes del primer mensaje.</span>
-            </div>
+        <div className="clx-perception-machine" aria-hidden="true">
+          <div className="clx-orbital-disc disc-one"/>
+          <div className="clx-orbital-disc disc-two"/>
+          <div className="clx-perception-object">
+            <small>PERCEPCIÓN</small>
+            <strong>Tu presencia<br/>habla primero.</strong>
+            <span>Y puede subir o bajar el valor que perciben.</span>
           </div>
-
-          <div className="light-float-card lfc1">
-            <small>TE ENCONTRÓ</small>
-            <strong>Primera impresión</strong>
-            <span>3 segundos para parecer relevante.</span>
-          </div>
-          <div className="light-float-card lfc2">
-            <small>TE COMPARÓ</small>
-            <strong>Valor percibido</strong>
-            <span>No compites solo por precio.</span>
-          </div>
-          <div className="light-float-card lfc3">
-            <small>TE ELIGIÓ</small>
-            <strong>Confianza</strong>
-            <span>Tu presencia hizo su trabajo.</span>
-          </div>
-
-          <div className="light-status status-a"><i/>SE VE GENÉRICO</div>
-          <div className="light-status status-b"><i/>SE SIENTE PREMIUM</div>
-          <div className="light-status status-c"><i/>GENERA CONFIANZA</div>
-          <div className="light-beam"/>
+          <div className="clx-float-note note-a"><small>TE ENCUENTRA</small><b>Primera impresión</b></div>
+          <div className="clx-float-note note-b"><small>TE COMPARA</small><b>Valor percibido</b></div>
+          <div className="clx-float-note note-c"><small>DECIDE</small><b>Confianza</b></div>
+          <div className="clx-perception-pulse"/>
         </div>
       </section>
 
-      <section className="lab-decisions">
-        <div className="lab-section-head">
-          <p className="lab-kicker"><span /> ANTES DE HABLAR CONTIGO</p>
-          <h2>Tu cliente ya tomó varias decisiones.</h2>
-          <p>Diseñamos cada punto digital para que esas decisiones jueguen a tu favor.</p>
+      <section className="clx-decisions">
+        <div className="clx-decisions-intro">
+          <p className="clx-eyebrow light">ANTES DEL PRIMER MENSAJE</p>
+          <h2>Tu cliente ya está<br/><em>tomando decisiones.</em></h2>
+          <p>Cada punto digital debe empujar una decisión distinta. No llenamos páginas: construimos secuencias.</p>
         </div>
-        <div className="lab-decision-grid">
-          {decisions.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <article className={"lab-decision d" + (index + 1)} key={item.n}>
-                <div className="lab-decision-top"><span>{item.n}</span><Icon size={22}/></div>
-                <div className="lab-decision-orbit" />
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-                <div className="lab-decision-line" />
-              </article>
-            );
-          })}
+
+        <div className="clx-decision-rail">
+          <article>
+            <span>01</span><MousePointer2 size={24}/>
+            <h3>Te descubre</h3>
+            <p>Una presencia que consigue atención correcta, no solo tráfico.</p>
+          </article>
+          <article>
+            <span>02</span><Sparkles size={24}/>
+            <h3>Te cree</h3>
+            <p>Diseño, mensaje y prueba visual reducen la duda.</p>
+          </article>
+          <article>
+            <span>03</span><CalendarDays size={24}/>
+            <h3>Da el paso</h3>
+            <p>Agendar, escribir o cotizar se vuelve obvio y simple.</p>
+          </article>
+          <article>
+            <span>04</span><Workflow size={24}/>
+            <h3>No se pierde</h3>
+            <p>El sistema conserva contexto, seguimiento y oportunidad.</p>
+          </article>
+          <div className="clx-rail-light"/>
         </div>
       </section>
 
-      <section className="lab-system lab-system-light" id="sistema">
-        <div className="lab-system-intro">
-          <p className="lab-kicker"><span /> CÓMO FUNCIONA</p>
-          <h2>De visitante a cliente.<br/><em>Sin perderlo en el camino.</em></h2>
-          <p>Una experiencia simple para la persona. Un sistema claro para tu negocio.</p>
+      <section className="clx-system" id="sistema">
+        <div className="clx-system-head">
+          <p className="clx-eyebrow">UN SISTEMA, NO PIEZAS SUELTAS</p>
+          <h2>Por fuera se siente simple.<br/><em>Por dentro todo está conectado.</em></h2>
+          <p>La persona ve una experiencia clara. Tu negocio recibe estructura, información y continuidad.</p>
         </div>
 
-        <div className="conversion-journey">
-          <div className="journey-path"/>
-
-          <article className="journey-step step-discover">
-            <div className="journey-visual discover-visual">
-              <div className="discover-ring r1"/><div className="discover-ring r2"/>
-              <MousePointer2 size={28}/>
-            </div>
-            <span>01 · DESCUBRIR</span>
-            <h3>Te encuentra.</h3>
-            <p>Web, campaña o búsqueda. La primera impresión hace el primer filtro.</p>
-          </article>
-
-          <article className="journey-step step-trust">
-            <div className="journey-visual trust-visual">
-              <div className="trust-card t1"/><div className="trust-card t2"/>
-              <Sparkles size={28}/>
-            </div>
-            <span>02 · CONFIAR</span>
-            <h3>Entiende por qué tú.</h3>
-            <p>Mensaje, diseño y autoridad convierten interés en confianza.</p>
-          </article>
-
-          <article className="journey-step step-act">
-            <div className="journey-visual act-visual">
-              <div className="act-button">AGENDAR</div>
-              <CalendarDays size={28}/>
-            </div>
-            <span>03 · ACTUAR</span>
-            <h3>Da el siguiente paso.</h3>
-            <p>Cita, WhatsApp o formulario. Sin fricción ni dudas.</p>
-          </article>
-
-          <article className="journey-step step-manage">
-            <div className="journey-visual manage-visual">
-              <div className="manage-column"><i/><i/><i/></div>
-              <Workflow size={28}/>
-            </div>
-            <span>04 · GESTIONAR</span>
-            <h3>No se pierde.</h3>
-            <p>CRM, estados y seguimiento para mantener viva la oportunidad.</p>
-          </article>
-        </div>
-
-        <div className="journey-result">
-          <div className="journey-result-copy">
-            <span>EL RESULTADO</span>
-            <h3>Una sola experiencia por fuera.<br/>Un sistema ordenado por dentro.</h3>
-            <p>El cliente siente simplicidad. Tu equipo gana control, contexto y seguimiento.</p>
+        <div className="clx-system-map">
+          <div className="clx-map-core">
+            <Network size={34}/>
+            <strong>TU NEGOCIO</strong>
+            <small>un solo sistema</small>
           </div>
-          <div className="journey-result-ui">
-            <div className="result-ui-head"><i/><i/><i/></div>
-            <div className="result-ui-grid">
-              <div className="result-metric"><small>LEADS</small><strong>Organizados</strong></div>
-              <div className="result-metric"><small>CITAS</small><strong>Visibles</strong></div>
-              <div className="result-metric"><small>SEGUIMIENTO</small><strong>Activo</strong></div>
-              <div className="result-metric"><small>OPORTUNIDADES</small><strong>En curso</strong></div>
-            </div>
-          </div>
+          <div className="clx-map-node node-web"><Layers3 size={20}/><b>Web</b><span>atrae</span></div>
+          <div className="clx-map-node node-lead"><MousePointer2 size={20}/><b>Lead</b><span>entra</span></div>
+          <div className="clx-map-node node-book"><CalendarDays size={20}/><b>Cita</b><span>avanza</span></div>
+          <div className="clx-map-node node-crm"><Workflow size={20}/><b>CRM</b><span>organiza</span></div>
+          <div className="clx-map-node node-follow"><Sparkles size={20}/><b>Seguimiento</b><span>continúa</span></div>
+          <svg className="clx-map-lines" viewBox="0 0 1000 520" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M120 180 C250 80 360 150 500 260" />
+            <path d="M215 400 C310 320 390 340 500 260" />
+            <path d="M500 260 C630 150 750 120 870 185" />
+            <path d="M500 260 C640 350 750 375 875 390" />
+          </svg>
+          <div className="clx-map-beam"/>
         </div>
       </section>
 
-      <section className="lab-projects" id="proyectos">
-        <div className="lab-projects-head">
-          <p className="lab-kicker"><span /> SISTEMAS REALES</p>
-          <h2>Proyectos que no solo se ven bien.<br/><span>Se sienten hechos para vender.</span></h2>
-          <p>Cada sistema parte de un negocio distinto. Por eso cada experiencia también debe sentirse distinta.</p>
+      <section className="clx-projects" id="proyectos">
+        <div className="clx-projects-head">
+          <p className="clx-eyebrow">SISTEMAS REALES</p>
+          <h2>No mostramos “portafolio”.<br/><em>Mostramos negocios funcionando.</em></h2>
         </div>
 
-        <div className="lab-showcase-editorial">
-          <a href="https://complicedental.com" target="_blank" rel="noreferrer" className="showcase-hero dental-editorial">
-            <div className="showcase-copy">
-              <span>01 · CÓMPLICE DENTAL</span>
-              <h3>Captar pacientes.<br/>Gestionar mejor.<br/><em>Vender con sistema.</em></h3>
-              <p>Una experiencia para odontólogos que conecta presencia digital, citas, contactos y seguimiento comercial.</p>
-              <div className="showcase-meta"><i>Web</i><i>CRM</i><i>Agenda</i><i>Seguimiento</i></div>
-              <b>Explorar Cómplice Dental <ArrowUpRight size={16}/></b>
+        <div className="clx-project-spread">
+          <a className="clx-project-main" href="https://complicedental.com" target="_blank" rel="noreferrer">
+            <div className="clx-project-copy">
+              <span>01 / HEALTH TECH</span>
+              <h3>CÓMPLICE<br/>DENTAL</h3>
+              <p>Web, CRM, citas, seguimiento y gestión comercial para odontólogos.</p>
+              <b>Explorar sistema <ArrowUpRight size={16}/></b>
             </div>
-
-            <div className="showcase-visual">
-              <div className="device-backplate"/>
-              <div className="showcase-screen">
-                <div className="screen-top"><i/><i/><i/><span>complicedental / dashboard</span></div>
-                <div className="screen-body">
-                  <aside><span/><span/><span/><span/></aside>
-                  <div className="screen-main">
-                    <div className="screen-headline"><small>HOY</small><strong>Tu operación en un solo lugar.</strong></div>
-                    <div className="screen-metrics"><div/><div/><div/></div>
-                    <div className="screen-lower"><div className="screen-graph"/><div className="screen-queue"/></div>
-                  </div>
-                </div>
+            <div className="clx-dental-ui">
+              <div className="clx-window-bar"><i/><i/><i/><small>panel comercial</small></div>
+              <div className="clx-dashboard-shell">
+                <aside><i/><i/><i/><i/></aside>
+                <div><span/><span/><span/><strong/><strong/></div>
               </div>
-              <div className="showcase-bubble bubble-one"><small>NUEVO LEAD</small><strong>Paciente interesado</strong></div>
-              <div className="showcase-bubble bubble-two"><small>AGENDA</small><strong>Valoración confirmada ✓</strong></div>
+              <div className="clx-ui-chip chip-lead">Nuevo lead</div>
+              <div className="clx-ui-chip chip-cita">Cita confirmada</div>
             </div>
           </a>
 
-          <div className="showcase-secondary-grid">
-            <a href="https://demo.complicedental.com" target="_blank" rel="noreferrer" className="showcase-secondary showroom-editorial">
-              <div className="secondary-art showroom-art">
-                <div className="showroom-sheet s1"/>
-                <div className="showroom-sheet s2"/>
-                <div className="showroom-sheet s3">
-                  <span>PROPUESTA</span>
-                  <strong>Tu futura web,<br/>antes de comprarla.</strong>
-                </div>
-              </div>
-              <div className="secondary-copy">
-                <span>02 · SHOWROOM INTERACTIVO</span>
-                <h3>Una propuesta que se siente real.</h3>
-                <p>El cliente ve su marca, su estilo y su experiencia antes de tomar la decisión.</p>
-                <b>Ver showroom <ArrowUpRight size={15}/></b>
-              </div>
+          <div className="clx-project-side">
+            <a href="https://demo.complicedental.com" target="_blank" rel="noreferrer" className="clx-project-mini clx-showroom">
+              <span>02 / SHOWROOM</span>
+              <div className="clx-paper-stack"><i/><i/><i/></div>
+              <h3>Que vea su futuro<br/>antes de comprar.</h3>
+              <b>Ver showroom <ArrowUpRight size={15}/></b>
             </a>
-
-            <a href="https://miraiz.com.co" target="_blank" rel="noreferrer" className="showcase-secondary raiz-editorial">
-              <div className="secondary-art raiz-art">
-                <div className="raiz-orbit"/>
-                <div className="raiz-house-card">
-                  <small>INMUEBLE</small>
-                  <strong>$ 480 M</strong>
-                  <span>3 hab · 2 baños · 96 m²</span>
-                </div>
-                <div className="raiz-ops-card">
-                  <small>OPERACIÓN</small>
-                  <strong>Comisiones + asesores + catálogo</strong>
-                </div>
-              </div>
-              <div className="secondary-copy">
-                <span>03 · MI RAÍZ</span>
-                <h3>Una inmobiliaria, convertida en sistema.</h3>
-                <p>Catálogo, operación, asesores y gestión comercial en una experiencia integrada.</p>
-                <b>Ver proyecto <ArrowUpRight size={15}/></b>
-              </div>
+            <a href="https://miraiz.com.co" target="_blank" rel="noreferrer" className="clx-project-mini clx-raiz">
+              <span>03 / REAL ESTATE SYSTEM</span>
+              <div className="clx-raiz-symbol"><i/><i/></div>
+              <h3>Mi Raíz</h3>
+              <p>Catálogo, asesores, comisiones y operación conectada.</p>
+              <b>Ver proyecto <ArrowUpRight size={15}/></b>
             </a>
           </div>
         </div>
       </section>
 
-      <section className="lab-standard">
-        <div className="lab-standard-head">
-          <p className="lab-kicker"><span /> EL ESTÁNDAR CÓMPLICE</p>
-          <h2>Que se vea premium no es decoración.<br/><em>Es parte de cómo te eligen.</em></h2>
-          <p>Diseñamos cada proyecto para que estrategia, percepción y operación trabajen juntas.</p>
+      <section className="clx-standard">
+        <div className="clx-standard-type">
+          <p className="clx-eyebrow">EL ESTÁNDAR CÓMPLICE</p>
+          <h2>Diseño que se ve.<br/>Estrategia que se siente.<br/><em>Tecnología que trabaja.</em></h2>
         </div>
-
-        <div className="lab-standard-orbit">
-          <div className="standard-core">
-            <span>CÓMPLICE</span>
-            <strong>LAB</strong>
-            <small>SISTEMA DE VALOR</small>
-          </div>
-
-          <article className="standard-card sc1">
-            <span>01</span>
-            <b>Dirección creativa</b>
-            <p>Una identidad visual que se siente propia desde el primer segundo.</p>
-          </article>
-          <article className="standard-card sc2">
-            <span>02</span>
-            <b>Arquitectura comercial</b>
-            <p>Cada bloque guía una decisión: entender, confiar, actuar.</p>
-          </article>
-          <article className="standard-card sc3">
-            <span>03</span>
-            <b>Tecnología útil</b>
-            <p>Lo complejo sucede detrás; el cliente solo siente que todo funciona.</p>
-          </article>
-          <article className="standard-card sc4">
-            <span>04</span>
-            <b>Detalle obsesivo</b>
-            <p>Movimiento, jerarquía, contraste, velocidad y consistencia.</p>
-          </article>
-
-          <div className="standard-orbit-ring r1"/><div className="standard-orbit-ring r2"/>
+        <div className="clx-standard-stage" aria-hidden="true">
+          <div className="clx-standard-ring ring-a"/>
+          <div className="clx-standard-ring ring-b"/>
+          <div className="clx-standard-core"><span>CÓMPLICE</span><strong>LAB</strong></div>
+          <div className="clx-standard-label sl1"><b>Dirección creativa</b><small>que no parece plantilla</small></div>
+          <div className="clx-standard-label sl2"><b>Arquitectura comercial</b><small>cada bloque mueve una decisión</small></div>
+          <div className="clx-standard-label sl3"><b>Tecnología útil</b><small>lo complejo sucede detrás</small></div>
+          <div className="clx-standard-label sl4"><b>Detalle obsesivo</b><small>jerarquía, ritmo y consistencia</small></div>
         </div>
       </section>
 
-      <section className="lab-cta" id="contacto">
-        <div className="lab-cta-mesh"/>
-        <div className="lab-cta-disc"/>
-
-        <div className="lab-cta-layout">
-          <div className="lab-cta-copy">
-            <p className="lab-kicker light"><span /> CÓMO HACEMOS TU DIAGNÓSTICO</p>
-            <h2>Primero entendemos <em>qué está frenando tu crecimiento.</em></h2>
-            <p>
-              Llena esta información y podremos llegar a la conversación con contexto: quién eres, desde dónde nos escribes, qué vendes y qué problema quieres solucionar.
-            </p>
-
-            <div className="lab-cta-signals">
-              <div><span>01</span><b>Entendemos tu situación</b></div>
-              <div><span>02</span><b>Detectamos el cuello de botella</b></div>
-              <div><span>03</span><b>Te proponemos una solución concreta</b></div>
-            </div>
-
-            <div className="lab-contact-badge">
-              <div className="contact-dot"/>
-              <div>
-                <small>CONTACTO DIRECTO</small>
-                <strong>WhatsApp · Cómplice Lab</strong>
-              </div>
-            </div>
-          </div>
-
-          <div className="lab-cta-form-wrap">
-            <div className="lab-form-glow g1"/>
-            <div className="lab-form-glow g2"/>
-            <LeadCaptureForm />
+      <section className="clx-contact" id="contacto">
+        <div className="clx-contact-copy">
+          <p className="clx-eyebrow light">CÓMO HACEMOS TU DIAGNÓSTICO</p>
+          <h2>Antes de proponerte algo,<br/><em>entendemos qué está frenando tu crecimiento.</em></h2>
+          <p>Cuéntanos quién eres, qué vendes y qué debería empezar a pasar. Llegamos a la conversación con contexto, no con un discurso genérico.</p>
+          <div className="clx-contact-steps">
+            <span><b>01</b> Entendemos tu situación.</span>
+            <span><b>02</b> Detectamos el cuello de botella.</span>
+            <span><b>03</b> Te proponemos una solución concreta.</span>
           </div>
         </div>
-
-        <div className="lab-cta-footer"><span>complicelab.com</span><span>Manizales · Colombia</span><span>Proyectos selectos</span></div>
+        <div className="clx-contact-form">
+          <LeadCaptureForm />
+        </div>
+        <div className="clx-contact-orb orb-a"/><div className="clx-contact-orb orb-b"/>
       </section>
     </main>
   );

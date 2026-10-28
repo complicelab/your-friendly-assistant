@@ -56,3 +56,8 @@
 @media(max-width:880px){.hc-human-scene{transform:none;width:100%;max-width:570px;height:580px;margin:20px auto 0}.hc-human-main{left:18%}.hc-human-small{left:0}.hc-pill-one{left:0}.hc-pill-two{right:0}}
 @media(max-width:600px){.hc-human-scene{transform:scale(.79);transform-origin:top center;height:515px;width:115%;margin:20px 0 -95px -7%}.hc-human-pill{font-size:10px;padding:10px 12px}.hc-human-small{left:0}.hc-human-main{left:18%}}
 @media(prefers-reduced-motion:reduce){.hc-human-pill{animation:none}}
+
+/* Complice Lab light-first compatibility */
+.hc-hero{background:linear-gradient(180deg,#fff,#f3f6ff)!important;color:#0a142a}
+.hc-description{color:#53627a}.hc-explore-link{color:#21324d;border-bottom-color:#9aa9bf}.hc-trust{color:#617089}
+.hc-browser{box-shadow:0 30px 80px rgba(37,58,110,.2)}

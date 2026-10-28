@@ -2019,3 +2019,86 @@
     margin-top:20px!important;
   }
 }
+
+/* === Decisions section depth & separation pass === */
+.lab-decisions{
+  background:
+    radial-gradient(circle at 8% 10%,rgba(78,208,255,.10),transparent 22%),
+    radial-gradient(circle at 88% 18%,rgba(125,88,255,.08),transparent 24%),
+    linear-gradient(180deg,#FFFFFF 0%,#F7F9FD 100%);
+}
+.lab-decision-grid{gap:20px}
+.lab-decision{
+  min-height:320px;
+  border:1px solid rgba(74,96,145,.16);
+  background:#fff;
+  box-shadow:
+    0 26px 60px rgba(40,61,108,.12),
+    0 8px 18px rgba(40,61,108,.05),
+    inset 0 1px 0 rgba(255,255,255,.9);
+  transform-style:preserve-3d;
+}
+.lab-decision:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:linear-gradient(145deg,rgba(255,255,255,.72),transparent 32%);
+}
+.lab-decision:nth-child(1){
+  background:
+    radial-gradient(circle at 86% 10%,rgba(77,208,255,.22),transparent 28%),
+    linear-gradient(145deg,#FFFFFF 0%,#EAF7FF 100%);
+  border-color:#CBEAF5;
+}
+.lab-decision:nth-child(2){
+  background:
+    radial-gradient(circle at 86% 10%,rgba(109,91,255,.20),transparent 28%),
+    linear-gradient(145deg,#FFFFFF 0%,#F1EEFF 100%);
+  border-color:#DDD6FA;
+}
+.lab-decision:nth-child(3){
+  background:
+    radial-gradient(circle at 86% 10%,rgba(80,190,255,.18),transparent 28%),
+    linear-gradient(145deg,#FFFFFF 0%,#EBF8FF 100%);
+  border-color:#D0EAF6;
+}
+.lab-decision:nth-child(4){
+  background:
+    radial-gradient(circle at 86% 10%,rgba(145,92,255,.18),transparent 28%),
+    linear-gradient(145deg,#FFFFFF 0%,#F3EEFF 100%);
+  border-color:#E3D8FA;
+}
+.lab-decision:hover{
+  transform:translateY(-12px) rotateX(2deg)!important;
+  box-shadow:
+    0 38px 90px rgba(40,61,108,.18),
+    0 12px 24px rgba(40,61,108,.08);
+}
+.lab-decision-top{
+  position:relative;
+  z-index:3;
+}
+.lab-decision-top svg{
+  width:36px;height:36px;
+  padding:8px;
+  border-radius:12px;
+  background:rgba(255,255,255,.75);
+  border:1px solid rgba(86,108,157,.12);
+  box-shadow:0 8px 18px rgba(54,75,118,.08);
+}
+.lab-decision h3{color:#0A142A}
+.lab-decision p{color:#526078!important}
+.lab-decision-orbit{
+  opacity:.95;
+  border-color:rgba(57,91,226,.22);
+  box-shadow:
+    0 0 0 28px rgba(57,91,226,.045),
+    0 0 0 56px rgba(105,71,255,.025);
+}
+.lab-decision-line{
+  height:4px;
+  border-radius:999px 999px 0 0;
+  box-shadow:0 0 16px rgba(68,93,255,.28);
+}

@@ -351,50 +351,70 @@ export function LabHome() {
         </div>
       </section>
 
-      <section className="lab-system" id="sistema">
+      <section className="lab-system lab-system-light" id="sistema">
         <div className="lab-system-intro">
           <p className="lab-kicker"><span /> CÓMO FUNCIONA</p>
           <h2>De visitante a cliente.<br/><em>Sin perderlo en el camino.</em></h2>
           <p>Una experiencia simple para la persona. Un sistema claro para tu negocio.</p>
         </div>
 
-        <div className="lab-conversion-map">
-          <div className="conversion-path">
-            <div className="conversion-node n1">
-              <span>01</span>
-              <MousePointer2 size={21}/>
-              <b>Te descubre</b>
-              <small>Web · campaña · búsqueda</small>
+        <div className="conversion-journey">
+          <div className="journey-path"/>
+
+          <article className="journey-step step-discover">
+            <div className="journey-visual discover-visual">
+              <div className="discover-ring r1"/><div className="discover-ring r2"/>
+              <MousePointer2 size={28}/>
             </div>
+            <span>01 · DESCUBRIR</span>
+            <h3>Te encuentra.</h3>
+            <p>Web, campaña o búsqueda. La primera impresión hace el primer filtro.</p>
+          </article>
 
-            <div className="conversion-arrow">→</div>
-
-            <div className="conversion-node n2">
-              <span>02</span>
-              <Sparkles size={21}/>
-              <b>Confía</b>
-              <small>Mensaje · diseño · autoridad</small>
+          <article className="journey-step step-trust">
+            <div className="journey-visual trust-visual">
+              <div className="trust-card t1"/><div className="trust-card t2"/>
+              <Sparkles size={28}/>
             </div>
+            <span>02 · CONFIAR</span>
+            <h3>Entiende por qué tú.</h3>
+            <p>Mensaje, diseño y autoridad convierten interés en confianza.</p>
+          </article>
 
-            <div className="conversion-arrow">→</div>
-
-            <div className="conversion-node n3">
-              <span>03</span>
-              <CalendarDays size={21}/>
-              <b>Actúa</b>
-              <small>Cita · WhatsApp · formulario</small>
+          <article className="journey-step step-act">
+            <div className="journey-visual act-visual">
+              <div className="act-button">AGENDAR</div>
+              <CalendarDays size={28}/>
             </div>
+            <span>03 · ACTUAR</span>
+            <h3>Da el siguiente paso.</h3>
+            <p>Cita, WhatsApp o formulario. Sin fricción ni dudas.</p>
+          </article>
+
+          <article className="journey-step step-manage">
+            <div className="journey-visual manage-visual">
+              <div className="manage-column"><i/><i/><i/></div>
+              <Workflow size={28}/>
+            </div>
+            <span>04 · GESTIONAR</span>
+            <h3>No se pierde.</h3>
+            <p>CRM, estados y seguimiento para mantener viva la oportunidad.</p>
+          </article>
+        </div>
+
+        <div className="journey-result">
+          <div className="journey-result-copy">
+            <span>EL RESULTADO</span>
+            <h3>Una sola experiencia por fuera.<br/>Un sistema ordenado por dentro.</h3>
+            <p>El cliente siente simplicidad. Tu equipo gana control, contexto y seguimiento.</p>
           </div>
-
-          <div className="conversion-result">
-            <div className="conversion-result-icon"><Workflow size={25}/></div>
-            <div>
-              <span>Y DESPUÉS DEL CLIC</span>
-              <h3>Todo queda organizado.</h3>
-              <p>CRM, seguimiento, estados y automatizaciones para que la oportunidad no se pierda.</p>
-            </div>
-            <div className="conversion-mini-ui">
-              <i/><i/><i/><i/>
+          <div className="journey-result-ui">
+            <div className="result-ui-head"><i/><i/><i/></div>
+            <div className="result-ui-grid">
+              <div className="result-metric"><small>LEADS</small><strong>Organizados</strong></div>
+              <div className="result-metric"><small>CITAS</small><strong>Visibles</strong></div>
+              <div className="result-metric"><small>SEGUIMIENTO</small><strong>Activo</strong></div>
+              <div className="result-metric"><small>OPORTUNIDADES</small><strong>En curso</strong></div>
             </div>
           </div>
         </div>

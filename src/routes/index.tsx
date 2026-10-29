@@ -117,7 +117,7 @@ function getOriginalHtml() {
     )
     .replace(
       'Usamos IA para <strong>posicionar tu marca</strong>, atraer a las personas correctas y no dejar escapar a ninguna. Así te perciben con el nivel que tienes y puedes <strong>cobrar lo que vales.</strong>',
-      'Trabajamos con profesionales y empresas que ya tienen nivel. Nosotros nos encargamos de que su presencia digital lo demuestre, los posicione y convierta esa percepción en oportunidades.',
+      'Nos gusta trabajar con los mejores. Profesionales y empresas de alto nivel que quieren elevar aún más su valor, posicionar su marca y atraer clientes a la altura de lo que ofrecen.',
     )
     .replace("</style>", HERO_SHOWROOM_CSS + "</style>");
 

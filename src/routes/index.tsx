@@ -111,6 +111,14 @@ function getOriginalHtml() {
       `var WA_NUMBER = "${WA_NUMBER}";`,
     )
     .replace(HERO_SITE_ORIGINAL, HERO_SITE_SHOWROOM)
+    .replace(
+      'Eres de los mejores<br>en lo tuyo.<br><em>Tu presencia<br>digital todavía no<br>lo sabe.</em>',
+      'Si eres de los mejores,<br><em>no deberías parecer<br>uno más.</em>',
+    )
+    .replace(
+      'Usamos IA para <strong>posicionar tu marca</strong>, atraer a las personas correctas y no dejar escapar a ninguna. Así te perciben con el nivel que tienes y puedes <strong>cobrar lo que vales.</strong>',
+      'Trabajamos con profesionales y empresas que ya tienen nivel. Nosotros nos encargamos de que su presencia digital lo demuestre, los posicione y convierta esa percepción en oportunidades.',
+    )
     .replace("</style>", HERO_SHOWROOM_CSS + "</style>");
 
   return Buffer.from(html, "utf8");

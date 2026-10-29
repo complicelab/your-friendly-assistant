@@ -1,17 +1,35 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { LabHome } from "@/components/marketing/lab-home";
+import { gunzipSync } from "node:zlib";
+
+import part1 from "@/data/complice-v3-part-1";
+import part2 from "@/data/complice-v3-part-2";
+import part3 from "@/data/complice-v3-part-3";
+import part4 from "@/data/complice-v3-part-4";
+import part5 from "@/data/complice-v3-part-5";
+import part6 from "@/data/complice-v3-part-6";
+import part7 from "@/data/complice-v3-part-7";
+
+const COMPRESSED_HTML =
+  part1 + part2 + part3 + part4 + part5 + part6 + part7;
+
+function getOriginalHtml() {
+  return gunzipSync(Buffer.from(COMPRESSED_HTML, "base64"));
+}
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Cómplice Lab | Sistemas digitales para profesionales de alto valor" },
-      { name: "description", content: "Diseñamos páginas, sistemas comerciales y automatizaciones para profesionales de alto valor que quieren convertir su reputación en citas, clientes y oportunidades." },
-      { property: "og:title", content: "Tu reputación ya vale mucho. Haz que tu presencia digital lo demuestre. | Cómplice Lab" },
-      { property: "og:description", content: "Estrategia, diseño y tecnología para profesionales que no pueden verse como uno más." },
-      { property: "og:url", content: "https://complicelab.com/" },
-      { name: "theme-color", content: "#F6F8FC" }
-    ],
-    links: [{ rel: "canonical", href: "https://complicelab.com/" }],
-  }),
-  component: LabHome,
+  server: {
+    handlers: {
+      GET: async () => {
+        const html = getOriginalHtml();
+
+        return new Response(html, {
+          headers: {
+            "Content-Type": "text/html; charset=utf-8",
+            "Content-Length": String(html.byteLength),
+            "Cache-Control": "no-cache",
+          },
+        });
+      },
+    },
+  },
 });

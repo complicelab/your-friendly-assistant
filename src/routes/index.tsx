@@ -40,11 +40,11 @@ const HERO_SITE_SHOWROOM = `      <div class="site">
 
 const HERO_SHOWROOM_CSS = `
 .site-live{position:relative;height:390px;background:#fff;overflow:hidden}
-.site-live iframe{width:160%;height:625px;border:0;transform:scale(.625);transform-origin:top left;pointer-events:none}
+.site-live iframe{position:relative;top:-76px;width:160%;height:760px;border:0;transform:scale(.625);transform-origin:top left;pointer-events:none}
 .site-live::after{content:"";position:absolute;top:-55%;left:-36%;width:34%;height:210%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.42),transparent);transform:rotate(24deg);pointer-events:none;transition:left .75s ease}
 .site:hover .site-live::after{left:125%}
-@media(max-width:920px){.site-live{height:390px}}
-@media(max-width:560px){.site-live{height:340px}.site-live iframe{width:180%;height:610px;transform:scale(.556)}}
+@media(max-width:920px){.site-live{height:390px}.site-live iframe{top:-68px;height:750px}}
+@media(max-width:560px){.site-live{height:340px}.site-live iframe{top:-52px;width:180%;height:720px;transform:scale(.556)}}
 `;
 
 function getOriginalHtml() {

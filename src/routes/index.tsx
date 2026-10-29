@@ -85,6 +85,8 @@ const HERO_SHOWROOM_CSS = `
 .site-dark-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,27,53,.56),transparent 35%),linear-gradient(0deg,rgba(7,17,34,.28),transparent 45%);pointer-events:none}
 .site-dark-glare{pointer-events:none;position:absolute;top:-55%;left:-35%;width:34%;height:210%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transform:rotate(24deg);transition:left .8s ease;z-index:8}
 .site.site-dark:hover .site-dark-glare{left:125%}
+#h1 .focus.grad-text{margin-top:0!important;padding-top:0!important;transform:none!important;line-height:inherit!important}
+#h1{row-gap:0!important}
 @media(max-width:920px){
   .site-dark-body{height:390px}
   .site-dark-hero{height:338px}

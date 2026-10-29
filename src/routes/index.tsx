@@ -113,7 +113,7 @@ function getOriginalHtml() {
     .replace(HERO_SITE_ORIGINAL, HERO_SITE_SHOWROOM)
     .replace(
       '<h1 id="h1">Eres de los mejores en lo tuyo. <span class="focus grad-text">Tu presencia digital todavía no lo sabe.</span></h1>',
-      '<h1 id="h1">Si eres el mejor, <span class="focus grad-text">no deberías parecer uno más.</span></h1>',
+      '<h1 id="h1">Trabajamos con los mejores <span class="focus grad-text">para que no parezcan uno más.</span></h1>',
     )
     .replace(
       '<p class="lede">Usamos IA para <b>posicionar tu marca</b>, atraer a las personas correctas y no dejar escapar a ninguna. Así te perciben con el nivel que tienes y puedes <b>cobrar lo que vales</b>.</p>',

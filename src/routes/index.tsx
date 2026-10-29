@@ -9,11 +9,19 @@ import part5 from "@/data/complice-v3-part-5";
 import part6 from "@/data/complice-v3-part-6";
 import part7 from "@/data/complice-v3-part-7";
 
+const WA_NUMBER = "573000000000";
+
 const COMPRESSED_HTML =
   part1 + part2 + part3 + part4 + part5 + part6 + part7;
 
 function getOriginalHtml() {
-  return gunzipSync(Buffer.from(COMPRESSED_HTML, "base64"));
+  const original = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8");
+  const html = original.replace(
+    'var WA_NUMBER = "573000000000";',
+    `var WA_NUMBER = "${WA_NUMBER}";`,
+  );
+
+  return Buffer.from(html, "utf8");
 }
 
 export const Route = createFileRoute("/")({

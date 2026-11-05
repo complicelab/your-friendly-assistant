@@ -6,17 +6,17 @@ import { SiteFooter } from "@/components/marketing/site-footer";
 export const Route = createFileRoute("/privacidad")({
   head: () => ({
     meta: [
-      { title: "Política de Privacidad y Cookies | Cómplice Lab" },
+      { title: "Política de Privacidad | Cómplice Lab" },
       {
         name: "description",
         content:
-          "Consulta cómo Cómplice Lab trata los datos personales, utiliza herramientas de medición y gestiona el consentimiento de cookies.",
+          "Consulta cómo Cómplice Lab trata los datos personales recibidos a través de su sitio y canales de contacto.",
       },
-      { property: "og:title", content: "Política de Privacidad y Cookies | Cómplice Lab" },
+      { property: "og:title", content: "Política de Privacidad | Cómplice Lab" },
       {
         property: "og:description",
         content:
-          "Información sobre privacidad, cookies, Google Analytics y Meta Pixel en complicelab.com.",
+          "Información sobre tratamiento de datos personales y derechos de los titulares en complicelab.com.",
       },
       { property: "og:url", content: "https://complicelab.com/privacidad" },
     ],
@@ -24,10 +24,6 @@ export const Route = createFileRoute("/privacidad")({
   }),
   component: PrivacyPage,
 });
-
-function openCookiePreferences() {
-  window.dispatchEvent(new Event("complice:open-cookie-settings"));
-}
 
 function PrivacyPage() {
   return (
@@ -42,101 +38,150 @@ function PrivacyPage() {
       <main className="section">
         <div className="container legal-layout">
           <div className="legal-intro">
-            <p className="eyebrow">PRIVACIDAD · COOKIES · DATOS</p>
-            <h1>Política de privacidad y cookies.</h1>
+            <p className="eyebrow">PRIVACIDAD · DATOS PERSONALES</p>
+            <h1>Política de privacidad.</h1>
             <p>
-              Esta política explica qué información puede tratar Cómplice Lab cuando visitas
-              complicelab.com, cómo usamos herramientas de medición y cómo puedes controlar tu
-              consentimiento.
+              Esta política explica qué información personal puede tratar Cómplice Lab cuando
+              visitas complicelab.com o te comunicas con nosotros y cómo puedes ejercer tus derechos.
             </p>
-            <p className="legal-updated">Última actualización: 4 de octubre de 2026.</p>
+            <p className="legal-updated">Última actualización: 5 de noviembre de 2026.</p>
           </div>
 
           <article className="legal-content">
             <section>
               <h2>1. Responsable y contacto</h2>
               <p>
-                Cómplice Lab gestiona este sitio web y los canales asociados a la marca. Para
+                Para los datos personales recolectados a través de este sitio y de los canales
+                asociados a la marca, el responsable opera bajo la marca Cómplice Lab. Para
                 consultas relacionadas con privacidad o tratamiento de datos puedes escribir a
                 <a href="mailto:info@complicelab.com"> info@complicelab.com</a> o comunicarte al
-                <a href="https://api.whatsapp.com/send?phone=+573161772880" target="_blank" rel="noreferrer noopener">
+                <a href="https://api.whatsapp.com/send?phone=573161772880" target="_blank" rel="noreferrer noopener">
                   {" "}+57 316 177 2880
                 </a>.
               </p>
             </section>
 
             <section>
-              <h2>2. Qué información podemos tratar</h2>
+              <h2>2. Marco general</h2>
               <p>
-                Podemos recibir la información que nos entregas voluntariamente cuando nos
-                contactas por correo, WhatsApp u otros canales. También podemos obtener datos
-                técnicos y de navegación cuando autorizas las herramientas de medición, como
-                páginas visitadas, interacciones, tipo de dispositivo, navegador y datos de
-                campaña.
+                El tratamiento de datos personales se realiza de acuerdo con la normativa colombiana
+                aplicable, incluida la Ley 1581 de 2012 y sus normas reglamentarias vigentes.
               </p>
             </section>
 
             <section>
-              <h2>3. Para qué usamos la información</h2>
+              <h2>3. Información que podemos tratar</h2>
               <p>
-                La utilizamos para responder solicitudes, prestar y mejorar nuestros servicios,
-                entender el rendimiento del sitio, medir campañas publicitarias, mejorar la
-                experiencia digital y analizar qué contenidos o páginas resultan más útiles.
+                Dependiendo de tu interacción con el sitio, podemos recibir datos como nombre y
+                apellido, marca personal o empresa, país, ciudad, indicativo telefónico, WhatsApp o
+                teléfono, correo electrónico, profesión, sector, tipo de negocio e información sobre
+                necesidades, intereses o problemas comerciales.
               </p>
-            </section>
-
-            <section id="cookies">
-              <h2>4. Cookies y tecnologías de medición</h2>
               <p>
-                El sitio utiliza un sistema de consentimiento. Google Analytics 4 y Meta Pixel se
-                activan únicamente cuando eliges “Aceptar” en el banner de privacidad. Si eliges
-                “Rechazar”, esas herramientas de medición no se cargan desde nuestro sitio.
-              </p>
-              <div className="legal-table">
-                <div><b>Preferencia de consentimiento</b><span>Necesaria</span><p>Guarda localmente si aceptaste o rechazaste las herramientas de medición.</p></div>
-                <div><b>Google Analytics 4</b><span>Analítica</span><p>Nos ayuda a entender visitas, páginas vistas e interacciones con el sitio.</p></div>
-                <div><b>Meta Pixel</b><span>Publicidad y medición</span><p>Nos ayuda a medir el rendimiento de campañas de Meta y acciones como el contacto por WhatsApp.</p></div>
-              </div>
-              <button className="button button-ghost legal-cookie-button" type="button" onClick={openCookiePreferences}>
-                Cambiar preferencias de cookies
-              </button>
-            </section>
-
-            <section>
-              <h2>5. Terceros</h2>
-              <p>
-                Algunas mediciones pueden ser procesadas por proveedores tecnológicos como Google
-                y Meta cuando has dado tu consentimiento. Sus propios términos y políticas pueden
-                aplicar al tratamiento que realizan en sus plataformas.
+                También pueden generarse datos técnicos básicos relacionados con la navegación,
+                seguridad o funcionamiento del sitio a través del navegador, servidor o proveedores
+                tecnológicos utilizados para prestar el servicio.
               </p>
             </section>
 
             <section>
-              <h2>6. Conservación y seguridad</h2>
+              <h2>4. Finalidades</h2>
+              <p>Podemos utilizar la información para:</p>
+              <ul>
+                <li>responder solicitudes de información o contacto;</li>
+                <li>realizar un diagnóstico inicial del negocio;</li>
+                <li>preparar propuestas, cotizaciones o recomendaciones;</li>
+                <li>coordinar reuniones o conversaciones comerciales;</li>
+                <li>dar seguimiento a oportunidades y solicitudes;</li>
+                <li>prestar y administrar servicios contratados;</li>
+                <li>mejorar el sitio, sus formularios, seguridad y experiencia;</li>
+                <li>cumplir obligaciones legales o contractuales.</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>5. Autorización</h2>
               <p>
-                Procuramos conservar la información solo durante el tiempo necesario para las
-                finalidades descritas y aplicar medidas razonables para protegerla. Los plazos
-                específicos pueden variar según el tipo de información, el servicio utilizado y
-                las obligaciones aplicables.
+                Cuando la ley requiera autorización, esta podrá obtenerse mediante formularios,
+                casillas de aceptación, comunicaciones electrónicas, contratos u otros mecanismos
+                que permitan acreditar una manifestación previa, expresa e informada del titular.
               </p>
             </section>
 
             <section>
-              <h2>7. Tus solicitudes sobre datos</h2>
+              <h2>6. Derechos de los titulares</h2>
               <p>
-                Puedes solicitar información sobre tus datos, pedir su actualización o corrección,
-                solicitar su eliminación cuando corresponda o retirar autorizaciones previamente
-                otorgadas, de acuerdo con la normativa aplicable. Para hacerlo, escribe a
-                <a href="mailto:info@complicelab.com"> info@complicelab.com</a>.
+                Puedes solicitar conocer, actualizar, rectificar o suprimir tus datos, pedir prueba
+                de la autorización cuando corresponda, conocer el uso dado a tu información,
+                presentar consultas o reclamos y revocar la autorización cuando legalmente proceda.
               </p>
             </section>
 
             <section>
-              <h2>8. Cambios a esta política</h2>
+              <h2>7. Cómo ejercer tus derechos</h2>
               <p>
-                Podemos actualizar esta política cuando cambien nuestros servicios, herramientas o
-                prácticas de tratamiento. La versión vigente se publicará siempre en esta página
-                con su fecha de actualización.
+                Puedes enviar una solicitud a
+                <a href="mailto:info@complicelab.com"> info@complicelab.com</a>. Para atenderla
+                podremos solicitar información razonable que permita verificar tu identidad y
+                localizar los datos relacionados.
+              </p>
+            </section>
+
+            <section>
+              <h2>8. Proveedores y terceros</h2>
+              <p>
+                Podemos utilizar proveedores tecnológicos para hosting, formularios, automatización,
+                correo, mensajería, seguridad, almacenamiento, CRM u otras funciones operativas.
+                Dichos proveedores pueden procesar información por cuenta nuestra y estar ubicados
+                dentro o fuera de Colombia, sujetos a las obligaciones contractuales y legales que
+                correspondan.
+              </p>
+            </section>
+
+            <section>
+              <h2>9. WhatsApp y servicios externos</h2>
+              <p>
+                Cuando decides continuar una conversación mediante WhatsApp u otro servicio externo,
+                la información también puede ser tratada por el proveedor de ese servicio conforme a
+                sus propios términos y políticas.
+              </p>
+            </section>
+
+            <section>
+              <h2>10. Cookies y tecnologías similares</h2>
+              <p>
+                El sitio puede utilizar tecnologías técnicas necesarias para funcionamiento,
+                seguridad o preferencias. Si se incorporan herramientas de analítica, publicidad o
+                seguimiento que requieran consentimiento o información adicional, se implementarán
+                los avisos y controles correspondientes.
+              </p>
+            </section>
+
+            <section>
+              <h2>11. Seguridad y conservación</h2>
+              <p>
+                Aplicamos medidas razonables de carácter técnico, organizacional y administrativo
+                orientadas a proteger la información. Los datos se conservarán durante el tiempo
+                razonablemente necesario para cumplir las finalidades informadas, gestionar la
+                relación comercial y atender obligaciones legales o contractuales.
+              </p>
+            </section>
+
+            <section>
+              <h2>12. Datos de menores</h2>
+              <p>
+                Los servicios de Cómplice Lab están dirigidos principalmente a profesionales y
+                empresas. No buscamos recolectar intencionalmente datos de menores de edad mediante
+                los formularios comerciales generales del sitio.
+              </p>
+            </section>
+
+            <section>
+              <h2>13. Cambios a esta política</h2>
+              <p>
+                Podemos actualizar esta política por cambios legales, tecnológicos, operativos o en
+                nuestros servicios. La versión vigente será la publicada en esta página con su fecha
+                de actualización.
               </p>
             </section>
           </article>

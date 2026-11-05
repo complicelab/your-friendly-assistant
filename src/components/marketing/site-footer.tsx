@@ -58,14 +58,8 @@ export function SiteFooter() {
           </div>
           <p className="social-handle">@complicelab</p>
           <div className="footer-legal">
-            <a href="/privacidad">Privacidad y cookies</a>
+            <a href="/privacidad">Política de privacidad</a>
             <a href="/terminos">Términos y condiciones</a>
-            <button
-              type="button"
-              onClick={() => window.dispatchEvent(new Event("complice:open-cookie-settings"))}
-            >
-              Preferencias de cookies
-            </button>
           </div>
         </div>
       </div>

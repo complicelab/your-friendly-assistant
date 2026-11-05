@@ -87,6 +87,10 @@ const HERO_SHOWROOM_CSS = `
 .site.site-dark:hover .site-dark-glare{left:125%}
 #h1 .focus.grad-text{margin-top:0!important;padding-top:0!important;transform:none!important;line-height:inherit!important}
 #h1{row-gap:0!important}
+.footer-legal-inline{display:flex;justify-content:center;align-items:center;gap:18px;flex-wrap:wrap;padding:18px 20px 4px;font:600 11px/1.4 "Montserrat",sans-serif}
+.footer-legal-inline a{color:inherit;text-decoration:none;opacity:.72;transition:opacity .2s ease}
+.footer-legal-inline a:hover{opacity:1}
+@media(max-width:560px){.footer-legal-inline{gap:12px;font-size:10px;padding-top:16px}}
 @media(max-width:920px){
   .site-dark-body{height:390px}
   .site-dark-hero{height:338px}
@@ -120,6 +124,10 @@ function getOriginalHtml() {
     .replace(
       '<p class="lede">Usamos IA para <b>posicionar tu marca</b>, atraer a las personas correctas y no dejar escapar a ninguna. Así te perciben con el nivel que tienes y puedes <b>cobrar lo que vales</b>.</p>',
       '<p class="lede">Usamos IA para <b>posicionar tu marca a otro nivel</b>, atraer a las personas correctas y no dejar escapar a ninguna. Así te perciben con el nivel que tienes y puedes <b>cobrar lo que vales</b>.</p>',
+    )
+    .replace(
+      "</footer>",
+      '<div class="footer-legal-inline"><a href="/privacidad">Política de privacidad</a><a href="/terminos">Términos y condiciones</a></div></footer>',
     )
     .replace("</style>", HERO_SHOWROOM_CSS + "</style>");
 

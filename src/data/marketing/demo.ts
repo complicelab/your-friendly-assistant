@@ -101,19 +101,19 @@ export const marketingStyles = `
   #s-marketing .clm-post.show{opacity:1;transform:none}
   #s-marketing .clm-posthead{display:flex;align-items:center;gap:8px;padding:9px 11px}
   #s-marketing .clm-avatar{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1b72f2,#7254ef);color:#fff;font:800 8px "Montserrat",sans-serif}
-  #s-marketing .clm-posthead b{display:block;font-size:9px} #s-marketing .clm-posthead small{display:block;color:#8792a4;font:500 7px "Montserrat",sans-serif}
+  #s-marketing .clm-posthead b{display:block;font-size:10px} #s-marketing .clm-posthead small{display:block;color:#8792a4;font:500 8px "Montserrat",sans-serif}
   #s-marketing .clm-more{margin-left:auto;font-size:13px}
   #s-marketing .clm-adphoto{position:relative;min-height:226px;background-size:cover;background-position:center;overflow:hidden}
   #s-marketing .clm-adphoto:after{content:"";position:absolute;inset:36% 0 0;background:linear-gradient(transparent,rgba(7,18,49,.8))}
-  #s-marketing .clm-adtag{position:absolute;z-index:2;left:11px;top:11px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,.95);color:#3752ce;font:800 7px "Montserrat",sans-serif}
+  #s-marketing .clm-adtag{position:absolute;z-index:2;left:11px;top:11px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,.95);color:#3752ce;font:800 8px "Montserrat",sans-serif}
   #s-marketing .clm-adcopy{position:absolute;z-index:2;left:12px;right:12px;bottom:13px;color:#fff;opacity:0;transform:translateY(8px);transition:.45s}
   #s-marketing .clm-adcopy.show{opacity:1;transform:none}
-  #s-marketing .clm-adcopy b{display:block;font-size:21px;line-height:1.02;letter-spacing:-.04em}
-  #s-marketing .clm-adcopy small{display:block;margin-top:6px;color:rgba(255,255,255,.88);font:500 8px "Montserrat",sans-serif}
+  #s-marketing .clm-adcopy b{display:block;font-size:23px;line-height:1.01;letter-spacing:-.04em}
+  #s-marketing .clm-adcopy small{display:block;margin-top:6px;color:rgba(255,255,255,.9);font:500 9px/1.35 "Montserrat",sans-serif}
   #s-marketing .clm-igactions{display:flex;justify-content:space-between;padding:8px 11px 4px;font-size:13px}
-  #s-marketing .clm-igtext{padding:0 11px 8px;color:#444e61;font:500 8px/1.45 "Montserrat",sans-serif}
+  #s-marketing .clm-igtext{padding:0 11px 8px;color:#3e485b;font:500 9px/1.45 "Montserrat",sans-serif}
   #s-marketing .clm-igtext b{color:#111827}
-  #s-marketing .clm-primary{margin:0 10px 9px;border:0;border-radius:9px;padding:10px;background:linear-gradient(90deg,#0d99ed,#1777f2);color:#fff;font:800 9px "Montserrat",sans-serif;opacity:0;transform:translateY(6px);transition:.35s}
+  #s-marketing .clm-primary{margin:0 10px 9px;border:0;border-radius:9px;padding:10px;background:linear-gradient(90deg,#0d99ed,#1777f2);color:#fff;font:800 10px "Montserrat",sans-serif;opacity:0;transform:translateY(6px);transition:.35s}
   #s-marketing .clm-primary.show{opacity:1;transform:none}
 
   /* Landing */
@@ -146,19 +146,19 @@ export const marketingStyles = `
   #s-marketing .clm-wahead{display:flex;align-items:center;gap:8px;padding:10px;background:#f0f2f5;border-bottom:1px solid #d9dee3}
   #s-marketing .clm-wa-back{font-size:19px;color:#54656f}
   #s-marketing .clm-wa-avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#d9fdd3;color:#128c7e;font:800 9px "Montserrat",sans-serif}
-  #s-marketing .clm-wahead b{display:block;font-size:11px} #s-marketing .clm-wahead small{display:block;color:#667781;font:500 8px "Montserrat",sans-serif}
+  #s-marketing .clm-wahead b{display:block;font-size:12px} #s-marketing .clm-wahead small{display:block;color:#667781;font:500 9px "Montserrat",sans-serif}
   #s-marketing .clm-waicons{margin-left:auto;color:#54656f;font-size:12px}
-  #s-marketing .clm-day{align-self:center;margin:9px 0 3px;padding:5px 9px;border-radius:6px;background:#fff;color:#667781;font:600 7px "Montserrat",sans-serif;box-shadow:0 1px 2px rgba(11,20,26,.08)}
-  #s-marketing .clm-chat{flex:1;display:flex;flex-direction:column;gap:8px;padding:10px;background:radial-gradient(circle at 14px 14px,rgba(255,255,255,.32) 0 1px,transparent 1.5px) 0 0/22px 22px,#efeae2;overflow:hidden}
-  #s-marketing .clm-msg{max-width:85%;padding:9px 10px;border-radius:9px;background:#fff;box-shadow:0 1px 2px rgba(11,20,26,.12);font:500 9px/1.45 "Montserrat",sans-serif;opacity:0;transform:translateY(8px) scale(.98);transition:.35s}
+  #s-marketing .clm-day{align-self:center;margin:9px 0 3px;padding:5px 10px;border-radius:6px;background:#fff;color:#667781;font:600 8px "Montserrat",sans-serif;box-shadow:0 1px 2px rgba(11,20,26,.08)}
+  #s-marketing .clm-chat{flex:1;display:flex;flex-direction:column;gap:9px;padding:10px;background:radial-gradient(circle at 14px 14px,rgba(255,255,255,.32) 0 1px,transparent 1.5px) 0 0/22px 22px,#efeae2;overflow:hidden}
+  #s-marketing .clm-msg{max-width:90%;padding:10px 11px;border-radius:10px;background:#fff;box-shadow:0 2px 5px rgba(11,20,26,.11);font:500 10.5px/1.42 "Montserrat",sans-serif;opacity:0;transform:translateY(8px) scale(.98);transition:.35s}
   #s-marketing .clm-msg.out{align-self:flex-end;background:#d9fdd3}
   #s-marketing .clm-msg.show{opacity:1;transform:none}
-  #s-marketing .clm-msg time{display:block;text-align:right;margin-top:4px;color:#667781;font-size:6px}
-  #s-marketing .clm-slots{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px;border-radius:10px;background:#fff;box-shadow:0 1px 2px rgba(11,20,26,.1);font:700 8px "Montserrat",sans-serif;opacity:0;transform:translateY(8px);transition:.35s}
+  #s-marketing .clm-msg time{display:block;text-align:right;margin-top:4px;color:#667781;font-size:7px}
+  #s-marketing .clm-slots{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px;border-radius:10px;background:#fff;box-shadow:0 1px 2px rgba(11,20,26,.1);font:700 9.5px "Montserrat",sans-serif;opacity:0;transform:translateY(8px);transition:.35s}
   #s-marketing .clm-slots.show{opacity:1;transform:none}
-  #s-marketing .clm-slots b{grid-column:1/-1}.clm-slots span{padding:7px 6px;text-align:center;border-radius:8px;background:#e7f7ef;color:#128c7e}
+  #s-marketing .clm-slots b{grid-column:1/-1;font-size:10px}.clm-slots span{padding:8px 6px;font-size:9px;text-align:center;border-radius:8px;background:#e7f7ef;color:#128c7e}
   #s-marketing .clm-wafoot{display:grid;grid-template-columns:auto 1fr auto;gap:7px;align-items:center;padding:8px 9px;background:#f0f2f5}
-  #s-marketing .clm-wafoot b{padding:8px 10px;border-radius:999px;background:#fff;color:#7b8793;font:500 8px "Montserrat",sans-serif}
+  #s-marketing .clm-wafoot b{padding:8px 10px;border-radius:999px;background:#fff;color:#7b8793;font:500 9px "Montserrat",sans-serif}
   #s-marketing .clm-wafoot i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#25d366;color:#fff;font-style:normal}
 
   /* CRM */

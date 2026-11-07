@@ -3,7 +3,7 @@ import { clinicPhoto } from "../compare/demos";
 const nicheData = [
   {
     key:"odonto", label:"Odontología", account:"complicedental", brand:"Cómplice Dental", initials:"CD",
-    image:clinicPhoto, adTag:"Diseño de sonrisa",
+    image:"/marketing/ads/dental.webp", adTag:"Diseño de sonrisa",
     headline:"Tu sonrisa merece una experiencia a tu nivel.",
     sub:"Valoración personalizada · agenda online",
     adCta:"Agendar valoración", url:"complicedental.com/valoracion",
@@ -19,7 +19,7 @@ const nicheData = [
   },
   {
     key:"abog", label:"Abogados", account:"firmalegal", brand:"Firma Legal", initials:"FL",
-    image:"https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=900&q=82",
+    image:"/marketing/ads/legal.webp",
     adTag:"Asesoría legal",
     headline:"Tu caso merece una estrategia clara desde el primer contacto.",
     sub:"Diagnóstico inicial · atención confidencial",
@@ -36,7 +36,7 @@ const nicheData = [
   },
   {
     key:"ciruj", label:"Cirujanos", account:"clinicacirugia", brand:"Clínica Especializada", initials:"CE",
-    image:"https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=900&q=82",
+    image:"/marketing/ads/cirugia.webp",
     adTag:"Valoración especializada",
     headline:"Resultados naturales comienzan con una valoración bien hecha.",
     sub:"Información clara · acompañamiento profesional",
@@ -53,7 +53,7 @@ const nicheData = [
   },
   {
     key:"inmo", label:"Inmobiliarias", account:"tuinmobiliaria", brand:"Tu Inmobiliaria", initials:"TI",
-    image:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=82",
+    image:"/marketing/ads/inmobiliaria.webp",
     adTag:"Propiedades seleccionadas",
     headline:"Encuentra una propiedad que sí encaje contigo.",
     sub:"Asesoría directa · agenda visitas",

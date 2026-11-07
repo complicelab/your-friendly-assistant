@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep v10 comparison scene replacements in `src/data/compare`; transform only the two right-hand scene producers before the original script boots so its navigation, timers, and animation runner remain the sole rendering owner.

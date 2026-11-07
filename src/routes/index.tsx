@@ -16,8 +16,41 @@ import part12 from "@/data/v10/part-12";
 
 const COMPRESSED_HTML = part1 + part2 + part3 + part4 + part5 + part6 + part7 + part8 + part9 + part10 + part11 + part12;
 
+const SECTION_TITLE_WEIGHT_OVERRIDE = `
+<style id="section-title-weight-v10">
+  /* Give all major section headings the same visual authority as the hero. */
+  .h2,
+  .p-h h2,
+  .svc h3,
+  .projects-head .h2,
+  .contact-copy .h2,
+  .ex-copy .h2 {
+    font-weight: 700 !important;
+    letter-spacing: -0.035em !important;
+  }
+
+  .h2,
+  .p-h h2 {
+    line-height: 1.04 !important;
+  }
+
+  .svc h3 {
+    line-height: 1.06 !important;
+  }
+
+  @media (max-width: 700px) {
+    .h2,
+    .p-h h2,
+    .svc h3 {
+      letter-spacing: -0.03em !important;
+    }
+  }
+</style>
+`;
+
 function getOriginalHtml() {
-  return gunzipSync(Buffer.from(COMPRESSED_HTML, "base64"));
+  const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8");
+  return html.replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + "</head>");
 }
 
 export const Route = createFileRoute("/")({
@@ -25,11 +58,12 @@ export const Route = createFileRoute("/")({
     handlers: {
       GET: async () => {
         const html = getOriginalHtml();
+        const body = Buffer.from(html, "utf8");
 
-        return new Response(html, {
+        return new Response(body, {
           headers: {
             "Content-Type": "text/html; charset=utf-8",
-            "Content-Length": String(html.byteLength),
+            "Content-Length": String(body.byteLength),
             "Cache-Control": "no-cache",
           },
         });

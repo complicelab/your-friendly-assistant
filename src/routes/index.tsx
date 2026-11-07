@@ -1,3 +1,4 @@
+// preview-rebuild-v10
 import { createFileRoute } from "@tanstack/react-router";
 import { gunzipSync } from "node:zlib";
 

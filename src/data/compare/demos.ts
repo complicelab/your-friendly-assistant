@@ -17,6 +17,7 @@ const agendaScene = `<div class="cd-demo" data-cd-scene="agenda">${browser('/age
 <button type="submit" class="p-btn2 cd-btn cd-confirm" data-at="4200" data-add="press">Confirmar cita &nbsp; →</button><div class="cd-success p-rv" role="status" data-at="4600" data-add="on"><i>✓</i><div><strong>Cita agendada</strong><span data-cd-summary>Miércoles 11 · 10:00 a. m.</span></div></div><p class="cd-booking-note">✓ Confirmación por WhatsApp · Agenda disponible 24 h</p></form></div>`;
 
 // Replace the scene producers before v10 boots. Its existing go()/run() own mounting and animation.
+export { webScene as approvedDentalWebScene };
 export function replaceCompareScenes(html: string): string {
   const marker = '/* ---------- los 7 pasos ---------- */';
   const start = html.indexOf(marker);

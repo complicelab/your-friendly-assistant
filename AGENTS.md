@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep v10 comparison scene replacements in `src/data/compare`; transform only the two right-hand scene producers before the original script boots so its navigation, timers, and animation runner remain the sole rendering owner.
+- Keep the eight-step system flow replacements in `src/data/flow`, replacing only selected ST h() producers before v10 boots; the original go(), run() and timer pool own rendering and autoplay, while delegated handlers manage manual interactions.

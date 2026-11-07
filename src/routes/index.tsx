@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { gunzipSync } from "node:zlib";
 import { compareStyles, compareInteractions, replaceCompareScenes } from "@/data/compare/demos";
 import { flowStyles, flowInteractions, replaceFlowScenes } from "@/data/flow/demos";
+import { marketingStyles, marketingInteractions } from "@/data/marketing/demo";
 
 import part1 from "@/data/v10/part-1";
 import part2 from "@/data/v10/part-2";
@@ -259,8 +260,8 @@ const MOBILE_FLOW_SCRIPT = `
 function getOriginalHtml() {
   const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8");
   return replaceFlowScenes(replaceCompareScenes(html))
-    .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + compareStyles + flowStyles + "\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n" + "</head>")
-    .replace("</body>", MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + "</body>");
+    .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + compareStyles + flowStyles + marketingStyles + "\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n" + "</head>")
+    .replace("</body>", MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + "</body>");
 }
 
 export const Route = createFileRoute("/")({

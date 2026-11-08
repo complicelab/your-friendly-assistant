@@ -8,6 +8,20 @@
       "when": 1794170336648,
       "tag": "0000_crm_authenticated_grants",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794177137787,
+      "tag": "0001_fix_public_booking_agent_status",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794177175180,
+      "tag": "0002_fix_public_booking_activity_actor",
+      "breakpoints": true
     }
   ]
 }

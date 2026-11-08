@@ -1,10 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { supabase } from "@/integrations/supabase/client";
+import { CRM_ADMIN_EMAIL, isCrmAdministrator } from "@/lib/crm-access";
+import { prepareCrmAccess } from "@/lib/crm-auth.functions";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "CRM | Cómplice Lab" },
+      { title: "CRM privado | Cómplice Lab" },
+      { name: "description", content: "Acceso privado al CRM interno de Cómplice Lab." },
+      { property: "og:title", content: "CRM privado | Cómplice Lab" },
+      { property: "og:description", content: "Acceso exclusivo para el administrador de Cómplice Lab." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex,nofollow,noarchive" },
     ],
   }),
@@ -29,7 +38,7 @@ type Contact = {
   agent_status: string;
 };
 
-const ADMIN_EMAIL = "complicelab@gmail.com";
+const ADMIN_EMAIL = CRM_ADMIN_EMAIL;
 const STATUS = [
   ["nuevo", "Nuevo"],
   ["contactado", "Contactado"],
@@ -41,17 +50,10 @@ const STATUS = [
   ["perdido", "Perdido"],
 ] as const;
 
-function supabaseConfig() {
-  const env = import.meta.env as Record<string, string | undefined>;
-  return {
-    url: env["VITE_SUPABASE_URL"] || "",
-    key: env["VITE_SUPABASE_PUBLISHABLE_KEY"] || env["VITE_SUPABASE_ANON_KEY"] || "",
-  };
-}
-
 function AdminCrmPage() {
-  const config = supabaseConfig();
+  const prepareAccess = useServerFn(prepareCrmAccess);
   const [token, setToken] = useState("");
+  const [checking, setChecking] = useState(true);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Contact | null>(null);
@@ -59,99 +61,83 @@ function AdminCrmPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
-    const hashToken = hash.get("access_token");
-    const stored = sessionStorage.getItem("cl_crm_token") || "";
-    const next = hashToken || stored;
-    if (hashToken) {
-      sessionStorage.setItem("cl_crm_token", hashToken);
-      history.replaceState(null, "", "/admin");
+    let active = true;
+    let revision = 0;
+    async function checkAccess() {
+      const current = ++revision;
+      const { data, error } = await supabase.auth.getUser();
+      if (!active || current !== revision) return;
+      if (error || !isCrmAdministrator(data.user)) {
+        setToken("");
+        setContacts([]);
+        setSelected(null);
+        if (data.user) setMessage("Este correo no tiene acceso al CRM.");
+      } else {
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (!active || current !== revision) return;
+        setToken(sessionData.session?.access_token || "");
+      }
+      setChecking(false);
     }
-    setToken(next);
+    // The generated client owns callback processing, persistence and token refresh.
+    const { data: subscription } = supabase.auth.onAuthStateChange(() => {
+      queueMicrotask(() => { void checkAccess(); });
+    });
+    sessionStorage.removeItem("cl_crm_token");
+    void checkAccess();
+    return () => { active = false; subscription.subscription.unsubscribe(); };
   }, []);
 
   useEffect(() => {
-    if (token && config.url && config.key) void loadContacts(token);
+    if (!token) return;
+    let active = true;
+    setLoading(true);
+    void supabase.from("crm_contacts").select("*").order("created_at", { ascending: false }).limit(300)
+      .then(({ data, error }) => {
+        if (!active) return;
+        if (error) setMessage("No pude cargar los contactos del CRM.");
+        else setContacts(data || []);
+        setLoading(false);
+      });
+    return () => { active = false; };
   }, [token]);
 
   async function requestAccess() {
-    if (!config.url || !config.key) {
-      setMessage("La base del CRM todavía no está conectada en este proyecto.");
-      return;
-    }
     setLoading(true);
     setMessage("");
     try {
-      const response = await fetch(config.url.replace(/\/$/, "") + "/auth/v1/otp", {
-        method: "POST",
-        headers: { apikey: config.key, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: ADMIN_EMAIL,
-          create_user: false,
-          options: { emailRedirectTo: window.location.origin + "/admin" },
-        }),
+      await prepareAccess();
+      const { error } = await supabase.auth.signInWithOtp({
+        email: ADMIN_EMAIL,
+        options: { shouldCreateUser: false, emailRedirectTo: window.location.origin + "/admin" },
       });
-      if (!response.ok) throw new Error();
-      setMessage("Enviamos un enlace de acceso a " + ADMIN_EMAIL + ".");
+      if (error) throw error;
+      setMessage("Enviamos un enlace de acceso a " + ADMIN_EMAIL + ". Revisa también la carpeta de spam.");
     } catch {
-      setMessage("No fue posible solicitar el acceso. Verifica que el usuario administrador exista en Supabase.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function loadContacts(accessToken = token) {
-    if (!config.url || !config.key || !accessToken) return;
-    setLoading(true);
-    try {
-      const response = await fetch(
-        config.url.replace(/\/$/, "") + "/rest/v1/crm_contacts?select=*&order=created_at.desc&limit=300",
-        { headers: { apikey: config.key, Authorization: "Bearer " + accessToken } },
-      );
-      if (response.status === 401 || response.status === 403) {
-        sessionStorage.removeItem("cl_crm_token");
-        setToken("");
-        setMessage("La sesión venció. Solicita un nuevo enlace de acceso.");
-        return;
-      }
-      if (!response.ok) throw new Error();
-      setContacts(await response.json());
-    } catch {
-      setMessage("No pude cargar los contactos del CRM.");
+      setMessage("No fue posible enviar el enlace. Intenta de nuevo en unos minutos.");
     } finally {
       setLoading(false);
     }
   }
 
   async function updateStatus(contact: Contact, status: string) {
-    if (!config.url || !config.key || !token) return;
-    const response = await fetch(
-      config.url.replace(/\/$/, "") + "/rest/v1/crm_contacts?id=eq." + encodeURIComponent(contact.id),
-      {
-        method: "PATCH",
-        headers: {
-          apikey: config.key,
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-          Prefer: "return=representation",
-        },
-        body: JSON.stringify({
-          status,
-          last_contact_at: status === "contactado" ? new Date().toISOString() : undefined,
-        }),
-      },
-    );
-    if (!response.ok) return setMessage("No pude actualizar el estado.");
-    const updated = (await response.json())[0] as Contact;
+    if (!token) return;
+    const { data: userData } = await supabase.auth.getUser();
+    if (!isCrmAdministrator(userData.user)) return;
+    const { data: updated, error } = await supabase.from("crm_contacts")
+      .update({ status, last_contact_at: status === "contactado" ? new Date().toISOString() : undefined })
+      .eq("id", contact.id).select("*").single();
+    if (error || !updated) return setMessage("No pude actualizar el estado.");
     setContacts((items) => items.map((item) => item.id === updated.id ? updated : item));
     setSelected(updated);
   }
 
-  function logout() {
-    sessionStorage.removeItem("cl_crm_token");
+  async function logout() {
     setToken("");
     setContacts([]);
     setSelected(null);
+    setMessage("");
+    await supabase.auth.signOut();
   }
 
   const filtered = useMemo(() => {
@@ -170,24 +156,6 @@ function AdminCrmPage() {
     ganados: contacts.filter((c) => c.status === "ganado").length,
   }), [contacts]);
 
-  if (!config.url || !config.key) {
-    return (
-      <main className="crm-shell crm-locked">
-        <img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab" />
-        <div className="crm-lock-card">
-          <span>CRM INTERNO</span>
-          <h1>La interfaz está preparada. Falta habilitar la base.</h1>
-          <p>
-            Lovable todavía no tiene una base Supabase activa en este proyecto. El CRM está diseñado
-            para usar una sola fuente de verdad y quedar listo para el futuro agente de WhatsApp.
-          </p>
-          <b>Administrador autorizado: {ADMIN_EMAIL}</b>
-        </div>
-        <CrmStyles />
-      </main>
-    );
-  }
-
   if (!token) {
     return (
       <main className="crm-shell crm-locked">
@@ -197,8 +165,8 @@ function AdminCrmPage() {
           <h1>CRM de Cómplice Lab</h1>
           <p>Solo el administrador autorizado puede consultar contactos, seguimientos y oportunidades.</p>
           <div className="crm-admin-email">{ADMIN_EMAIL}</div>
-          <button onClick={requestAccess} disabled={loading}>
-            {loading ? "Solicitando…" : "Enviar enlace de acceso"}
+          <button onClick={requestAccess} disabled={loading || checking}>
+            {checking ? "Verificando acceso…" : loading ? "Solicitando…" : "Enviar enlace de acceso"}
           </button>
           {message && <p className="crm-message">{message}</p>}
         </div>

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as CapacitacionIaEmpresasRouteImport } from './routes/capacitacion-ia-empresas'
 import { Route as CodigoceroRouteImport } from './routes/codigocero'
 import { Route as FormacionRouteImport } from './routes/formacion'
@@ -19,6 +20,7 @@ import { Route as PbWebDotwebpRouteImport } from './routes/pb-web[.]webp'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as TodosLosServiciosRouteImport } from './routes/todos-los-servicios'
+import { Route as ApiLeadsRouteImport } from './routes/api.leads'
 import { Route as FoundersCamiloDotjpgRouteImport } from './routes/founders.camilo[.]jpg'
 import { Route as FoundersCristianDotjpgRouteImport } from './routes/founders.cristian[.]jpg'
 import { Route as ProyectosB2homeRouteImport } from './routes/proyectos.b2home'
@@ -42,6 +44,11 @@ import { Route as ServiciosPublicidadMetaAdsRouteImport } from './routes/servici
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CapacitacionIaEmpresasRoute = CapacitacionIaEmpresasRouteImport.update({
@@ -87,6 +94,11 @@ const TerminosRoute = TerminosRouteImport.update({
 const TodosLosServiciosRoute = TodosLosServiciosRouteImport.update({
   id: '/todos-los-servicios',
   path: '/todos-los-servicios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiLeadsRoute = ApiLeadsRouteImport.update({
+  id: '/api/leads',
+  path: '/api/leads',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FoundersCamiloDotjpgRoute = FoundersCamiloDotjpgRouteImport.update({
@@ -198,6 +210,7 @@ const ServiciosPublicidadMetaAdsRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/codigocero': typeof CodigoceroRoute
   '/formacion': typeof FormacionRoute
@@ -207,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
+  '/api/leads': typeof ApiLeadsRoute
   '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
   '/founders/cristian.jpg': typeof FoundersCristianDotjpgRoute
   '/proyectos/b2home': typeof ProyectosB2homeRoute
@@ -229,6 +243,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/codigocero': typeof CodigoceroRoute
   '/formacion': typeof FormacionRoute
@@ -238,6 +253,7 @@ export interface FileRoutesByTo {
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
+  '/api/leads': typeof ApiLeadsRoute
   '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
   '/founders/cristian.jpg': typeof FoundersCristianDotjpgRoute
   '/proyectos/b2home': typeof ProyectosB2homeRoute
@@ -261,6 +277,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/codigocero': typeof CodigoceroRoute
   '/formacion': typeof FormacionRoute
@@ -270,6 +287,7 @@ export interface FileRoutesById {
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
+  '/api/leads': typeof ApiLeadsRoute
   '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
   '/founders/cristian.jpg': typeof FoundersCristianDotjpgRoute
   '/proyectos/b2home': typeof ProyectosB2homeRoute
@@ -294,6 +312,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/capacitacion-ia-empresas'
     | '/codigocero'
     | '/formacion'
@@ -303,6 +322,7 @@ export interface FileRouteTypes {
     | '/privacidad'
     | '/terminos'
     | '/todos-los-servicios'
+    | '/api/leads'
     | '/founders/camilo.jpg'
     | '/founders/cristian.jpg'
     | '/proyectos/b2home'
@@ -325,6 +345,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/capacitacion-ia-empresas'
     | '/codigocero'
     | '/formacion'
@@ -334,6 +355,7 @@ export interface FileRouteTypes {
     | '/privacidad'
     | '/terminos'
     | '/todos-los-servicios'
+    | '/api/leads'
     | '/founders/camilo.jpg'
     | '/founders/cristian.jpg'
     | '/proyectos/b2home'
@@ -356,6 +378,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/capacitacion-ia-empresas'
     | '/codigocero'
     | '/formacion'
@@ -365,6 +388,7 @@ export interface FileRouteTypes {
     | '/privacidad'
     | '/terminos'
     | '/todos-los-servicios'
+    | '/api/leads'
     | '/founders/camilo.jpg'
     | '/founders/cristian.jpg'
     | '/proyectos/b2home'
@@ -388,6 +412,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   CapacitacionIaEmpresasRoute: typeof CapacitacionIaEmpresasRoute
   CodigoceroRoute: typeof CodigoceroRoute
   FormacionRoute: typeof FormacionRoute
@@ -397,6 +422,7 @@ export interface RootRouteChildren {
   PrivacidadRoute: typeof PrivacidadRoute
   TerminosRoute: typeof TerminosRoute
   TodosLosServiciosRoute: typeof TodosLosServiciosRoute
+  ApiLeadsRoute: typeof ApiLeadsRoute
   FoundersCamiloDotjpgRoute: typeof FoundersCamiloDotjpgRoute
   FoundersCristianDotjpgRoute: typeof FoundersCristianDotjpgRoute
   ProyectosB2homeRoute: typeof ProyectosB2homeRoute
@@ -425,6 +451,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/capacitacion-ia-empresas': {
@@ -488,6 +521,13 @@ declare module '@tanstack/react-router' {
       path: '/todos-los-servicios'
       fullPath: '/todos-los-servicios'
       preLoaderRoute: typeof TodosLosServiciosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/leads': {
+      id: '/api/leads'
+      path: '/api/leads'
+      fullPath: '/api/leads'
+      preLoaderRoute: typeof ApiLeadsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/founders/camilo.jpg': {
@@ -628,6 +668,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   CapacitacionIaEmpresasRoute: CapacitacionIaEmpresasRoute,
   CodigoceroRoute: CodigoceroRoute,
   FormacionRoute: FormacionRoute,
@@ -637,6 +678,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacidadRoute: PrivacidadRoute,
   TerminosRoute: TerminosRoute,
   TodosLosServiciosRoute: TodosLosServiciosRoute,
+  ApiLeadsRoute: ApiLeadsRoute,
   FoundersCamiloDotjpgRoute: FoundersCamiloDotjpgRoute,
   FoundersCristianDotjpgRoute: FoundersCristianDotjpgRoute,
   ProyectosB2homeRoute: ProyectosB2homeRoute,

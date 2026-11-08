@@ -44,8 +44,8 @@ const STATUS = [
 function supabaseConfig() {
   const env = import.meta.env as Record<string, string | undefined>;
   return {
-    url: env.VITE_SUPABASE_URL || "",
-    key: env.VITE_SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_ANON_KEY || "",
+    url: env["VITE_SUPABASE_URL"] || "",
+    key: env["VITE_SUPABASE_PUBLISHABLE_KEY"] || env["VITE_SUPABASE_ANON_KEY"] || "",
   };
 }
 

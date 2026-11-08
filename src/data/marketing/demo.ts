@@ -1,7 +1,7 @@
 const nicheData = [
   {
     key:"odonto", label:"Odontología", account:"complicedental", brand:"Cómplice Dental", initials:"CD",
-    adImage:"/marketing/demo/social-ad-dental.webp", heroImage:"/marketing/demo/landing-hero-dental.webp", adTag:"Diseño de sonrisa",
+    image:"/marketing/ads/dental.webp", adTag:"Diseño de sonrisa",
     headline:"Tu sonrisa merece una experiencia a tu nivel.",
     sub:"Valoración personalizada · agenda online",
     adCta:"Agendar valoración", url:"complicedental.com/valoracion",
@@ -59,7 +59,10 @@ export const marketingInteractions = `
       '<div class="clm-ig-nav"><b>Instagram</b><span>♡　⌁</span></div>'+
       '<div class="clm-post" data-ig-post>'+
         '<div class="clm-posthead"><span class="clm-avatar">'+n.initials+'</span><div><b>'+n.account+'</b><small>Publicidad · '+n.adTag+'</small></div><span class="clm-more">•••</span></div>'+
-        '<div class="clm-adcreative-wrap" style="'+imageStyle(n.adImage)+'"></div>'+
+        '<div class="clm-adcreative-wrap" style="'+imageStyle(n.image)+'">'+
+          '<div class="clm-adshade"></div>'+
+          '<div class="clm-adcontent"><span>ODONTOLOGÍA PERSONALIZADA</span><b>'+n.headline+'</b><small>'+n.sub+'</small></div>'+
+        '</div>'+
         '<div class="clm-igactions"><span>♡　◯　⌁</span><span>Guardar</span></div>'+
         '<div class="clm-igtext"><b>'+n.account+'</b> '+n.sub+'.</div>'+
         '<button class="clm-primary" data-ig-cta data-next>'+n.adCta+'</button>'+
@@ -71,7 +74,7 @@ export const marketingInteractions = `
     return '<div class="clm-scene clm-web">'+
       '<div class="clm-browser"><i></i><i></i><i></i><span>'+n.url+'</span></div>'+
       '<div class="clm-webnav"><b>✦ '+n.brand+'</b><span>☰</span></div>'+
-      '<div class="clm-webhero" style="'+imageStyle(n.heroImage)+'"><small>'+n.landingKicker+'</small><b>'+n.landingHeadline+'</b><span>'+n.landingSub+'</span></div>'+
+      '<div class="clm-webhero" style="'+imageStyle(n.image)+'"><small>'+n.landingKicker+'</small><b>'+n.landingHeadline+'</b><span>'+n.landingSub+'</span></div>'+
       '<div class="clm-webproof"><span>✓ Atención personalizada</span><span>✓ Respuesta rápida</span></div>'+
       '<div class="clm-form"><div class="clm-formhead"><b>'+n.adCta+'</b><small>Atención personal</small></div>'+
       '<div class="clm-field">Nombre<span data-fill data-value="'+n.lead.replace(/"/g,"&quot;")+'"></span></div>'+

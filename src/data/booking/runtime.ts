@@ -22,6 +22,16 @@ export function replaceBookingRuntime(html: string, config: BookingPublicConfig)
     throw new Error("No se encontró un único bloque de agenda pública para reemplazar.");
   }
 
+  const legacyAvailability = `function nextDays(n){var out=[],d=new Date();d.setHours(12,0,0,0);while(out.length<n){d.setDate(d.getDate()+1);var w=d.getDay();if(w!==0&&w!==6)out.push(new Date(d));}return out;}
+var fmtShort=new Intl.DateTimeFormat('es-CO',{weekday:'short'});
+var fmtDM=new Intl.DateTimeFormat('es-CO',{day:'numeric',month:'short'});
+var fmtLong=new Intl.DateTimeFormat('es-CO',{weekday:'long',day:'numeric',month:'long'});
+/* TODO agenda real: reemplazar por la disponibilidad de la herramienta de agenda (ej. Cal.com con Google Calendar) */
+var SLOTS=['9:00 a. m.','10:00 a. m.','11:00 a. m.','2:00 p. m.','3:00 p. m.','4:00 p. m.'];
+
+`;
+  if (!html.includes(legacyAvailability)) throw new Error("No se encontró la disponibilidad ficticia anterior.");
+
   const replacement = `  }else{
     mbox.classList.add('wide');
     var bookingConfig=${JSON.stringify(config)};
@@ -115,6 +125,7 @@ export function replaceBookingRuntime(html: string, config: BookingPublicConfig)
           p_consent_text:'Autorizo a Cómplice Lab a usar mis datos para gestionar esta videollamada y responder a mi solicitud.'
         }).then(function(){
           $('#m-host').innerHTML=successView('Cita agendada, '+lead.nombre.split(' ')[0]+'.','Tu videollamada de diagnóstico quedó agendada para '+appointment+'. La reserva ya está registrada en nuestro CRM.','','');
+          var demoNote=$('.demo-note',$('#m-host'));if(demoNote)demoNote.remove();
           var ok=$('.ok',mcontent);if(ok)ok.focus();
           bookingBusy=false;done();
         }).catch(function(error){
@@ -133,5 +144,5 @@ export function replaceBookingRuntime(html: string, config: BookingPublicConfig)
     loadBookingAvailability();
   }`;
 
-  return html.slice(0, start) + replacement + html.slice(end + endMarker.length);
+  return (html.slice(0, start) + replacement + html.slice(end + endMarker.length)).replace(legacyAvailability, "");
 }

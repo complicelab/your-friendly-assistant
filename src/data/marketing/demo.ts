@@ -1,7 +1,7 @@
 const nicheData = [
   {
     key:"odonto", label:"Odontología", account:"complicedental", brand:"Cómplice Dental", initials:"CD",
-    image:"/marketing/ads/dental.webp", adTag:"Diseño de sonrisa",
+    adImage:"/marketing/demo/social-ad-dental.webp", heroImage:"/marketing/demo/landing-hero-dental.webp", adTag:"Diseño de sonrisa",
     headline:"Tu sonrisa merece una experiencia a tu nivel.",
     sub:"Valoración personalizada · agenda online",
     adCta:"Agendar valoración", url:"complicedental.com/valoracion",
@@ -52,15 +52,14 @@ export const marketingInteractions = `
   function fmt(n){return new Intl.NumberFormat("es-CO").format(n)}
   function stopSubs(){subTimers.forEach(clearTimeout);subTimers=[]}
   function later(ms,fn,id){var t=setTimeout(function(){if(id===runId)fn()},reduced?0:ms);subTimers.push(t)}
-  function photoStyle(n){return 'background-image:url("'+String(n.image).replace(/"/g,"%22")+'")'}
-  function imageSrc(n){return String(n.image).replace(/"/g,"&quot;")}
+  function imageStyle(src){return 'background-image:url("'+String(src).replace(/"/g,"%22")+'")'}
 
   function igScene(n){
     return '<div class="clm-scene clm-ig">'+
       '<div class="clm-ig-nav"><b>Instagram</b><span>♡　⌁</span></div>'+
       '<div class="clm-post" data-ig-post>'+
         '<div class="clm-posthead"><span class="clm-avatar">'+n.initials+'</span><div><b>'+n.account+'</b><small>Publicidad · '+n.adTag+'</small></div><span class="clm-more">•••</span></div>'+
-        '<div class="clm-adcreative-wrap" style="'+photoStyle(n)+'"></div>'+
+        '<div class="clm-adcreative-wrap" style="'+imageStyle(n.adImage)+'"></div>'+
         '<div class="clm-igactions"><span>♡　◯　⌁</span><span>Guardar</span></div>'+
         '<div class="clm-igtext"><b>'+n.account+'</b> '+n.sub+'.</div>'+
         '<button class="clm-primary" data-ig-cta data-next>'+n.adCta+'</button>'+
@@ -72,7 +71,7 @@ export const marketingInteractions = `
     return '<div class="clm-scene clm-web">'+
       '<div class="clm-browser"><i></i><i></i><i></i><span>'+n.url+'</span></div>'+
       '<div class="clm-webnav"><b>✦ '+n.brand+'</b><span>☰</span></div>'+
-      '<div class="clm-webhero" style="'+photoStyle(n)+'"><small>'+n.landingKicker+'</small><b>'+n.landingHeadline+'</b><span>'+n.landingSub+'</span></div>'+
+      '<div class="clm-webhero" style="'+imageStyle(n.heroImage)+'"><small>'+n.landingKicker+'</small><b>'+n.landingHeadline+'</b><span>'+n.landingSub+'</span></div>'+
       '<div class="clm-webproof"><span>✓ Atención personalizada</span><span>✓ Respuesta rápida</span></div>'+
       '<div class="clm-form"><div class="clm-formhead"><b>'+n.adCta+'</b><small>Atención personal</small></div>'+
       '<div class="clm-field">Nombre<span data-fill data-value="'+n.lead.replace(/"/g,"&quot;")+'"></span></div>'+

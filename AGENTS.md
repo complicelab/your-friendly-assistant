@@ -9,7 +9,7 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- CRM authentication uses the generated Cloud client for verified sessions and RLS reads; a fixed-email server bootstrap creates only an unconfirmed account because mailbox ownership must be verified before access.
+- CRM uses the generated Cloud client for verified administrator sessions and RLS CRUD; isolated modules in src/components/crm own private UI and src/lib/crm-model owns validated rules. No account bootstrap or privileged browser client is needed for the existing administrator.
 
 - Keep v10 comparison scene replacements in `src/data/compare`; transform only the two right-hand scene producers before the original script boots so its navigation, timers, and animation runner remain the sole rendering owner.
 - Keep the eight-step system flow replacements in `src/data/flow`, replacing only selected ST h() producers before v10 boots; the original go(), run() and timer pool own rendering and autoplay, while delegated handlers manage manual interactions.

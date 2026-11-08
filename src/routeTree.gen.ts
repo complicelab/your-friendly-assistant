@@ -18,6 +18,7 @@ import { Route as OgImageDotjpgRouteImport } from './routes/og-image[.]jpg'
 import { Route as PbHeroDotwebpRouteImport } from './routes/pb-hero[.]webp'
 import { Route as PbWebDotwebpRouteImport } from './routes/pb-web[.]webp'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as TodosLosServiciosRouteImport } from './routes/todos-los-servicios'
 import { Route as ApiLeadsRouteImport } from './routes/api.leads'
@@ -84,6 +85,11 @@ const PbWebDotwebpRoute = PbWebDotwebpRouteImport.update({
 const PrivacidadRoute = PrivacidadRouteImport.update({
   id: '/privacidad',
   path: '/privacidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TerminosRoute = TerminosRouteImport.update({
@@ -218,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
   '/privacidad': typeof PrivacidadRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/api/leads': typeof ApiLeadsRoute
@@ -251,6 +258,7 @@ export interface FileRoutesByTo {
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
   '/privacidad': typeof PrivacidadRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/api/leads': typeof ApiLeadsRoute
@@ -285,6 +293,7 @@ export interface FileRoutesById {
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
   '/privacidad': typeof PrivacidadRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/api/leads': typeof ApiLeadsRoute
@@ -320,6 +329,7 @@ export interface FileRouteTypes {
     | '/pb-hero.webp'
     | '/pb-web.webp'
     | '/privacidad'
+    | '/reset-password'
     | '/terminos'
     | '/todos-los-servicios'
     | '/api/leads'
@@ -353,6 +363,7 @@ export interface FileRouteTypes {
     | '/pb-hero.webp'
     | '/pb-web.webp'
     | '/privacidad'
+    | '/reset-password'
     | '/terminos'
     | '/todos-los-servicios'
     | '/api/leads'
@@ -386,6 +397,7 @@ export interface FileRouteTypes {
     | '/pb-hero.webp'
     | '/pb-web.webp'
     | '/privacidad'
+    | '/reset-password'
     | '/terminos'
     | '/todos-los-servicios'
     | '/api/leads'
@@ -420,6 +432,7 @@ export interface RootRouteChildren {
   PbHeroDotwebpRoute: typeof PbHeroDotwebpRoute
   PbWebDotwebpRoute: typeof PbWebDotwebpRoute
   PrivacidadRoute: typeof PrivacidadRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   TerminosRoute: typeof TerminosRoute
   TodosLosServiciosRoute: typeof TodosLosServiciosRoute
   ApiLeadsRoute: typeof ApiLeadsRoute
@@ -507,6 +520,13 @@ declare module '@tanstack/react-router' {
       path: '/privacidad'
       fullPath: '/privacidad'
       preLoaderRoute: typeof PrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terminos': {
@@ -676,6 +696,7 @@ const rootRouteChildren: RootRouteChildren = {
   PbHeroDotwebpRoute: PbHeroDotwebpRoute,
   PbWebDotwebpRoute: PbWebDotwebpRoute,
   PrivacidadRoute: PrivacidadRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   TerminosRoute: TerminosRoute,
   TodosLosServiciosRoute: TodosLosServiciosRoute,
   ApiLeadsRoute: ApiLeadsRoute,

@@ -5,8 +5,8 @@ export function BrandMark({ compact = false }: { compact?: boolean }) {
         className="brand-logo"
         src="/brand/complice-lab-logo.svg"
         alt="Cómplice Lab"
-        width="900"
-        height="244"
+        width="1920"
+        height="542"
       />
     </a>
   );

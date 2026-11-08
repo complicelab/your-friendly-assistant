@@ -69,6 +69,7 @@ function AdminCrmPage() {
   const [loginPassword,setLoginPassword]=useState("");
   const [showCreate,setShowCreate]=useState(false);
   const [showSecurity,setShowSecurity]=useState(false);
+  const [recoveryMode,setRecoveryMode]=useState(false);
   const [newPassword,setNewPassword]=useState("");
   const [confirmPassword,setConfirmPassword]=useState("");
   const [form,setForm]=useState({...emptyContact});
@@ -93,8 +94,18 @@ function AdminCrmPage() {
 
   useEffect(()=>{
     let active=true;
+    const url=new URL(window.location.href);
+    if(url.searchParams.get("mode")==="recovery" || window.location.hash.includes("recovery")){
+      setRecoveryMode(true);
+    }
     void checkAccess();
-    const {data:subscription}=supabase.auth.onAuthStateChange(()=>{
+    const {data:subscription}=supabase.auth.onAuthStateChange((event,session)=>{
+      if(event==="PASSWORD_RECOVERY"){
+        setRecoveryMode(true);
+        setToken(session?.access_token||"");
+        setChecking(false);
+        return;
+      }
       queueMicrotask(()=>{if(active) void checkAccess();});
     });
     return()=>{active=false;subscription.subscription.unsubscribe();};
@@ -138,7 +149,7 @@ function AdminCrmPage() {
 
   async function recoverPassword(){
     setLoading(true);setMessage("");
-    const {error}=await supabase.auth.resetPasswordForEmail(ADMIN_EMAIL,{redirectTo:window.location.origin+"/admin#recovery"});
+    const {error}=await supabase.auth.resetPasswordForEmail(ADMIN_EMAIL,{redirectTo:window.location.origin+"/admin?mode=recovery"});
     setMessage(error ? "No fue posible enviar la recuperación." : "Te enviamos un enlace únicamente para restablecer la contraseña.");
     setLoading(false);
   }
@@ -154,6 +165,32 @@ function AdminCrmPage() {
       setMessage("Contraseña actualizada. Desde ahora puedes entrar con correo y contraseña.");
       setNewPassword("");setConfirmPassword("");setShowSecurity(false);
     }
+    setLoading(false);
+  }
+
+  async function saveRecoveryPassword(e:FormEvent){
+    e.preventDefault(); setMessage("");
+    if(newPassword.length<8)return setMessage("La contraseña debe tener al menos 8 caracteres.");
+    if(newPassword!==confirmPassword)return setMessage("Las contraseñas no coinciden.");
+    const {data:sessionData}=await supabase.auth.getSession();
+    if(!sessionData.session){
+      setMessage("El enlace de recuperación no es válido o ya venció. Solicita uno nuevo.");
+      return;
+    }
+    setLoading(true);
+    const {error}=await supabase.auth.updateUser({password:newPassword});
+    if(error){
+      setMessage("No pude guardar la nueva contraseña. Solicita un nuevo enlace e inténtalo otra vez.");
+      setLoading(false);
+      return;
+    }
+    await supabase.auth.signOut();
+    setToken("");
+    setRecoveryMode(false);
+    setNewPassword("");
+    setConfirmPassword("");
+    window.history.replaceState({},document.title,"/admin");
+    setMessage("Contraseña actualizada correctamente. Ya puedes entrar con tu correo y la nueva contraseña.");
     setLoading(false);
   }
 
@@ -267,6 +304,25 @@ function AdminCrmPage() {
   }),[contacts]);
 
   if(checking)return <main className="crm-shell crm-locked"><img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab"/><div className="crm-lock-card"><span>CRM PRIVADO</span><h1>Verificando acceso…</h1></div><CrmStyles/></main>;
+
+  if(recoveryMode)return(
+    <main className="crm-shell crm-locked">
+      <img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab"/>
+      <form className="crm-lock-card" onSubmit={saveRecoveryPassword}>
+        <span>RECUPERACIÓN SEGURA</span>
+        <h1>Crear nueva contraseña</h1>
+        <p>Define una nueva contraseña para {ADMIN_EMAIL}. Después volverás al acceso normal del CRM.</p>
+        {!token&&<div className="crm-message">Verificando el enlace de recuperación…</div>}
+        <label>Nueva contraseña</label>
+        <input type="password" value={newPassword} onChange={e=>setNewPassword(e.target.value)} placeholder="Mínimo 8 caracteres" autoComplete="new-password"/>
+        <label>Confirmar contraseña</label>
+        <input type="password" value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)} placeholder="Repite la contraseña" autoComplete="new-password"/>
+        <button type="submit" disabled={loading||!token}>{loading?"Guardando…":"Guardar nueva contraseña"}</button>
+        {message&&<p className="crm-message">{message}</p>}
+      </form>
+      <CrmStyles/>
+    </main>
+  );
 
   if(!token)return(
     <main className="crm-shell crm-locked">

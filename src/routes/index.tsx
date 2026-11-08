@@ -749,6 +749,14 @@ const UNIFIED_BOOKING_CTA = \`
     };
   }
 
+  function targetField(root,names,label){
+    for(var i=0;i<names.length;i++){
+      var direct=root.querySelector('[name="'+names[i]+'"]');
+      if(direct)return direct;
+    }
+    return fieldByLabel(root,label);
+  }
+
   function setValue(el,value){
     if(!el||!value)return;
     el.value=value;
@@ -772,10 +780,10 @@ const UNIFIED_BOOKING_CTA = \`
       }
       if(!root){if(tries>12)clearInterval(timer);return;}
 
-      setValue(fieldByLabel(root,"Nombre y apellido"),values.name);
-      setValue(fieldByLabel(root,"Marca personal o empresa"),values.brand);
-      setValue(fieldByLabel(root,"WhatsApp"),values.phone);
-      setValue(fieldByLabel(root,"Correo"),values.email);
+      setValue(targetField(root,["nombre","name","full_name"],"Nombre y apellido"),values.name);
+      setValue(targetField(root,["marca","brand","brand_name"],"Marca personal o empresa"),values.brand);
+      setValue(targetField(root,["whatsapp","phone","telefono"],"WhatsApp"),values.phone);
+      setValue(targetField(root,["email","correo"],"Correo"),values.email);
 
       if(values.service){
         var serviceNodes=Array.from(root.querySelectorAll("button,label,[role=button]"));

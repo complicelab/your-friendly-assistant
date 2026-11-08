@@ -41,17 +41,43 @@ export function replaceBookingRuntime(html: string, config: BookingPublicConfig)
       return map.year+'-'+map.month+'-'+map.day;
     }
     function bookingRpc(name,body){
-      return fetch(bookingConfig.url.replace(/\\/$/,'')+'/rest/v1/rpc/'+name,{
-        method:'POST',
-        headers:{'Content-Type':'application/json','apikey':bookingConfig.key},
-        body:JSON.stringify(body)
-      }).then(function(response){
-        return response.text().then(function(text){
-          var data={};try{data=text?JSON.parse(text):{};}catch(e){data={message:text};}
-          if(!response.ok)throw new Error(data.message||data.hint||'No fue posible completar la solicitud.');
-          return data;
+      if(name==='crm_public_available_slots'){
+        var params=new URLSearchParams({
+          start:String(body.p_start_date||''),
+          days:String(body.p_days||14)
         });
-      });
+        return fetch('/api/booking?'+params.toString(),{
+          method:'GET',
+          headers:{'Accept':'application/json'}
+        }).then(function(response){
+          return response.json().then(function(data){
+            if(!response.ok||!data.ok)throw new Error(data.error||'No fue posible consultar la disponibilidad.');
+            return data.slots||[];
+          });
+        });
+      }
+      if(name==='crm_public_book_meeting'){
+        return fetch('/api/booking',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Accept':'application/json'},
+          body:JSON.stringify({
+            full_name:body.p_full_name,
+            brand_name:body.p_brand_name,
+            country:body.p_country,
+            country_code:body.p_country_code,
+            whatsapp:body.p_whatsapp,
+            email:body.p_email,
+            solution_interest:body.p_solution_interest,
+            starts_at:body.p_starts_at
+          })
+        }).then(function(response){
+          return response.json().then(function(data){
+            if(!response.ok||!data.ok)throw new Error(data.error||'No fue posible guardar la videollamada.');
+            return data.meeting_id;
+          });
+        });
+      }
+      return Promise.reject(new Error('Operación de agenda no soportada.'));
     }
     function bookingSummary(){
       var el=$('#summary');

@@ -1,4 +1,7 @@
 # Autenticación CRM
+- [ ] Cambiar /admin a contraseña; seguridad y recuperación sin registro público.
+- [ ] Completar dashboard, creación y detalle de contactos, actividades y tareas usando tablas existentes.
+- [ ] Verificar escrituras/lecturas bajo sesión admin y vistas desktop/tablet/móvil; no publicar ni tocar SEO público.
 - [x] Preparar /admin, inicialización exclusiva sin confirmar, magic link y rechazo de cuentas no autorizadas; conservar RLS y habilitar permisos faltantes; pruebas y compilación correctas.
 - [ ] Cerrar registro público en More → Users → Auth settings: el ajuste sigue abierto; no hay lectura del valor HIBP para preservarlo al usar la herramienta de configuración.
 - [ ] Verificar entrada al CRM y cierre de sesión tras confirmar el enlace recibido por el administrador; la cuenta permanece sin confirmar y no se debe omitir esa verificación.

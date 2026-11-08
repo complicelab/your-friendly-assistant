@@ -794,14 +794,40 @@ const UNIFIED_BOOKING_CTA = `
     };
   }
 
-  function isContactBookingForm(form){
-    if(!form||isBookingModal(form))return false;
-    var text=norm(form).toLowerCase();
-    var knownFields=text.indexOf("nombre y apellido")!==-1&&text.indexOf("marca personal o empresa")!==-1&&text.indexOf("whatsapp")!==-1;
-    if(knownFields)return true;
-    var section=form.closest("section");
-    var sectionText=norm(section).toLowerCase();
-    return sectionText.indexOf("hablemos de")!==-1&&sectionText.indexOf("negocio")!==-1&&form.querySelectorAll("input").length>=3;
+  function isContactBookingRoot(root){
+    if(!root||isBookingModal(root)||!root.querySelectorAll)return false;
+    var text=norm(root).toLowerCase();
+    return root.querySelectorAll("input").length>=3
+      &&text.indexOf("nombre y apellido")!==-1
+      &&text.indexOf("marca personal o empresa")!==-1
+      &&text.indexOf("whatsapp")!==-1
+      &&text.indexOf("correo")!==-1;
+  }
+
+  function contactBookingRoot(from){
+    if(!from)return null;
+    var node=from;
+    for(var i=0;i<10&&node&&node!==document.body;i++,node=node.parentElement){
+      if(isContactBookingRoot(node))return node;
+    }
+    return null;
+  }
+
+  function findContactBookingRoot(){
+    var anchors=Array.from(document.querySelectorAll("input,button,a,label")).filter(function(el){
+      var t=norm(el).toLowerCase();
+      return t.indexOf("nombre y apellido")!==-1||t==="agendar diagnóstico";
+    });
+    for(var i=0;i<anchors.length;i++){
+      var root=contactBookingRoot(anchors[i]);
+      if(root)return root;
+    }
+    var inputs=Array.from(document.querySelectorAll("input"));
+    for(var j=0;j<inputs.length;j++){
+      var candidate=contactBookingRoot(inputs[j]);
+      if(candidate)return candidate;
+    }
+    return null;
   }
 
   function renderInlineTimes(){
@@ -907,7 +933,8 @@ const UNIFIED_BOOKING_CTA = `
       var text=norm(el);
       if(CTA_TEXTS.indexOf(text)!==-1){el.textContent="Agendar diagnóstico";el.classList.add("cl-booking-cta-label");if(el.tagName==="A")el.removeAttribute("target");}
     });
-    Array.from(document.querySelectorAll("form")).forEach(function(form){if(isContactBookingForm(form))enhanceContactForm(form);});
+    var bookingRoot=findContactBookingRoot();
+    if(bookingRoot)enhanceContactForm(bookingRoot);
   }
 
   function isUnifiedCta(el){if(!el)return false;var t=norm(el);return t==="Agendar diagnóstico"||CTA_TEXTS.indexOf(t)!==-1;}
@@ -915,9 +942,9 @@ const UNIFIED_BOOKING_CTA = `
   document.addEventListener("click",function(event){
     var action=event.target&&event.target.closest?event.target.closest("button,a"):null;
     if(!action||!isUnifiedCta(action)||isBookingModal(action))return;
-    var form=action.closest("form");
+    var form=contactBookingRoot(action);
     event.preventDefault();event.stopPropagation();if(event.stopImmediatePropagation)event.stopImmediatePropagation();
-    if(form&&isContactBookingForm(form)){submitInlineBooking(form,action);return;}
+    if(form){submitInlineBooking(form,action);return;}
     if(typeof window.openModal==="function")window.openModal("booking");
   },true);
 
@@ -926,8 +953,9 @@ const UNIFIED_BOOKING_CTA = `
     if(!(form instanceof HTMLFormElement)||isBookingModal(form))return;
     var action=Array.from(form.querySelectorAll("button,input[type=submit]")).find(function(el){return isUnifiedCta(el)||el.value==="Agendar diagnóstico";});
     if(!action)return;
+    var bookingRoot=contactBookingRoot(action)||contactBookingRoot(form);
     event.preventDefault();event.stopPropagation();if(event.stopImmediatePropagation)event.stopImmediatePropagation();
-    if(isContactBookingForm(form)){submitInlineBooking(form,action);return;}
+    if(bookingRoot){submitInlineBooking(bookingRoot,action);return;}
     if(typeof window.openModal==="function")window.openModal("booking");
   },true);
 

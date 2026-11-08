@@ -14,6 +14,11 @@ type BookingPublicConfig = { url: string; key: string };
  * modal, lead form, WhatsApp flow, navigation and every other section stay intact.
  */
 export function replaceBookingRuntime(html: string, config: BookingPublicConfig) {
+  const legacyStart = html.indexOf("function nextDays(n){");
+  const legacyEnd = html.indexOf("\n\nfunction openModal(mode,preset){", legacyStart);
+  if (legacyStart < 0 || legacyEnd < 0) throw new Error("No se encontró la disponibilidad ficticia anterior.");
+  html = html.slice(0, legacyStart) + html.slice(legacyEnd + 2);
+
   const startMarker = `  }else{\n    mbox.classList.add('wide');`;
   const endMarker = `    if(preset)f2.setPreset(preset);\n  }`;
   const start = html.indexOf(startMarker);
@@ -21,16 +26,6 @@ export function replaceBookingRuntime(html: string, config: BookingPublicConfig)
   if (start < 0 || end < 0 || html.indexOf(startMarker, start + 1) >= 0) {
     throw new Error("No se encontró un único bloque de agenda pública para reemplazar.");
   }
-
-  const legacyAvailability = `function nextDays(n){var out=[],d=new Date();d.setHours(12,0,0,0);while(out.length<n){d.setDate(d.getDate()+1);var w=d.getDay();if(w!==0&&w!==6)out.push(new Date(d));}return out;}
-var fmtShort=new Intl.DateTimeFormat('es-CO',{weekday:'short'});
-var fmtDM=new Intl.DateTimeFormat('es-CO',{day:'numeric',month:'short'});
-var fmtLong=new Intl.DateTimeFormat('es-CO',{weekday:'long',day:'numeric',month:'long'});
-/* TODO agenda real: reemplazar por la disponibilidad de la herramienta de agenda (ej. Cal.com con Google Calendar) */
-var SLOTS=['9:00 a. m.','10:00 a. m.','11:00 a. m.','2:00 p. m.','3:00 p. m.','4:00 p. m.'];
-
-`;
-  if (!html.includes(legacyAvailability)) throw new Error("No se encontró la disponibilidad ficticia anterior.");
 
   const replacement = `  }else{
     mbox.classList.add('wide');
@@ -144,5 +139,5 @@ var SLOTS=['9:00 a. m.','10:00 a. m.','11:00 a. m.','2:00 p. m.','3:00 p. m.','4
     loadBookingAvailability();
   }`;
 
-  return (html.slice(0, start) + replacement + html.slice(end + endMarker.length)).replace(legacyAvailability, "");
+  return html.slice(0, start) + replacement + html.slice(end + endMarker.length);
 }

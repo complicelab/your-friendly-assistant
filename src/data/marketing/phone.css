@@ -223,3 +223,83 @@
   }
   #s-marketing .clm-webhero{background-position:center 58%!important}
 }
+
+
+/* Clean photo-based marketing creative: replaces damaged binary artwork. */
+#s-marketing .clm-adcreative-wrap{
+  position:relative!important;
+  height:310px!important;
+  min-height:310px!important;
+  aspect-ratio:auto!important;
+  overflow:hidden!important;
+  background-size:cover!important;
+  background-position:center 52%!important;
+  background-color:#eaf1ff!important;
+  border-block:1px solid var(--mk-line);
+}
+#s-marketing .clm-adshade{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg,rgba(9,24,52,.06) 16%,rgba(12,29,63,.22) 52%,rgba(8,22,48,.88) 100%),
+    linear-gradient(90deg,rgba(24,72,232,.22),transparent 62%);
+}
+#s-marketing .clm-adcontent{
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:17px;
+  z-index:2;
+  color:#fff;
+  text-align:left;
+  text-shadow:0 2px 12px rgba(5,18,42,.28);
+}
+#s-marketing .clm-adcontent span{
+  display:inline-flex;
+  align-items:center;
+  min-height:22px;
+  padding:5px 8px;
+  margin-bottom:8px;
+  border-radius:999px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.28);
+  backdrop-filter:blur(8px);
+  font:800 7.5px/1 "Montserrat",sans-serif;
+  letter-spacing:.07em;
+}
+#s-marketing .clm-adcontent b{
+  display:block;
+  max-width:230px;
+  font:800 24px/.98 "Poppins",sans-serif;
+  letter-spacing:-.035em;
+}
+#s-marketing .clm-adcontent small{
+  display:block;
+  margin-top:7px;
+  max-width:220px;
+  font:600 9.5px/1.35 "Montserrat",sans-serif;
+  color:rgba(255,255,255,.88);
+}
+#s-marketing .clm-webhero{
+  min-height:142px!important;
+  background-size:cover!important;
+  background-position:center 54%!important;
+}
+#s-marketing .clm-webhero:before{
+  background:linear-gradient(90deg,rgba(10,30,68,.88) 0%,rgba(15,48,103,.68) 46%,rgba(15,48,103,.08) 100%)!important;
+}
+#s-marketing .clm-webhero small,
+#s-marketing .clm-webhero b,
+#s-marketing .clm-webhero span{
+  max-width:64%;
+}
+@media(max-width:620px){
+  #s-marketing .clm-adcreative-wrap{
+    height:285px!important;
+    min-height:285px!important;
+    background-position:center 52%!important;
+  }
+  #s-marketing .clm-adcontent{left:13px;right:13px;bottom:14px}
+  #s-marketing .clm-adcontent b{font-size:21px;max-width:210px}
+  #s-marketing .clm-adcontent small{font-size:9px}
+}

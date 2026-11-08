@@ -1,4 +1,5 @@
 # Autenticación CRM
+- [x] Corregir recuperación dentro de /admin; 18 pruebas y callback SDK verificado con sesión admin, guardado interceptado y vuelta al login; no cambiar contraseña real ni publicar.
 - [x] Cambiar /admin a contraseña; seguridad y recuperación sin pantalla de registro público.
 - [x] Completar dashboard, creación y detalle de contactos, actividades y tareas usando tablas existentes.
 - [x] Verificar escrituras/lecturas bajo sesión admin y vistas desktop/tablet/móvil; no publicar ni tocar SEO público; retirar registros temporales.

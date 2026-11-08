@@ -155,6 +155,10 @@ const HOMEPAGE_COPY_FIX = `
       "Que más personas te encuentren",
       "Diseñamos campañas para atraer a las personas correctas y conectamos cada anuncio con una experiencia que capta sus datos, agenda y deja el seguimiento listo."
     );
+    patchParagraph(
+      "Déjanos tus datos y seguimos por WhatsApp",
+      "Déjanos tus datos, elige un horario disponible y agenda tu diagnóstico. Todo queda registrado para que podamos preparar la conversación antes de hablar contigo."
+    );
   }
 
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",run);

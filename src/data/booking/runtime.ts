@@ -120,12 +120,12 @@ export function replaceBookingRuntime(html: string, config: BookingPublicConfig)
         $('#booking-retry').addEventListener('click',loadBookingAvailability);
       });
     }
-    mcontent.innerHTML='<div id="m-host"><div class="ag"><div class="ag-pick"><h2 class="m-title" id="m-title">Agenda tu videollamada de diagnóstico</h2><p class="m-sub">Elige un día y una hora. Todos los horarios se muestran en America/Bogota: <b>Hora de Colombia</b>.</p>'+
+    mcontent.innerHTML='<div id="m-host"><div class="ag"><div class="ag-pick"><h2 class="m-title" id="m-title">Agenda tu diagnóstico</h2><p class="m-sub">Elige un día y una hora. Todos los horarios se muestran en America/Bogota: <b>Hora de Colombia</b>.</p>'+
       '<h3 id="d-l">Día</h3><div class="days" role="radiogroup" aria-labelledby="d-l"><p class="booking-loading">Consultando disponibilidad real…</p></div>'+
       '<h3 id="s-l">Hora</h3><div class="slots" role="radiogroup" aria-labelledby="s-l"></div>'+
       '<p class="err" id="slot-err" role="alert"></p><p class="summary" id="summary" aria-live="polite"></p>'+
       '<p class="m-note">El diagnóstico es una sesión de pago. Al confirmar, la cita queda registrada en nuestro CRM.</p></div>'+
-      '<div class="ag-form">'+leadForm('m','Confirmar videollamada')+'</div></div></div>';
+      '<div class="ag-form">'+leadForm('m','Agendar diagnóstico')+'</div></div></div>';
     var f2=$('#m-form');
     bindLead(f2,{
       extraCheck:function(){if(!bookingSelection.day||!bookingSelection.slot){$('#slot-err').textContent='Elige un día y una hora disponibles.';return $('.day',mcontent)||$('.days',mcontent);}return null;},
@@ -145,7 +145,7 @@ export function replaceBookingRuntime(html: string, config: BookingPublicConfig)
           p_starts_at:bookingSelection.slot,
           p_consent_text:'Autorizo a Cómplice Lab a usar mis datos para gestionar esta videollamada y responder a mi solicitud.'
         }).then(function(){
-          $('#m-host').innerHTML=successView('Cita agendada, '+lead.nombre.split(' ')[0]+'.','Tu videollamada de diagnóstico quedó agendada para '+appointment+'. La reserva ya está registrada en nuestro CRM.','','');
+          $('#m-host').innerHTML=successView('Diagnóstico agendado, '+lead.nombre.split(' ')[0]+'.','Tu diagnóstico quedó agendado para '+appointment+'. La reserva ya está registrada en nuestro CRM.','','');
           var demoNote=$('.demo-note',$('#m-host'));if(demoNote)demoNote.remove();
           var ok=$('.ok',mcontent);if(ok)ok.focus();
           bookingBusy=false;done();

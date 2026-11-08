@@ -3817,3 +3817,21 @@ a.project-card-pro:hover {
 @media(max-width:640px){
   .section-heading > p:last-child{margin-top:20px!important}
 }
+
+
+/* Official Cómplice Lab mark in shared footers */
+.footer-official-logo{
+  display:inline-flex;
+  align-items:center;
+  text-decoration:none;
+  margin-bottom:18px;
+}
+.footer-official-logo img{
+  display:block;
+  width:168px;
+  max-width:78%;
+  height:auto;
+}
+@media (max-width:700px){
+  .footer-official-logo img{width:158px}
+}

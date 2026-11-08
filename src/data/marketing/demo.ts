@@ -14,59 +14,8 @@ const nicheData = [
     slots:["Mié 10:00","Jue 4:00"], selected:"Miércoles a las 10:00 me queda perfecto.",
     success:"Perfecto ✅ Tu valoración quedó agendada. Te enviaremos un recordatorio por aquí.",
     metrics:[48200,1930,96]
-  },
-  {
-    key:"abog", label:"Abogados", account:"firmalegal", brand:"Firma Legal", initials:"FL",
-    image:"/marketing/ads/legal.webp",
-    adTag:"Asesoría legal",
-    headline:"Tu caso merece una estrategia clara desde el primer contacto.",
-    sub:"Diagnóstico inicial · atención confidencial",
-    adCta:"Solicitar diagnóstico", url:"tufirma.com/diagnostico",
-    landingKicker:"ASESORÍA LEGAL ESTRATÉGICA",
-    landingHeadline:"Entiende tus opciones antes de tomar una decisión importante.",
-    landingSub:"Cuéntanos tu caso y agenda un diagnóstico con el equipo.",
-    service:"Diagnóstico legal", lead:"Andrés Gómez", phone:"+57 315 000 0000",
-    waFirst:"Hola. Vi el anuncio y quisiera revisar un caso legal con su equipo.",
-    waReply:"Hola, Andrés. Claro. Podemos agendar un diagnóstico confidencial con el equipo.",
-    slots:["Hoy 4:30","Mañana 9:00"], selected:"Mañana a las 9:00 me sirve.",
-    success:"Perfecto. Tu diagnóstico quedó reservado para mañana a las 9:00 a. m. ✅",
-    metrics:[31500,1120,41]
-  },
-  {
-    key:"ciruj", label:"Cirujanos", account:"clinicacirugia", brand:"Clínica Especializada", initials:"CE",
-    image:"/marketing/ads/cirugia.webp",
-    adTag:"Valoración especializada",
-    headline:"Resultados naturales comienzan con una valoración bien hecha.",
-    sub:"Información clara · acompañamiento profesional",
-    adCta:"Reservar valoración", url:"tuclinica.com/valoracion",
-    landingKicker:"CIRUGÍA · VALORACIÓN PERSONALIZADA",
-    landingHeadline:"Conoce el procedimiento, resuelve dudas y agenda tu valoración.",
-    landingSub:"Una experiencia clara desde el primer contacto.",
-    service:"Valoración quirúrgica", lead:"Mariana López", phone:"+57 300 555 0000",
-    waFirst:"Hola 👋 Quiero información y una valoración para un procedimiento.",
-    waReply:"Hola, Mariana. Con gusto. Podemos agendar una valoración con el especialista.",
-    slots:["Jue 11:00","Vie 3:00"], selected:"El jueves a las 11:00 está perfecto.",
-    success:"Listo ✅ Tu valoración quedó agendada para el jueves a las 11:00 a. m.",
-    metrics:[56800,2410,73]
-  },
-  {
-    key:"inmo", label:"Inmobiliarias", account:"tuinmobiliaria", brand:"Tu Inmobiliaria", initials:"TI",
-    image:"/marketing/ads/inmobiliaria.webp",
-    adTag:"Propiedades seleccionadas",
-    headline:"Encuentra una propiedad que sí encaje contigo.",
-    sub:"Asesoría directa · agenda visitas",
-    adCta:"Ver propiedades", url:"tudominio.com/propiedades",
-    landingKicker:"PROPIEDADES EN TU CIUDAD",
-    landingHeadline:"Explora opciones y agenda una visita con un asesor.",
-    landingSub:"Sin perder tiempo entre publicaciones y mensajes sueltos.",
-    service:"Visita a inmueble", lead:"Carlos Ruiz", phone:"+57 310 444 0000",
-    waFirst:"Hola. Me interesa la propiedad que vi en el anuncio. ¿Puedo agendar una visita?",
-    waReply:"Hola, Carlos. Sí. Tenemos dos horarios disponibles para conocerla.",
-    slots:["Sáb 10:00","Sáb 3:00"], selected:"El sábado a las 10:00 me funciona.",
-    success:"Perfecto ✅ Tu visita quedó agendada para el sábado a las 10:00 a. m.",
-    metrics:[40100,1580,58]
   }
-];
+]
 
 import phoneCss from "./phone.css?raw";
 
@@ -97,7 +46,7 @@ export const marketingInteractions = `
   var steps=Array.from(stepsWrap.querySelectorAll("li"));
   var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  niches.innerHTML=DATA.map(function(n,i){return '<button type="button" class="sv-niche" data-i="'+i+'">'+n.label+'</button>'}).join("");
+  niches.innerHTML="";
 
   var nicheIndex=0,stepIndex=0,cycle=null,runId=0,subTimers=[];
   function fmt(n){return new Intl.NumberFormat("es-CO").format(n)}
@@ -111,7 +60,7 @@ export const marketingInteractions = `
       '<div class="clm-ig-nav"><b>Instagram</b><span>♡　⌁</span></div>'+
       '<div class="clm-post" data-ig-post>'+
         '<div class="clm-posthead"><span class="clm-avatar">'+n.initials+'</span><div><b>'+n.account+'</b><small>Publicidad · '+n.adTag+'</small></div><span class="clm-more">•••</span></div>'+
-        '<div class="clm-adcreative-wrap"><img class="clm-adcreative" src="'+imageSrc(n)+'" alt=""></div>'+
+        '<div class="clm-adcreative-wrap" style="'+photoStyle(n)+'"></div>'+
         '<div class="clm-igactions"><span>♡　◯　⌁</span><span>Guardar</span></div>'+
         '<div class="clm-igtext"><b>'+n.account+'</b> '+n.sub+'.</div>'+
         '<button class="clm-primary" data-ig-cta data-next>'+n.adCta+'</button>'+
@@ -169,7 +118,7 @@ export const marketingInteractions = `
 
   function syncRight(){
     steps.forEach(function(li,i){li.classList.toggle("on",i===stepIndex);li.classList.toggle("done",i<stepIndex)});
-    Array.from(niches.querySelectorAll(".sv-niche")).forEach(function(b,i){b.classList.toggle("on",i===nicheIndex)});
+    // Single marketing example: no niche tabs.
   }
 
   function typeInto(el,text,id,delay){
@@ -231,14 +180,11 @@ export const marketingInteractions = `
     cycle=setTimeout(function(){
       if(id!==runId)return;
       stepIndex++;
-      if(stepIndex>3){stepIndex=0;nicheIndex=(nicheIndex+1)%DATA.length}
+      if(stepIndex>3){stepIndex=0}
       runId++;render();schedule();
     },5600);
   }
   function manualStep(i){stop();stepIndex=i;render();schedule()}
-  function manualNiche(i){stop();nicheIndex=i;stepIndex=0;render();schedule()}
-
-  niches.addEventListener("click",function(e){var b=e.target.closest(".sv-niche");if(!b)return;manualNiche(+b.dataset.i)});
   steps.forEach(function(li,i){li.addEventListener("click",function(){manualStep(i)})});
 
   var started=false;

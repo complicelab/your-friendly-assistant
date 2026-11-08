@@ -1,6 +1,5 @@
 import { Facebook, Instagram, Mail, Phone, Youtube } from "lucide-react";
 
-import { BrandMark } from "./brand";
 import { commercialServices, serviceHref } from "@/data/commercial-services";
 
 const socialLinks = [
@@ -15,9 +14,11 @@ export function SiteFooter() {
     <footer id="footer" className="footer">
       <div className="container footer-grid">
         <div>
-          <BrandMark />
-          <p className="footer-tag">Creamos. Enseñamos. Implementamos.</p>
-          <p>Publicidad, creatividad, tecnología y formación potenciadas por inteligencia artificial.</p>
+          <a className="footer-official-logo" href="/" aria-label="Cómplice Lab">
+            <img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab" />
+          </a>
+          <p className="footer-tag">Sistemas que convierten atención en oportunidades.</p>
+          <p>Sistemas con IA a la medida, agentes automatizados y marketing digital para profesionales y empresas donde la confianza decide la compra.</p>
         </div>
 
         <div>

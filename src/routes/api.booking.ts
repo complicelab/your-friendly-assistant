@@ -29,14 +29,14 @@ export const Route = createFileRoute("/api/booking")({
         }
 
         const { data, error } = await supabase.rpc("crm_public_book_meeting", {
-          p_full_name: String(body.full_name || "").trim(),
-          p_brand_name: String(body.brand_name || "").trim(),
-          p_country: String(body.country || "Colombia").trim(),
-          p_country_code: String(body.country_code || "+57").trim(),
-          p_whatsapp: String(body.whatsapp || "").trim(),
-          p_email: String(body.email || "").trim(),
-          p_solution_interest: String(body.solution_interest || "").trim(),
-          p_starts_at: String(body.starts_at || "").trim(),
+          p_full_name: String(body["full_name"] || "").trim(),
+          p_brand_name: String(body["brand_name"] || "").trim(),
+          p_country: String(body["country"] || "Colombia").trim(),
+          p_country_code: String(body["country_code"] || "+57").trim(),
+          p_whatsapp: String(body["whatsapp"] || "").trim(),
+          p_email: String(body["email"] || "").trim(),
+          p_solution_interest: String(body["solution_interest"] || "").trim(),
+          p_starts_at: String(body["starts_at"] || "").trim(),
           p_consent_text: "Autorizo el uso de mis datos para responder esta solicitud. No implica recibir publicidad adicional.",
         });
 

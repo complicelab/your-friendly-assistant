@@ -201,3 +201,25 @@
   #s-marketing .clm-adcreative-wrap{height:245px}
   #s-marketing .clm-igtext{font-size:9.5px}
 }
+
+
+/* Dedicated generated artwork: preserve the social ad, crop only the landing hero photo. */
+#s-marketing .clm-adcreative-wrap{
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:4/5;
+  background-size:contain!important;
+  background-position:center!important;
+  background-color:#f4f7ff!important;
+}
+#s-marketing .clm-webhero{
+  background-size:cover!important;
+  background-position:center 55%!important;
+}
+@media(max-width:620px){
+  #s-marketing .clm-adcreative-wrap{
+    height:auto!important;
+    aspect-ratio:4/5;
+  }
+  #s-marketing .clm-webhero{background-position:center 58%!important}
+}

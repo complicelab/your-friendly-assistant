@@ -8,6 +8,9 @@ describe('booking settings and availability', () => {
   it('rejects a meeting shorter than 15 minutes', () => {
     expect(validateBookingSettings({meeting_duration_minutes:10,slot_minutes:60,admin_email:'complicelab@gmail.com'})).toContain('15');
   });
+  it('rejects an interval below the database minimum of 15 minutes', () => {
+    expect(validateBookingSettings({meeting_duration_minutes:60,slot_minutes:5,admin_email:'complicelab@gmail.com'})).toContain('15');
+  });
   it('accepts two separate ranges on Monday', () => {
     expect(validateAvailabilityRanges([
       {day_of_week:1,start_time:'09:00',end_time:'12:00'},

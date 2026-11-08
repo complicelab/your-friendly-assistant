@@ -21,8 +21,8 @@ export function validateBookingSettings(input: {
   if (!Number.isInteger(input.meeting_duration_minutes) || input.meeting_duration_minutes < 15 || input.meeting_duration_minutes > 180) {
     return 'La duración debe ser un número entero entre 15 y 180 minutos.';
   }
-  if (!Number.isInteger(input.slot_minutes) || input.slot_minutes < 5 || input.slot_minutes > 180) {
-    return 'El intervalo debe ser un número entero entre 5 y 180 minutos.';
+  if (!Number.isInteger(input.slot_minutes) || input.slot_minutes < 15 || input.slot_minutes > 180) {
+    return 'El intervalo debe ser un número entero entre 15 y 180 minutos.';
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.admin_email.trim())) return 'Escribe un correo administrador válido.';
   return '';

@@ -15,6 +15,13 @@
       "when": 1794177137787,
       "tag": "0001_fix_public_booking_agent_status",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794177175180,
+      "tag": "0002_fix_public_booking_activity_actor",
+      "breakpoints": true
     }
   ]
 }

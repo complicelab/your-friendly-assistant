@@ -303,3 +303,20 @@
   #s-marketing .clm-adcontent b{font-size:21px;max-width:210px}
   #s-marketing .clm-adcontent small{font-size:9px}
 }
+
+
+/* Marketing ad cleanup: show the creative cleanly, without duplicate dark overlay or copy. */
+#s-marketing .clm-adcreative-wrap{
+  background-size:cover!important;
+  background-position:center center!important;
+  background-repeat:no-repeat!important;
+  filter:none!important;
+}
+#s-marketing .clm-adcreative-wrap::before,
+#s-marketing .clm-adcreative-wrap::after,
+#s-marketing .clm-adshade,
+#s-marketing .clm-adcontent{
+  display:none!important;
+  content:none!important;
+  background:none!important;
+}

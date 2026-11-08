@@ -125,7 +125,7 @@ function AdminCrmPage() {
     const { data: userData } = await supabase.auth.getUser();
     if (!isCrmAdministrator(userData.user)) return;
     const { data: updated, error } = await supabase.from("crm_contacts")
-      .update({ status, last_contact_at: status === "contactado" ? new Date().toISOString() : undefined })
+      .update({ status, ...(status === "contactado" ? { last_contact_at: new Date().toISOString() } : {}) })
       .eq("id", contact.id).select("*").single();
     if (error || !updated) return setMessage("No pude actualizar el estado.");
     setContacts((items) => items.map((item) => item.id === updated.id ? updated : item));

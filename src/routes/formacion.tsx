@@ -11,6 +11,7 @@ import { workshops } from "@/data/marketing";
 export const Route = createFileRoute("/formacion")({
   head: () => ({
     meta: [
+      { name: "robots", content: "noindex, follow" },
       { title: "Cursos y Talleres de IA, Marketing y Publicidad | Cómplice Lab" },
       {
         name: "description",

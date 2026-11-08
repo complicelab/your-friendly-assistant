@@ -52,7 +52,7 @@ export const marketingInteractions = `
   function fmt(n){return new Intl.NumberFormat("es-CO").format(n)}
   function stopSubs(){subTimers.forEach(clearTimeout);subTimers=[]}
   function later(ms,fn,id){var t=setTimeout(function(){if(id===runId)fn()},reduced?0:ms);subTimers.push(t)}
-  function imageStyle(src){return 'background-image:url("'+String(src).replace(/"/g,"%22")+'")'}
+  function imageStyle(src){return "background-image:url("+String(src).replace(/[()'\"]/g,"")+")"}
 
   function igScene(n){
     return '<div class="clm-scene clm-ig">'+

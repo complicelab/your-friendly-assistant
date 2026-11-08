@@ -278,7 +278,7 @@ function AdminCrmPage() {
       consent_marketing:form.consent_marketing,
       consent_at:new Date().toISOString(),
       agent_enabled:false,
-      agent_status:"no_conectado",
+      agent_status:"pendiente",
     };
     const {data,error}=await supabase.from("crm_contacts").insert(payload).select("*").single();
     if(error||!data){setMessage("No pude crear el contacto.");setLoading(false);return;}

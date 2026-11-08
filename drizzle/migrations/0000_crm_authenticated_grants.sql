@@ -1,0 +1,2 @@
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.crm_contacts, public.crm_activities, public.crm_tasks, public.crm_agent_jobs TO authenticated;
+GRANT ALL ON public.crm_contacts, public.crm_activities, public.crm_tasks, public.crm_agent_jobs TO service_role;

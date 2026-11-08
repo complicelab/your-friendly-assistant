@@ -19,6 +19,7 @@ import { WhatsAppFloat } from "@/components/marketing/whatsapp-float";
 export const Route = createFileRoute("/capacitacion-ia-empresas")({
   head: () => ({
     meta: [
+      { name: "robots", content: "noindex, follow" },
       { title: "Capacitación en IA para Empresas en Colombia | Cómplice Lab" },
       {
         name: "description",

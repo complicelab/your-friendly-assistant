@@ -59,10 +59,7 @@ export const marketingInteractions = `
       '<div class="clm-ig-nav"><b>Instagram</b><span>♡　⌁</span></div>'+
       '<div class="clm-post" data-ig-post>'+
         '<div class="clm-posthead"><span class="clm-avatar">'+n.initials+'</span><div><b>'+n.account+'</b><small>Publicidad · '+n.adTag+'</small></div><span class="clm-more">•••</span></div>'+
-        '<div class="clm-adcreative-wrap" style="'+imageStyle(n.image)+'">'+
-          '<div class="clm-adshade"></div>'+
-          '<div class="clm-adcontent"><span>ODONTOLOGÍA PERSONALIZADA</span><b>'+n.headline+'</b><small>'+n.sub+'</small></div>'+
-        '</div>'+
+        '<div class="clm-adcreative-wrap" style="'+imageStyle(n.image)+'"></div>'+
         '<div class="clm-igactions"><span>♡　◯　⌁</span><span>Guardar</span></div>'+
         '<div class="clm-igtext"><b>'+n.account+'</b> '+n.sub+'.</div>'+
         '<button class="clm-primary" data-ig-cta data-next>'+n.adCta+'</button>'+

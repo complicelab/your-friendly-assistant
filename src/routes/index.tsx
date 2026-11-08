@@ -159,6 +159,23 @@ const HOMEPAGE_COPY_FIX = `
       "Déjanos tus datos y seguimos por WhatsApp",
       "Déjanos tus datos, elige un horario disponible y agenda tu diagnóstico. Todo queda registrado para que podamos preparar la conversación antes de hablar contigo."
     );
+    patchParagraph(
+      "El diagnóstico es una sesión de pago",
+      "El diagnóstico es una sesión gratuita para entender tu negocio, detectar dónde se pierde la oportunidad y definir el mejor siguiente paso."
+    );
+
+    var contactHeading=Array.from(document.querySelectorAll("h1,h2,h3")).find(function(el){
+      return normalized(el).toLowerCase().indexOf("hablemos de")!==-1 && normalized(el).toLowerCase().indexOf("negocio")!==-1;
+    });
+    var contactSection=contactHeading ? (contactHeading.closest("section") || contactHeading.parentElement) : null;
+    var contactForm=contactSection ? contactSection.querySelector("form") : null;
+    if(contactSection && contactForm){
+      Array.from(contactSection.querySelectorAll("a,button")).forEach(function(el){
+        if(!contactForm.contains(el) && normalized(el)==="Agendar diagnóstico"){
+          el.remove();
+        }
+      });
+    }
   }
 
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",run);
@@ -780,7 +797,11 @@ const UNIFIED_BOOKING_CTA = `
   function isContactBookingForm(form){
     if(!form||isBookingModal(form))return false;
     var text=norm(form).toLowerCase();
-    return text.indexOf("nombre y apellido")!==-1&&text.indexOf("marca personal o empresa")!==-1&&text.indexOf("qué servicio te interesa")!==-1&&text.indexOf("whatsapp")!==-1;
+    var knownFields=text.indexOf("nombre y apellido")!==-1&&text.indexOf("marca personal o empresa")!==-1&&text.indexOf("whatsapp")!==-1;
+    if(knownFields)return true;
+    var section=form.closest("section");
+    var sectionText=norm(section).toLowerCase();
+    return sectionText.indexOf("hablemos de")!==-1&&sectionText.indexOf("negocio")!==-1&&form.querySelectorAll("input").length>=3;
   }
 
   function renderInlineTimes(){

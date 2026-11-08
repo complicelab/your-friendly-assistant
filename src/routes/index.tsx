@@ -658,6 +658,206 @@ const BOOKING_RUNTIME = `
 </script>
 `;
 
+
+const UNIFIED_BOOKING_CTA = \`
+<style id="cl-unified-booking-cta-styles">
+  .cl-booking-cta-label{white-space:nowrap}
+</style>
+<script id="cl-unified-booking-cta">
+(function(){
+  var CTA_TEXTS=[
+    "Continuar por WhatsApp",
+    "Hablar por WhatsApp",
+    "Agendar videollamada de diagnóstico",
+    "Solicitar videollamada",
+    "Solicitar videollamada de diagnóstico"
+  ];
+
+  function norm(el){
+    return (el&&el.textContent?el.textContent:"").replace(/\\s+/g," ").trim();
+  }
+
+  function isBookingModal(el){
+    if(!el)return false;
+    var node=el;
+    for(var i=0;i<10&&node;i++,node=node.parentElement){
+      var txt=norm(node);
+      if((txt.indexOf("Agenda tu diagnóstico")!==-1||txt.indexOf("Agenda tu videollamada de diagnóstico")!==-1) && node.querySelectorAll("input").length>=3){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function fieldByLabel(root,labelText){
+    var labels=Array.from(root.querySelectorAll("label"));
+    var label=labels.find(function(el){return norm(el).toLowerCase().indexOf(labelText.toLowerCase())!==-1;});
+    if(label){
+      var input=label.querySelector("input,select,textarea");
+      if(input)return input;
+      if(label.htmlFor){
+        var linked=root.querySelector("#"+CSS.escape(label.htmlFor));
+        if(linked)return linked;
+      }
+      var next=label.nextElementSibling;
+      if(next&&next.matches&&next.matches("input,select,textarea"))return next;
+    }
+    return null;
+  }
+
+  function valueFrom(form,names,label){
+    if(!form)return "";
+    for(var i=0;i<names.length;i++){
+      var el=form.elements&&form.elements.namedItem?form.elements.namedItem(names[i]):null;
+      if(el&&typeof el.value==="string"&&el.value.trim())return el.value.trim();
+    }
+    var labelled=fieldByLabel(form,label);
+    return labelled&&typeof labelled.value==="string"?labelled.value.trim():"";
+  }
+
+  function selectedService(form){
+    if(!form)return "";
+    var selected=form.querySelector('input[type="radio"]:checked,input[type="checkbox"]:checked');
+    if(selected){
+      var lab=selected.closest("label");
+      if(lab)return norm(lab);
+      if(selected.value)return selected.value;
+    }
+    var buttons=Array.from(form.querySelectorAll("button,[role=button],label")).filter(function(el){
+      var cls=(el.className||"").toString();
+      var aria=el.getAttribute&&el.getAttribute("aria-checked");
+      return /active|selected|checked/i.test(cls)||aria==="true";
+    });
+    var svc=buttons.find(function(el){
+      var t=norm(el);
+      return /sistemas con ia|agentes de ia|marketing digital|diagnóstico/i.test(t);
+    });
+    return svc?norm(svc):"";
+  }
+
+  function collect(form){
+    return {
+      name:valueFrom(form,["name","nombre","full_name"],"Nombre y apellido"),
+      brand:valueFrom(form,["brand","marca","brand_name"],"Marca personal o empresa"),
+      phone:valueFrom(form,["phone","whatsapp","telefono"],"WhatsApp"),
+      email:valueFrom(form,["email","correo"],"Correo"),
+      service:selectedService(form)
+    };
+  }
+
+  function setValue(el,value){
+    if(!el||!value)return;
+    el.value=value;
+    el.dispatchEvent(new Event("input",{bubbles:true}));
+    el.dispatchEvent(new Event("change",{bubbles:true}));
+  }
+
+  function prefill(values){
+    if(!values)return;
+    var tries=0;
+    var timer=setInterval(function(){
+      tries++;
+      var heading=Array.from(document.querySelectorAll("h1,h2,h3")).find(function(el){
+        var t=norm(el);
+        return t.indexOf("Agenda tu diagnóstico")!==-1||t.indexOf("Agenda tu videollamada de diagnóstico")!==-1;
+      });
+      if(!heading){if(tries>12)clearInterval(timer);return;}
+      var root=heading;
+      for(var i=0;i<10&&root;i++,root=root.parentElement){
+        if(root.querySelectorAll&&root.querySelectorAll("input").length>=3)break;
+      }
+      if(!root){if(tries>12)clearInterval(timer);return;}
+
+      setValue(fieldByLabel(root,"Nombre y apellido"),values.name);
+      setValue(fieldByLabel(root,"Marca personal o empresa"),values.brand);
+      setValue(fieldByLabel(root,"WhatsApp"),values.phone);
+      setValue(fieldByLabel(root,"Correo"),values.email);
+
+      if(values.service){
+        var serviceNodes=Array.from(root.querySelectorAll("button,label,[role=button]"));
+        var wanted=values.service.toLowerCase();
+        var match=serviceNodes.find(function(el){
+          var t=norm(el).toLowerCase();
+          if(!t)return false;
+          if(wanted.indexOf("sistemas")!==-1)return t.indexOf("sistemas")!==-1;
+          if(wanted.indexOf("agentes")!==-1)return t.indexOf("agentes")!==-1;
+          if(wanted.indexOf("marketing")!==-1)return t.indexOf("marketing")!==-1;
+          if(wanted.indexOf("diagnóstico")!==-1||wanted.indexOf("diagnostico")!==-1)return t.indexOf("diagnóstico")!==-1||t.indexOf("diagnostico")!==-1;
+          return false;
+        });
+        if(match)match.click();
+      }
+      clearInterval(timer);
+    },120);
+  }
+
+  function openBooking(values){
+    if(typeof window.openModal==="function"){
+      window.openModal("booking");
+      prefill(values);
+      return true;
+    }
+    var trigger=Array.from(document.querySelectorAll("button,a")).find(function(el){
+      var t=norm(el);
+      return t==="Agendar diagnóstico"||t==="Agendar videollamada de diagnóstico";
+    });
+    if(trigger){
+      trigger.click();
+      prefill(values);
+      return true;
+    }
+    return false;
+  }
+
+  function patchText(){
+    Array.from(document.querySelectorAll("button,a")).forEach(function(el){
+      var text=norm(el);
+      if(CTA_TEXTS.indexOf(text)!==-1){
+        el.textContent="Agendar diagnóstico";
+        el.classList.add("cl-booking-cta-label");
+        if(el.tagName==="A")el.removeAttribute("target");
+      }
+    });
+  }
+
+  function isUnifiedCta(el){
+    if(!el)return false;
+    var t=norm(el);
+    return t==="Agendar diagnóstico"||CTA_TEXTS.indexOf(t)!==-1;
+  }
+
+  document.addEventListener("click",function(event){
+    var action=event.target&&event.target.closest?event.target.closest("button,a"):null;
+    if(!action||!isUnifiedCta(action)||isBookingModal(action))return;
+    event.preventDefault();
+    event.stopPropagation();
+    if(event.stopImmediatePropagation)event.stopImmediatePropagation();
+    var form=action.closest("form");
+    openBooking(collect(form));
+  },true);
+
+  document.addEventListener("submit",function(event){
+    var form=event.target;
+    if(!(form instanceof HTMLFormElement)||isBookingModal(form))return;
+    var action=Array.from(form.querySelectorAll("button,input[type=submit]")).find(function(el){
+      return isUnifiedCta(el)||el.value==="Agendar diagnóstico";
+    });
+    if(!action)return;
+    event.preventDefault();
+    event.stopPropagation();
+    if(event.stopImmediatePropagation)event.stopImmediatePropagation();
+    openBooking(collect(form));
+  },true);
+
+  var observer=new MutationObserver(patchText);
+  observer.observe(document.documentElement,{subtree:true,childList:true});
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",patchText);else patchText();
+  setTimeout(patchText,300);
+  setTimeout(patchText,1200);
+})();
+</script>
+\`;
+
 function getOriginalHtml() {
   const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8")
     .replace("Míralo funcionar.", "Así trabajamos.")
@@ -683,7 +883,7 @@ function getOriginalHtml() {
     );
   return replaceMarketingRuntime(replaceFlowScenes(replaceCompareScenes(html)))
     .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + compareStyles + flowStyles + marketingStyles + bookingStyles + `\n  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://complicelab.com/#organization","name":"Cómplice Lab","url":"https://complicelab.com/","logo":"https://complicelab.com/brand/complice-lab-logo.svg","email":"complicelab@gmail.com","telephone":"+57 316 177 2880","areaServed":{"@type":"Country","name":"Colombia"},"sameAs":["https://www.instagram.com/complicelab/"]},{"@type":"WebSite","@id":"https://complicelab.com/#website","url":"https://complicelab.com/","name":"Cómplice Lab","publisher":{"@id":"https://complicelab.com/#organization"},"inLanguage":"es-CO"},{"@type":"Service","name":"Sistemas con IA a la medida","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":{"@type":"Country","name":"Colombia"},"serviceType":"Sistemas con inteligencia artificial a la medida"},{"@type":"Service","name":"Agentes de IA automatizados","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":{"@type":"Country","name":"Colombia"},"serviceType":"Agentes de inteligencia artificial automatizados"},{"@type":"Service","name":"Marketing digital para atraer clientes","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":{"@type":"Country","name":"Colombia"},"serviceType":"Marketing digital, Meta Ads y captación de oportunidades"}]}</script>\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n` + "</head>")
-    .replace("</body>", HOMEPAGE_COPY_FIX + HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + "</body>");
+    .replace("</body>", HOMEPAGE_COPY_FIX + HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + UNIFIED_BOOKING_CTA + compareInteractions + flowInteractions + marketingInteractions + "</body>");
 }
 
 export const Route = createFileRoute("/")({

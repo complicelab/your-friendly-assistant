@@ -13,7 +13,7 @@ function dateKey(date: Date) { return date.toISOString().slice(0,10); }
 function meetingDateKey(value: string) {
   const parts = new Intl.DateTimeFormat('en-US',{year:'numeric',month:'2-digit',day:'2-digit',timeZone:BOOKING_TIMEZONE}).formatToParts(new Date(value));
   const map = Object.fromEntries(parts.map(part=>[part.type,part.value]));
-  return `${map.year}-${map.month}-${map.day}`;
+  return `${map['year']}-${map['month']}-${map['day']}`;
 }
 function monthLabel(date: Date) { return new Intl.DateTimeFormat('es-CO',{month:'long',year:'numeric',timeZone:'UTC'}).format(date); }
 function shortMeetingDate(value: string) { return new Intl.DateTimeFormat('es-CO',{weekday:'short',day:'numeric',month:'short',hour:'numeric',minute:'2-digit',hour12:true,timeZone:BOOKING_TIMEZONE}).format(new Date(value)); }
@@ -69,7 +69,7 @@ export function CrmAgenda({onOpenContact,onChanged}:{onOpenContact:(contactId:st
   }
   function today(){
     const now=new Date();const key=meetingDateKey(now.toISOString());setSelectedDay(key);
-    const parts=key.split('-').map(Number);setCursor(new Date(Date.UTC(parts[0],parts[1]-1,1)));
+    const [year,month]=key.split('-').map(Number);if(year&&month)setCursor(new Date(Date.UTC(year,month-1,1)));
   }
   async function updateMeetingStatus(status:string){
     if(!selected)return;

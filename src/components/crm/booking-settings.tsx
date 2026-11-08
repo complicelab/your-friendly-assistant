@@ -30,14 +30,14 @@ export function CrmBookingSettings(){
     const value=settingsResult.data;setSettings(value);
     if(value){setDuration(String(value.meeting_duration_minutes));setInterval(String(value.slot_minutes));setAdminEmail(value.admin_email);setAdminWhatsapp(value.admin_whatsapp||'');}
     const next:Record<number,Range[]>={0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
-    (rulesResult.data||[]).filter(rule=>rule.active).forEach(rule=>next[rule.day_of_week].push({id:rule.id,day_of_week:rule.day_of_week,start_time:rule.start_time.slice(0,5),end_time:rule.end_time.slice(0,5)}));
+    (rulesResult.data||[]).filter(rule=>rule.active).forEach(rule=>(next[rule.day_of_week]??=[]).push({id:rule.id,day_of_week:rule.day_of_week,start_time:rule.start_time.slice(0,5),end_time:rule.end_time.slice(0,5)}));
     setRanges(next);setExceptions(exceptionsResult.data||[]);setLoading(false);
   }
   useEffect(()=>{void load();},[]);
 
-  function updateRange(day:number,index:number,key:'start_time'|'end_time',value:string){setRanges(current=>({...current,[day]:current[day].map((range,i)=>i===index?{...range,[key]:value}:range)}));}
-  function toggleDay(day:number,enabled:boolean){setRanges(current=>({...current,[day]:enabled?(current[day].length?current[day]:[{day_of_week:day,start_time:'09:00',end_time:'17:00'}]):[]}));}
-  function toggleSecondRange(day:number){setRanges(current=>{const existing=current[day];return {...current,[day]:existing.length===2?[existing[0]]:[...existing,{day_of_week:day,start_time:'14:00',end_time:'17:00'}]};});}
+  function updateRange(day:number,index:number,key:'start_time'|'end_time',value:string){setRanges(current=>({...current,[day]:(current[day]??[]).map((range,i)=>i===index?{...range,[key]:value}:range)}));}
+  function toggleDay(day:number,enabled:boolean){setRanges(current=>{const existing=current[day]??[];return {...current,[day]:enabled?(existing.length?existing:[{day_of_week:day,start_time:'09:00',end_time:'17:00'}]):[]};});}
+  function toggleSecondRange(day:number){setRanges(current=>{const existing=current[day]??[];return {...current,[day]:existing.length===2?existing.slice(0,1):[...existing,{day_of_week:day,start_time:'14:00',end_time:'17:00'}]};});}
 
   async function save(){
     setMessage('');
@@ -79,7 +79,7 @@ export function CrmBookingSettings(){
       <p className="clb-muted">Zona horaria fija: America/Bogota. La duración y el intervalo cambian los horarios que se ofrecen en la home.</p>
     </div>
     <div className="clb-settings-card"><div className="clb-panel-title"><div><span>DISPONIBILIDAD SEMANAL</span><h2>Días y franjas horarias</h2></div></div>
-      <div className="clb-rules">{DAYS.map(([label,day])=><div className={'clb-rule '+(ranges[day].length?'active':'')} key={day}><label className="clb-day-toggle"><input type="checkbox" checked={ranges[day].length>0} onChange={event=>toggleDay(day,event.target.checked)}/><b>{label}</b></label><div className="clb-ranges">{!ranges[day].length&&<span>No disponible</span>}{ranges[day].map((range,index)=><div className="clb-range" key={range.id||index}><input aria-label={`Inicio ${label} ${index+1}`} type="time" value={range.start_time} onChange={event=>updateRange(day,index,'start_time',event.target.value)}/><span>a</span><input aria-label={`Fin ${label} ${index+1}`} type="time" value={range.end_time} onChange={event=>updateRange(day,index,'end_time',event.target.value)}/></div>)}</div>{ranges[day].length>0&&<button className="clb-text-button" onClick={()=>toggleSecondRange(day)}>{ranges[day].length===2?'Quitar segunda franja':'+ Segunda franja'}</button>}</div>)}</div>
+      <div className="clb-rules">{DAYS.map(([label,day])=><div className={'clb-rule '+((ranges[day]??[]).length?'active':'')} key={day}><label className="clb-day-toggle"><input type="checkbox" checked={(ranges[day]??[]).length>0} onChange={event=>toggleDay(day,event.target.checked)}/><b>{label}</b></label><div className="clb-ranges">{!(ranges[day]??[]).length&&<span>No disponible</span>}{(ranges[day]??[]).map((range,index)=><div className="clb-range" key={range.id||index}><input aria-label={`Inicio ${label} ${index+1}`} type="time" value={range.start_time} onChange={event=>updateRange(day,index,'start_time',event.target.value)}/><span>a</span><input aria-label={`Fin ${label} ${index+1}`} type="time" value={range.end_time} onChange={event=>updateRange(day,index,'end_time',event.target.value)}/></div>)}</div>{(ranges[day]??[]).length>0&&<button className="clb-text-button" onClick={()=>toggleSecondRange(day)}>{(ranges[day]??[]).length===2?'Quitar segunda franja':'+ Segunda franja'}</button>}</div>)}</div>
       <div className="clb-save-row"><button className="crm-primary" disabled={saving} onClick={()=>void save()}>{saving?'Guardando…':'Guardar disponibilidad'}</button></div>
     </div>
     <div className="clb-settings-card"><div className="clb-panel-title"><div><span>FECHAS ESPECÍFICAS</span><h2>Bloqueos y excepciones</h2></div></div>

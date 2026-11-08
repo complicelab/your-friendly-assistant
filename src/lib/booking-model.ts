@@ -41,7 +41,7 @@ export function validateAvailabilityRanges(ranges: AvailabilityRangeInput[]) {
   for (const dayRanges of byDay.values()) {
     if (dayRanges.length > 2) return 'Cada día admite máximo dos franjas horarias.';
     const ordered = [...dayRanges].sort((a, b) => a.start_time.localeCompare(b.start_time));
-    if (ordered.length === 2 && ordered[0].end_time > ordered[1].start_time) return 'Las franjas de un mismo día no pueden cruzarse.';
+    if (ordered.length === 2 && ordered[0]!.end_time > ordered[1]!.start_time) return 'Las franjas de un mismo día no pueden cruzarse.';
   }
   return '';
 }

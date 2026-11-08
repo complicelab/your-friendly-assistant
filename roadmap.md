@@ -1,4 +1,8 @@
 # Corrección comparador
+# Autenticación CRM
+- [ ] Preparar acceso por correo del único administrador y comprobar sesión verificada, cierre de sesión y RLS sin publicar.
+- [ ] Verificar ajustes alojados de registro público y compilación.
+
 - [x] Sustituir únicamente las escenas derechas 2 y 3 en el render original v10.
 - [x] Eliminar el montaje anterior y conservar el movimiento existente.
 - [x] Verificar pasos 2 y 3 en escritorio y móvil, y regreso a otros estados.

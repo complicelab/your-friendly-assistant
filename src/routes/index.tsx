@@ -350,7 +350,23 @@ const MOBILE_FLOW_SCRIPT = `
 `;
 
 function getOriginalHtml() {
-  const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8");
+  const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8")
+    .replace("Sistemas con IA", "Creamos sistemas con IA")
+    .replace(
+      "Que ningún contacto se pierda y sepas quién llegó, qué necesita y cuándo hacer seguimiento.",
+      "Conectamos tu web, agendamiento, CRM, automatizaciones y seguimiento para que ningún contacto se pierda y tu negocio sepa qué hacer después."
+    )
+    .replace("Agentes de IA", "Creamos agentes de IA")
+    .replace(
+      "Que nadie se quede sin respuesta, ni de noche ni en fines de semana, y tu equipo atienda solo a quien ya está listo para avanzar.",
+      "Responden, filtran, agendan y hacen seguimiento incluso cuando tú no estás, para que tu equipo atienda a quienes realmente están listos para avanzar."
+    )
+    .replace("Atraemos clientes", "Creamos tus campañas")
+    .replace("con marketing digital", "de marketing digital")
+    .replace(
+      "Que más personas te encuentren, entiendan por qué elegirte y dejen sus datos.",
+      "Diseñamos campañas para atraer a las personas correctas y conectamos cada anuncio con una experiencia que capta sus datos, agenda y deja el seguimiento listo."
+    );
   return replaceMarketingRuntime(replaceFlowScenes(replaceCompareScenes(html)))
     .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + compareStyles + flowStyles + marketingStyles + "\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n" + "</head>")
     .replace("</body>", HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + "</body>");

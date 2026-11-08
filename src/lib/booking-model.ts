@@ -46,6 +46,12 @@ export function validateAvailabilityRanges(ranges: AvailabilityRangeInput[]) {
   return '';
 }
 
+export function nextUpcomingMeeting<T extends {starts_at:string;status:string}>(meetings:T[], now=Date.now()):T|null {
+  return meetings
+    .filter(meeting=>new Date(meeting.starts_at).getTime()>=now&&['pendiente','confirmada'].includes(meeting.status))
+    .sort((a,b)=>new Date(a.starts_at).getTime()-new Date(b.starts_at).getTime())[0]??null;
+}
+
 export function meetingStatusLabel(status: string) {
   if (status === 'no asistió') return 'No asistió';
   return MEETING_STATUSES.find(([value]) => value === status)?.[1] ?? status.replaceAll('_', ' ');

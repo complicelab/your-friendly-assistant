@@ -1,3 +1,8 @@
+# Módulo interno de agenda
+- [x] Conservar Oportunidades y verificar Agenda, Configuración, notificaciones y responsive.
+- [x] Destacar la próxima reunión y conservar la lista completa en el detalle del contacto.
+- [x] Ejecutar tipos, compilación y pruebas; no tocar home/SEO ni publicar.
+
 # Agenda real y CRM
 - [x] Sustituir solo los días/horas y el envío del modal público por disponibilidad y reserva reales en America/Bogota.
 - [x] Añadir navegación Oportunidades / Agenda / Configuración, calendario, reuniones y estados en /admin.

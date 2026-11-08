@@ -3,6 +3,10 @@ import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { CRM_ADMIN_EMAIL, isCrmAdministrator } from "@/lib/crm-access";
 import type { Tables, TablesUpdate } from "@/integrations/supabase/types";
+import { CrmAgenda } from "@/components/crm/agenda";
+import { CrmBookingSettings } from "@/components/crm/booking-settings";
+import { MEETING_STATUSES, formatMeetingDate, meetingStatusLabel } from "@/lib/booking-model";
+import "@/components/crm/booking.css";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -22,6 +26,8 @@ export const Route = createFileRoute("/admin")({
 type Contact = Tables<"crm_contacts">;
 type Activity = Tables<"crm_activities">;
 type Task = Tables<"crm_tasks">;
+type Meeting = Tables<"crm_meetings">;
+type CrmView = "oportunidades"|"agenda"|"configuracion";
 
 const ADMIN_EMAIL = CRM_ADMIN_EMAIL;
 const STATUS = [
@@ -80,6 +86,9 @@ function AdminCrmPage() {
   const [editFollowUp,setEditFollowUp]=useState("");
   const [taskTitle,setTaskTitle]=useState("");
   const [taskDue,setTaskDue]=useState("");
+  const [view,setView]=useState<CrmView>("oportunidades");
+  const [upcomingCount,setUpcomingCount]=useState(0);
+  const [contactMeetings,setContactMeetings]=useState<Meeting[]>([]);
 
   async function checkAccess(){
     if(recoveryActive.current)return;
@@ -144,16 +153,33 @@ function AdminCrmPage() {
 
   useEffect(()=>{void loadContacts();},[token]);
 
+  async function loadUpcomingCount(){
+    if(!token || recoveryActive.current)return;
+    const {count,error}=await supabase.from("crm_meetings").select("id",{count:"exact",head:true})
+      .gte("starts_at",new Date().toISOString()).in("status",["pendiente","confirmada"]);
+    if(!error)setUpcomingCount(count||0);
+  }
+  useEffect(()=>{void loadUpcomingCount();},[token,view]);
+
+  async function openContactFromMeeting(contactId:string){
+    const contact=contacts.find(item=>item.id===contactId);
+    setView("oportunidades");
+    if(contact)await loadContext(contact);
+    else setMessage("El contacto no está en la lista cargada. Actualiza la página e inténtalo nuevamente.");
+  }
+
   async function loadContext(contact:Contact){
     setSelected(contact);
     setEditNotes(contact.notes||"");
     setEditFollowUp(toLocalInput(contact.next_follow_up_at));
-    const [a,t]=await Promise.all([
+    const [a,t,m]=await Promise.all([
       supabase.from("crm_activities").select("*").eq("contact_id",contact.id).order("created_at",{ascending:false}).limit(100),
       supabase.from("crm_tasks").select("*").eq("contact_id",contact.id).order("created_at",{ascending:false}).limit(100),
+      supabase.from("crm_meetings").select("*").eq("contact_id",contact.id).order("starts_at",{ascending:false}).limit(20),
     ]);
     setActivities(a.data||[]);
     setTasks(t.data||[]);
+    setContactMeetings(m.data||[]);
   }
 
   async function login(e:FormEvent){

@@ -1,3 +1,10 @@
+# Agenda real y CRM
+- [ ] Sustituir solo los días/horas y el envío del modal público por disponibilidad y reserva reales en America/Bogota.
+- [ ] Añadir navegación Oportunidades / Agenda / Configuración, calendario, reuniones y estados en /admin.
+- [ ] Guardar configuración, reglas semanales y excepciones reales de disponibilidad.
+- [ ] Mostrar reuniones en contactos y estados honestos de notificaciones, sin proveedores simulados.
+- [ ] Verificar tipos, pruebas, reserva integral, ocupación de horarios y responsive; no publicar.
+
 # Autenticación CRM
 - [x] Cambiar /admin a contraseña; seguridad y recuperación sin pantalla de registro público.
 - [x] Completar dashboard, creación y detalle de contactos, actividades y tareas usando tablas existentes.

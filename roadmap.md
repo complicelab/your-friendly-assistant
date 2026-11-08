@@ -1,4 +1,10 @@
+# Autenticación CRM
+- [x] Preparar /admin, inicialización exclusiva sin confirmar, magic link y rechazo de cuentas no autorizadas; conservar RLS y habilitar permisos faltantes; pruebas y compilación correctas.
+- [ ] Cerrar registro público en More → Users → Auth settings: el ajuste sigue abierto; no hay lectura del valor HIBP para preservarlo al usar la herramienta de configuración.
+- [ ] Verificar entrada al CRM y cierre de sesión tras confirmar el enlace recibido por el administrador; la cuenta permanece sin confirmar y no se debe omitir esa verificación.
+
 # Corrección comparador
+
 - [x] Sustituir únicamente las escenas derechas 2 y 3 en el render original v10.
 - [x] Eliminar el montaje anterior y conservar el movimiento existente.
 - [x] Verificar pasos 2 y 3 en escritorio y móvil, y regreso a otros estados.

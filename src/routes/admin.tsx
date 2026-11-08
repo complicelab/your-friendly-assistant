@@ -341,6 +341,10 @@ function AdminCrmPage() {
     if(!error&&data)setTasks(items=>items.map(i=>i.id===data.id?data:i));
   }
 
+  const nextContactMeeting=useMemo(()=>contactMeetings
+    .filter(meeting=>new Date(meeting.starts_at).getTime()>=Date.now()&&["pendiente","confirmada"].includes(meeting.status))
+    .sort((a,b)=>new Date(a.starts_at).getTime()-new Date(b.starts_at).getTime())[0]||null,[contactMeetings]);
+
   const filtered=useMemo(()=>{
     const q=query.trim().toLowerCase();
     return contacts.filter(c=>{
@@ -507,7 +511,12 @@ function AdminCrmPage() {
                 </section>
 
                 <section className="crm-section">
-                  <h3>Reuniones</h3>
+                  <h3>Próxima reunión</h3>
+                  {nextContactMeeting?<div className="crm-field wide">
+                    <span>{formatMeetingDate(nextContactMeeting.starts_at)} · Hora de Colombia</span>
+                    <b>{meetingStatusLabel(nextContactMeeting.status)} · {nextContactMeeting.service_interest||nextContactMeeting.title}</b>
+                  </div>:<span className="crm-muted">No hay reuniones próximas confirmadas o pendientes.</span>}
+                  <h3 style={{marginTop:20}}>Reuniones del contacto</h3>
                   {!contactMeetings.length&&<span className="crm-muted">Todavía no hay videollamadas agendadas.</span>}
                   {contactMeetings.map(meeting=><div className="crm-field wide" key={meeting.id} style={{marginBottom:8}}>
                     <span>{formatMeetingDate(meeting.starts_at)} · Hora de Colombia</span>

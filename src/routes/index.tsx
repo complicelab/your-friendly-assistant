@@ -97,6 +97,73 @@ const MOBILE_FLOW_FIXES = `
 `;
 
 
+const HOMEPAGE_COPY_FIX = `
+<script id="homepage-copy-fix-v10">
+(function(){
+  function normalized(el){ return (el && el.textContent ? el.textContent : "").replace(/\\s+/g," ").trim(); }
+
+  function textNodes(el){
+    return Array.from(el.childNodes).filter(function(n){ return n.nodeType===3 && (n.nodeValue||"").trim(); });
+  }
+
+  function patchHeading(match, firstText, accentText){
+    var headings=Array.from(document.querySelectorAll("h1,h2,h3")).filter(function(el){
+      return normalized(el).indexOf(match)!==-1;
+    });
+    headings.forEach(function(el){
+      var nodes=textNodes(el);
+      if(nodes.length){
+        nodes[0].nodeValue=firstText+" ";
+      } else {
+        el.insertBefore(document.createTextNode(firstText+" "),el.firstChild);
+      }
+      var accent=Array.from(el.children).find(function(child){
+        return normalized(child) && normalized(child)!==normalized(el);
+      });
+      if(accent) accent.textContent=accentText;
+    });
+  }
+
+  function patchParagraph(oldStart,newText){
+    var nodes=Array.from(document.querySelectorAll("p"));
+    nodes.forEach(function(el){
+      var t=normalized(el);
+      if(t.indexOf(oldStart)===0) el.textContent=newText;
+    });
+  }
+
+  function run(){
+    patchHeading("Míralo funcionar","Así","trabajamos.");
+    patchHeading("Sistemas con IA a la medida","Creamos sistemas con IA","a la medida");
+    patchHeading("Agentes de IA automatizados","Creamos agentes de IA","automatizados");
+    patchHeading("Atraemos clientes con marketing digital","Creamos tus campañas","de marketing digital");
+
+    patchParagraph(
+      "Tres servicios, tres demostraciones",
+      "Tres servicios, tres demostraciones que muestran cómo captamos, atendemos y convertimos contactos en oportunidades reales. Si quieres, toca cualquier paso."
+    );
+    patchParagraph(
+      "Que ningún contacto se pierda",
+      "Conectamos tu web, agendamiento, CRM, automatizaciones y seguimiento para que ningún contacto se pierda y tu negocio sepa qué hacer después."
+    );
+    patchParagraph(
+      "Que nadie se quede sin respuesta",
+      "Responden, filtran, agendan y hacen seguimiento incluso cuando tú no estás, para que tu equipo atienda a quienes realmente están listos para avanzar."
+    );
+    patchParagraph(
+      "Que más personas te encuentren",
+      "Diseñamos campañas para atraer a las personas correctas y conectamos cada anuncio con una experiencia que capta sus datos, agenda y deja el seguimiento listo."
+    );
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",run);
+  else run();
+  setTimeout(run,250);
+  setTimeout(run,900);
+})();
+</script>
+`;
+
 const HOMEPAGE_FOOTER_ENHANCEMENT = `
 <style id="homepage-footer-enhancement-v10">
   header .cl-header-official-logo{display:inline-flex;align-items:center;text-decoration:none;line-height:0}
@@ -374,7 +441,7 @@ function getOriginalHtml() {
     );
   return replaceMarketingRuntime(replaceFlowScenes(replaceCompareScenes(html)))
     .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + compareStyles + flowStyles + marketingStyles + "\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n" + "</head>")
-    .replace("</body>", HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + "</body>");
+    .replace("</body>", HOMEPAGE_COPY_FIX + HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + "</body>");
 }
 
 export const Route = createFileRoute("/")({

@@ -100,14 +100,14 @@ const MOBILE_FLOW_FIXES = `
 const HOMEPAGE_FOOTER_ENHANCEMENT = `
 <style id="homepage-footer-enhancement-v10">
   header .cl-header-official-logo{display:inline-flex;align-items:center;text-decoration:none;line-height:0}
-  header .cl-header-official-logo img{display:block;width:176px;height:auto}
+  header .cl-header-official-logo img{display:block;width:164px;height:auto}
   footer .cl-footer-official-logo{display:inline-flex;align-items:center;text-decoration:none;margin-bottom:18px;line-height:0}
   footer .cl-footer-official-logo img{display:block;width:176px;max-width:78%;height:auto}
   footer .cl-footer-legal-links{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:18px}
   footer .cl-footer-legal-links a{color:#63738f;text-decoration:none;font:500 13px/1.4 "Montserrat",sans-serif}
   footer .cl-footer-legal-links a:hover{color:#245fea;text-decoration:underline;text-underline-offset:4px}
   @media(max-width:700px){
-    header .cl-header-official-logo img{width:164px}
+    header .cl-header-official-logo img{width:154px}
     footer .cl-footer-official-logo img{width:164px}
     footer .cl-footer-legal-links{gap:8px 14px;margin-top:14px}
   }

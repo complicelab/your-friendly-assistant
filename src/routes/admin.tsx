@@ -1,14 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { CRM_ADMIN_EMAIL, isCrmAdministrator } from "@/lib/crm-access";
-import type { Tables } from "@/integrations/supabase/types";
+import type { Tables, TablesUpdate } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
       { title: "CRM privado | Cómplice Lab" },
       { name: "description", content: "Acceso privado al CRM interno de Cómplice Lab." },
+      { property: "og:title", content: "CRM privado | Cómplice Lab" },
+      { property: "og:description", content: "Acceso privado al CRM interno de Cómplice Lab." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex,nofollow,noarchive" },
     ],
   }),
@@ -197,7 +201,7 @@ function AdminCrmPage() {
   }
 
   async function updateStatus(contact:Contact,status:string){
-    const patch:any={status,updated_at:new Date().toISOString()};
+    const patch:TablesUpdate<"crm_contacts">={status,updated_at:new Date().toISOString()};
     if(status==="contactado")patch.last_contact_at=new Date().toISOString();
     const {data,error}=await supabase.from("crm_contacts").update(patch).eq("id",contact.id).select("*").single();
     if(error||!data)return setMessage("No pude actualizar la etapa.");

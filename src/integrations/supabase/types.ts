@@ -108,6 +108,111 @@ export type Database = {
           },
         ]
       }
+      crm_availability_exceptions: {
+        Row: {
+          created_at: string
+          date: string
+          end_time: string | null
+          id: string
+          is_available: boolean
+          reason: string | null
+          start_time: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          end_time?: string | null
+          id?: string
+          is_available?: boolean
+          reason?: string | null
+          start_time?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          end_time?: string | null
+          id?: string
+          is_available?: boolean
+          reason?: string | null
+          start_time?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      crm_availability_rules: {
+        Row: {
+          active: boolean
+          created_at: string
+          day_of_week: number
+          end_time: string
+          id: string
+          start_time: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          day_of_week: number
+          end_time: string
+          id?: string
+          start_time: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          start_time?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      crm_booking_settings: {
+        Row: {
+          active: boolean
+          admin_email: string
+          admin_whatsapp: string | null
+          booking_title: string
+          buffer_minutes: number
+          created_at: string
+          id: string
+          meeting_duration_minutes: number
+          slot_minutes: number
+          timezone: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          admin_email?: string
+          admin_whatsapp?: string | null
+          booking_title?: string
+          buffer_minutes?: number
+          created_at?: string
+          id?: string
+          meeting_duration_minutes?: number
+          slot_minutes?: number
+          timezone?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          admin_email?: string
+          admin_whatsapp?: string | null
+          booking_title?: string
+          buffer_minutes?: number
+          created_at?: string
+          id?: string
+          meeting_duration_minutes?: number
+          slot_minutes?: number
+          timezone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       crm_contacts: {
         Row: {
           agent_enabled: boolean
@@ -216,6 +321,149 @@ export type Database = {
         }
         Relationships: []
       }
+      crm_meetings: {
+        Row: {
+          admin_email: string
+          admin_whatsapp: string | null
+          attendee_email: string | null
+          attendee_whatsapp: string | null
+          contact_id: string
+          created_at: string
+          email_notification_status: string
+          ends_at: string
+          external_calendar_id: string | null
+          id: string
+          meeting_type: string
+          meeting_url: string | null
+          notes: string | null
+          service_interest: string | null
+          source: string
+          starts_at: string
+          status: string
+          timezone: string
+          title: string
+          updated_at: string
+          whatsapp_notification_status: string
+        }
+        Insert: {
+          admin_email?: string
+          admin_whatsapp?: string | null
+          attendee_email?: string | null
+          attendee_whatsapp?: string | null
+          contact_id: string
+          created_at?: string
+          email_notification_status?: string
+          ends_at: string
+          external_calendar_id?: string | null
+          id?: string
+          meeting_type?: string
+          meeting_url?: string | null
+          notes?: string | null
+          service_interest?: string | null
+          source?: string
+          starts_at: string
+          status?: string
+          timezone?: string
+          title?: string
+          updated_at?: string
+          whatsapp_notification_status?: string
+        }
+        Update: {
+          admin_email?: string
+          admin_whatsapp?: string | null
+          attendee_email?: string | null
+          attendee_whatsapp?: string | null
+          contact_id?: string
+          created_at?: string
+          email_notification_status?: string
+          ends_at?: string
+          external_calendar_id?: string | null
+          id?: string
+          meeting_type?: string
+          meeting_url?: string | null
+          notes?: string | null
+          service_interest?: string | null
+          source?: string
+          starts_at?: string
+          status?: string
+          timezone?: string
+          title?: string
+          updated_at?: string
+          whatsapp_notification_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_meetings_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_notifications: {
+        Row: {
+          attempts: number
+          channel: string
+          contact_id: string | null
+          created_at: string
+          id: string
+          last_error: string | null
+          meeting_id: string | null
+          payload: Json
+          recipient: string
+          recipient_type: string
+          sent_at: string | null
+          status: string
+          template_key: string
+        }
+        Insert: {
+          attempts?: number
+          channel: string
+          contact_id?: string | null
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          meeting_id?: string | null
+          payload?: Json
+          recipient: string
+          recipient_type: string
+          sent_at?: string | null
+          status?: string
+          template_key: string
+        }
+        Update: {
+          attempts?: number
+          channel?: string
+          contact_id?: string | null
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          meeting_id?: string | null
+          payload?: Json
+          recipient?: string
+          recipient_type?: string
+          sent_at?: string | null
+          status?: string
+          template_key?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_notifications_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_notifications_meeting_id_fkey"
+            columns: ["meeting_id"]
+            isOneToOne: false
+            referencedRelation: "crm_meetings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crm_tasks: {
         Row: {
           assigned_to: string
@@ -265,7 +513,27 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      crm_public_available_slots: {
+        Args: { p_days?: number; p_start_date: string }
+        Returns: {
+          slot_end: string
+          slot_start: string
+        }[]
+      }
+      crm_public_book_meeting: {
+        Args: {
+          p_brand_name: string
+          p_consent_text?: string
+          p_country: string
+          p_country_code: string
+          p_email: string
+          p_full_name: string
+          p_solution_interest: string
+          p_starts_at: string
+          p_whatsapp: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

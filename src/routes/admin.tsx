@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { CRM_ADMIN_EMAIL, isCrmAdministrator } from "@/lib/crm-access";
 import type { Tables, TablesUpdate } from "@/integrations/supabase/types";
@@ -70,6 +70,9 @@ function AdminCrmPage() {
   const [showCreate,setShowCreate]=useState(false);
   const [showSecurity,setShowSecurity]=useState(false);
   const [recoveryMode,setRecoveryMode]=useState(false);
+  const recoveryActive=useRef(false);
+  const recoverySessionToken=useRef("");
+  const [recoveryValid,setRecoveryValid]=useState(false);
   const [newPassword,setNewPassword]=useState("");
   const [confirmPassword,setConfirmPassword]=useState("");
   const [form,setForm]=useState({...emptyContact});
@@ -79,7 +82,9 @@ function AdminCrmPage() {
   const [taskDue,setTaskDue]=useState("");
 
   async function checkAccess(){
+    if(recoveryActive.current)return;
     const {data,error}=await supabase.auth.getUser();
+    if(recoveryActive.current)return;
     if(error || !isCrmAdministrator(data.user)){
       setToken("");
       setContacts([]);
@@ -88,6 +93,7 @@ function AdminCrmPage() {
       return;
     }
     const {data:sessionData}=await supabase.auth.getSession();
+    if(recoveryActive.current)return;
     setToken(sessionData.session?.access_token||"");
     setChecking(false);
   }
@@ -96,23 +102,39 @@ function AdminCrmPage() {
     let active=true;
     const url=new URL(window.location.href);
     if(url.searchParams.get("mode")==="recovery" || window.location.hash.includes("recovery")){
+      recoveryActive.current=true;
       setRecoveryMode(true);
+      setChecking(false);
     }
-    void checkAccess();
     const {data:subscription}=supabase.auth.onAuthStateChange((event,session)=>{
+      if(!active)return;
       if(event==="PASSWORD_RECOVERY"){
+        recoveryActive.current=true;
+        const valid=!!session && isCrmAdministrator(session.user);
+        recoverySessionToken.current=valid ? session.access_token : "";
+        setRecoveryValid(valid);
         setRecoveryMode(true);
-        setToken(session?.access_token||"");
+        setToken("");
+        setContacts([]);
+        setSelected(null);
         setChecking(false);
+        return;
+      }
+      if(recoveryActive.current){
+        if(event==="SIGNED_OUT"){
+          recoverySessionToken.current="";
+          setRecoveryValid(false);
+        }
         return;
       }
       queueMicrotask(()=>{if(active) void checkAccess();});
     });
+    void checkAccess();
     return()=>{active=false;subscription.subscription.unsubscribe();};
   },[]);
 
   async function loadContacts(){
-    if(!token)return;
+    if(!token || recoveryActive.current)return;
     setLoading(true);
     const {data,error}=await supabase.from("crm_contacts").select("*").order("created_at",{ascending:false}).limit(500);
     if(error)setMessage("No pude cargar los contactos del CRM.");
@@ -173,7 +195,13 @@ function AdminCrmPage() {
     if(newPassword.length<8)return setMessage("La contraseña debe tener al menos 8 caracteres.");
     if(newPassword!==confirmPassword)return setMessage("Las contraseñas no coinciden.");
     const {data:sessionData}=await supabase.auth.getSession();
-    if(!sessionData.session){
+    const session=sessionData.session;
+    const {data:userData,error:userError}=await supabase.auth.getUser();
+    if(!recoveryActive.current || !recoverySessionToken.current ||
+      !session || session.access_token!==recoverySessionToken.current ||
+      (session.expires_at!==undefined && session.expires_at<=Date.now()/1000) ||
+      userError || !isCrmAdministrator(userData.user)){
+      setRecoveryValid(false);
       setMessage("El enlace de recuperación no es válido o ya venció. Solicita uno nuevo.");
       return;
     }
@@ -185,6 +213,9 @@ function AdminCrmPage() {
       return;
     }
     await supabase.auth.signOut();
+    recoverySessionToken.current="";
+    recoveryActive.current=false;
+    setRecoveryValid(false);
     setToken("");
     setRecoveryMode(false);
     setNewPassword("");
@@ -312,12 +343,12 @@ function AdminCrmPage() {
         <span>RECUPERACIÓN SEGURA</span>
         <h1>Crear nueva contraseña</h1>
         <p>Define una nueva contraseña para {ADMIN_EMAIL}. Después volverás al acceso normal del CRM.</p>
-        {!token&&<div className="crm-message">Verificando el enlace de recuperación…</div>}
+        {!recoveryValid&&<div className="crm-message">Verificando el enlace de recuperación…</div>}
         <label>Nueva contraseña</label>
         <input type="password" value={newPassword} onChange={e=>setNewPassword(e.target.value)} placeholder="Mínimo 8 caracteres" autoComplete="new-password"/>
         <label>Confirmar contraseña</label>
         <input type="password" value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)} placeholder="Repite la contraseña" autoComplete="new-password"/>
-        <button type="submit" disabled={loading||!token}>{loading?"Guardando…":"Guardar nueva contraseña"}</button>
+        <button type="submit" disabled={loading||!recoveryValid}>{loading?"Guardando…":"Guardar nueva contraseña"}</button>
         {message&&<p className="crm-message">{message}</p>}
       </form>
       <CrmStyles/>

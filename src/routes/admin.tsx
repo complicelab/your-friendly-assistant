@@ -318,7 +318,7 @@ function AdminCrmPage() {
   if(recovery!=="off")return(
     <main className="crm-shell crm-locked">
       <img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab"/>
-      <form className="crm-lock-card" onSubmit={saveRecoveryPassword}>
+      <form className="crm-lock-card w-full! max-w-[520px] min-w-0" onSubmit={saveRecoveryPassword}>
         <span>SEGURIDAD DEL CRM</span><h1>Crear nueva contraseña</h1>
         {recovery==="valid"?<>
           <label htmlFor="recovery-password">Nueva contraseña</label>

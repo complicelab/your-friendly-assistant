@@ -129,3 +129,75 @@
   #s-marketing .clm-msg{font-size:10px}
 }
 @media(prefers-reduced-motion:reduce){#s-marketing .clm-phone *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Final single-example refinement */
+#s-marketing #mk-niches{display:none!important}
+#s-marketing .sv-stage-grid{align-items:stretch}
+#s-marketing .clm-ig{padding-bottom:0}
+#s-marketing .clm-ig-nav{
+  height:42px;
+  padding:0 14px;
+}
+#s-marketing .clm-ig-nav b{font-size:17px}
+#s-marketing .clm-post{
+  margin:0 9px 9px;
+  border:1px solid var(--mk-line);
+  border-radius:12px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 7px 22px rgba(31,49,91,.08);
+}
+#s-marketing .clm-posthead{
+  height:52px;
+  padding:8px 11px;
+}
+#s-marketing .clm-avatar{
+  width:34px;
+  height:34px;
+  font-size:10px;
+}
+#s-marketing .clm-posthead b{
+  font-size:11.5px;
+  line-height:1.2;
+}
+#s-marketing .clm-posthead small{
+  margin-top:2px;
+  font-size:8.5px;
+}
+#s-marketing .clm-adcreative-wrap{
+  flex:none;
+  width:100%;
+  height:265px;
+  max-height:none;
+  background-color:#eef3ff;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:cover;
+  border-block:1px solid var(--mk-line);
+}
+#s-marketing .clm-igactions{
+  height:34px;
+  padding:6px 11px 3px;
+  font-size:15px;
+}
+#s-marketing .clm-igtext{
+  padding:4px 11px 8px;
+  font-size:10px;
+  line-height:1.35;
+}
+#s-marketing .clm-primary{
+  margin:0 11px 11px;
+  min-height:34px;
+  padding:8px 10px;
+  border-radius:8px;
+  font-size:10.5px;
+}
+#s-marketing .clm-caption{
+  padding:6px 10px;
+  font-size:9.5px;
+}
+@media(max-width:620px){
+  #s-marketing .clm-post{margin-inline:7px}
+  #s-marketing .clm-adcreative-wrap{height:245px}
+  #s-marketing .clm-igtext{font-size:9.5px}
+}

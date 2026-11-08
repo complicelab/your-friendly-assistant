@@ -96,6 +96,55 @@ const MOBILE_FLOW_FIXES = `
 </style>
 `;
 
+
+const HOMEPAGE_FOOTER_ENHANCEMENT = `
+<style id="homepage-footer-enhancement-v10">
+  footer .cl-footer-official-logo{display:inline-flex;align-items:center;text-decoration:none;margin-bottom:18px}
+  footer .cl-footer-official-logo img{display:block;width:168px;max-width:72%;height:auto}
+  footer .cl-footer-legal-links{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:18px}
+  footer .cl-footer-legal-links a{color:#63738f;text-decoration:none;font:500 13px/1.4 "Montserrat",sans-serif}
+  footer .cl-footer-legal-links a:hover{color:#245fea;text-decoration:underline;text-underline-offset:4px}
+  @media(max-width:700px){
+    footer .cl-footer-official-logo img{width:158px}
+    footer .cl-footer-legal-links{gap:8px 14px;margin-top:14px}
+  }
+</style>
+<script>
+(function(){
+  function enhanceFooter(){
+    var footer=document.querySelector("footer");
+    if(!footer||footer.dataset.clLegalReady==="1") return;
+    footer.dataset.clLegalReady="1";
+
+    var nodes=Array.from(footer.querySelectorAll("*")).filter(function(el){
+      return el.children.length===0 && (el.textContent||"").trim()==="Cómplice Lab";
+    });
+    var brand=nodes[0];
+    if(brand){
+      brand.innerHTML='<a class="cl-footer-official-logo" href="/" aria-label="Cómplice Lab"><img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab"></a>';
+    }
+
+    if(!footer.querySelector(".cl-footer-legal-links")){
+      var copyright=Array.from(footer.querySelectorAll("*")).find(function(el){
+        return el.children.length===0 && /Todos los derechos reservados/i.test(el.textContent||"");
+      });
+      var links=document.createElement("div");
+      links.className="cl-footer-legal-links";
+      links.innerHTML='<a href="/privacidad">Política de privacidad</a><a href="/terminos">Términos y condiciones</a>';
+      if(copyright && copyright.parentElement){
+        copyright.parentElement.insertBefore(links,copyright);
+      } else {
+        footer.appendChild(links);
+      }
+    }
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",enhanceFooter);
+  else enhanceFooter();
+  setTimeout(enhanceFooter,500);
+})();
+</script>
+`;
+
 const MOBILE_FLOW_SCRIPT = `
 <script id="mobile-flow-runtime-v10">
 (function () {
@@ -261,7 +310,7 @@ function getOriginalHtml() {
   const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8");
   return replaceMarketingRuntime(replaceFlowScenes(replaceCompareScenes(html)))
     .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + compareStyles + flowStyles + marketingStyles + "\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n" + "</head>")
-    .replace("</body>", MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + "</body>");
+    .replace("</body>", HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + "</body>");
 }
 
 export const Route = createFileRoute("/")({

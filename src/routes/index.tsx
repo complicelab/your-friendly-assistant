@@ -663,7 +663,7 @@ const BOOKING_RUNTIME = `
 `;
 
 
-const UNIFIED_BOOKING_CTA = \`
+const UNIFIED_BOOKING_CTA = `
 <style id="cl-unified-booking-cta-styles">
   .cl-booking-cta-label{white-space:nowrap}
 </style>
@@ -868,7 +868,7 @@ const UNIFIED_BOOKING_CTA = \`
   setTimeout(patchText,1200);
 })();
 </script>
-\`;
+`;
 
 function getOriginalHtml() {
   const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8")

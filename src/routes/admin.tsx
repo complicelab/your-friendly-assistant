@@ -5,7 +5,7 @@ import { CRM_ADMIN_EMAIL, isCrmAdministrator } from "@/lib/crm-access";
 import type { Tables, TablesUpdate } from "@/integrations/supabase/types";
 import { CrmAgenda } from "@/components/crm/agenda";
 import { CrmBookingSettings } from "@/components/crm/booking-settings";
-import { formatMeetingDate, meetingStatusLabel } from "@/lib/booking-model";
+import { formatMeetingDate, meetingStatusLabel, nextUpcomingMeeting } from "@/lib/booking-model";
 import "@/components/crm/booking.css";
 
 export const Route = createFileRoute("/admin")({
@@ -341,9 +341,7 @@ function AdminCrmPage() {
     if(!error&&data)setTasks(items=>items.map(i=>i.id===data.id?data:i));
   }
 
-  const nextContactMeeting=useMemo(()=>contactMeetings
-    .filter(meeting=>new Date(meeting.starts_at).getTime()>=Date.now()&&["pendiente","confirmada"].includes(meeting.status))
-    .sort((a,b)=>new Date(a.starts_at).getTime()-new Date(b.starts_at).getTime())[0]||null,[contactMeetings]);
+  const nextContactMeeting=useMemo(()=>nextUpcomingMeeting(contactMeetings),[contactMeetings]);
 
   const filtered=useMemo(()=>{
     const q=query.trim().toLowerCase();

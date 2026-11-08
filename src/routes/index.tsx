@@ -99,30 +99,52 @@ const MOBILE_FLOW_FIXES = `
 
 const HOMEPAGE_FOOTER_ENHANCEMENT = `
 <style id="homepage-footer-enhancement-v10">
-  footer .cl-footer-official-logo{display:inline-flex;align-items:center;text-decoration:none;margin-bottom:18px}
-  footer .cl-footer-official-logo img{display:block;width:168px;max-width:72%;height:auto}
+  header .cl-header-official-logo{display:inline-flex;align-items:center;text-decoration:none;line-height:0}
+  header .cl-header-official-logo img{display:block;width:176px;height:auto}
+  footer .cl-footer-official-logo{display:inline-flex;align-items:center;text-decoration:none;margin-bottom:18px;line-height:0}
+  footer .cl-footer-official-logo img{display:block;width:176px;max-width:78%;height:auto}
   footer .cl-footer-legal-links{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:18px}
   footer .cl-footer-legal-links a{color:#63738f;text-decoration:none;font:500 13px/1.4 "Montserrat",sans-serif}
   footer .cl-footer-legal-links a:hover{color:#245fea;text-decoration:underline;text-underline-offset:4px}
   @media(max-width:700px){
-    footer .cl-footer-official-logo img{width:158px}
+    header .cl-header-official-logo img{width:164px}
+    footer .cl-footer-official-logo img{width:164px}
     footer .cl-footer-legal-links{gap:8px 14px;margin-top:14px}
   }
 </style>
 <script>
 (function(){
+  function enhanceBranding(){
+    var header=document.querySelector("header");
+    if(header && header.dataset.clBrandReady!=="1"){
+      var headerNodes=Array.from(header.querySelectorAll("*")).filter(function(el){
+        return el.children.length===0 && (el.textContent||"").trim()==="Cómplice Lab";
+      });
+      var headerBrand=headerNodes[0];
+      if(headerBrand){
+        var carrier=headerBrand.parentElement || headerBrand;
+        carrier.innerHTML='<a class="cl-header-official-logo" href="/" aria-label="Cómplice Lab"><img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab"></a>';
+        header.dataset.clBrandReady="1";
+      }
+    }
+
+    var footer=document.querySelector("footer");
+    if(footer && footer.dataset.clBrandReady!=="1"){
+      var footerNodes=Array.from(footer.querySelectorAll("*")).filter(function(el){
+        return el.children.length===0 && (el.textContent||"").trim()==="Cómplice Lab";
+      });
+      var footerBrand=footerNodes[0];
+      if(footerBrand){
+        footerBrand.innerHTML='<a class="cl-footer-official-logo" href="/" aria-label="Cómplice Lab"><img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab"></a>';
+      }
+      footer.dataset.clBrandReady="1";
+    }
+  }
+
   function enhanceFooter(){
     var footer=document.querySelector("footer");
     if(!footer||footer.dataset.clLegalReady==="1") return;
     footer.dataset.clLegalReady="1";
-
-    var nodes=Array.from(footer.querySelectorAll("*")).filter(function(el){
-      return el.children.length===0 && (el.textContent||"").trim()==="Cómplice Lab";
-    });
-    var brand=nodes[0];
-    if(brand){
-      brand.innerHTML='<a class="cl-footer-official-logo" href="/" aria-label="Cómplice Lab"><img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab"></a>';
-    }
 
     if(!footer.querySelector(".cl-footer-legal-links")){
       var copyright=Array.from(footer.querySelectorAll("*")).find(function(el){
@@ -138,9 +160,14 @@ const HOMEPAGE_FOOTER_ENHANCEMENT = `
       }
     }
   }
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",enhanceFooter);
-  else enhanceFooter();
-  setTimeout(enhanceFooter,500);
+  function run(){
+    enhanceBranding();
+    enhanceFooter();
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",run);
+  else run();
+  setTimeout(run,300);
+  setTimeout(run,900);
 })();
 </script>
 `;

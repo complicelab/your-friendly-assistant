@@ -656,7 +656,7 @@ const BOOKING_RUNTIME = `
   setInterval(init,1200);
 })();
 </script>
-\`;
+`;
 
 function getOriginalHtml() {
   const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8")

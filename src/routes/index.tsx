@@ -135,6 +135,13 @@ const HOMEPAGE_FOOTER_ENHANCEMENT = `
       });
       var footerBrand=footerNodes[0];
       if(footerBrand){
+        var oldMark=footerBrand.previousElementSibling;
+        if(oldMark && !(oldMark.textContent||"").trim()){
+          var markRect=oldMark.getBoundingClientRect();
+          if(markRect.width <= 80 && markRect.height <= 80){
+            oldMark.remove();
+          }
+        }
         footerBrand.innerHTML='<a class="cl-footer-official-logo" href="/" aria-label="Cómplice Lab"><img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab"></a>';
       }
       footer.dataset.clBrandReady="1";

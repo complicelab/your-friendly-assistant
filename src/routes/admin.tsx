@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { Button } from "@/components/ui/button";
+import { isRecoveryReturn, updateRecoveryPassword } from "@/lib/crm-recovery";
 import { supabase } from "@/integrations/supabase/client";
 import { CRM_ADMIN_EMAIL, isCrmAdministrator } from "@/lib/crm-access";
 import type { Tables, TablesUpdate } from "@/integrations/supabase/types";
@@ -76,9 +78,21 @@ function AdminCrmPage() {
   const [editFollowUp,setEditFollowUp]=useState("");
   const [taskTitle,setTaskTitle]=useState("");
   const [taskDue,setTaskDue]=useState("");
+  const [recovery,setRecovery]=useState<"off"|"pending"|"valid"|"invalid">("off");
+  const recoveryMode=useRef(false);
+  const recoveryProof=useRef<string|null>(null);
+  const accessVersion=useRef(0);
 
   async function checkAccess(){
+    const version=++accessVersion.current;
     const {data,error}=await supabase.auth.getUser();
+    if(version!==accessVersion.current)return;
+    if(recoveryMode.current){
+      const valid=!error&&isCrmAdministrator(data.user)&&Boolean(recoveryProof.current);
+      setToken("");setContacts([]);setSelected(null);
+      setRecovery(valid?"valid":"invalid");setChecking(false);
+      return;
+    }
     if(error || !isCrmAdministrator(data.user)){
       setToken("");
       setContacts([]);
@@ -87,23 +101,40 @@ function AdminCrmPage() {
       return;
     }
     const {data:sessionData}=await supabase.auth.getSession();
+    if(version!==accessVersion.current||recoveryMode.current)return;
     setToken(sessionData.session?.access_token||"");
     setChecking(false);
   }
 
   useEffect(()=>{
     let active=true;
-    void checkAccess();
-    const {data:subscription}=supabase.auth.onAuthStateChange(()=>{
+    // Capture intent before the SDK consumes the callback hash. Intent alone never authorizes a reset.
+    recoveryMode.current=isRecoveryReturn(window.location.href);
+    if(recoveryMode.current)setRecovery("pending");
+    const {data:subscription}=supabase.auth.onAuthStateChange((event,session)=>{
+      if(!active)return;
+      if(event==="PASSWORD_RECOVERY"){
+        recoveryMode.current=true;
+        recoveryProof.current=session?.access_token??null;
+        ++accessVersion.current;
+        setToken("");setContacts([]);setSelected(null);setActivities([]);setTasks([]);
+        setRecovery("pending");setChecking(true);
+        window.history.replaceState(window.history.state,"","/admin?recovery=1");
+      }else if(event==="SIGNED_OUT"){
+        recoveryProof.current=null;
+        ++accessVersion.current;setToken("");
+      }
       queueMicrotask(()=>{if(active) void checkAccess();});
     });
-    return()=>{active=false;subscription.subscription.unsubscribe();};
+    void checkAccess();
+    return()=>{active=false;++accessVersion.current;subscription.subscription.unsubscribe();};
   },[]);
 
   async function loadContacts(){
-    if(!token)return;
+    if(!token||recoveryMode.current)return;
     setLoading(true);
     const {data,error}=await supabase.from("crm_contacts").select("*").order("created_at",{ascending:false}).limit(500);
+    if(recoveryMode.current)return;
     if(error)setMessage("No pude cargar los contactos del CRM.");
     else setContacts(data||[]);
     setLoading(false);
@@ -138,9 +169,25 @@ function AdminCrmPage() {
 
   async function recoverPassword(){
     setLoading(true);setMessage("");
-    const {error}=await supabase.auth.resetPasswordForEmail(ADMIN_EMAIL,{redirectTo:window.location.origin+"/admin#recovery"});
+    const {error}=await supabase.auth.resetPasswordForEmail(ADMIN_EMAIL,{redirectTo:window.location.origin+"/admin?recovery=1"});
     setMessage(error ? "No fue posible enviar la recuperación." : "Te enviamos un enlace únicamente para restablecer la contraseña.");
     setLoading(false);
+  }
+
+  async function saveRecoveryPassword(e:FormEvent){
+    e.preventDefault();setMessage("");setLoading(true);
+    try{
+      await updateRecoveryPassword(supabase.auth,recovery==="valid"?recoveryProof.current:null,newPassword,confirmPassword);
+      // Keep the CRM blocked until the recovery session has been removed successfully.
+      const {error}=await supabase.auth.signOut({scope:"local"});
+      if(error){setMessage("Contraseña guardada. No pude cerrar la sesión; vuelve a intentarlo antes de entrar.");return;}
+      recoveryMode.current=false;recoveryProof.current=null;++accessVersion.current;
+      setRecovery("off");setToken("");setContacts([]);setSelected(null);setActivities([]);setTasks([]);
+      setNewPassword("");setConfirmPassword("");setLoginPassword("");setShowSecurity(false);setChecking(false);
+      window.history.replaceState(window.history.state,"","/admin");
+      setMessage("Contraseña guardada correctamente. Ya puedes entrar con complicelab@gmail.com y tu nueva contraseña.");
+    }catch(error){setMessage(error instanceof Error?error.message:"No pude guardar la contraseña.");}
+    finally{setLoading(false);}
   }
 
   async function savePassword(e:FormEvent){
@@ -267,6 +314,27 @@ function AdminCrmPage() {
   }),[contacts]);
 
   if(checking)return <main className="crm-shell crm-locked"><img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab"/><div className="crm-lock-card"><span>CRM PRIVADO</span><h1>Verificando acceso…</h1></div><CrmStyles/></main>;
+
+  if(recovery!=="off")return(
+    <main className="crm-shell crm-locked">
+      <img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab"/>
+      <form className="crm-lock-card" onSubmit={saveRecoveryPassword}>
+        <span>SEGURIDAD DEL CRM</span><h1>Crear nueva contraseña</h1>
+        {recovery==="valid"?<>
+          <label htmlFor="recovery-password">Nueva contraseña</label>
+          <input id="recovery-password" type="password" required minLength={8} autoComplete="new-password" value={newPassword} onChange={e=>setNewPassword(e.target.value)}/>
+          <label htmlFor="recovery-confirmation">Confirmar contraseña</label>
+          <input id="recovery-confirmation" type="password" required minLength={8} autoComplete="new-password" value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)}/>
+          <p>Mínimo 8 caracteres.</p>
+          <Button type="submit" disabled={loading}>{loading?"Guardando…":"Guardar nueva contraseña"}</Button>
+        </>:<>
+          <p>El enlace de recuperación no es válido o ha caducado. Solicita uno nuevo desde tu correo.</p>
+          <Button variant="link" type="button" disabled={loading} onClick={recoverPassword}>Solicitar nuevo enlace</Button>
+        </>}
+        {message&&<p className="crm-message" role="status">{message}</p>}
+      </form><CrmStyles/>
+    </main>
+  );
 
   if(!token)return(
     <main className="crm-shell crm-locked">

@@ -701,7 +701,7 @@ const UNIFIED_BOOKING_CTA = `
   var CTA_TEXTS=["Continuar por WhatsApp","Hablar por WhatsApp","Agendar videollamada de diagnóstico","Solicitar videollamada","Solicitar videollamada de diagnóstico"];
   var inlineState={form:null,days:[],day:"",slot:"",loading:false};
 
-  function norm(el){return (el&&el.textContent?el.textContent:"").replace(/\s+/g," ").trim();}
+  function norm(el){return (el&&el.textContent?el.textContent:"").replaceAll("\\n"," ").replaceAll("\\t"," ").split(" ").filter(Boolean).join(" ").trim();}
   function bookingDateKey(value){
     var parts=new Intl.DateTimeFormat("en-US",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:"America/Bogota"}).formatToParts(value);
     var map={};parts.forEach(function(p){map[p.type]=p.value;});
@@ -763,7 +763,7 @@ const UNIFIED_BOOKING_CTA = `
 
   function collect(form){
     var code="";
-    var codeSelect=Array.from(form.querySelectorAll("select")).find(function(el){return /\+\d+/.test(el.value||"");});
+    var codeSelect=Array.from(form.querySelectorAll("select")).find(function(el){return String(el.value||"").trim().charAt(0)==="+";});
     if(codeSelect)code=codeSelect.value;
     var phone=valueFrom(form,["phone","whatsapp","telefono"],"WhatsApp");
     return {
@@ -863,7 +863,7 @@ const UNIFIED_BOOKING_CTA = `
       return label&&norm(label).toLowerCase().indexOf("autorizo")!==-1;
     });
     if(consent&&!consent.checked){if(status){status.textContent="Autoriza el uso de tus datos para gestionar la reserva.";status.classList.add("is-error");}return;}
-    var fullPhone=(values.phone.indexOf("+")===0?values.phone:(values.code||"+57")+values.phone).replace(/\s+/g,"");
+    var fullPhone=(values.phone.indexOf("+")===0?values.phone:(values.code||"+57")+values.phone).split(" ").join("");
     var original=button.textContent;button.disabled=true;button.textContent="Agendando…";
     if(status){status.textContent="Guardando tu diagnóstico…";status.classList.remove("is-error");}
     try{
@@ -872,7 +872,7 @@ const UNIFIED_BOOKING_CTA = `
       })});
       var data=await response.json();
       if(!response.ok||!data.ok)throw new Error(data.error||"No fue posible agendar.");
-      var first=values.name.split(/\s+/)[0]||values.name;
+      var first=values.name.trim().split(" ")[0]||values.name;
       form.innerHTML='<div class="cl-inline-success"><i>✓</i><h3>Diagnóstico agendado, '+first+'.</h3><p>Tu cita quedó confirmada para <strong>'+longDate(inlineState.slot)+'</strong>, hora de Colombia. La reserva ya quedó registrada en nuestro CRM y preparada para las confirmaciones correspondientes.</p></div>';
     }catch(error){
       if(status){status.textContent=error&&error.message?error.message:"No pudimos guardar la cita. Intenta nuevamente.";status.classList.add("is-error");}

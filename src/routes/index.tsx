@@ -351,6 +351,11 @@ const MOBILE_FLOW_SCRIPT = `
 
 function getOriginalHtml() {
   const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8")
+    .replace("Míralo funcionar.", "Así trabajamos.")
+    .replace(
+      "Tres servicios, tres demostraciones que se mueven solas. Si quieres, toca cualquier paso.",
+      "Tres servicios, tres demostraciones que muestran cómo captamos, atendemos y convertimos contactos en oportunidades reales. Si quieres, toca cualquier paso."
+    )
     .replace("Sistemas con IA", "Creamos sistemas con IA")
     .replace(
       "Que ningún contacto se pierda y sepas quién llegó, qué necesita y cuándo hacer seguimiento.",

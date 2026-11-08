@@ -124,7 +124,7 @@ export function replaceBookingRuntime(html: string, config: BookingPublicConfig)
       '<h3 id="d-l">Día</h3><div class="days" role="radiogroup" aria-labelledby="d-l"><p class="booking-loading">Consultando disponibilidad real…</p></div>'+
       '<h3 id="s-l">Hora</h3><div class="slots" role="radiogroup" aria-labelledby="s-l"></div>'+
       '<p class="err" id="slot-err" role="alert"></p><p class="summary" id="summary" aria-live="polite"></p>'+
-      '<p class="m-note">El diagnóstico es una sesión de pago. Al confirmar, la cita queda registrada en nuestro CRM.</p></div>'+
+      '<p class="m-note">El diagnóstico es una sesión gratuita. Al confirmar, la cita queda registrada en nuestro CRM para que lleguemos preparados a la conversación.</p></div>'+
       '<div class="ag-form">'+leadForm('m','Agendar diagnóstico')+'</div></div></div>';
     var f2=$('#m-form');
     bindLead(f2,{

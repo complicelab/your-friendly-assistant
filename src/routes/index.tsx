@@ -418,7 +418,7 @@ const MOBILE_FLOW_SCRIPT = `
 `;
 
 
-const BOOKING_RUNTIME = \`
+const BOOKING_RUNTIME = `
 <style id="cl-booking-runtime-styles">
   .cl-booking-days,.cl-booking-times{display:flex;gap:8px;flex-wrap:wrap}
   .cl-booking-days{flex-wrap:nowrap;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:none}

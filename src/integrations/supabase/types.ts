@@ -14,7 +14,252 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      crm_activities: {
+        Row: {
+          activity_type: string
+          actor_type: string
+          body: string | null
+          channel: string | null
+          contact_id: string
+          created_at: string
+          direction: string | null
+          external_id: string | null
+          id: string
+          metadata: Json
+        }
+        Insert: {
+          activity_type: string
+          actor_type?: string
+          body?: string | null
+          channel?: string | null
+          contact_id: string
+          created_at?: string
+          direction?: string | null
+          external_id?: string | null
+          id?: string
+          metadata?: Json
+        }
+        Update: {
+          activity_type?: string
+          actor_type?: string
+          body?: string | null
+          channel?: string | null
+          contact_id?: string
+          created_at?: string
+          direction?: string | null
+          external_id?: string | null
+          id?: string
+          metadata?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_activities_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_agent_jobs: {
+        Row: {
+          attempts: number
+          available_at: string
+          contact_id: string | null
+          created_at: string
+          event_type: string
+          id: string
+          last_error: string | null
+          payload: Json
+          processed_at: string | null
+          status: string
+        }
+        Insert: {
+          attempts?: number
+          available_at?: string
+          contact_id?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          last_error?: string | null
+          payload?: Json
+          processed_at?: string | null
+          status?: string
+        }
+        Update: {
+          attempts?: number
+          available_at?: string
+          contact_id?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          last_error?: string | null
+          payload?: Json
+          processed_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_agent_jobs_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_contacts: {
+        Row: {
+          agent_enabled: boolean
+          agent_status: string
+          brand_name: string | null
+          business_type: string | null
+          consent_at: string | null
+          consent_marketing: boolean
+          consent_service: boolean
+          consent_text: string | null
+          country: string | null
+          country_code: string | null
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          last_contact_at: string | null
+          meta_lead_id: string | null
+          metadata: Json
+          need: string | null
+          next_follow_up_at: string | null
+          notes: string | null
+          owner_email: string
+          profession: string | null
+          solution_interest: string | null
+          source: string
+          source_detail: string | null
+          status: string
+          updated_at: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          whatsapp: string | null
+          whatsapp_thread_id: string | null
+        }
+        Insert: {
+          agent_enabled?: boolean
+          agent_status?: string
+          brand_name?: string | null
+          business_type?: string | null
+          consent_at?: string | null
+          consent_marketing?: boolean
+          consent_service?: boolean
+          consent_text?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          email?: string | null
+          full_name: string
+          id?: string
+          last_contact_at?: string | null
+          meta_lead_id?: string | null
+          metadata?: Json
+          need?: string | null
+          next_follow_up_at?: string | null
+          notes?: string | null
+          owner_email?: string
+          profession?: string | null
+          solution_interest?: string | null
+          source?: string
+          source_detail?: string | null
+          status?: string
+          updated_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          whatsapp?: string | null
+          whatsapp_thread_id?: string | null
+        }
+        Update: {
+          agent_enabled?: boolean
+          agent_status?: string
+          brand_name?: string | null
+          business_type?: string | null
+          consent_at?: string | null
+          consent_marketing?: boolean
+          consent_service?: boolean
+          consent_text?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          last_contact_at?: string | null
+          meta_lead_id?: string | null
+          metadata?: Json
+          need?: string | null
+          next_follow_up_at?: string | null
+          notes?: string | null
+          owner_email?: string
+          profession?: string | null
+          solution_interest?: string | null
+          source?: string
+          source_detail?: string | null
+          status?: string
+          updated_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          whatsapp?: string | null
+          whatsapp_thread_id?: string | null
+        }
+        Relationships: []
+      }
+      crm_tasks: {
+        Row: {
+          assigned_to: string
+          completed_at: string | null
+          contact_id: string
+          created_at: string
+          due_at: string | null
+          id: string
+          metadata: Json
+          status: string
+          title: string
+        }
+        Insert: {
+          assigned_to?: string
+          completed_at?: string | null
+          contact_id: string
+          created_at?: string
+          due_at?: string | null
+          id?: string
+          metadata?: Json
+          status?: string
+          title: string
+        }
+        Update: {
+          assigned_to?: string
+          completed_at?: string | null
+          contact_id?: string
+          created_at?: string
+          due_at?: string | null
+          id?: string
+          metadata?: Json
+          status?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_tasks_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

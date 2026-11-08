@@ -153,6 +153,23 @@ function AdminCrmPage() {
 
   useEffect(()=>{void loadContacts();},[token]);
 
+  useEffect(()=>{
+    if(!token || recoveryActive.current)return;
+    let active=true;
+    const refresh=()=>{if(active&&!document.hidden)void loadContacts();};
+    const timer=window.setInterval(refresh,15000);
+    const onFocus=()=>refresh();
+    const onVisibility=()=>{if(!document.hidden)refresh();};
+    window.addEventListener("focus",onFocus);
+    document.addEventListener("visibilitychange",onVisibility);
+    return()=>{
+      active=false;
+      window.clearInterval(timer);
+      window.removeEventListener("focus",onFocus);
+      document.removeEventListener("visibilitychange",onVisibility);
+    };
+  },[token]);
+
   async function loadUpcomingCount(){
     if(!token || recoveryActive.current)return;
     const {count,error}=await supabase.from("crm_meetings").select("id",{count:"exact",head:true})
@@ -423,7 +440,7 @@ function AdminCrmPage() {
           <div><span>CRM INTERNO</span><h1>{view==="oportunidades"?"Oportunidades":view==="agenda"?"Agenda":"Configuración"}</h1><p>{view==="oportunidades"?"Quién llegó, qué necesita y qué toca hacer después.":view==="agenda"?"Videollamadas, próximos encuentros y estados de notificación.":"Disponibilidad real para las reservas desde la home."}</p></div>
           {view==="oportunidades"&&<div className="crm-heading-actions">
             <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Buscar contacto, marca, WhatsApp…"/>
-            <button className="crm-primary" onClick={()=>setShowCreate(true)}>+ Nuevo contacto</button>
+            <button className="crm-secondary" onClick={()=>void loadContacts()}>Actualizar</button><button className="crm-primary" onClick={()=>setShowCreate(true)}>+ Nuevo contacto</button>
           </div>}
         </div>
 

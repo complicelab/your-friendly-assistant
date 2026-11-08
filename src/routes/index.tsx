@@ -70,7 +70,7 @@ const MOBILE_FLOW_FIXES = `
     }
 
     .cl-mobile-step-track > * {
-      scroll-snap-align: start !important;
+      scroll-snap-align: center !important;
       flex: 0 0 auto !important;
     }
 
@@ -201,7 +201,7 @@ const MOBILE_FLOW_SCRIPT = `
     track.classList.add("cl-mobile-step-track");
 
     Array.from(track.children).forEach(function (child) {
-      child.style.scrollSnapAlign = "start";
+      child.style.scrollSnapAlign = "center";
       child.style.flexShrink = "0";
     });
 
@@ -217,12 +217,21 @@ const MOBILE_FLOW_SCRIPT = `
     var index = 0;
     var paused = false;
 
+    function centerItem(item, behavior) {
+      if (!item) return;
+      var rawLeft = item.offsetLeft + item.offsetWidth / 2 - track.clientWidth / 2;
+      var maxLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+      var left = Math.max(0, Math.min(maxLeft, rawLeft));
+      track.scrollTo({ left: left, behavior: behavior || "smooth" });
+    }
+
     function goNext() {
       if (paused || document.hidden) return;
       index = (index + 1) % items.length;
-      var left = Math.max(0, items[index].offsetLeft - 18);
-      track.scrollTo({ left: left, behavior: "smooth" });
+      centerItem(items[index], "smooth");
     }
+
+    centerItem(items[0], "auto");
 
     var timer = setInterval(goNext, 2400);
 

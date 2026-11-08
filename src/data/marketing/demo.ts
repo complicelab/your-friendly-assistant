@@ -104,14 +104,14 @@ export const marketingInteractions = `
   function stopSubs(){subTimers.forEach(clearTimeout);subTimers=[]}
   function later(ms,fn,id){var t=setTimeout(function(){if(id===runId)fn()},reduced?0:ms);subTimers.push(t)}
   function photoStyle(n){return 'background-image:url("'+String(n.image).replace(/"/g,"%22")+'")'}
+  function imageSrc(n){return String(n.image).replace(/"/g,"&quot;")}
 
   function igScene(n){
     return '<div class="clm-scene clm-ig">'+
       '<div class="clm-ig-nav"><b>Instagram</b><span>♡　⌁</span></div>'+
-      '<div data-ig-stories></div>'+
       '<div class="clm-post" data-ig-post>'+
-        '<div class="clm-posthead"><span class="clm-avatar">'+n.initials+'</span><div><b>'+n.account+'</b><small>Publicidad</small></div><span class="clm-more">•••</span></div>'+
-        '<div class="clm-adphoto" style="'+photoStyle(n)+'"><span class="clm-adtag">'+n.adTag+'</span><div class="clm-adcopy" data-ig-copy><b>'+n.headline+'</b><small>'+n.sub+'</small></div></div>'+
+        '<div class="clm-posthead"><span class="clm-avatar">'+n.initials+'</span><div><b>'+n.account+'</b><small>Publicidad · '+n.adTag+'</small></div><span class="clm-more">•••</span></div>'+
+        '<div class="clm-adcreative-wrap"><img class="clm-adcreative" src="'+imageSrc(n)+'" alt=""></div>'+
         '<div class="clm-igactions"><span>♡　◯　⌁</span><span>Guardar</span></div>'+
         '<div class="clm-igtext"><b>'+n.account+'</b> '+n.sub+'.</div>'+
         '<button class="clm-primary" data-ig-cta data-next>'+n.adCta+'</button>'+
@@ -191,11 +191,9 @@ export const marketingInteractions = `
 
   function animateScene(id){
     if(stepIndex===0){
-      var stories=screen.querySelector("[data-ig-stories]"),post=screen.querySelector("[data-ig-post]"),copy=screen.querySelector("[data-ig-copy]"),cta=screen.querySelector("[data-ig-cta]");
-      later(180,function(){if(stories)stories.classList.add("show")},id);
-      later(520,function(){if(post)post.classList.add("show")},id);
-      later(1050,function(){if(copy)copy.classList.add("show")},id);
-      later(1650,function(){if(cta)cta.classList.add("show")},id);
+      var post=screen.querySelector("[data-ig-post]"),cta=screen.querySelector("[data-ig-cta]");
+      later(240,function(){if(post)post.classList.add("show")},id);
+      later(1050,function(){if(cta)cta.classList.add("show")},id);
     }
     if(stepIndex===1){
       var fills=Array.from(screen.querySelectorAll("[data-fill]")),btn=screen.querySelector("[data-form-cta]");

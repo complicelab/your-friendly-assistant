@@ -11,3 +11,4 @@
 
 - Keep v10 comparison scene replacements in `src/data/compare`; transform only the two right-hand scene producers before the original script boots so its navigation, timers, and animation runner remain the sole rendering owner.
 - Keep the eight-step system flow replacements in `src/data/flow`, replacing only selected ST h() producers before v10 boots; the original go(), run() and timer pool own rendering and autoplay, while delegated handlers manage manual interactions.
+- Keep Marketing phone styles and its single state/timer owner in `src/data/marketing`; remove only the bounded legacy Marketing closure before v10 boots to avoid duplicate observers and preserve all other demos.

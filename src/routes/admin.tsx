@@ -445,8 +445,9 @@ function AdminCrmPage() {
         </div>
 
         <div className="crm-notice">
-          <b>CRM activo.</b>
-          <span>La conexión con WhatsApp y el agente de IA todavía no está configurada. Ningún mensaje se responde automáticamente.</span>
+          <b>{upcomingCount>0?`Tienes ${upcomingCount} diagnóstico${upcomingCount===1?"":"s"} próximo${upcomingCount===1?"":"s"}.`:"CRM activo."}</b>
+          <span>Las reservas quedan en Contactos y Agenda. Las confirmaciones por correo y WhatsApp se registran en la reunión; WhatsApp / Agente IA seguirá indicando conexión pendiente hasta configurar Meta Cloud API.</span>
+          {upcomingCount>0&&view!=="agenda"&&<button className="crm-secondary" onClick={()=>setView("agenda")}>Ver agenda</button>}
         </div>
 
         {view==="oportunidades"&&<>

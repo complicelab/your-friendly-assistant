@@ -174,9 +174,13 @@ describe('booking client DOM flow',()=>{
     expect(overlay?.classList.contains('is-open')).toBe(true);
 
     const actualInlineBox=window.document.querySelector('.cl-contact-booking') as HTMLElement;
-    const root=actualInlineBox.parentElement as HTMLElement;
+    const actualAction=Array.from(window.document.querySelectorAll('[data-cl-clean-booking-action="1"]')).find(el=>!el.closest('#cl-booking-overlay')) as HTMLElement | undefined;
+    expect(actualAction).toBeTruthy();
+    let root=actualInlineBox.parentElement as HTMLElement | null;
+    while(root&&root!==window.document.body&&!root.contains(actualAction!))root=root.parentElement;
+    expect(root).toBeTruthy();
 
-    console.log('BOOKING_REAL_CONTROLS',Array.from(root.querySelectorAll('input,select,textarea')).map(el=>({
+    console.log('BOOKING_REAL_CONTROLS',Array.from(root!.querySelectorAll('input,select,textarea')).map(el=>({
       tag:el.tagName,
       type:(el as HTMLInputElement).type||'',
       name:(el as HTMLInputElement).name||'',
@@ -186,7 +190,7 @@ describe('booking client DOM flow',()=>{
       value:(el as HTMLInputElement).value||'',
       parentText:(el.parentElement?.textContent||'').replace(/\s+/g,' ').trim().slice(0,180)
     })));
-    const labels=Array.from(root.querySelectorAll('label'));
+    const labels=Array.from(root!.querySelectorAll('label'));
     const byLabel=(needle:string)=>labels.find(el=>(el.textContent||'').toLowerCase().includes(needle.toLowerCase()));
 
     const nameInput=byLabel('Nombre y apellido')?.querySelector('input') as HTMLInputElement | null;
@@ -200,24 +204,24 @@ describe('booking client DOM flow',()=>{
     if(emailInput)emailInput.value='prueba@example.com';
     if(phoneInput)phoneInput.value='3001234567';
 
-    const serviceButton=Array.from(root.querySelectorAll('button,[role="button"],label')).find(el=>(el.textContent||'').toLowerCase().includes('sistemas con ia')) as HTMLElement | undefined;
+    const serviceButton=Array.from(root!.querySelectorAll('button,[role="button"],label')).find(el=>(el.textContent||'').toLowerCase().includes('sistemas con ia')) as HTMLElement | undefined;
     if(serviceButton){
       serviceButton.classList.add('selected');
       serviceButton.setAttribute('aria-pressed','true');
     }
 
-    const consent=Array.from(root.querySelectorAll('input[type="checkbox"]')).find(input=>{
+    const consent=Array.from(root!.querySelectorAll('input[type="checkbox"]')).find(input=>{
       const lab=input.closest('label')||input.parentElement;
       return !!lab && (lab.textContent||'').toLowerCase().includes('autorizo');
     }) as HTMLInputElement | undefined;
     if(consent)consent.checked=true;
 
     await new Promise(resolve=>setTimeout(resolve,25));
-    const dateInput=root.querySelector('.cl-contact-date') as HTMLInputElement;
+    const dateInput=root!.querySelector('.cl-contact-date') as HTMLInputElement;
     dateInput.value='2026-11-10';
     dateInput.dispatchEvent(new window.Event('change',{bubbles:true}));
 
-    const timeSelect=root.querySelector('.cl-contact-time') as HTMLSelectElement;
+    const timeSelect=root!.querySelector('.cl-contact-time') as HTMLSelectElement;
     expect(timeSelect.options.length).toBeGreaterThan(1);
     timeSelect.value=slots[0].slot_start;
     timeSelect.dispatchEvent(new window.Event('change',{bubbles:true}));
@@ -240,7 +244,7 @@ describe('booking client DOM flow',()=>{
 
     if(postBodies.length===0){
       console.log('BOOKING_SUBMIT_DIAGNOSTIC',{
-        note:(root.querySelector('.cl-contact-booking-note')?.textContent||'').trim(),
+        note:(root!.querySelector('.cl-contact-booking-note')?.textContent||'').trim(),
         name:nameInput?.value||'',
         brand:brandInput?.value||'',
         email:emailInput?.value||'',

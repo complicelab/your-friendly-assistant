@@ -109,6 +109,10 @@ describe('booking client DOM flow',()=>{
         },
         set(){return true;}
       })});
+      if(window.SVGElement){
+        Object.defineProperty(window.SVGElement.prototype,'getTotalLength',{value:()=>100});
+        Object.defineProperty(window.SVGElement.prototype,'getPointAtLength',{value:()=>({x:0,y:0})});
+      }
     }});
     const {window}=dom;
     await new Promise(resolve=>setTimeout(resolve,80));
@@ -198,6 +202,7 @@ describe('booking client DOM flow',()=>{
     }) as HTMLInputElement | undefined;
     if(consent)consent.checked=true;
 
+    await new Promise(resolve=>setTimeout(resolve,25));
     const dateInput=root.querySelector('.cl-contact-date') as HTMLInputElement;
     dateInput.value='2026-11-10';
     dateInput.dispatchEvent(new window.Event('change',{bubbles:true}));

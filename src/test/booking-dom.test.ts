@@ -16,21 +16,23 @@ function bookingScript(){
 function fixture(){
   return `<!doctype html>
   <html><body>
-    <section id="contact">
+    <section id="contact-copy">
       <div class="copy">
         <h2>Hablemos de <span>tu negocio.</span></h2>
         <button id="left-cta">Agendar videollamada de diagnóstico</button>
       </div>
-      <form id="contact-form">
+    </section>
+    <section id="contact-fields">
+      <form id="contact-form" action="https://wa.me/573000000000" onsubmit="window.__legacySubmit=true">
         <label>Nombre y apellido<input name="name"></label>
         <label>Marca personal o empresa<input name="brand"></label>
         <label>WhatsApp<select name="country"><option value="+57">+57</option></select><input name="phone" type="tel"></label>
         <label>Correo<input name="email" type="email"></label>
         <div>¿Qué servicio te interesa?
-          <label><input type="radio" name="service"> Creamos sistemas con IA a la medida</label>
+          <button type="button">Creamos sistemas con IA a la medida</button>
         </div>
         <label><input type="checkbox"> Autorizo el uso de mis datos para responder esta solicitud.</label>
-        <button id="submit">Continuar por WhatsApp</button>
+        <button id="submit" type="submit" onclick="window.__legacyClick=true">Continuar por WhatsApp →</button>
       </form>
     </section>
     <button id="hero-cta">Agendar diagnóstico</button>
@@ -60,7 +62,12 @@ describe('booking client DOM flow',()=>{
     const form=window.document.querySelector('#contact-form')!;
     expect(form.querySelector('.cl-contact-date')).toBeTruthy();
     expect(form.querySelector('.cl-contact-time')).toBeTruthy();
-    expect(window.document.querySelector('#submit')?.textContent).toBe('Agendar diagnóstico');
+    const submit=window.document.querySelector('#submit') as HTMLButtonElement;
+    expect(submit?.textContent).toBe('Agendar diagnóstico');
+    expect(submit?.type).toBe('button');
+    expect(submit?.getAttribute('onclick')).toBeNull();
+    expect((form as HTMLFormElement).getAttribute('action')).toBeNull();
+    expect((form as HTMLFormElement).getAttribute('onsubmit')).toBeNull();
     expect(window.document.querySelector('#left-cta')).toBeNull();
 
     const hero=window.document.querySelector('#hero-cta') as HTMLElement;

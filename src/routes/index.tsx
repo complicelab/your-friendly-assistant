@@ -514,38 +514,25 @@ const UNIFIED_BOOKING_CTA = `
   function timeLabel(value){return new Intl.DateTimeFormat("es-CO",{hour:"numeric",minute:"2-digit",hour12:true,timeZone:"America/Bogota"}).format(new Date(value));}
 
   function findContactRoot(){
-    var checkboxes=Array.from(document.querySelectorAll('input[type="checkbox"]')).filter(function(input){
-      return !input.closest("#cl-booking-overlay,#modal,#m-overlay,#m-content");
-    });
-    var candidates=[];
-    checkboxes.forEach(function(input){
-      var node=input.parentElement;
-      while(node&&node!==document.body){
-        if(node.closest&&node.closest("#cl-booking-overlay,#modal,#m-overlay,#m-content"))break;
-        var t=norm(node).toLowerCase();
+    var nameInput=document.querySelector('input[name="nombre"]');
+    var brandInput=document.querySelector('input[name="marca"]');
+    var phoneInput=document.querySelector('input[name="whatsapp"]');
+    var emailInput=document.querySelector('input[name="email"]');
+    var consentInput=document.querySelector('input[name="consent"]');
+    if(!nameInput||!brandInput||!phoneInput||!emailInput||!consentInput)return null;
+
+    var node=consentInput.parentElement;
+    while(node&&node!==document.body){
+      if(node.contains(nameInput)&&node.contains(brandInput)&&node.contains(phoneInput)&&node.contains(emailInput)){
+        var hasService=node.querySelector('input[name="servicio"]');
         var hasAction=Array.from(node.querySelectorAll("a,button")).some(function(action){
           return isBookingActionText(norm(action));
         });
-        var hasCoreFields=
-          t.indexOf("nombre y apellido")!==-1 &&
-          t.indexOf("marca personal o empresa")!==-1 &&
-          t.indexOf("whatsapp")!==-1 &&
-          t.indexOf("correo")!==-1 &&
-          t.indexOf("servicio te interesa")!==-1;
-        if(hasCoreFields&&hasAction&&node.querySelectorAll("input").length>=4){
-          candidates.push(node);
-          break;
-        }
-        node=node.parentElement;
+        if(hasService&&hasAction)return node;
       }
-    });
-    candidates.sort(function(a,b){
-      var aForm=a.tagName==="FORM"?0:1;
-      var bForm=b.tagName==="FORM"?0:1;
-      if(aForm!==bForm)return aForm-bForm;
-      return a.querySelectorAll("*").length-b.querySelectorAll("*").length;
-    });
-    return candidates[0]||null;
+      node=node.parentElement;
+    }
+    return null;
   }
 
   function directChildUnder(node,root){
@@ -1053,7 +1040,12 @@ const UNIFIED_BOOKING_CTA = `
   hydrateAvailabilityCache();
   prewarmAvailability();
   normalize();
-  window.addEventListener("load",normalize,{once:true});
+  window.addEventListener("load",function(){
+    normalize();
+    setTimeout(normalize,120);
+    setTimeout(normalize,400);
+    setTimeout(normalize,1000);
+  },{once:true});
 
   if(window.MutationObserver){
     var settleTimer=null;
@@ -1063,17 +1055,24 @@ const UNIFIED_BOOKING_CTA = `
       settleTimer=setTimeout(function(){
         normalize();
         var stableRoot=findContactRoot();
-        if(stableRoot&&stableRoot.dataset.clScheduler==="1"){
+        var dateField=stableRoot&&stableRoot.querySelector(".cl-contact-date");
+        var timeField=stableRoot&&stableRoot.querySelector(".cl-contact-time");
+        if(stableRoot&&dateField&&timeField){
           observer.disconnect();
           clearTimeout(stopTimer);
         }
-      },60);
+      },40);
     });
     observer.observe(document.body,{childList:true,subtree:true});
     stopTimer=setTimeout(function(){
-      observer.disconnect();
-      clearTimeout(settleTimer);
-    },5000);
+      normalize();
+      var stableRoot=findContactRoot();
+      var ready=stableRoot&&stableRoot.querySelector(".cl-contact-date")&&stableRoot.querySelector(".cl-contact-time");
+      if(ready){
+        observer.disconnect();
+        clearTimeout(settleTimer);
+      }
+    },15000);
   }
 })();
 </script>

@@ -453,6 +453,7 @@ const UNIFIED_BOOKING_CTA = `
   .cl-contact-booking-note{grid-column:1/-1;margin:0;font:500 11px/1.45 "Montserrat",sans-serif;color:#71809b}
   .cl-contact-booking-note.is-error{color:#b4233b}
   @media(max-width:700px){
+    body.cl-booking-modal-open{overflow:auto!important;touch-action:auto!important}
     a.cl-booking-cta-label,button.cl-booking-cta-label{max-width:100%;white-space:normal}
     .cl-contact-booking{grid-template-columns:minmax(0,1fr);gap:10px}
     .cl-contact-booking input,.cl-contact-booking select{height:46px;font-size:16px}

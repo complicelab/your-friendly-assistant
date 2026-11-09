@@ -10,9 +10,11 @@
 <!-- LOVABLE:END -->
 
 - CRM uses the generated Cloud client for verified administrator sessions and RLS CRUD; isolated modules in src/components/crm own private UI and src/lib/crm-model owns validated rules. No account bootstrap or privileged browser client is needed for the existing administrator.
-- CRM recovery requires a PASSWORD_RECOVERY session token and verified administrator before updating a password; suspend contact reads until recovery ends to keep this flow isolated from the dashboard.
-- Public booking replaces only the agenda branch and legacy slot producer in `src/data/booking`; it uses the publishable client credentials with the public RPCs. CRM booking views live in isolated `src/components/crm` modules and use the authenticated Cloud client under existing RLS.
+- CRM recovery stays inside /admin; only a PASSWORD_RECOVERY session event can authorize a password reset, verified against the administrator session. Public URL flags alone never authorize password updates.
+- Public diagnostic booking has two valid entry points: the inline "Hablemos de tu negocio" form and the dedicated scroll-safe modal opened by external "Agendar diagnóstico" CTAs. Both must use /api/booking and the same public booking RPCs so every confirmed booking lands in the same CRM.
+- Keep src/routes/index.tsx, src/data/booking/runtime.ts, src/routes/api.booking.ts, Supabase booking types and booking migrations synchronized between main and lovable-sync whenever the public booking flow changes.
+- CRM booking views live in isolated src/components/crm modules and use the authenticated Cloud client under existing RLS.
 
-- Keep v10 comparison scene replacements in `src/data/compare`; transform only the two right-hand scene producers before the original script boots so its navigation, timers, and animation runner remain the sole rendering owner.
-- Keep the eight-step system flow replacements in `src/data/flow`, replacing only selected ST h() producers before v10 boots; the original go(), run() and timer pool own rendering and autoplay, while delegated handlers manage manual interactions.
-- Keep Marketing phone styles and its single state/timer owner in `src/data/marketing`; remove only the bounded legacy Marketing closure before v10 boots to avoid duplicate observers and preserve all other demos.
+- Keep v10 comparison scene replacements in src/data/compare; transform only the two right-hand scene producers before the original script boots so its navigation, timers, and animation runner remain the sole rendering owner.
+- Keep the eight-step system flow replacements in src/data/flow, replacing only selected ST h() producers before v10 boots; the original go(), run() and timer pool own rendering and autoplay, while delegated handlers manage manual interactions.
+- Keep Marketing phone styles and its single state/timer owner in src/data/marketing; remove only the bounded legacy Marketing closure before v10 boots to avoid duplicate observers and preserve all other demos.

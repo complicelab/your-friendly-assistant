@@ -42,6 +42,7 @@ export function replaceBookingRuntime(html: string, config: BookingPublicConfig)
   }
 
   const replacement = `  }else{
+    if(window.__clOpenBookingModal){window.__clOpenBookingModal();return;}
     mbox.classList.add('wide');
     var bookingConfig=${JSON.stringify(config)};
     var bookingDays=[],bookingSelection={day:'',slot:''},bookingBusy=false;

@@ -668,17 +668,16 @@ const UNIFIED_BOOKING_CTA = `
 
   function installInlineScheduler(root){
     if(!root)return;
-    if(root.querySelector(".cl-contact-booking")){
-      root.dataset.clScheduler="1";
-      inline.root=root;
-      return;
-    }
-    if(root.dataset.clScheduler==="1")delete root.dataset.clScheduler;
     inline.root=root;
+
     var consent=Array.from(root.querySelectorAll('input[type="checkbox"]')).find(function(input){
-      var label=input.closest("label")||input.parentElement;return label&&norm(label).toLowerCase().indexOf("autorizo")!==-1;
+      var label=input.closest("label")||input.parentElement;
+      return label&&norm(label).toLowerCase().indexOf("autorizo")!==-1;
     });
-    var submit=Array.from(root.querySelectorAll("button,a")).find(function(el){return isBookingActionText(norm(el));});
+
+    var submit=Array.from(root.querySelectorAll("button,a")).find(function(el){
+      return isBookingActionText(norm(el));
+    });
     if(submit&&submit.dataset.clCleanBookingAction!=="1"){
       var clean=submit.cloneNode(true);
       clean.dataset.clCleanBookingAction="1";
@@ -700,34 +699,48 @@ const UNIFIED_BOOKING_CTA = `
       submit.textContent="Agendar diagnóstico";
       if(submit.tagName==="BUTTON")submit.setAttribute("type","button");
     }
-    var anchor=consent?(consent.closest("label")||consent.parentElement):submit;
-    var rootAnchor=directChildUnder(anchor,root)||directChildUnder(submit,root);
 
-    var box=document.createElement("div");
-    box.className="cl-contact-booking";
-    box.setAttribute("data-cl-inline-booking","1");
-    box.innerHTML='<div class="cl-contact-booking-head"><strong>Elige fecha y hora para tu videollamada</strong><span>Selecciona un horario disponible. Todos los horarios son hora de Colombia.</span></div><label><span>Fecha preferida</span><input class="cl-contact-date" type="date" aria-label="Fecha preferida"></label><label><span>Hora disponible</span><select class="cl-contact-time" aria-label="Hora disponible" disabled><option value="">Selecciona primero una fecha</option></select></label><p class="cl-contact-booking-note">Consultando disponibilidad…</p>';
-    if(rootAnchor&&rootAnchor.parentElement===root){
-      root.insertBefore(box,rootAnchor);
-    }else if(anchor&&anchor.parentElement){
-      anchor.parentElement.insertBefore(box,anchor);
-    }else{
-      root.appendChild(box);
+    var box=root.querySelector(".cl-contact-booking");
+    if(!box){
+      var anchor=consent?(consent.closest("label")||consent.parentElement):submit;
+      var rootAnchor=directChildUnder(anchor,root)||directChildUnder(submit,root);
+      box=document.createElement("div");
+      box.className="cl-contact-booking";
+      box.setAttribute("data-cl-inline-booking","1");
+      box.innerHTML='<div class="cl-contact-booking-head"><strong>Elige fecha y hora para tu videollamada</strong><span>Selecciona un horario disponible. Todos los horarios son hora de Colombia.</span></div><label><span>Fecha preferida</span><input class="cl-contact-date" type="date" aria-label="Fecha preferida"></label><label><span>Hora disponible</span><select class="cl-contact-time" aria-label="Hora disponible" disabled><option value="">Selecciona primero una fecha</option></select></label><p class="cl-contact-booking-note">Consultando disponibilidad…</p>';
+      if(rootAnchor&&rootAnchor.parentElement===root){
+        root.insertBefore(box,rootAnchor);
+      }else if(anchor&&anchor.parentElement){
+        anchor.parentElement.insertBefore(box,anchor);
+      }else{
+        root.appendChild(box);
+      }
     }
-    root.dataset.clScheduler="1";
 
+    root.dataset.clScheduler="1";
     var dateInput=box.querySelector(".cl-contact-date");
     var timeSelect=box.querySelector(".cl-contact-time");
-    dateInput.addEventListener("change",function(){
-      setTimes(root,dateInput.value);
-      var note=root.querySelector(".cl-contact-booking-note");
-      if(note){note.textContent=dateInput.value?"Selecciona una hora disponible. Hora de Colombia.":"Selecciona una fecha para ver las horas disponibles.";note.classList.remove("is-error");}
-    });
-    timeSelect.addEventListener("change",function(){
-      inline.slot=timeSelect.value||"";
-      var note=root.querySelector(".cl-contact-booking-note");
-      if(note&&inline.slot){note.textContent="Horario seleccionado: "+longDate(inline.slot)+" · hora de Colombia.";note.classList.remove("is-error");}
-    });
+    if(!dateInput||!timeSelect)return;
+
+    if(box.dataset.clBound!=="1"){
+      box.dataset.clBound="1";
+      dateInput.addEventListener("change",function(){
+        setTimes(root,dateInput.value);
+        var note=root.querySelector(".cl-contact-booking-note");
+        if(note){
+          note.textContent=dateInput.value?"Selecciona una hora disponible. Hora de Colombia.":"Selecciona una fecha para ver las horas disponibles.";
+          note.classList.remove("is-error");
+        }
+      });
+      timeSelect.addEventListener("change",function(){
+        inline.slot=timeSelect.value||"";
+        var note=root.querySelector(".cl-contact-booking-note");
+        if(note&&inline.slot){
+          note.textContent="Horario seleccionado: "+longDate(inline.slot)+" · hora de Colombia.";
+          note.classList.remove("is-error");
+        }
+      });
+    }
 
     if(root.tagName==="FORM"&&root.dataset.clSubmitBound!=="1"){
       root.dataset.clSubmitBound="1";
@@ -735,7 +748,9 @@ const UNIFIED_BOOKING_CTA = `
         event.preventDefault();
         event.stopPropagation();
         if(event.stopImmediatePropagation)event.stopImmediatePropagation();
-        var action=Array.from(root.querySelectorAll("button,a")).find(function(el){return isBookingActionText(norm(el));});
+        var action=Array.from(root.querySelectorAll("button,a")).find(function(el){
+          return isBookingActionText(norm(el));
+        });
         if(action)submitInline(root,action);
       },true);
       root.removeAttribute("action");
@@ -1112,6 +1127,10 @@ function getOriginalHtml() {
     .replaceAll("Agendar videollamada de diagnóstico", "Agendar diagnóstico")
     .replaceAll("Solicitar videollamada de diagnóstico", "Agendar diagnóstico")
     .replaceAll("Solicitar videollamada", "Agendar diagnóstico")
+    .replace(
+      "    '<div><label class=\"consent\"><input type=\"checkbox\" name=\"consent\" id=\"'+p+'-consent\" aria-describedby=\"'+p+'-e-consent\"><span>Autorizo el uso de mis datos para responder esta solicitud. No implica recibir publicidad adicional.</span></label><p class=\"err\" id=\"'+p+'-e-consent\" role=\"alert\"></p></div>'+",
+      "    '<div class=\"cl-contact-booking\" data-cl-inline-booking=\"1\"><div class=\"cl-contact-booking-head\"><strong>Elige fecha y hora para tu videollamada</strong><span>Selecciona un horario disponible. Todos los horarios son hora de Colombia.</span></div><label><span>Fecha preferida</span><input class=\"cl-contact-date\" type=\"date\" aria-label=\"Fecha preferida\"></label><label><span>Hora disponible</span><select class=\"cl-contact-time\" aria-label=\"Hora disponible\" disabled><option value=\"\">Selecciona primero una fecha</option></select></label><p class=\"cl-contact-booking-note\">Consultando disponibilidad…</p></div>'+\n    '<div><label class=\"consent\"><input type=\"checkbox\" name=\"consent\" id=\"'+p+'-consent\" aria-describedby=\"'+p+'-e-consent\"><span>Autorizo el uso de mis datos para responder esta solicitud. No implica recibir publicidad adicional.</span></label><p class=\"err\" id=\"'+p+'-e-consent\" role=\"alert\"></p></div>'+"
+    )
     .replace(/El diagnóstico es una sesión de pago[^<]*/g, "El diagnóstico es una sesión gratuita para entender tu negocio, detectar dónde se pierde la oportunidad y definir el mejor siguiente paso.")
     .replace("Míralo funcionar.", "Así trabajamos.")
     .replace(

@@ -406,7 +406,7 @@ const UNIFIED_BOOKING_CTA = `
 <style id="cl-unified-booking-cta-styles">
   .cl-booking-cta-label{white-space:nowrap}
   body.cl-booking-modal-open{overflow:hidden!important}
-  .cl-booking-overlay{position:fixed;inset:0;width:100%;height:100dvh;max-height:100dvh;z-index:2147483000;display:none;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;pointer-events:auto;background:rgba(11,18,32,.64);padding:max(18px,env(safe-area-inset-top)) 16px max(28px,env(safe-area-inset-bottom))}
+  .cl-booking-overlay{position:fixed;inset:0;width:100%;height:var(--cl-booking-vh,100dvh);max-height:var(--cl-booking-vh,100dvh);z-index:2147483000;display:none;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;pointer-events:auto;background:rgba(11,18,32,.64);padding:max(18px,env(safe-area-inset-top)) 16px max(28px,env(safe-area-inset-bottom))}
   .cl-booking-overlay.is-open{display:block}
   .cl-booking-panel{position:relative;width:min(920px,100%);margin:0 auto;background:#fff;border-radius:28px;box-shadow:0 28px 90px rgba(11,18,32,.28);overflow:visible}
   .cl-booking-modal-head{position:sticky;top:0;z-index:4;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 24px 18px;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);border-bottom:1px solid #e8edf5;border-radius:28px 28px 0 0}
@@ -453,6 +453,7 @@ const UNIFIED_BOOKING_CTA = `
   .cl-contact-booking-note{grid-column:1/-1;margin:0;font:500 11px/1.45 "Montserrat",sans-serif;color:#71809b}
   .cl-contact-booking-note.is-error{color:#b4233b}
   @media(max-width:700px){
+    body.cl-booking-modal-open{overflow:auto!important;touch-action:auto!important}
     a.cl-booking-cta-label,button.cl-booking-cta-label{max-width:100%;white-space:normal}
     .cl-contact-booking{grid-template-columns:minmax(0,1fr);gap:10px}
     .cl-contact-booking input,.cl-contact-booking select{height:46px;font-size:16px}
@@ -461,7 +462,7 @@ const UNIFIED_BOOKING_CTA = `
     #m-content .ag{max-width:100%!important;overflow:hidden}
     #m-content .ag-pick,#m-content .ag-form{min-width:0!important}
     .cl-booking-overlay{padding:max(10px,env(safe-area-inset-top)) 0 max(16px,env(safe-area-inset-bottom));background:rgba(11,18,32,.72)}
-    .cl-booking-panel{width:100%;min-height:100dvh;margin:0;border-radius:0;box-shadow:none}
+    .cl-booking-panel{width:100%;min-height:var(--cl-booking-vh,100dvh);margin:0;border-radius:0;box-shadow:none}
     .cl-booking-modal-head{top:0;padding:16px 16px 14px;border-radius:0}
     .cl-booking-modal-head h2{font-size:22px}
     .cl-booking-modal-body{padding:16px 16px 28px}
@@ -802,6 +803,11 @@ const UNIFIED_BOOKING_CTA = `
     modalState.loading=false;
   }
 
+  function syncBookingViewport(){
+    var h=window.visualViewport&&window.visualViewport.height?window.visualViewport.height:window.innerHeight;
+    if(h)document.documentElement.style.setProperty("--cl-booking-vh",Math.round(h)+"px");
+  }
+
   function clearLegacyBookingShell(){
     Array.from(document.querySelectorAll("#modal,#m-overlay,.m-overlay,.modal-overlay,.modal")).forEach(function(node){
       if(node.id==="cl-booking-overlay"||node.closest&&node.closest("#cl-booking-overlay"))return;
@@ -817,6 +823,7 @@ const UNIFIED_BOOKING_CTA = `
 
   function openBookingModal(){
     clearLegacyBookingShell();
+    syncBookingViewport();
     var overlay=ensureBookingModal();
     if(availabilityCache.slots.length){
       applyModalAvailability(availabilityCache.slots);
@@ -897,15 +904,47 @@ const UNIFIED_BOOKING_CTA = `
 
   function normalize(){
     routeLegacyBookingToSafeModal();
+    if(!window.__clBookingViewportReady){
+      window.__clBookingViewportReady=true;
+      syncBookingViewport();
+      window.addEventListener("resize",syncBookingViewport,{passive:true});
+      if(window.visualViewport){
+        window.visualViewport.addEventListener("resize",syncBookingViewport,{passive:true});
+        window.visualViewport.addEventListener("scroll",syncBookingViewport,{passive:true});
+      }
+    }
     prewarmAvailability();
-    var root=findContactRoot();
-    if(root)installInlineScheduler(root);
+
     Array.from(document.querySelectorAll("a,button")).forEach(function(el){
       var text=norm(el);
       if(CTA_TEXTS.indexOf(text)===-1)return;
       if(isInsideModal(el))return;
-      el.textContent="Agendar diagnóstico";el.classList.add("cl-booking-cta-label");
+      el.textContent="Agendar diagnóstico";
+      el.classList.add("cl-booking-cta-label");
+      if(el.tagName==="A"){
+        el.removeAttribute("href");
+        el.removeAttribute("target");
+      }
+      el.removeAttribute("onclick");
     });
+
+    var root=findContactRoot();
+    if(root){
+      installInlineScheduler(root);
+
+      var heading=Array.from(document.querySelectorAll("h1,h2,h3")).find(function(el){
+        var t=norm(el).toLowerCase();
+        return t.indexOf("hablemos de")!==-1&&t.indexOf("negocio")!==-1;
+      });
+      var section=heading?(heading.closest("section")||heading.parentElement):null;
+      if(section){
+        Array.from(section.querySelectorAll("a,button")).forEach(function(el){
+          if(norm(el)!=="Agendar diagnóstico")return;
+          if(root.contains(el))return;
+          el.remove();
+        });
+      }
+    }
   }
 
   document.addEventListener("click",function(event){
@@ -924,11 +963,8 @@ const UNIFIED_BOOKING_CTA = `
 
   hydrateAvailabilityCache();
   prewarmAvailability();
-
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",function(){normalize();setTimeout(normalize,250);setTimeout(normalize,900);},{once:true});
-  }else normalize();
-  window.addEventListener("load",function(){normalize();setTimeout(normalize,120);},{once:true});
+  normalize();
+  window.addEventListener("load",normalize,{once:true});
 })();
 </script>
 `
@@ -958,8 +994,8 @@ function getOriginalHtml() {
       "Diseñamos campañas para atraer a las personas correctas y conectamos cada anuncio con una experiencia que capta sus datos, agenda y deja el seguimiento listo."
     );
   return replaceMarketingRuntime(replaceFlowScenes(replaceCompareScenes(html)))
-    .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + compareStyles + flowStyles + marketingStyles + bookingStyles + UNIFIED_BOOKING_CTA + `\n  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://complicelab.com/#organization","name":"Cómplice Lab","url":"https://complicelab.com/","logo":"https://complicelab.com/brand/complice-lab-logo.svg","email":"complicelab@gmail.com","telephone":"+57 316 177 2880","areaServed":{"@type":"Country","name":"Colombia"},"sameAs":["https://www.instagram.com/complicelab/"]},{"@type":"WebSite","@id":"https://complicelab.com/#website","url":"https://complicelab.com/","name":"Cómplice Lab","publisher":{"@id":"https://complicelab.com/#organization"},"inLanguage":"es-CO"},{"@type":"Service","name":"Sistemas con IA a la medida","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":{"@type":"Country","name":"Colombia"},"serviceType":"Sistemas con inteligencia artificial a la medida"},{"@type":"Service","name":"Agentes de IA automatizados","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":{"@type":"Country","name":"Colombia"},"serviceType":"Agentes de inteligencia artificial automatizados"},{"@type":"Service","name":"Marketing digital para atraer clientes","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":{"@type":"Country","name":"Colombia"},"serviceType":"Marketing digital, Meta Ads y captación de oportunidades"}]}</script>\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n` + "</head>")
-    .replace("</body>", HOMEPAGE_COPY_FIX + HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + "</body>");
+    .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + compareStyles + flowStyles + marketingStyles + bookingStyles + `\n  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://complicelab.com/#organization","name":"Cómplice Lab","url":"https://complicelab.com/","logo":"https://complicelab.com/brand/complice-lab-logo.svg","email":"complicelab@gmail.com","telephone":"+57 316 177 2880","areaServed":{"@type":"Country","name":"Colombia"},"sameAs":["https://www.instagram.com/complicelab/"]},{"@type":"WebSite","@id":"https://complicelab.com/#website","url":"https://complicelab.com/","name":"Cómplice Lab","publisher":{"@id":"https://complicelab.com/#organization"},"inLanguage":"es-CO"},{"@type":"Service","name":"Sistemas con IA a la medida","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":{"@type":"Country","name":"Colombia"},"serviceType":"Sistemas con inteligencia artificial a la medida"},{"@type":"Service","name":"Agentes de IA automatizados","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":{"@type":"Country","name":"Colombia"},"serviceType":"Agentes de inteligencia artificial automatizados"},{"@type":"Service","name":"Marketing digital para atraer clientes","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":{"@type":"Country","name":"Colombia"},"serviceType":"Marketing digital, Meta Ads y captación de oportunidades"}]}</script>\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n` + "</head>")
+    .replace("</body>", HOMEPAGE_COPY_FIX + HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + UNIFIED_BOOKING_CTA + "</body>");
 }
 
 export const Route = createFileRoute("/")({

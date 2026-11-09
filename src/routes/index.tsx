@@ -489,6 +489,9 @@ const UNIFIED_BOOKING_CTA = `
   var CTA_TEXTS=["Continuar por WhatsApp","Hablar por WhatsApp","Agendar videollamada de diagnóstico","Solicitar videollamada","Solicitar videollamada de diagnóstico","Agendar diagnóstico"];
   var inline={root:null,slots:[],slot:"",loading:false};
   var modalState={slots:[],day:"",slot:"",loading:false};
+  var availabilityCache={slots:[],fetchedAt:0,promise:null,error:null};
+  var AVAILABILITY_CACHE_MS=180000;
+  var AVAILABILITY_STORAGE_KEY="cl-booking-availability-v1";
 
   function norm(el){return (el&&el.textContent?el.textContent:"").replace(/\\s+/g," ").trim();}
   function isInsideModal(el){return !!(el&&el.closest&&el.closest("#modal,.modal,.m-overlay,#m-overlay,[role=dialog],#m-content,.ag,.ag-form"));}
@@ -571,6 +574,54 @@ const UNIFIED_BOOKING_CTA = `
     };
   }
 
+  function hydrateAvailabilityCache(){
+    try{
+      var raw=sessionStorage.getItem(AVAILABILITY_STORAGE_KEY);
+      if(!raw)return;
+      var saved=JSON.parse(raw);
+      if(!saved||!Array.isArray(saved.slots)||!saved.fetchedAt)return;
+      if(Date.now()-saved.fetchedAt>=AVAILABILITY_CACHE_MS)return;
+      availabilityCache.slots=saved.slots;
+      availabilityCache.fetchedAt=saved.fetchedAt;
+    }catch(error){}
+  }
+
+  function persistAvailabilityCache(){
+    try{
+      sessionStorage.setItem(AVAILABILITY_STORAGE_KEY,JSON.stringify({
+        slots:availabilityCache.slots,
+        fetchedAt:availabilityCache.fetchedAt
+      }));
+    }catch(error){}
+  }
+
+  function fetchSharedAvailability(force){
+    var fresh=availabilityCache.slots.length&&Date.now()-availabilityCache.fetchedAt<AVAILABILITY_CACHE_MS;
+    if(!force&&fresh)return Promise.resolve(availabilityCache.slots);
+    if(availabilityCache.promise)return availabilityCache.promise;
+    availabilityCache.promise=fetch("/api/booking?start="+encodeURIComponent(dateKey(new Date()))+"&days=60",{headers:{"Accept":"application/json"}})
+      .then(function(response){
+        return response.json().then(function(data){
+          if(!response.ok||!data.ok)throw new Error(data.error||"No fue posible cargar la disponibilidad.");
+          availabilityCache.slots=Array.isArray(data.slots)?data.slots:[];
+          availabilityCache.fetchedAt=Date.now();
+          availabilityCache.error=null;
+          persistAvailabilityCache();
+          return availabilityCache.slots;
+        });
+      })
+      .catch(function(error){
+        availabilityCache.error=error;
+        throw error;
+      })
+      .finally(function(){availabilityCache.promise=null;});
+    return availabilityCache.promise;
+  }
+
+  function prewarmAvailability(){
+    fetchSharedAvailability(false).catch(function(){});
+  }
+
   function setTimes(root,date){
     var select=root.querySelector(".cl-contact-time");if(!select)return;
     inline.slot="";
@@ -584,12 +635,9 @@ const UNIFIED_BOOKING_CTA = `
     var note=root.querySelector(".cl-contact-booking-note");
     var dateInput=root.querySelector(".cl-contact-date");
     var timeSelect=root.querySelector(".cl-contact-time");
-    if(note){note.textContent="Consultando disponibilidad…";note.classList.remove("is-error");}
     try{
-      var response=await fetch("/api/booking?start="+encodeURIComponent(dateKey(new Date()))+"&days=60",{headers:{"Accept":"application/json"}});
-      var data=await response.json();
-      if(!response.ok||!data.ok)throw new Error(data.error||"No fue posible cargar la disponibilidad.");
-      inline.slots=Array.isArray(data.slots)?data.slots:[];
+      var slots=await fetchSharedAvailability(false);
+      inline.slots=slots.slice();
       if(dateInput&&inline.slots.length){
         var dates=inline.slots.map(function(slot){return dateKey(slot.slot_start);}).sort();
         dateInput.min=dates[0];dateInput.max=dates[dates.length-1];
@@ -674,7 +722,7 @@ const UNIFIED_BOOKING_CTA = `
     overlay.setAttribute("role","dialog");
     overlay.setAttribute("aria-modal","true");
     overlay.setAttribute("aria-labelledby","cl-booking-title");
-    overlay.innerHTML='<div class="cl-booking-panel"><div class="cl-booking-modal-head"><div><h2 id="cl-booking-title">Agenda tu diagnóstico</h2><p>Elige un horario y completa tus datos. La cita queda registrada en nuestro CRM.</p></div><button type="button" class="cl-booking-close" aria-label="Cerrar">×</button></div><div class="cl-booking-modal-body"><div class="cl-booking-modal-grid"><section class="cl-booking-box"><h3>1. Elige fecha y hora</h3><p>Todos los horarios se muestran en hora de Colombia.</p><div class="cl-booking-days"><span class="cl-booking-loading">Consultando disponibilidad…</span></div><div class="cl-booking-times"></div><p class="cl-booking-summary">Selecciona un día y una hora.</p></section><section class="cl-booking-box"><h3>2. Tus datos</h3><p>Los usamos únicamente para gestionar tu diagnóstico.</p><form class="cl-booking-form" novalidate><label><span>Nombre y apellido</span><input name="full_name" autocomplete="name" required></label><label><span>Marca personal o empresa</span><input name="brand_name" autocomplete="organization"></label><label class="full"><span>WhatsApp</span><span class="cl-booking-phone"><select name="country_code" aria-label="Indicativo"><option value="+57">🇨🇴 +57</option></select><input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required></span></label><label class="full"><span>Correo</span><input name="email" type="email" inputmode="email" autocomplete="email" required></label><label class="full"><span>¿Qué servicio te interesa?</span><select name="solution_interest" required><option value="">Selecciona una opción</option><option>Creamos sistemas con IA a la medida</option><option>Agentes de IA automatizados</option><option>Atraemos clientes con marketing digital</option><option>Aún no lo sé, quiero un diagnóstico</option></select></label><label class="cl-booking-consent"><input name="consent" type="checkbox" required><span>Autorizo el uso de mis datos para gestionar esta solicitud y contactarme sobre el diagnóstico.</span></label><p class="cl-booking-error" role="alert"></p><button class="cl-booking-submit" type="submit">Agendar diagnóstico</button></form></section></div></div></div>';
+    overlay.innerHTML='<div class="cl-booking-panel"><div class="cl-booking-modal-head"><div><h2 id="cl-booking-title">Agenda tu diagnóstico</h2><p>Elige un horario y completa tus datos. La cita queda registrada en nuestro CRM.</p></div><button type="button" class="cl-booking-close" aria-label="Cerrar">×</button></div><div class="cl-booking-modal-body"><div class="cl-booking-modal-grid"><section class="cl-booking-box"><h3>1. Elige fecha y hora</h3><p>Todos los horarios se muestran en hora de Colombia.</p><div class="cl-booking-days"><span class="cl-booking-loading">Elige tu horario</span></div><div class="cl-booking-times"></div><p class="cl-booking-summary">Selecciona un día y una hora.</p></section><section class="cl-booking-box"><h3>2. Tus datos</h3><p>Los usamos únicamente para gestionar tu diagnóstico.</p><form class="cl-booking-form" novalidate><label><span>Nombre y apellido</span><input name="full_name" autocomplete="name" required></label><label><span>Marca personal o empresa</span><input name="brand_name" autocomplete="organization"></label><label class="full"><span>WhatsApp</span><span class="cl-booking-phone"><select name="country_code" aria-label="Indicativo"><option value="+57">🇨🇴 +57</option></select><input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required></span></label><label class="full"><span>Correo</span><input name="email" type="email" inputmode="email" autocomplete="email" required></label><label class="full"><span>¿Qué servicio te interesa?</span><select name="solution_interest" required><option value="">Selecciona una opción</option><option>Creamos sistemas con IA a la medida</option><option>Agentes de IA automatizados</option><option>Atraemos clientes con marketing digital</option><option>Aún no lo sé, quiero un diagnóstico</option></select></label><label class="cl-booking-consent"><input name="consent" type="checkbox" required><span>Autorizo el uso de mis datos para gestionar esta solicitud y contactarme sobre el diagnóstico.</span></label><p class="cl-booking-error" role="alert"></p><button class="cl-booking-submit" type="submit">Agendar diagnóstico</button></form></section></div></div></div>';
     document.body.appendChild(overlay);
     overlay.querySelector(".cl-booking-close").addEventListener("click",closeBookingModal);
     overlay.addEventListener("click",function(event){if(event.target===overlay)closeBookingModal();});
@@ -727,27 +775,34 @@ const UNIFIED_BOOKING_CTA = `
     }
   }
 
-  async function loadModalAvailability(){
+  function applyModalAvailability(slots){
+    modalState.slots=Array.isArray(slots)?slots.slice():[];
+    modalState.day="";
+    modalState.slot="";
+    renderModalDays();
+  }
+
+  async function loadModalAvailability(force){
     if(modalState.loading)return;
-    modalState.loading=true;modalState.slots=[];modalState.day="";modalState.slot="";
-    var overlay=ensureBookingModal();
-    overlay.querySelector(".cl-booking-days").innerHTML='<span class="cl-booking-loading">Consultando disponibilidad…</span>';
-    overlay.querySelector(".cl-booking-times").innerHTML="";
-    overlay.querySelector(".cl-booking-summary").textContent="Selecciona un día y una hora.";
+    modalState.loading=true;
     try{
-      var response=await fetch("/api/booking?start="+encodeURIComponent(dateKey(new Date()))+"&days=60",{headers:{"Accept":"application/json"}});
-      var data=await response.json();
-      if(!response.ok||!data.ok)throw new Error(data.error||"No fue posible cargar la disponibilidad.");
-      modalState.slots=Array.isArray(data.slots)?data.slots:[];
-      renderModalDays();
+      var slots=await fetchSharedAvailability(!!force);
+      applyModalAvailability(slots);
     }catch(error){
-      overlay.querySelector(".cl-booking-days").innerHTML='<span class="cl-booking-loading">No pudimos consultar la disponibilidad. Cierra e intenta nuevamente.</span>';
+      var overlay=ensureBookingModal();
+      if(!modalState.slots.length){
+        overlay.querySelector(".cl-booking-days").innerHTML='<span class="cl-booking-loading">No pudimos consultar la disponibilidad. Cierra e intenta nuevamente.</span>';
+        overlay.querySelector(".cl-booking-times").innerHTML="";
+      }
     }
     modalState.loading=false;
   }
 
   function openBookingModal(){
     var overlay=ensureBookingModal();
+    if(availabilityCache.slots.length){
+      applyModalAvailability(availabilityCache.slots);
+    }
     overlay.classList.add("is-open");
     document.body.classList.add("cl-booking-modal-open");
     overlay.scrollTop=0;
@@ -760,7 +815,14 @@ const UNIFIED_BOOKING_CTA = `
       if(data.phone)form.elements.whatsapp.value=data.phone.replace(/^\+?57/,"");
       if(data.email)form.elements.email.value=data.email;
     }
-    loadModalAvailability();
+    var stale=!availabilityCache.fetchedAt||Date.now()-availabilityCache.fetchedAt>=AVAILABILITY_CACHE_MS;
+    if(!availabilityCache.slots.length){
+      loadModalAvailability(false);
+    }else if(stale){
+      fetchSharedAvailability(true).then(function(slots){
+        if(overlay.classList.contains("is-open")&&!modalState.slot)applyModalAvailability(slots);
+      }).catch(function(){});
+    }
     requestAnimationFrame(function(){overlay.scrollTop=0;});
   }
 
@@ -815,6 +877,7 @@ const UNIFIED_BOOKING_CTA = `
 
   function normalize(){
     routeLegacyBookingToSafeModal();
+    prewarmAvailability();
     var root=findContactRoot();
     if(root)installInlineScheduler(root);
     Array.from(document.querySelectorAll("a,button")).forEach(function(el){
@@ -838,6 +901,9 @@ const UNIFIED_BOOKING_CTA = `
     event.preventDefault();event.stopPropagation();if(event.stopImmediatePropagation)event.stopImmediatePropagation();
     openBookingModal();
   },true);
+
+  hydrateAvailabilityCache();
+  prewarmAvailability();
 
   if(document.readyState==="loading"){
     document.addEventListener("DOMContentLoaded",function(){normalize();setTimeout(normalize,250);setTimeout(normalize,900);},{once:true});

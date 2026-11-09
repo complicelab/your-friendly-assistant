@@ -1048,31 +1048,59 @@ const UNIFIED_BOOKING_CTA = `
   },{once:true});
 
   if(window.MutationObserver){
-    var settleTimer=null;
-    var stopTimer=null;
-    var observer=new MutationObserver(function(){
-      clearTimeout(settleTimer);
-      settleTimer=setTimeout(function(){
-        normalize();
-        var stableRoot=findContactRoot();
-        var dateField=stableRoot&&stableRoot.querySelector(".cl-contact-date");
-        var timeField=stableRoot&&stableRoot.querySelector(".cl-contact-time");
-        if(stableRoot&&dateField&&timeField){
-          observer.disconnect();
-          clearTimeout(stopTimer);
+    var bodyObserver=null;
+    var contactObserver=null;
+    var currentObservedRoot=null;
+    var observerBusy=false;
+
+    function attachContactObserver(root){
+      if(currentObservedRoot===root&&contactObserver)return;
+      if(contactObserver)contactObserver.disconnect();
+      currentObservedRoot=root;
+      contactObserver=new MutationObserver(function(){
+        if(observerBusy)return;
+        var liveRoot=findContactRoot();
+        if(!liveRoot)return;
+        if(liveRoot!==currentObservedRoot){
+          attachContactObserver(liveRoot);
         }
-      },40);
-    });
-    observer.observe(document.body,{childList:true,subtree:true});
-    stopTimer=setTimeout(function(){
-      normalize();
-      var stableRoot=findContactRoot();
-      var ready=stableRoot&&stableRoot.querySelector(".cl-contact-date")&&stableRoot.querySelector(".cl-contact-time");
-      if(ready){
-        observer.disconnect();
-        clearTimeout(settleTimer);
+        if(!liveRoot.querySelector(".cl-contact-date")||!liveRoot.querySelector(".cl-contact-time")){
+          liveRoot.dataset.clScheduler="";
+          installInlineScheduler(liveRoot);
+        }
+      });
+      contactObserver.observe(root,{childList:true,subtree:true});
+    }
+
+    function ensureInlineBookingMounted(){
+      if(observerBusy)return;
+      observerBusy=true;
+      try{
+        normalize();
+        var root=findContactRoot();
+        if(!root)return;
+        attachContactObserver(root);
+        if(!root.querySelector(".cl-contact-date")||!root.querySelector(".cl-contact-time")){
+          root.dataset.clScheduler="";
+          installInlineScheduler(root);
+        }
+      }finally{
+        observerBusy=false;
       }
-    },15000);
+    }
+
+    bodyObserver=new MutationObserver(function(){
+      var root=findContactRoot();
+      if(!root)return;
+      if(root!==currentObservedRoot){
+        attachContactObserver(root);
+      }
+      if(!root.querySelector(".cl-contact-date")||!root.querySelector(".cl-contact-time")){
+        ensureInlineBookingMounted();
+      }
+    });
+    bodyObserver.observe(document.body,{childList:true,subtree:true});
+    ensureInlineBookingMounted();
   }
 })();
 </script>

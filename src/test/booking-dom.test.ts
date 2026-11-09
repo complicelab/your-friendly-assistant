@@ -53,6 +53,15 @@ function fixture(){
 }
 
 describe('booking client DOM flow',()=>{
+
+  it('renders date and time from the original leadForm template',()=>{
+    const source=fs.readFileSync(new URL('../routes/index.tsx',import.meta.url),'utf8');
+    expect(source).toContain('Elige fecha y hora para tu videollamada');
+    expect(source).toContain('Render booking date and time in original lead form'.replace('Render booking date and time in original lead form','cl-contact-date'));
+    expect(source).toContain('cl-contact-time');
+    expect(source).toContain('.replace(\n      "    \'<div><label class=\\\"consent\\\"');
+  });
+
   it('restores inline date/time and opens the dedicated popup from external CTAs',async()=>{
     const dom=new JSDOM(fixture(),{url:'https://complicelab.com/',runScripts:'outside-only',pretendToBeVisual:true});
     const {window}=dom;

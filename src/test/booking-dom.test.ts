@@ -113,6 +113,23 @@ describe('booking client DOM flow',()=>{
     await Promise.resolve();
     await Promise.resolve();
 
+    if(window.document.querySelectorAll('.cl-contact-date').length===0){
+      const texts=Array.from(window.document.querySelectorAll('body *')).filter(el=>{
+        const t=(el.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+        return t==='nombre y apellido' || t.includes('autorizo el uso de mis datos') || t.includes('continuar por whatsapp') || t.includes('agendar diagnóstico');
+      }).slice(0,20);
+      console.log('BOOKING_DIAGNOSTIC_MATCHES',texts.map(el=>({
+        tag:el.tagName,id:(el as HTMLElement).id,cls:(el as HTMLElement).className,
+        text:(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,180)
+      })));
+      const nameNode=Array.from(window.document.querySelectorAll('body *')).find(el=>(el.textContent||'').replace(/\s+/g,' ').trim()==='Nombre y apellido');
+      let cur=nameNode as HTMLElement|null;
+      const chain:any[]=[];
+      for(let i=0;cur&&i<8;i++,cur=cur.parentElement){
+        chain.push({tag:cur.tagName,id:cur.id,cls:cur.className,text:(cur.textContent||'').replace(/\s+/g,' ').trim().slice(0,500),inputs:cur.querySelectorAll('input').length,buttons:cur.querySelectorAll('button,a').length,checks:cur.querySelectorAll('input[type="checkbox"]').length});
+      }
+      console.log('BOOKING_DIAGNOSTIC_CHAIN',chain);
+    }
     expect(window.document.querySelectorAll('.cl-contact-date').length).toBe(1);
     expect(window.document.querySelectorAll('.cl-contact-time').length).toBe(1);
 

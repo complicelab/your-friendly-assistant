@@ -515,8 +515,7 @@ const UNIFIED_BOOKING_CTA = `
         t.indexOf("marca personal o empresa")!==-1 &&
         t.indexOf("whatsapp")!==-1 &&
         t.indexOf("correo")!==-1 &&
-        t.indexOf("servicio te interesa")!==-1 &&
-        t.indexOf("agendar diagnóstico")!==-1;
+        t.indexOf("servicio te interesa")!==-1;
     });
     candidates.sort(function(a,b){return a.querySelectorAll("*").length-b.querySelectorAll("*").length;});
     return candidates[0]||null;
@@ -659,7 +658,13 @@ const UNIFIED_BOOKING_CTA = `
     var consent=Array.from(root.querySelectorAll('input[type="checkbox"]')).find(function(input){
       var label=input.closest("label")||input.parentElement;return label&&norm(label).toLowerCase().indexOf("autorizo")!==-1;
     });
-    var submit=Array.from(root.querySelectorAll("button,a")).find(function(el){return norm(el)==="Agendar diagnóstico";});
+    var submit=Array.from(root.querySelectorAll("button,a")).find(function(el){return CTA_TEXTS.indexOf(norm(el))!==-1;});
+    if(submit){
+      submit.textContent="Agendar diagnóstico";
+      submit.classList.add("cl-booking-cta-label");
+      if(submit.tagName==="A"){submit.removeAttribute("href");submit.removeAttribute("target");}
+      submit.removeAttribute("onclick");
+    }
     var anchor=consent?(consent.closest("label")||consent.parentElement):submit;
     var rootAnchor=directChildUnder(anchor,root)||anchor;
 
@@ -926,7 +931,7 @@ const UNIFIED_BOOKING_CTA = `
       var section=heading?(heading.closest("section")||heading.parentElement):null;
       if(section){
         Array.from(section.querySelectorAll("a,button")).forEach(function(el){
-          if(norm(el)!=="Agendar diagnóstico")return;
+          if(CTA_TEXTS.indexOf(norm(el))===-1&&norm(el)!=="Agendar diagnóstico")return;
           if(root.contains(el))return;
           el.remove();
         });
@@ -934,17 +939,24 @@ const UNIFIED_BOOKING_CTA = `
     }
   }
 
-  document.addEventListener("click",function(event){
+  window.addEventListener("click",function(event){
     var action=event.target&&event.target.closest?event.target.closest("a,button"):null;
-    if(!action||isInsideModal(action)||norm(action)!=="Agendar diagnóstico")return;
+    if(!action||isInsideModal(action))return;
+    var actionText=norm(action);
+    if(CTA_TEXTS.indexOf(actionText)===-1&&actionText!=="Agendar diagnóstico")return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    if(event.stopImmediatePropagation)event.stopImmediatePropagation();
 
     var root=findContactRoot();
     if(root&&root.contains(action)){
-      event.preventDefault();event.stopPropagation();if(event.stopImmediatePropagation)event.stopImmediatePropagation();
-      installInlineScheduler(root);submitInline(root,action);return;
+      action.textContent="Agendar diagnóstico";
+      installInlineScheduler(root);
+      submitInline(root,action);
+      return;
     }
 
-    event.preventDefault();event.stopPropagation();if(event.stopImmediatePropagation)event.stopImmediatePropagation();
     openBookingModal();
   },true);
 
@@ -952,6 +964,20 @@ const UNIFIED_BOOKING_CTA = `
   prewarmAvailability();
   normalize();
   window.addEventListener("load",normalize,{once:true});
+
+  if(window.MutationObserver){
+    var settleTimer=null;
+    var stopTimer=null;
+    var observer=new MutationObserver(function(){
+      clearTimeout(settleTimer);
+      settleTimer=setTimeout(function(){normalize();},60);
+    });
+    observer.observe(document.body,{childList:true,subtree:true});
+    stopTimer=setTimeout(function(){
+      observer.disconnect();
+      clearTimeout(settleTimer);
+    },5000);
+  }
 })();
 </script>
 `

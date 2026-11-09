@@ -95,11 +95,16 @@ describe('booking client DOM flow',()=>{
   it('enhances the actual compressed homepage contact form',async()=>{
     const compressed=part1+part2+part3+part4+part5+part6+part7+part8+part9+part10+part11+part12;
     const html=gunzipSync(Buffer.from(compressed,'base64')).toString('utf8');
-    const dom=new JSDOM(html,{url:'https://complicelab.com/',runScripts:'outside-only',pretendToBeVisual:true});
+    const dom=new JSDOM(html,{url:'https://complicelab.com/',runScripts:'dangerously',pretendToBeVisual:true,beforeParse(window){
+      Object.defineProperty(window,'matchMedia',{value:()=>({matches:true,addEventListener:()=>{},removeEventListener:()=>{}})});
+      Object.defineProperty(window,'visualViewport',{value:{height:780,addEventListener:()=>{},removeEventListener:()=>{}}});
+      Object.defineProperty(window,'requestAnimationFrame',{value:(cb:FrameRequestCallback)=>{cb(0);return 1;}});
+      Object.defineProperty(window,'scrollTo',{value:()=>{}});
+      Object.defineProperty(window.HTMLElement.prototype,'scrollTo',{value:()=>{}});
+    }});
     const {window}=dom;
-    Object.defineProperty(window,'matchMedia',{value:()=>({matches:true,addEventListener:()=>{},removeEventListener:()=>{}})});
-    Object.defineProperty(window,'visualViewport',{value:{height:780,addEventListener:()=>{},removeEventListener:()=>{}}});
-    Object.defineProperty(window,'requestAnimationFrame',{value:(cb:FrameRequestCallback)=>{cb(0);return 1;}});
+    await new Promise(resolve=>setTimeout(resolve,80));
+
     const slots=[
       {slot_start:'2026-11-10T14:00:00-05:00',slot_end:'2026-11-10T15:00:00-05:00'},
       {slot_start:'2026-11-10T15:00:00-05:00',slot_end:'2026-11-10T16:00:00-05:00'}

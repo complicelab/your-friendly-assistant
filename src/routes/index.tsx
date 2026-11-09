@@ -435,11 +435,21 @@ const UNIFIED_BOOKING_CTA = `
 <style id="cl-unified-booking-cta-styles">
   .cl-booking-cta-label{white-space:nowrap}
   .cl-inline-booking-root{height:auto!important;max-height:none!important;overflow:visible!important}
-  .cl-inline-booking{grid-column:1/-1;contain:layout paint;margin:4px 0 8px;padding:18px;border:1px solid #dce5f3;border-radius:20px;background:linear-gradient(145deg,#f8fbff 0%,#f4f2ff 100%);box-shadow:0 14px 34px rgba(31,62,135,.08)}
-  .cl-inline-booking-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
-  .cl-inline-booking-head span{display:block;font:700 11px/1.2 "Montserrat",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#3971ec;margin-bottom:5px}
-  .cl-inline-booking-head b{font:700 15px/1.3 "Poppins",sans-serif;color:#0f172a}
-  .cl-inline-booking-head small{font:500 11px/1.4 "Montserrat",sans-serif;color:#71809b;text-align:right}
+  .cl-inline-booking{grid-column:1/-1;contain:layout paint;margin:4px 0 8px;padding:0;border:1px solid #dce5f3;border-radius:18px;background:#fff;box-shadow:none;overflow:visible}
+  .cl-inline-booking-toggle{width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 14px;border:0;background:linear-gradient(145deg,#f8fbff 0%,#f4f2ff 100%);border-radius:18px;cursor:pointer;text-align:left}
+  .cl-inline-booking-toggle:hover{background:linear-gradient(145deg,#f3f8ff 0%,#efedff 100%)}
+  .cl-inline-booking-field{min-width:0}
+  .cl-inline-booking-field span{display:block;font:700 10px/1.2 "Montserrat",sans-serif;color:#71809b;margin-bottom:4px}
+  .cl-inline-booking-field b{display:block;font:700 12px/1.3 "Montserrat",sans-serif;color:#17233a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cl-inline-booking-action{display:inline-flex;align-items:center;gap:6px;font:700 11px/1 "Montserrat",sans-serif;color:#2d63e8;background:#fff;border:1px solid #d8e2f3;border-radius:999px;padding:9px 11px;white-space:nowrap}
+  .cl-inline-booking-action:after{content:"⌄";font-size:13px;transition:transform .2s ease}
+  .cl-inline-booking.is-open .cl-inline-booking-action:after{transform:rotate(180deg)}
+  .cl-inline-booking-panel{display:none;padding:14px;border-top:1px solid #e6ebf4;background:#fff;border-radius:0 0 18px 18px}
+  .cl-inline-booking.is-open .cl-inline-booking-panel{display:block}
+  .cl-inline-booking-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px}
+  .cl-inline-booking-head span{display:block;font:700 10px/1.2 "Montserrat",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#3971ec;margin-bottom:4px}
+  .cl-inline-booking-head b{font:700 14px/1.3 "Poppins",sans-serif;color:#0f172a}
+  .cl-inline-booking-head small{font:500 10px/1.4 "Montserrat",sans-serif;color:#71809b;text-align:right}
   .cl-inline-days{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:none}
   .cl-inline-days::-webkit-scrollbar{display:none}
   .cl-inline-day{flex:0 0 auto;min-width:74px;border:1px solid #dfe6f0;background:#fff;color:#17233a;border-radius:14px;padding:10px 12px;display:grid;gap:2px;text-align:center;font:700 12px/1.15 "Montserrat",sans-serif;cursor:pointer;transition:.2s ease}
@@ -451,7 +461,7 @@ const UNIFIED_BOOKING_CTA = `
   .cl-inline-time.is-active{border-color:#3c6ff0;background:#eaf1ff;color:#245ee7;box-shadow:inset 0 0 0 1px #8ba9ff}
   .cl-inline-booking-state{margin:9px 0 0;font:500 11px/1.45 "Montserrat",sans-serif;color:#71809b}
   .cl-inline-booking-state.is-error{color:#a72a44}
-  .cl-inline-booking-summary{display:none;margin-top:12px;padding:10px 12px;border-radius:12px;background:#fff;border:1px solid #e3e8f1;font:600 11px/1.45 "Montserrat",sans-serif;color:#34435e}
+  .cl-inline-booking-summary{display:none;margin-top:10px;padding:9px 10px;border-radius:11px;background:#f8faff;border:1px solid #e3e8f1;font:600 10px/1.45 "Montserrat",sans-serif;color:#34435e}
   .cl-inline-booking-summary.is-visible{display:block}
   .cl-inline-success{grid-column:1/-1;padding:28px 22px;border-radius:22px;border:1px solid #dce5f3;background:linear-gradient(145deg,#f8fbff,#f3f0ff);text-align:left}
   .cl-inline-success i{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#246ce8,#6659ed);color:#fff;font-style:normal;font-size:20px;margin-bottom:14px}
@@ -459,7 +469,10 @@ const UNIFIED_BOOKING_CTA = `
   .cl-inline-success p{margin:0;color:#66758f;font:500 13px/1.55 "Montserrat",sans-serif}
   .cl-inline-success strong{color:#17233a}
   @media(max-width:700px){
-    .cl-inline-booking{padding:15px;border-radius:18px}
+    .cl-inline-booking{border-radius:16px}
+    .cl-inline-booking-toggle{grid-template-columns:1fr 1fr;padding:11px 12px;border-radius:16px}
+    .cl-inline-booking-action{grid-column:1/-1;justify-self:stretch;justify-content:center}
+    .cl-inline-booking-panel{padding:12px;border-radius:0 0 16px 16px}
     .cl-inline-booking-head{display:block}
     .cl-inline-booking-head small{display:block;text-align:left;margin-top:4px}
     .cl-inline-times{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -468,7 +481,7 @@ const UNIFIED_BOOKING_CTA = `
 <script id="cl-unified-booking-cta">
 (function(){
   var CTA_TEXTS=["Continuar por WhatsApp","Hablar por WhatsApp","Agendar videollamada de diagnóstico","Solicitar videollamada","Solicitar videollamada de diagnóstico"];
-  var inlineState={form:null,days:[],day:"",slot:"",loading:false};
+  var inlineState={form:null,days:[],day:"",slot:"",loading:false,loaded:false};
 
   function norm(el){return (el&&el.textContent?el.textContent:"").replaceAll("\\n"," ").replaceAll("\\t"," ").split(" ").filter(Boolean).join(" ").trim();}
   function bookingDateKey(value){
@@ -480,6 +493,30 @@ const UNIFIED_BOOKING_CTA = `
   function shortDay(value){return new Intl.DateTimeFormat("es-CO",{weekday:"short",timeZone:"America/Bogota"}).format(new Date(value)).replace(".","");}
   function shortDate(value){return new Intl.DateTimeFormat("es-CO",{day:"numeric",month:"short",timeZone:"America/Bogota"}).format(new Date(value)).replace(".","");}
   function shortTime(value){return new Intl.DateTimeFormat("es-CO",{hour:"numeric",minute:"2-digit",hour12:true,timeZone:"America/Bogota"}).format(new Date(value));}
+  function compactDate(value){return new Intl.DateTimeFormat("es-CO",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"America/Bogota"}).format(new Date(value));}
+  function syncCompactBooking(form){
+    if(!form)return;
+    var dateEl=form.querySelector("[data-cl-selected-date]");
+    var timeEl=form.querySelector("[data-cl-selected-time]");
+    var action=form.querySelector(".cl-inline-booking-action");
+    if(dateEl)dateEl.textContent=inlineState.slot?compactDate(inlineState.slot):"Elegir fecha";
+    if(timeEl)timeEl.textContent=inlineState.slot?shortTime(inlineState.slot):"Elegir hora";
+    if(action)action.textContent=inlineState.slot?"Cambiar horario":"Elegir horario";
+  }
+  function closeBookingPanel(form){
+    var box=form&&form.querySelector(".cl-inline-booking");
+    if(box)box.classList.remove("is-open");
+    var toggle=form&&form.querySelector(".cl-inline-booking-toggle");
+    if(toggle)toggle.setAttribute("aria-expanded","false");
+  }
+  function openBookingPanel(form){
+    var box=form&&form.querySelector(".cl-inline-booking");
+    var toggle=form&&form.querySelector(".cl-inline-booking-toggle");
+    if(!box)return;
+    box.classList.add("is-open");
+    if(toggle)toggle.setAttribute("aria-expanded","true");
+    if(!inlineState.loaded&&!inlineState.loading)loadInlineAvailability(form);
+  }
 
   function isBookingModal(el){
     if(!el)return false;
@@ -596,7 +633,12 @@ const UNIFIED_BOOKING_CTA = `
       return '<button type="button" class="cl-inline-time'+(slot.slot_start===inlineState.slot?' is-active':'')+'" data-inline-slot="'+slot.slot_start+'">'+shortTime(slot.slot_start)+'</button>';
     }).join(""):"";
     Array.from(host.querySelectorAll("[data-inline-slot]")).forEach(function(btn){
-      btn.addEventListener("click",function(){inlineState.slot=btn.getAttribute("data-inline-slot")||"";renderInlineTimes();});
+      btn.addEventListener("click",function(){
+        inlineState.slot=btn.getAttribute("data-inline-slot")||"";
+        renderInlineTimes();
+        syncCompactBooking(form);
+        setTimeout(function(){closeBookingPanel(form);},120);
+      });
     });
     if(summary){
       if(inlineState.slot){summary.textContent="Seleccionaste: "+longDate(inlineState.slot)+" · Hora de Colombia";summary.classList.add("is-visible");}
@@ -617,7 +659,7 @@ const UNIFIED_BOOKING_CTA = `
   }
 
   async function loadInlineAvailability(form){
-    inlineState.form=form;inlineState.loading=true;inlineState.day="";inlineState.slot="";
+    inlineState.form=form;inlineState.loading=true;inlineState.loaded=false;
     var status=form.querySelector(".cl-inline-booking-state");
     if(status){status.textContent="Consultando horarios disponibles…";status.classList.remove("is-error");}
     try{
@@ -633,6 +675,7 @@ const UNIFIED_BOOKING_CTA = `
       inlineState.days=Object.keys(grouped).sort().map(function(key){return grouped[key];});
       if(inlineState.days.length)inlineState.day=inlineState.days[0].key;
       renderInlineDays();renderInlineTimes();
+      inlineState.loaded=true;
       if(status)status.textContent=inlineState.days.length?"Elige la hora que mejor te funcione. Todos los horarios son hora de Colombia.":"No hay horarios disponibles en los próximos días.";
     }catch(error){
       inlineState.days=[];
@@ -670,12 +713,17 @@ const UNIFIED_BOOKING_CTA = `
     var box=document.createElement("div");
     box.className="cl-inline-booking";
     box.setAttribute("data-cl-booking-ui","1");
-    box.innerHTML='<div class="cl-inline-booking-head"><div><span>Agenda tu diagnóstico</span><b>Elige fecha y hora</b></div><small>Disponibilidad real · hora de Colombia</small></div><div class="cl-inline-days"></div><div class="cl-inline-times"></div><p class="cl-inline-booking-state">Consultando horarios disponibles…</p><div class="cl-inline-booking-summary"></div>';
+    box.innerHTML='<button type="button" class="cl-inline-booking-toggle" aria-expanded="false"><span class="cl-inline-booking-field"><span>Fecha preferida</span><b data-cl-selected-date>Elegir fecha</b></span><span class="cl-inline-booking-field"><span>Hora disponible</span><b data-cl-selected-time>Elegir hora</b></span><span class="cl-inline-booking-action">Elegir horario</span></button><div class="cl-inline-booking-panel"><div class="cl-inline-booking-head"><div><span>Agenda tu diagnóstico</span><b>Elige fecha y hora</b></div><small>Disponibilidad real · hora de Colombia</small></div><div class="cl-inline-days"></div><div class="cl-inline-times"></div><p class="cl-inline-booking-state">Abre el selector para consultar horarios disponibles.</p><div class="cl-inline-booking-summary"></div></div>';
 
     if(rootAnchor&&rootAnchor.parentElement===form)form.insertBefore(box,rootAnchor);
     else form.appendChild(box);
 
-    loadInlineAvailability(form);
+    var toggle=box.querySelector(".cl-inline-booking-toggle");
+    if(toggle)toggle.addEventListener("click",function(){
+      if(box.classList.contains("is-open"))closeBookingPanel(form);
+      else openBookingPanel(form);
+    });
+    syncCompactBooking(form);
   }
 
   async function submitInlineBooking(form,button){
@@ -683,7 +731,11 @@ const UNIFIED_BOOKING_CTA = `
     var values=collect(form),status=form.querySelector(".cl-inline-booking-state");
     if(!values.name||!values.phone||!values.email){if(status){status.textContent="Completa nombre, WhatsApp y correo.";status.classList.add("is-error");}return;}
     if(!values.service){if(status){status.textContent="Selecciona el servicio que te interesa.";status.classList.add("is-error");}return;}
-    if(!inlineState.slot){if(status){status.textContent="Elige una fecha y una hora disponibles.";status.classList.add("is-error");}return;}
+    if(!inlineState.slot){
+      openBookingPanel(form);
+      if(status){status.textContent="Elige una fecha y una hora disponibles.";status.classList.add("is-error");}
+      return;
+    }
     var consent=Array.from(form.querySelectorAll('input[type="checkbox"]')).find(function(input){
       var label=input.closest("label")||input.parentElement;
       return label&&norm(label).toLowerCase().indexOf("autorizo")!==-1;

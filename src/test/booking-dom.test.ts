@@ -132,6 +132,7 @@ describe('booking client DOM flow',()=>{
 
     expect(window.document.querySelectorAll('.cl-contact-date').length).toBe(1);
     expect(window.document.querySelectorAll('.cl-contact-time').length).toBe(1);
+    expect((window.document.querySelector('.cl-contact-booking-head')?.textContent||'')).toContain('Elige fecha y hora para tu videollamada');
 
     const inlineBox=window.document.querySelector('.cl-contact-booking');
     expect(inlineBox).toBeTruthy();
@@ -155,6 +156,10 @@ describe('booking client DOM flow',()=>{
     let root=actualInlineBox.parentElement as HTMLElement | null;
     while(root&&root!==window.document.body&&!root.contains(actualAction!))root=root.parentElement;
     expect(root).toBeTruthy();
+    expect(actualInlineBox.parentElement).toBe(root);
+    const consentControl=root!.querySelector('input[name="consent"]') as HTMLInputElement;
+    const consentBlock=consentControl.closest('label')||consentControl.parentElement;
+    expect(!!(actualInlineBox.compareDocumentPosition(consentBlock!) & window.Node.DOCUMENT_POSITION_FOLLOWING)).toBe(true);
 
     const nameInput=root!.querySelector('input[name="nombre"]') as HTMLInputElement;
     const brandInput=root!.querySelector('input[name="marca"]') as HTMLInputElement;

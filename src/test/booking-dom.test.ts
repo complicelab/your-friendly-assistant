@@ -122,13 +122,20 @@ describe('booking client DOM flow',()=>{
         tag:el.tagName,id:(el as HTMLElement).id,cls:(el as HTMLElement).className,
         text:(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,180)
       })));
-      const nameNode=Array.from(window.document.querySelectorAll('body *')).find(el=>(el.textContent||'').replace(/\s+/g,' ').trim()==='Nombre y apellido');
-      let cur=nameNode as HTMLElement|null;
-      const chain:any[]=[];
-      for(let i=0;cur&&i<8;i++,cur=cur.parentElement){
-        chain.push({tag:cur.tagName,id:cur.id,cls:cur.className,text:(cur.textContent||'').replace(/\s+/g,' ').trim().slice(0,500),inputs:cur.querySelectorAll('input').length,buttons:cur.querySelectorAll('button,a').length,checks:cur.querySelectorAll('input[type="checkbox"]').length});
-      }
-      console.log('BOOKING_DIAGNOSTIC_CHAIN',chain);
+      const structures=Array.from(window.document.querySelectorAll('form,section,div')).filter(el=>{
+        const inputs=el.querySelectorAll('input').length;
+        const checks=el.querySelectorAll('input[type="checkbox"]').length;
+        const t=(el.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+        return inputs>=3 && (checks>0 || t.includes('nombre y apellido') || t.includes('servicio te interesa'));
+      }).sort((a,b)=>a.querySelectorAll('*').length-b.querySelectorAll('*').length).slice(0,30);
+      console.log('BOOKING_DIAGNOSTIC_STRUCTURES',structures.map(el=>({
+        tag:el.tagName,id:(el as HTMLElement).id,cls:(el as HTMLElement).className,
+        text:(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,700),
+        inputs:el.querySelectorAll('input').length,
+        buttons:el.querySelectorAll('button,a').length,
+        checks:el.querySelectorAll('input[type="checkbox"]').length,
+        labels:el.querySelectorAll('label').length
+      })));
     }
     expect(window.document.querySelectorAll('.cl-contact-date').length).toBe(1);
     expect(window.document.querySelectorAll('.cl-contact-time').length).toBe(1);

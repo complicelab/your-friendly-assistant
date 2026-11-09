@@ -406,7 +406,7 @@ const UNIFIED_BOOKING_CTA = `
 <style id="cl-unified-booking-cta-styles">
   .cl-booking-cta-label{white-space:nowrap}
   body.cl-booking-modal-open{overflow:hidden!important}
-  .cl-booking-overlay{position:fixed;inset:0;width:100%;height:100dvh;max-height:100dvh;z-index:2147483000;display:none;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;pointer-events:auto;background:rgba(11,18,32,.64);padding:max(18px,env(safe-area-inset-top)) 16px max(28px,env(safe-area-inset-bottom))}
+  .cl-booking-overlay{position:fixed;inset:0;width:100%;height:var(--cl-booking-vh,100dvh);max-height:var(--cl-booking-vh,100dvh);z-index:2147483000;display:none;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;pointer-events:auto;background:rgba(11,18,32,.64);padding:max(18px,env(safe-area-inset-top)) 16px max(28px,env(safe-area-inset-bottom))}
   .cl-booking-overlay.is-open{display:block}
   .cl-booking-panel{position:relative;width:min(920px,100%);margin:0 auto;background:#fff;border-radius:28px;box-shadow:0 28px 90px rgba(11,18,32,.28);overflow:visible}
   .cl-booking-modal-head{position:sticky;top:0;z-index:4;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 24px 18px;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);border-bottom:1px solid #e8edf5;border-radius:28px 28px 0 0}
@@ -802,6 +802,11 @@ const UNIFIED_BOOKING_CTA = `
     modalState.loading=false;
   }
 
+  function syncBookingViewport(){
+    var h=window.visualViewport&&window.visualViewport.height?window.visualViewport.height:window.innerHeight;
+    if(h)document.documentElement.style.setProperty("--cl-booking-vh",Math.round(h)+"px");
+  }
+
   function clearLegacyBookingShell(){
     Array.from(document.querySelectorAll("#modal,#m-overlay,.m-overlay,.modal-overlay,.modal")).forEach(function(node){
       if(node.id==="cl-booking-overlay"||node.closest&&node.closest("#cl-booking-overlay"))return;
@@ -817,6 +822,7 @@ const UNIFIED_BOOKING_CTA = `
 
   function openBookingModal(){
     clearLegacyBookingShell();
+    syncBookingViewport();
     var overlay=ensureBookingModal();
     if(availabilityCache.slots.length){
       applyModalAvailability(availabilityCache.slots);
@@ -897,6 +903,15 @@ const UNIFIED_BOOKING_CTA = `
 
   function normalize(){
     routeLegacyBookingToSafeModal();
+    if(!window.__clBookingViewportReady){
+      window.__clBookingViewportReady=true;
+      syncBookingViewport();
+      window.addEventListener("resize",syncBookingViewport,{passive:true});
+      if(window.visualViewport){
+        window.visualViewport.addEventListener("resize",syncBookingViewport,{passive:true});
+        window.visualViewport.addEventListener("scroll",syncBookingViewport,{passive:true});
+      }
+    }
     prewarmAvailability();
 
     Array.from(document.querySelectorAll("a,button")).forEach(function(el){

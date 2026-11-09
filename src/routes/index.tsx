@@ -437,250 +437,10 @@ const MOBILE_FLOW_SCRIPT = `
 `;
 
 
-const BOOKING_RUNTIME = `
-<style id="cl-booking-runtime-styles">
-  .cl-booking-days,.cl-booking-times{display:flex;gap:8px;flex-wrap:wrap}
-  .cl-booking-days{flex-wrap:nowrap;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:none}
-  .cl-booking-days::-webkit-scrollbar{display:none}
-  .cl-booking-day,.cl-booking-time{border:0;background:#f1f6ff;color:#17233a;border-radius:14px;padding:11px 14px;font:700 13px/1.1 "Montserrat",sans-serif;cursor:pointer;transition:.2s ease;min-width:78px}
-  .cl-booking-day{display:grid;gap:3px;text-align:center;flex:0 0 auto}
-  .cl-booking-day small{font-size:10px;font-weight:500;color:#6f7d95}
-  .cl-booking-day.is-active,.cl-booking-time.is-active{background:linear-gradient(90deg,#216ae9,#6f54ed);color:#fff;box-shadow:0 8px 20px rgba(53,89,224,.22)}
-  .cl-booking-day.is-active small{color:rgba(255,255,255,.8)}
-  .cl-booking-times{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
-  .cl-booking-time{min-width:0}
-  .cl-booking-live{margin-top:2px}
-  .cl-booking-live>span{display:block;font:700 13px/1.2 "Montserrat",sans-serif;color:#17233a;margin:0 0 9px}
-  .cl-booking-live+.cl-booking-live{margin-top:14px}
-  .cl-booking-feedback{margin:12px 0 0;border-radius:14px;padding:11px 13px;font:600 12px/1.45 "Montserrat",sans-serif;display:none}
-  .cl-booking-feedback.is-visible{display:block}
-  .cl-booking-feedback.is-error{background:#fff0f2;color:#a82d46;border:1px solid #ffd1d9}
-  .cl-booking-feedback.is-success{background:#eaf9f2;color:#11744d;border:1px solid #c9eedf}
-  .cl-booking-empty{padding:12px 14px;background:#f7f9fd;border:1px solid #e5eaf2;border-radius:13px;color:#6e7c94;font:500 12px/1.4 "Montserrat",sans-serif}
-  @media(max-width:700px){.cl-booking-times{grid-template-columns:repeat(2,minmax(0,1fr))}.cl-booking-day,.cl-booking-time{font-size:12px;padding:10px 11px}}
-</style>
-<script id="cl-booking-runtime">
-(function(){
-  var state={root:null,slots:[],groups:{},date:"",slot:"",service:"",loading:false,ready:false};
-
-  function norm(el){return (el&&el.textContent?el.textContent:"").replace(/\\s+/g," ").trim();}
-  function leafExact(text,root){
-    return Array.from((root||document).querySelectorAll("*")).find(function(el){
-      return el.children.length===0 && norm(el)===text;
-    });
-  }
-  function modalRoot(){
-    var heading=Array.from(document.querySelectorAll("h1,h2,h3,div,p")).find(function(el){
-      return norm(el).indexOf("Agenda tu videollamada de diagnóstico")!==-1;
-    });
-    if(!heading)return null;
-    var n=heading;
-    for(var i=0;i<9&&n;i++,n=n.parentElement){
-      var txt=norm(n);
-      if(txt.indexOf("Solicitar videollamada")!==-1 && n.querySelectorAll("input").length>=3)return n;
-    }
-    return null;
-  }
-  function blockFor(labelText,root){
-    var label=leafExact(labelText,root) || Array.from(root.querySelectorAll("label,div,span,p")).find(function(el){return norm(el)===labelText;});
-    if(!label)return null;
-    var n=label.parentElement;
-    for(var i=0;i<4&&n&&n!==root;i++,n=n.parentElement){
-      var btns=n.querySelectorAll("button").length;
-      if(btns>=3 && norm(n).length<800)return n;
-    }
-    return label.parentElement;
-  }
-  function localDateKey(iso){
-    var parts=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Bogota",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date(iso));
-    var map={};parts.forEach(function(p){map[p.type]=p.value;});
-    return map.year+"-"+map.month+"-"+map.day;
-  }
-  function dayLabel(key){
-    var d=new Date(key+"T12:00:00-05:00");
-    return {
-      weekday:new Intl.DateTimeFormat("es-CO",{weekday:"short",timeZone:"America/Bogota"}).format(d).replace(".",""),
-      date:new Intl.DateTimeFormat("es-CO",{day:"numeric",month:"short",timeZone:"America/Bogota"}).format(d).replace(".","")
-    };
-  }
-  function timeLabel(iso){
-    return new Intl.DateTimeFormat("es-CO",{hour:"numeric",minute:"2-digit",hour12:true,timeZone:"America/Bogota"}).format(new Date(iso));
-  }
-  function todayBogota(){
-    var parts=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Bogota",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
-    var m={};parts.forEach(function(p){m[p.type]=p.value;});
-    return m.year+"-"+m.month+"-"+m.day;
-  }
-  function feedback(root,msg,type){
-    var box=root.querySelector(".cl-booking-feedback");
-    if(!box){
-      box=document.createElement("div");box.className="cl-booking-feedback";
-      var submit=Array.from(root.querySelectorAll("button,a")).find(function(el){return norm(el).indexOf("Solicitar videollamada")!==-1;});
-      if(submit&&submit.parentElement)submit.parentElement.insertBefore(box,submit);
-      else root.appendChild(box);
-    }
-    box.textContent=msg;box.className="cl-booking-feedback is-visible "+(type==="success"?"is-success":"is-error");
-  }
-  function render(root){
-    var oldDay=blockFor("Día",root), oldTime=blockFor("Hora",root);
-    if(!oldDay||!oldTime)return false;
-
-    if(!root.querySelector(".cl-booking-days-live")){
-      var dayWrap=document.createElement("div");
-      dayWrap.className="cl-booking-live cl-booking-days-live";
-      dayWrap.innerHTML='<span>Día</span><div class="cl-booking-days"></div>';
-      oldDay.style.display="none";
-      oldDay.parentElement.insertBefore(dayWrap,oldDay);
-    }
-    if(!root.querySelector(".cl-booking-times-live")){
-      var timeWrap=document.createElement("div");
-      timeWrap.className="cl-booking-live cl-booking-times-live";
-      timeWrap.innerHTML='<span>Hora</span><div class="cl-booking-times"></div>';
-      oldTime.style.display="none";
-      oldTime.parentElement.insertBefore(timeWrap,oldTime);
-    }
-
-    var daysEl=root.querySelector(".cl-booking-days"), timesEl=root.querySelector(".cl-booking-times");
-    var dates=Object.keys(state.groups).sort().slice(0,7);
-    if(!dates.length){
-      daysEl.innerHTML='<div class="cl-booking-empty">No hay horarios disponibles en los próximos días.</div>';
-      timesEl.innerHTML="";
-      state.date="";state.slot="";return true;
-    }
-    if(!state.date||!state.groups[state.date])state.date=dates[0];
-    daysEl.innerHTML="";
-    dates.forEach(function(key){
-      var info=dayLabel(key),b=document.createElement("button");b.type="button";
-      b.className="cl-booking-day"+(key===state.date?" is-active":"");
-      b.innerHTML='<b>'+info.weekday+'</b><small>'+info.date+'</small>';
-      b.onclick=function(){state.date=key;state.slot="";render(root);};
-      daysEl.appendChild(b);
-    });
-    var list=state.groups[state.date]||[];
-    timesEl.innerHTML="";
-    list.forEach(function(slot){
-      var b=document.createElement("button");b.type="button";
-      b.className="cl-booking-time"+(slot.slot_start===state.slot?" is-active":"");
-      b.textContent=timeLabel(slot.slot_start);
-      b.onclick=function(){state.slot=slot.slot_start;render(root);};
-      timesEl.appendChild(b);
-    });
-    return true;
-  }
-  async function load(root){
-    if(state.loading)return;
-    state.loading=true;
-    try{
-      var res=await fetch("/api/booking?start="+encodeURIComponent(todayBogota())+"&days=21",{headers:{"Accept":"application/json"}});
-      var json=await res.json();
-      if(!res.ok||!json.ok)throw new Error(json.error||"No fue posible cargar la agenda.");
-      state.slots=json.slots||[];state.groups={};
-      state.slots.forEach(function(slot){
-        var key=localDateKey(slot.slot_start);
-        (state.groups[key]||(state.groups[key]=[])).push(slot);
-      });
-      state.date="";state.slot="";render(root);
-    }catch(err){feedback(root,err&&err.message?err.message:"No fue posible cargar la disponibilidad.","error");}
-    state.loading=false;
-  }
-  function field(root,labelText){
-    var labels=Array.from(root.querySelectorAll("label"));
-    var label=labels.find(function(el){return norm(el).indexOf(labelText)!==-1;});
-    if(label){
-      var direct=label.querySelector("input,textarea,select");if(direct)return direct;
-      if(label.parentElement){var near=label.parentElement.querySelector("input,textarea,select");if(near)return near;}
-    }
-    var leaf=leafExact(labelText,root);
-    if(leaf){
-      var n=leaf.parentElement;
-      for(var i=0;i<3&&n;i++,n=n.parentElement){
-        var inp=n.querySelector("input,textarea,select");if(inp)return inp;
-      }
-    }
-    return null;
-  }
-  function whatsappInfo(root){
-    var marker=leafExact("WhatsApp",root)||Array.from(root.querySelectorAll("label,div,span")).find(function(el){return norm(el)==="WhatsApp";});
-    var n=marker?marker.parentElement:null;
-    for(var i=0;i<4&&n&&n!==root;i++,n=n.parentElement){
-      var input=n.querySelector('input[type="tel"],input:not([type])');
-      var select=n.querySelector("select");
-      if(input)return {number:input.value||"",code:select?select.value||"+57":"+57"};
-    }
-    var fallback=field(root,"WhatsApp");
-    return {number:fallback?fallback.value:"",code:"+57"};
-  }
-  function selectedServiceFromClick(el){
-    var t=norm(el);
-    if(t.indexOf("sistemas con IA")!==-1||t.indexOf("Sistemas con IA")!==-1)return "Sistemas con IA a la medida";
-    if(t.indexOf("Agentes de IA")!==-1)return "Agente de IA automatizado";
-    if(t.indexOf("marketing digital")!==-1||t.indexOf("Marketing digital")!==-1)return "Marketing digital";
-    if(t.indexOf("Aún no lo sé")!==-1||t.indexOf("diagnóstico")!==-1&&t.length<80)return "Otro";
-    return "";
-  }
-  async function submit(root,button){
-    if(state.loading)return;
-    var name=field(root,"Nombre y apellido"),brand=field(root,"Marca personal o empresa"),email=field(root,"Correo");
-    var wa=whatsappInfo(root);
-    if(!name||!name.value.trim()||!email||!email.value.trim()||!wa.number.trim()||!state.service||!state.slot){
-      feedback(root,"Completa tus datos, elige el servicio y selecciona un horario disponible.","error");return;
-    }
-    state.loading=true;
-    var original=norm(button);button.setAttribute("aria-busy","true");button.style.pointerEvents="none";button.textContent="Confirmando…";
-    try{
-      var res=await fetch("/api/booking",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({
-        full_name:name.value.trim(),brand_name:brand?brand.value.trim():"",
-        country:"Colombia",country_code:wa.code,whatsapp:wa.number.trim(),email:email.value.trim(),
-        solution_interest:state.service,starts_at:state.slot
-      })});
-      var json=await res.json();
-      if(!res.ok||!json.ok)throw new Error(json.error||"No fue posible confirmar la videollamada.");
-      var when=timeLabel(state.slot)+" · "+new Intl.DateTimeFormat("es-CO",{weekday:"long",day:"numeric",month:"long",timeZone:"America/Bogota"}).format(new Date(state.slot));
-      feedback(root,"Videollamada confirmada para "+when+" (hora de Colombia). Quedó registrada en nuestro CRM.","success");
-      button.textContent="Videollamada confirmada ✓";button.disabled=true;
-      state.loading=false;
-      setTimeout(function(){load(root);},600);
-      return;
-    }catch(err){
-      feedback(root,err&&err.message?err.message:"No fue posible confirmar la videollamada.","error");
-      button.textContent=original||"Solicitar videollamada";button.style.pointerEvents="";button.removeAttribute("aria-busy");
-      await load(root);
-    }
-    state.loading=false;
-  }
-  function init(){
-    var root=modalRoot();
-    if(!root)return;
-    if(state.root!==root){state.root=root;state.service="";state.date="";state.slot="";state.ready=false;}
-    root.classList.add("cl-booking-ready");
-    if(!state.ready){state.ready=true;load(root);}
-  }
-
-  document.addEventListener("click",function(e){
-    var root=modalRoot();if(!root)return;
-    var clickable=e.target&&e.target.closest?e.target.closest("button,a,label,div"):null;
-    if(clickable&&root.contains(clickable)){
-      var service=selectedServiceFromClick(clickable);if(service)state.service=service;
-    }
-    var action=e.target&&e.target.closest?e.target.closest("button,a"):null;
-    if(action&&root.contains(action)&&norm(action).indexOf("Solicitar videollamada")!==-1){
-      e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();
-      submit(root,action);
-    }
-  },true);
-
-  var observer=new MutationObserver(function(){init();});
-  observer.observe(document.documentElement,{subtree:true,childList:true});
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
-  setInterval(init,1200);
-})();
-</script>
-`;
-
-
 const UNIFIED_BOOKING_CTA = `
 <style id="cl-unified-booking-cta-styles">
   .cl-booking-cta-label{white-space:nowrap}
+  .cl-inline-booking-root{height:auto!important;max-height:none!important;overflow:visible!important}
   .cl-inline-booking{grid-column:1/-1;contain:layout paint;margin:4px 0 8px;padding:18px;border:1px solid #dce5f3;border-radius:20px;background:linear-gradient(145deg,#f8fbff 0%,#f4f2ff 100%);box-shadow:0 14px 34px rgba(31,62,135,.08)}
   .cl-inline-booking-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
   .cl-inline-booking-head span{display:block;font:700 11px/1.2 "Montserrat",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#3971ec;margin-bottom:5px}
@@ -730,9 +490,10 @@ const UNIFIED_BOOKING_CTA = `
   function isBookingModal(el){
     if(!el)return false;
     var node=el;
-    for(var i=0;i<10&&node;i++,node=node.parentElement){
+    for(var i=0;i<12&&node;i++,node=node.parentElement){
       var txt=norm(node);
-      if((txt.indexOf("Agenda tu diagnóstico")!==-1||txt.indexOf("Agenda tu videollamada de diagnóstico")!==-1)&&node.querySelectorAll("input").length>=3)return true;
+      var hasPicker=!!(node.querySelector&&node.querySelector(".days")&&node.querySelector(".slots"));
+      if(hasPicker&&(txt.indexOf("Agenda tu diagnóstico")!==-1||txt.indexOf("Agenda tu videollamada de diagnóstico")!==-1))return true;
     }
     return false;
   }
@@ -771,7 +532,7 @@ const UNIFIED_BOOKING_CTA = `
       var t=norm(el).toLowerCase();
       if(!phrases.some(function(p){return t.indexOf(p)!==-1;}))return false;
       var cls=(el.className||"").toString();
-      return /active|selected|checked/i.test(cls)||el.getAttribute("aria-checked")==="true";
+      return /active|selected|checked|(^|\s)(sel|on|s)(\s|$)/i.test(cls)||el.getAttribute("aria-checked")==="true"||el.getAttribute("aria-pressed")==="true";
     });
     return active?norm(active):"";
   }
@@ -877,6 +638,13 @@ const UNIFIED_BOOKING_CTA = `
     inlineState.loading=false;
   }
 
+  function directChildUnder(node,root){
+    if(!node||!root)return null;
+    var current=node;
+    while(current.parentElement&&current.parentElement!==root)current=current.parentElement;
+    return current.parentElement===root?current:null;
+  }
+
   function enhanceContactForm(form){
     if(!form||form.dataset.clInlineBooking==="1")return;
     form.dataset.clInlineBooking="1";
@@ -889,13 +657,19 @@ const UNIFIED_BOOKING_CTA = `
       return isUnifiedCta(el)||CTA_TEXTS.indexOf(norm(el))!==-1;
     });
     var anchor=consent?(consent.closest("label")||consent.parentElement):submit;
+    var rootAnchor=directChildUnder(anchor,form)||anchor;
+
+    form.classList.add("cl-inline-booking-root");
+    form.style.setProperty("height","auto","important");
+    form.style.setProperty("max-height","none","important");
+    form.style.setProperty("overflow","visible","important");
 
     var box=document.createElement("div");
     box.className="cl-inline-booking";
     box.setAttribute("data-cl-booking-ui","1");
     box.innerHTML='<div class="cl-inline-booking-head"><div><span>Agenda tu diagnóstico</span><b>Elige fecha y hora</b></div><small>Disponibilidad real · hora de Colombia</small></div><div class="cl-inline-days"></div><div class="cl-inline-times"></div><p class="cl-inline-booking-state">Consultando horarios disponibles…</p><div class="cl-inline-booking-summary"></div>';
 
-    if(anchor&&anchor.parentElement)anchor.parentElement.insertBefore(box,anchor);
+    if(rootAnchor&&rootAnchor.parentElement===form)form.insertBefore(box,rootAnchor);
     else form.appendChild(box);
 
     loadInlineAvailability(form);
@@ -936,6 +710,7 @@ const UNIFIED_BOOKING_CTA = `
       if(CTA_TEXTS.indexOf(text)!==-1){
         el.textContent="Agendar diagnóstico";
         el.classList.add("cl-booking-cta-label");
+        el.removeAttribute("onclick");
         if(el.tagName==="A"){
           el.removeAttribute("target");
           el.removeAttribute("href");

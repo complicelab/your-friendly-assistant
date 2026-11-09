@@ -611,7 +611,7 @@ const UNIFIED_BOOKING_CTA = `
       el.textContent="Agendar diagnóstico";el.classList.add("cl-booking-cta-label");
       if(root&&root.contains(el))return;
       el.removeAttribute("onclick");
-      if(el.tagName==="A"){el.removeAttribute("target");el.setAttribute("href","#");}
+      if(el.tagName==="A"){el.removeAttribute("target");el.removeAttribute("href");}
     });
   }
 

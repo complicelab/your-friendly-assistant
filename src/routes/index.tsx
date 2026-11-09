@@ -1050,7 +1050,27 @@ const UNIFIED_BOOKING_CTA = `
   if(window.MutationObserver){
     var bodyObserver=null;
     var contactObserver=null;
+    var currentObservedRoot=null;
     var observerBusy=false;
+
+    function attachContactObserver(root){
+      if(currentObservedRoot===root&&contactObserver)return;
+      if(contactObserver)contactObserver.disconnect();
+      currentObservedRoot=root;
+      contactObserver=new MutationObserver(function(){
+        if(observerBusy)return;
+        var liveRoot=findContactRoot();
+        if(!liveRoot)return;
+        if(liveRoot!==currentObservedRoot){
+          attachContactObserver(liveRoot);
+        }
+        if(!liveRoot.querySelector(".cl-contact-date")||!liveRoot.querySelector(".cl-contact-time")){
+          liveRoot.dataset.clScheduler="";
+          installInlineScheduler(liveRoot);
+        }
+      });
+      contactObserver.observe(root,{childList:true,subtree:true});
+    }
 
     function ensureInlineBookingMounted(){
       if(observerBusy)return;
@@ -1059,24 +1079,10 @@ const UNIFIED_BOOKING_CTA = `
         normalize();
         var root=findContactRoot();
         if(!root)return;
+        attachContactObserver(root);
         if(!root.querySelector(".cl-contact-date")||!root.querySelector(".cl-contact-time")){
           root.dataset.clScheduler="";
           installInlineScheduler(root);
-        }
-        if(!contactObserver){
-          contactObserver=new MutationObserver(function(){
-            var currentRoot=findContactRoot();
-            if(!currentRoot)return;
-            if(!currentRoot.querySelector(".cl-contact-date")||!currentRoot.querySelector(".cl-contact-time")){
-              currentRoot.dataset.clScheduler="";
-              installInlineScheduler(currentRoot);
-            }
-          });
-          contactObserver.observe(root,{childList:true,subtree:true});
-        }
-        if(bodyObserver){
-          bodyObserver.disconnect();
-          bodyObserver=null;
         }
       }finally{
         observerBusy=false;
@@ -1085,7 +1091,13 @@ const UNIFIED_BOOKING_CTA = `
 
     bodyObserver=new MutationObserver(function(){
       var root=findContactRoot();
-      if(root)ensureInlineBookingMounted();
+      if(!root)return;
+      if(root!==currentObservedRoot){
+        attachContactObserver(root);
+      }
+      if(!root.querySelector(".cl-contact-date")||!root.querySelector(".cl-contact-time")){
+        ensureInlineBookingMounted();
+      }
     });
     bodyObserver.observe(document.body,{childList:true,subtree:true});
     ensureInlineBookingMounted();

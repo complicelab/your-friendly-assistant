@@ -44,14 +44,19 @@ jobs:
 
       - name: Run mobile booking browser test
         run: |
-          bun run preview -- --host 127.0.0.1 --port 4173 > /tmp/booking-preview.log 2>&1 &
-          PREVIEW_PID=$!
-          trap 'kill $PREVIEW_PID || true' EXIT
-          for i in $(seq 1 30); do
+          bun run dev -- --host 127.0.0.1 --port 4173 > /tmp/booking-dev.log 2>&1 &
+          DEV_PID=$!
+          trap 'kill $DEV_PID || true' EXIT
+          READY=0
+          for i in $(seq 1 45); do
             if curl -fsS http://127.0.0.1:4173/ >/dev/null; then
+              READY=1
               break
             fi
             sleep 1
           done
-          curl -fsS http://127.0.0.1:4173/ >/dev/null
+          if [ "$READY" != "1" ]; then
+            cat /tmp/booking-dev.log
+            exit 1
+          fi
           node src/test/booking-mobile-browser.mjs

@@ -34,6 +34,7 @@ describe('booking runtime transformation', () => {
     expect(output).toContain("fetch('/api/booking'");
     expect(output).toContain("leadForm('m','Agendar diagnóstico')");
     expect(output).toContain('crm_public_book_meeting');
+    expect(output).toContain('if(window.__clOpenBookingModal){window.__clOpenBookingModal();return;}');
     expect(output).not.toContain("mcontent.innerHTML='legacy booking'");
   });
 

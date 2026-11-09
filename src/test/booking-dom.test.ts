@@ -37,14 +37,14 @@ function fixture(){
     </section>
     <section id="contact-fields">
       <form id="contact-form" action="https://wa.me/573000000000" onsubmit="window.__legacySubmit=true">
-        <label>Nombre y apellido<input name="name"></label>
-        <label>Marca personal o empresa<input name="brand"></label>
-        <label>WhatsApp<select name="country"><option value="+57">+57</option></select><input name="phone" type="tel"></label>
+        <label>Nombre y apellido<input name="nombre"></label>
+        <label>Marca personal o empresa<input name="marca"></label>
+        <label>WhatsApp<select name="country"><option value="+57">+57</option></select><input name="whatsapp" type="tel"></label>
         <label>Correo<input name="email" type="email"></label>
         <div>¿Qué servicio te interesa?
           <button type="button">Creamos sistemas con IA a la medida</button>
         </div>
-        <label><input type="checkbox"> Autorizo el uso de mis datos para responder esta solicitud.</label>
+        <label><input type="checkbox" name="consent"> Autorizo el uso de mis datos para responder esta solicitud.</label>
         <button id="submit" type="submit" onclick="window.__legacyClick=true">Continuar por WhatsApp →</button>
       </form>
     </section>

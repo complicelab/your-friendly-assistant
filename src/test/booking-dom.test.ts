@@ -190,31 +190,22 @@ describe('booking client DOM flow',()=>{
       value:(el as HTMLInputElement).value||'',
       parentText:(el.parentElement?.textContent||'').replace(/\s+/g,' ').trim().slice(0,180)
     })));
-    const labels=Array.from(root!.querySelectorAll('label'));
-    const byLabel=(needle:string)=>labels.find(el=>(el.textContent||'').toLowerCase().includes(needle.toLowerCase()));
+    const nameInput=root!.querySelector('input[name="nombre"]') as HTMLInputElement;
+    const brandInput=root!.querySelector('input[name="marca"]') as HTMLInputElement;
+    const emailInput=root!.querySelector('input[name="email"]') as HTMLInputElement;
+    const phoneInput=root!.querySelector('input[name="whatsapp"]') as HTMLInputElement;
 
-    const nameInput=byLabel('Nombre y apellido')?.querySelector('input') as HTMLInputElement | null;
-    const brandInput=byLabel('Marca personal o empresa')?.querySelector('input') as HTMLInputElement | null;
-    const emailInput=byLabel('Correo')?.querySelector('input') as HTMLInputElement | null;
-    const whatsappLabel=byLabel('WhatsApp');
-    const phoneInput=Array.from(whatsappLabel?.querySelectorAll('input')||[]).find(el=>(el as HTMLInputElement).type!=='checkbox') as HTMLInputElement | undefined;
+    nameInput.value='Prueba Cómplice';
+    brandInput.value='Marca Prueba';
+    emailInput.value='prueba@example.com';
+    phoneInput.value='3001234567';
 
-    if(nameInput)nameInput.value='Prueba Cómplice';
-    if(brandInput)brandInput.value='Marca Prueba';
-    if(emailInput)emailInput.value='prueba@example.com';
-    if(phoneInput)phoneInput.value='3001234567';
+    const serviceRadio=root!.querySelector('input[name="servicio"][value="sistemas"]') as HTMLInputElement;
+    serviceRadio.checked=true;
+    serviceRadio.dispatchEvent(new window.Event('change',{bubbles:true}));
 
-    const serviceButton=Array.from(root!.querySelectorAll('button,[role="button"],label')).find(el=>(el.textContent||'').toLowerCase().includes('sistemas con ia')) as HTMLElement | undefined;
-    if(serviceButton){
-      serviceButton.classList.add('selected');
-      serviceButton.setAttribute('aria-pressed','true');
-    }
-
-    const consent=Array.from(root!.querySelectorAll('input[type="checkbox"]')).find(input=>{
-      const lab=input.closest('label')||input.parentElement;
-      return !!lab && (lab.textContent||'').toLowerCase().includes('autorizo');
-    }) as HTMLInputElement | undefined;
-    if(consent)consent.checked=true;
+    const consent=root!.querySelector('input[name="consent"]') as HTMLInputElement;
+    consent.checked=true;
 
     await new Promise(resolve=>setTimeout(resolve,25));
     const dateInput=root!.querySelector('.cl-contact-date') as HTMLInputElement;
@@ -253,9 +244,8 @@ describe('booking client DOM flow',()=>{
         date:dateInput.value,
         time:timeSelect.value,
         actionText:inlineAction?.textContent||'',
-        serviceButton:serviceButton?.textContent||'',
-        serviceClass:(serviceButton as HTMLElement|undefined)?.className||'',
-        servicePressed:serviceButton?.getAttribute('aria-pressed')||''
+        service:serviceRadio.value,
+        serviceChecked:serviceRadio.checked
       });
     }
     expect(postBodies.length).toBe(1);

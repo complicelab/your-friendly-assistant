@@ -222,7 +222,7 @@ describe('booking client DOM flow',()=>{
       return originalFetch(input,init);
     }) as any;
 
-    const inlineAction=Array.from(root.querySelectorAll('button,a')).find(el=>(el.textContent||'').includes('Agendar diagnóstico')) as HTMLElement | undefined;
+    const inlineAction=Array.from(window.document.querySelectorAll('[data-cl-clean-booking-action="1"]')).find(el=>!el.closest('#cl-booking-overlay')) as HTMLElement | undefined;
     expect(inlineAction).toBeTruthy();
     inlineAction?.dispatchEvent(new window.MouseEvent('click',{bubbles:true,cancelable:true}));
     await Promise.resolve();

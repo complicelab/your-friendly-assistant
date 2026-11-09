@@ -852,6 +852,10 @@ const UNIFIED_BOOKING_CTA = `
   }
 
   window.__clOpenBookingModal=openBookingModal;
+  if(window.__clBookingOpenRequested){
+    window.__clBookingOpenRequested=false;
+    setTimeout(openBookingModal,0);
+  }
 
   async function submitModalBooking(event){
     event.preventDefault();
@@ -886,24 +890,7 @@ const UNIFIED_BOOKING_CTA = `
     }
   }
 
-  function routeLegacyBookingToSafeModal(){
-    if(typeof window.openModal!=="function")return;
-    if(window.openModal.__clSafeBookingRouter)return;
-    var legacy=window.openModal;
-    var routed=function(mode,preset){
-      if(mode==="booking"){
-        openBookingModal();
-        return;
-      }
-      return legacy.apply(this,arguments);
-    };
-    routed.__clSafeBookingRouter=true;
-    routed.__clLegacy=legacy;
-    window.openModal=routed;
-  }
-
   function normalize(){
-    routeLegacyBookingToSafeModal();
     if(!window.__clBookingViewportReady){
       window.__clBookingViewportReady=true;
       syncBookingViewport();
@@ -971,6 +958,10 @@ const UNIFIED_BOOKING_CTA = `
 
 function getOriginalHtml() {
   const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8")
+    .replaceAll("Continuar por WhatsApp", "Agendar diagnóstico")
+    .replaceAll("Agendar videollamada de diagnóstico", "Agendar diagnóstico")
+    .replaceAll("Solicitar videollamada de diagnóstico", "Agendar diagnóstico")
+    .replaceAll("Solicitar videollamada", "Agendar diagnóstico")
     .replace(/El diagnóstico es una sesión de pago[^<]*/g, "El diagnóstico es una sesión gratuita para entender tu negocio, detectar dónde se pierde la oportunidad y definir el mejor siguiente paso.")
     .replace("Míralo funcionar.", "Así trabajamos.")
     .replace(

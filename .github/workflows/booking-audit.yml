@@ -10,6 +10,7 @@ on:
       - "src/routes/api.booking.ts"
       - "src/data/booking/**"
       - "src/test/booking-*.test.ts"
+      - "src/test/booking-*.mjs"
       - "src/routeTree.gen.ts"
       - "package.json"
       - "bun.lock"
@@ -19,7 +20,7 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,3 +36,22 @@ jobs:
 
       - name: Build
         run: bun run build
+
+      - name: Install browser test runtime
+        run: |
+          npm install --no-save @playwright/test@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: Run mobile booking browser test
+        run: |
+          bun run preview -- --host 127.0.0.1 --port 4173 > /tmp/booking-preview.log 2>&1 &
+          PREVIEW_PID=$!
+          trap 'kill $PREVIEW_PID || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:4173/ >/dev/null
+          node src/test/booking-mobile-browser.mjs

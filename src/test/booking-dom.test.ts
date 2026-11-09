@@ -121,7 +121,7 @@ describe('booking client DOM flow',()=>{
       {slot_start:'2026-11-10T14:00:00-05:00',slot_end:'2026-11-10T15:00:00-05:00'},
       {slot_start:'2026-11-10T15:00:00-05:00',slot_end:'2026-11-10T16:00:00-05:00'}
     ];
-    Object.defineProperty(window,'fetch',{value:vi.fn(async()=>({
+    Object.defineProperty(window,'fetch',{configurable:true,writable:true,value:vi.fn(async()=>({
       ok:true,
       json:async()=>({ok:true,slots})
     }))});
@@ -214,13 +214,13 @@ describe('booking client DOM flow',()=>{
 
     const postBodies:any[]=[];
     const originalFetch=window.fetch as any;
-    Object.defineProperty(window,'fetch',{configurable:true,writable:true,value:vi.fn(async(input:any,init?:any)=>{
+    window.fetch=vi.fn(async(input:any,init?:any)=>{
       if(init?.method==='POST'){
         postBodies.push(JSON.parse(init.body));
         return {ok:true,json:async()=>({ok:true,meeting_id:'meeting-test'})};
       }
       return originalFetch(input,init);
-    })});
+    }) as any;
 
     const inlineAction=Array.from(root.querySelectorAll('button,a')).find(el=>(el.textContent||'').includes('Agendar diagnóstico')) as HTMLElement | undefined;
     expect(inlineAction).toBeTruthy();

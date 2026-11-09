@@ -405,18 +405,22 @@ const MOBILE_FLOW_SCRIPT = `
 const UNIFIED_BOOKING_CTA = `
 <style id="cl-unified-booking-cta-styles">
   .cl-booking-cta-label{white-space:nowrap}
-  .cl-contact-booking{margin:8px 0 10px;display:grid;grid-template-columns:1fr 1fr;gap:12px;grid-column:1/-1;width:100%}
-  .cl-contact-booking label{display:grid;gap:7px;min-width:0}
-  .cl-contact-booking label>span{font:700 12px/1.25 "Montserrat",sans-serif;color:#111827}
-  .cl-contact-booking input,.cl-contact-booking select{width:100%;height:48px;border:1px solid #d9e0ea;border-radius:14px;background:#fff;color:#17233a;padding:0 13px;font:500 13px/1 "Montserrat",sans-serif;outline:none;box-sizing:border-box}
+  .cl-contact-booking{margin:8px 0 10px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;grid-column:1/-1;width:auto;max-width:100%;min-width:0;justify-self:stretch;box-sizing:border-box}
+  .cl-contact-booking,.cl-contact-booking *{box-sizing:border-box}
+  .cl-contact-booking label{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;min-width:0;max-width:100%}
+  .cl-contact-booking label>span{font:700 12px/1.25 "Montserrat",sans-serif;color:#111827;min-width:0}
+  .cl-contact-booking input,.cl-contact-booking select{display:block;width:100%;max-width:100%;min-width:0;height:48px;border:1px solid #d9e0ea;border-radius:14px;background:#fff;color:#17233a;padding:0 13px;font:500 13px/1 "Montserrat",sans-serif;outline:none}
   .cl-contact-booking input:focus,.cl-contact-booking select:focus{border-color:#4d6ff0;box-shadow:0 0 0 3px rgba(77,111,240,.10)}
   .cl-contact-booking select:disabled{background:#f7f9fc;color:#8a96aa}
   .cl-contact-booking-note{grid-column:1/-1;margin:0;font:500 11px/1.45 "Montserrat",sans-serif;color:#71809b}
   .cl-contact-booking-note.is-error{color:#b4233b}
   @media(max-width:700px){
     a.cl-booking-cta-label,button.cl-booking-cta-label{max-width:100%;white-space:normal}
-    .cl-contact-booking{grid-template-columns:1fr;gap:10px}
-    .cl-contact-booking input,.cl-contact-booking select{height:46px;font-size:16px}
+    .cl-contact-booking{grid-template-columns:minmax(0,1fr);gap:10px;width:auto!important;max-width:100%!important;min-width:0!important;margin-left:0!important;margin-right:0!important}
+    .cl-contact-booking label{width:100%;max-width:100%;min-width:0}
+    .cl-contact-booking input,.cl-contact-booking select{width:100%!important;max-width:100%!important;min-width:0!important;height:46px;font-size:16px}
+    .cl-contact-date{-webkit-appearance:none;appearance:none}
+    .cl-contact-date::-webkit-date-and-time-value{text-align:left;min-width:0}
   }
 </style>
 <script id="cl-unified-booking-cta">
@@ -432,6 +436,18 @@ const UNIFIED_BOOKING_CTA = `
   }
   function longDate(value){return new Intl.DateTimeFormat("es-CO",{weekday:"long",day:"numeric",month:"long",year:"numeric",hour:"numeric",minute:"2-digit",hour12:true,timeZone:"America/Bogota"}).format(new Date(value));}
   function timeLabel(value){return new Intl.DateTimeFormat("es-CO",{hour:"numeric",minute:"2-digit",hour12:true,timeZone:"America/Bogota"}).format(new Date(value));}
+  function scrollToContact(root){
+    if(!root)return;
+    var heading=Array.from(document.querySelectorAll("h1,h2,h3")).find(function(el){
+      var t=norm(el).toLowerCase();return t.indexOf("hablemos de")!==-1&&t.indexOf("negocio")!==-1;
+    });
+    var section=heading?(heading.closest("section")||heading.parentElement):root.closest("section");
+    var target=section||root;
+    var header=document.querySelector("header");
+    var offset=(header?header.getBoundingClientRect().height:0)+16;
+    var top=target.getBoundingClientRect().top+window.scrollY-offset;
+    window.scrollTo({top:Math.max(0,top),behavior:"smooth"});
+  }
 
   function fieldByLabel(root,text){
     var wanted=text.toLowerCase();
@@ -595,7 +611,7 @@ const UNIFIED_BOOKING_CTA = `
       el.textContent="Agendar diagnóstico";el.classList.add("cl-booking-cta-label");
       if(root&&root.contains(el))return;
       el.removeAttribute("onclick");
-      if(el.tagName==="A"){el.removeAttribute("target");el.setAttribute("href","#contacto");}
+      if(el.tagName==="A"){el.removeAttribute("target");el.setAttribute("href","#");}
     });
   }
 
@@ -608,7 +624,7 @@ const UNIFIED_BOOKING_CTA = `
       installScheduler(root);submitBooking(root,action);return;
     }
     event.preventDefault();event.stopPropagation();if(event.stopImmediatePropagation)event.stopImmediatePropagation();
-    if(root){root.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(function(){var d=root.querySelector(".cl-contact-date");if(d)d.focus();},500);}
+    if(root)scrollToContact(root);
   },true);
 
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){normalize();setTimeout(normalize,300);},{once:true});

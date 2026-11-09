@@ -31,7 +31,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Run booking tests
-        run: bun test src/test/booking-runtime.test.ts src/test/booking-entrypoints.test.ts
+        run: bun test src/test/booking-runtime.test.ts src/test/booking-entrypoints.test.ts src/test/booking-dom.test.ts
 
       - name: Build
         run: bun run build

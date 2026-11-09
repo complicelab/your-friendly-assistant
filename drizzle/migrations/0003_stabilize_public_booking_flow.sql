@@ -94,3 +94,7 @@ REVOKE ALL ON FUNCTION public.crm_public_book_meeting(
 GRANT EXECUTE ON FUNCTION public.crm_public_book_meeting(
   text,text,text,text,text,text,text,timestamp with time zone,text
 ) TO anon, authenticated, service_role;
+
+REVOKE ALL ON FUNCTION public.crm_public_available_slots(date, integer) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.crm_public_available_slots(date, integer) TO anon, authenticated, service_role;
+

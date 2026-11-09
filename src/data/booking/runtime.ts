@@ -4,6 +4,16 @@ export const bookingStyles = `
   .booking-empty{padding:1rem;border:1px solid var(--linea);border-radius:14px;background:var(--hielo);color:var(--gris);font-size:.88rem;line-height:1.5}
   .booking-success-note{margin-top:1rem;color:var(--gris);font-size:.82rem;line-height:1.55}
   .day:disabled,.slot:disabled{opacity:.55;cursor:not-allowed}
+  .ag,.ag-pick,.ag-form{min-width:0;box-sizing:border-box}
+  .ag{max-width:100%}
+  .days,.slots{max-width:100%;box-sizing:border-box}
+  @media(max-width:700px){
+    .ag{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:16px!important;width:100%!important;max-width:100%!important}
+    .ag-pick,.ag-form{width:100%!important;max-width:100%!important;min-width:0!important}
+    .days,.slots{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important}
+    .days::-webkit-scrollbar,.slots::-webkit-scrollbar{display:none!important}
+    .day,.slot{max-width:100%;box-sizing:border-box}
+  }
 </style>
 `;
 

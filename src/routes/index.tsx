@@ -406,7 +406,7 @@ const UNIFIED_BOOKING_CTA = `
 <style id="cl-unified-booking-cta-styles">
   .cl-booking-cta-label{white-space:nowrap}
   body.cl-booking-modal-open{overflow:hidden!important}
-  .cl-booking-overlay{position:fixed;inset:0;z-index:2147483000;display:none;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;background:rgba(11,18,32,.64);padding:max(18px,env(safe-area-inset-top)) 16px max(28px,env(safe-area-inset-bottom))}
+  .cl-booking-overlay{position:fixed;inset:0;width:100%;height:100dvh;max-height:100dvh;z-index:2147483000;display:none;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;pointer-events:auto;background:rgba(11,18,32,.64);padding:max(18px,env(safe-area-inset-top)) 16px max(28px,env(safe-area-inset-bottom))}
   .cl-booking-overlay.is-open{display:block}
   .cl-booking-panel{position:relative;width:min(920px,100%);margin:0 auto;background:#fff;border-radius:28px;box-shadow:0 28px 90px rgba(11,18,32,.28);overflow:visible}
   .cl-booking-modal-head{position:sticky;top:0;z-index:4;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 24px 18px;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);border-bottom:1px solid #e8edf5;border-radius:28px 28px 0 0}
@@ -735,6 +735,10 @@ const UNIFIED_BOOKING_CTA = `
     if(!overlay)return;
     overlay.classList.remove("is-open");
     document.body.classList.remove("cl-booking-modal-open");
+    document.body.style.removeProperty("overflow");
+    document.body.style.removeProperty("overflow-y");
+    document.documentElement.style.removeProperty("overflow");
+    document.documentElement.style.removeProperty("overflow-y");
   }
 
   function renderModalTimes(){
@@ -798,7 +802,21 @@ const UNIFIED_BOOKING_CTA = `
     modalState.loading=false;
   }
 
+  function clearLegacyBookingShell(){
+    Array.from(document.querySelectorAll("#modal,#m-overlay,.m-overlay,.modal-overlay,.modal")).forEach(function(node){
+      if(node.id==="cl-booking-overlay"||node.closest&&node.closest("#cl-booking-overlay"))return;
+      node.setAttribute("aria-hidden","true");
+      node.style.setProperty("display","none","important");
+      node.style.setProperty("pointer-events","none","important");
+    });
+    document.body.style.removeProperty("overflow");
+    document.body.style.removeProperty("overflow-y");
+    document.documentElement.style.removeProperty("overflow");
+    document.documentElement.style.removeProperty("overflow-y");
+  }
+
   function openBookingModal(){
+    clearLegacyBookingShell();
     var overlay=ensureBookingModal();
     if(availabilityCache.slots.length){
       applyModalAvailability(availabilityCache.slots);
@@ -825,6 +843,8 @@ const UNIFIED_BOOKING_CTA = `
     }
     requestAnimationFrame(function(){overlay.scrollTop=0;});
   }
+
+  window.__clOpenBookingModal=openBookingModal;
 
   async function submitModalBooking(event){
     event.preventDefault();

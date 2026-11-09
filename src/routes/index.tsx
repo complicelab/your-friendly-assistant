@@ -852,6 +852,10 @@ const UNIFIED_BOOKING_CTA = `
   }
 
   window.__clOpenBookingModal=openBookingModal;
+  if(window.__clBookingOpenRequested){
+    window.__clBookingOpenRequested=false;
+    setTimeout(openBookingModal,0);
+  }
 
   async function submitModalBooking(event){
     event.preventDefault();

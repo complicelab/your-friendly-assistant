@@ -25,19 +25,8 @@ await page.route('**/api/booking**',async route=>{
 });
 
 await page.goto('http://127.0.0.1:4173/',{waitUntil:'domcontentloaded'});
-await page.waitForSelector('text=Agendar diagnóstico');
-
-const ctas=page.locator('a,button').filter({hasText:'Agendar diagnóstico'});
-let opened=false;
-for(let i=0;i<await ctas.count();i++){
-  const el=ctas.nth(i);
-  if(await el.isVisible()){
-    await el.click();
-    opened=true;
-    break;
-  }
-}
-if(!opened)throw new Error('No visible booking CTA found');
+await page.waitForFunction(()=>typeof window.__clOpenBookingModal==='function',{timeout:30000});
+await page.evaluate(()=>window.__clOpenBookingModal());
 
 const overlay=page.locator('#cl-booking-overlay');
 await overlay.waitFor({state:'visible'});

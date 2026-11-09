@@ -405,6 +405,44 @@ const MOBILE_FLOW_SCRIPT = `
 const UNIFIED_BOOKING_CTA = `
 <style id="cl-unified-booking-cta-styles">
   .cl-booking-cta-label{white-space:nowrap}
+  body.cl-booking-modal-open{overflow:hidden!important}
+  .cl-booking-overlay{position:fixed;inset:0;z-index:2147483000;display:none;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;background:rgba(11,18,32,.64);padding:max(18px,env(safe-area-inset-top)) 16px max(28px,env(safe-area-inset-bottom))}
+  .cl-booking-overlay.is-open{display:block}
+  .cl-booking-panel{position:relative;width:min(920px,100%);margin:0 auto;background:#fff;border-radius:28px;box-shadow:0 28px 90px rgba(11,18,32,.28);overflow:visible}
+  .cl-booking-modal-head{position:sticky;top:0;z-index:4;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 24px 18px;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);border-bottom:1px solid #e8edf5;border-radius:28px 28px 0 0}
+  .cl-booking-modal-head h2{margin:0;font:700 26px/1.1 "Poppins",sans-serif;color:#0d172a}
+  .cl-booking-modal-head p{margin:7px 0 0;font:500 12px/1.5 "Montserrat",sans-serif;color:#6d7d98}
+  .cl-booking-close{flex:0 0 auto;width:40px;height:40px;border:1px solid #dde5f0;border-radius:999px;background:#fff;color:#0d172a;font-size:24px;line-height:1;cursor:pointer}
+  .cl-booking-modal-body{padding:22px 24px 26px}
+  .cl-booking-modal-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:22px}
+  .cl-booking-box{min-width:0;border:1px solid #e1e8f2;border-radius:20px;background:#fbfcff;padding:18px}
+  .cl-booking-box h3{margin:0 0 6px;font:700 16px/1.25 "Poppins",sans-serif;color:#0d172a}
+  .cl-booking-box>p{margin:0 0 15px;font:500 11px/1.5 "Montserrat",sans-serif;color:#71809b}
+  .cl-booking-days{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;touch-action:pan-x pan-y}
+  .cl-booking-days::-webkit-scrollbar{display:none}
+  .cl-booking-day{flex:0 0 auto;min-width:72px;padding:10px 9px;border:1px solid #dfe6f0;border-radius:13px;background:#fff;color:#26354e;font:700 11px/1.25 "Montserrat",sans-serif;cursor:pointer}
+  .cl-booking-day small{display:block;margin-top:3px;font-weight:500;color:#8390a5}
+  .cl-booking-day.is-active{border-color:#3f68ef;background:#eef3ff;color:#245fea;box-shadow:0 0 0 2px rgba(63,104,239,.08)}
+  .cl-booking-times{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+  .cl-booking-time{min-width:0;padding:11px 8px;border:1px solid #dfe6f0;border-radius:12px;background:#fff;color:#26354e;font:700 11px/1.2 "Montserrat",sans-serif;cursor:pointer}
+  .cl-booking-time.is-active{border-color:#3f68ef;background:#eef3ff;color:#245fea}
+  .cl-booking-summary{margin:12px 0 0!important;padding:10px 12px;border-radius:12px;background:#fff;border:1px solid #e2e8f2;font:600 11px/1.45 "Montserrat",sans-serif;color:#455572}
+  .cl-booking-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:0}
+  .cl-booking-form label{display:grid;gap:6px;min-width:0}
+  .cl-booking-form label.full{grid-column:1/-1}
+  .cl-booking-form label>span{font:700 11px/1.25 "Montserrat",sans-serif;color:#17233a}
+  .cl-booking-form input,.cl-booking-form select{width:100%;max-width:100%;min-width:0;height:46px;border:1px solid #dbe3ed;border-radius:13px;background:#fff;color:#17233a;padding:0 12px;font:500 13px/1 "Montserrat",sans-serif;outline:none;box-sizing:border-box}
+  .cl-booking-form input:focus,.cl-booking-form select:focus{border-color:#456bf0;box-shadow:0 0 0 3px rgba(69,107,240,.1)}
+  .cl-booking-phone{display:grid;grid-template-columns:110px minmax(0,1fr);gap:8px}
+  .cl-booking-consent{grid-column:1/-1;display:flex!important;align-items:flex-start;gap:9px!important;font:500 11px/1.5 "Montserrat",sans-serif;color:#6d7d98}
+  .cl-booking-consent input{width:18px!important;height:18px!important;flex:0 0 18px;margin-top:1px;padding:0}
+  .cl-booking-submit{grid-column:1/-1;height:50px;border:0;border-radius:999px;background:linear-gradient(90deg,#1f6fe8,#6653e9);color:#fff;font:700 14px/1 "Montserrat",sans-serif;cursor:pointer;box-shadow:0 12px 26px rgba(49,91,220,.22)}
+  .cl-booking-submit:disabled{opacity:.65;cursor:wait}
+  .cl-booking-error{grid-column:1/-1;margin:0;min-height:16px;font:600 11px/1.4 "Montserrat",sans-serif;color:#b4233b}
+  .cl-booking-loading{font:500 11px/1.45 "Montserrat",sans-serif;color:#71809b}
+  .cl-booking-success{padding:34px 24px;text-align:center}
+  .cl-booking-success h3{margin:0 0 10px;font:700 26px/1.15 "Poppins",sans-serif;color:#0d172a}
+  .cl-booking-success p{margin:0 auto;max-width:560px;font:500 13px/1.6 "Montserrat",sans-serif;color:#66758f}
   .cl-contact-booking{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;width:100%;max-width:100%;min-width:0;margin:8px 0 10px;box-sizing:border-box}
   .cl-contact-booking,.cl-contact-booking *{box-sizing:border-box}
   .cl-contact-booking label{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;min-width:0}
@@ -422,12 +460,24 @@ const UNIFIED_BOOKING_CTA = `
     .cl-contact-date::-webkit-date-and-time-value{text-align:center;min-width:0}
     #m-content .ag{max-width:100%!important;overflow:hidden}
     #m-content .ag-pick,#m-content .ag-form{min-width:0!important}
+    .cl-booking-overlay{padding:max(10px,env(safe-area-inset-top)) 0 max(16px,env(safe-area-inset-bottom));background:rgba(11,18,32,.72)}
+    .cl-booking-panel{width:100%;min-height:100dvh;margin:0;border-radius:0;box-shadow:none}
+    .cl-booking-modal-head{top:0;padding:16px 16px 14px;border-radius:0}
+    .cl-booking-modal-head h2{font-size:22px}
+    .cl-booking-modal-body{padding:16px 16px 28px}
+    .cl-booking-modal-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+    .cl-booking-box{padding:15px;border-radius:17px}
+    .cl-booking-form{grid-template-columns:minmax(0,1fr);gap:11px}
+    .cl-booking-form label,.cl-booking-form label.full,.cl-booking-consent,.cl-booking-submit,.cl-booking-error{grid-column:1/-1}
+    .cl-booking-phone{grid-template-columns:98px minmax(0,1fr)}
+    .cl-booking-times{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
 </style>
 <script id="cl-unified-booking-cta">
 (function(){
   var CTA_TEXTS=["Continuar por WhatsApp","Hablar por WhatsApp","Agendar videollamada de diagnóstico","Solicitar videollamada","Solicitar videollamada de diagnóstico","Agendar diagnóstico"];
   var inline={root:null,slots:[],slot:"",loading:false};
+  var modalState={slots:[],day:"",slot:"",loading:false};
 
   function norm(el){return (el&&el.textContent?el.textContent:"").replace(/\\s+/g," ").trim();}
   function isInsideModal(el){return !!(el&&el.closest&&el.closest("#modal,.modal,.m-overlay,#m-overlay,[role=dialog],#m-content,.ag,.ag-form"));}
@@ -600,6 +650,142 @@ const UNIFIED_BOOKING_CTA = `
     }
   }
 
+  function modalDateLabel(value){
+    return new Intl.DateTimeFormat("es-CO",{weekday:"short",day:"numeric",month:"short",timeZone:"America/Bogota"}).format(new Date(value)).replace(".","");
+  }
+
+  function ensureBookingModal(){
+    var existing=document.getElementById("cl-booking-overlay");
+    if(existing)return existing;
+    var overlay=document.createElement("div");
+    overlay.id="cl-booking-overlay";
+    overlay.className="cl-booking-overlay";
+    overlay.setAttribute("role","dialog");
+    overlay.setAttribute("aria-modal","true");
+    overlay.setAttribute("aria-labelledby","cl-booking-title");
+    overlay.innerHTML='<div class="cl-booking-panel"><div class="cl-booking-modal-head"><div><h2 id="cl-booking-title">Agenda tu diagnóstico</h2><p>Elige un horario y completa tus datos. La cita queda registrada en nuestro CRM.</p></div><button type="button" class="cl-booking-close" aria-label="Cerrar">×</button></div><div class="cl-booking-modal-body"><div class="cl-booking-modal-grid"><section class="cl-booking-box"><h3>1. Elige fecha y hora</h3><p>Todos los horarios se muestran en hora de Colombia.</p><div class="cl-booking-days"><span class="cl-booking-loading">Consultando disponibilidad…</span></div><div class="cl-booking-times"></div><p class="cl-booking-summary">Selecciona un día y una hora.</p></section><section class="cl-booking-box"><h3>2. Tus datos</h3><p>Los usamos únicamente para gestionar tu diagnóstico.</p><form class="cl-booking-form" novalidate><label><span>Nombre y apellido</span><input name="full_name" autocomplete="name" required></label><label><span>Marca personal o empresa</span><input name="brand_name" autocomplete="organization"></label><label class="full"><span>WhatsApp</span><span class="cl-booking-phone"><select name="country_code" aria-label="Indicativo"><option value="+57">🇨🇴 +57</option></select><input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required></span></label><label class="full"><span>Correo</span><input name="email" type="email" inputmode="email" autocomplete="email" required></label><label class="full"><span>¿Qué servicio te interesa?</span><select name="solution_interest" required><option value="">Selecciona una opción</option><option>Creamos sistemas con IA a la medida</option><option>Agentes de IA automatizados</option><option>Atraemos clientes con marketing digital</option><option>Aún no lo sé, quiero un diagnóstico</option></select></label><label class="cl-booking-consent"><input name="consent" type="checkbox" required><span>Autorizo el uso de mis datos para gestionar esta solicitud y contactarme sobre el diagnóstico.</span></label><p class="cl-booking-error" role="alert"></p><button class="cl-booking-submit" type="submit">Agendar diagnóstico</button></form></section></div></div></div>';
+    document.body.appendChild(overlay);
+    overlay.querySelector(".cl-booking-close").addEventListener("click",closeBookingModal);
+    overlay.addEventListener("click",function(event){if(event.target===overlay)closeBookingModal();});
+    overlay.querySelector(".cl-booking-form").addEventListener("submit",submitModalBooking);
+    return overlay;
+  }
+
+  function closeBookingModal(){
+    var overlay=document.getElementById("cl-booking-overlay");
+    if(!overlay)return;
+    overlay.classList.remove("is-open");
+    document.body.classList.remove("cl-booking-modal-open");
+  }
+
+  function renderModalTimes(){
+    var overlay=ensureBookingModal();
+    var host=overlay.querySelector(".cl-booking-times");
+    var rows=modalState.slots.filter(function(slot){return dateKey(slot.slot_start)===modalState.day;});
+    modalState.slot="";
+    host.innerHTML=rows.length?rows.map(function(slot){return '<button type="button" class="cl-booking-time" data-slot="'+slot.slot_start+'">'+timeLabel(slot.slot_start)+'</button>';}).join(""):'<span class="cl-booking-loading">No hay horarios disponibles para este día.</span>';
+    host.querySelectorAll(".cl-booking-time").forEach(function(button){
+      button.addEventListener("click",function(){
+        modalState.slot=button.getAttribute("data-slot")||"";
+        host.querySelectorAll(".cl-booking-time").forEach(function(x){x.classList.toggle("is-active",x===button);});
+        overlay.querySelector(".cl-booking-summary").textContent=modalState.slot?"Horario seleccionado: "+longDate(modalState.slot)+" · hora de Colombia.":"Selecciona un día y una hora.";
+        overlay.querySelector(".cl-booking-error").textContent="";
+      });
+    });
+  }
+
+  function renderModalDays(){
+    var overlay=ensureBookingModal();
+    var host=overlay.querySelector(".cl-booking-days");
+    var keys=Array.from(new Set(modalState.slots.map(function(slot){return dateKey(slot.slot_start);}))).sort();
+    if(!keys.length){host.innerHTML='<span class="cl-booking-loading">No hay horarios disponibles en los próximos días.</span>';overlay.querySelector(".cl-booking-times").innerHTML="";return;}
+    host.innerHTML=keys.map(function(key){
+      var first=modalState.slots.find(function(slot){return dateKey(slot.slot_start)===key;});
+      return '<button type="button" class="cl-booking-day" data-day="'+key+'">'+modalDateLabel(first.slot_start)+'</button>';
+    }).join("");
+    host.querySelectorAll(".cl-booking-day").forEach(function(button){
+      button.addEventListener("click",function(){
+        modalState.day=button.getAttribute("data-day")||"";modalState.slot="";
+        host.querySelectorAll(".cl-booking-day").forEach(function(x){x.classList.toggle("is-active",x===button);});
+        renderModalTimes();
+      });
+    });
+    if(!modalState.day){
+      var first=host.querySelector(".cl-booking-day");
+      if(first){modalState.day=first.getAttribute("data-day")||"";first.classList.add("is-active");renderModalTimes();}
+    }
+  }
+
+  async function loadModalAvailability(){
+    if(modalState.loading)return;
+    modalState.loading=true;modalState.slots=[];modalState.day="";modalState.slot="";
+    var overlay=ensureBookingModal();
+    overlay.querySelector(".cl-booking-days").innerHTML='<span class="cl-booking-loading">Consultando disponibilidad…</span>';
+    overlay.querySelector(".cl-booking-times").innerHTML="";
+    overlay.querySelector(".cl-booking-summary").textContent="Selecciona un día y una hora.";
+    try{
+      var response=await fetch("/api/booking?start="+encodeURIComponent(dateKey(new Date()))+"&days=60",{headers:{"Accept":"application/json"}});
+      var data=await response.json();
+      if(!response.ok||!data.ok)throw new Error(data.error||"No fue posible cargar la disponibilidad.");
+      modalState.slots=Array.isArray(data.slots)?data.slots:[];
+      renderModalDays();
+    }catch(error){
+      overlay.querySelector(".cl-booking-days").innerHTML='<span class="cl-booking-loading">No pudimos consultar la disponibilidad. Cierra e intenta nuevamente.</span>';
+    }
+    modalState.loading=false;
+  }
+
+  function openBookingModal(){
+    var overlay=ensureBookingModal();
+    overlay.classList.add("is-open");
+    document.body.classList.add("cl-booking-modal-open");
+    overlay.scrollTop=0;
+    var root=findContactRoot();
+    if(root){
+      var data=collect(root);
+      var form=overlay.querySelector(".cl-booking-form");
+      if(data.name)form.elements.full_name.value=data.name;
+      if(data.brand)form.elements.brand_name.value=data.brand;
+      if(data.phone)form.elements.whatsapp.value=data.phone.replace(/^\+?57/,"");
+      if(data.email)form.elements.email.value=data.email;
+    }
+    loadModalAvailability();
+    requestAnimationFrame(function(){overlay.scrollTop=0;});
+  }
+
+  async function submitModalBooking(event){
+    event.preventDefault();
+    var form=event.currentTarget;
+    var overlay=ensureBookingModal();
+    var error=overlay.querySelector(".cl-booking-error");
+    error.textContent="";
+    if(!modalState.slot){error.textContent="Elige primero un día y una hora disponibles.";return;}
+    if(!form.reportValidity())return;
+    var button=form.querySelector(".cl-booking-submit");
+    button.disabled=true;button.textContent="Agendando…";
+    var code=form.elements.country_code.value||"+57";
+    var phone=String(form.elements.whatsapp.value||"").trim();
+    var fullPhone=(phone.indexOf("+")===0?phone:code+phone).replace(/\s+/g,"");
+    try{
+      var response=await fetch("/api/booking",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({
+        full_name:String(form.elements.full_name.value||"").trim(),
+        brand_name:String(form.elements.brand_name.value||"").trim(),
+        country:"Colombia",country_code:code,whatsapp:fullPhone,
+        email:String(form.elements.email.value||"").trim(),
+        solution_interest:String(form.elements.solution_interest.value||"").trim(),
+        starts_at:modalState.slot
+      })});
+      var data=await response.json();
+      if(!response.ok||!data.ok)throw new Error(data.error||"No fue posible confirmar el diagnóstico.");
+      overlay.querySelector(".cl-booking-modal-body").innerHTML='<div class="cl-booking-success"><h3>Diagnóstico agendado.</h3><p>Tu cita quedó confirmada para <strong>'+longDate(modalState.slot)+'</strong>, hora de Colombia. Ya quedó registrada en nuestro CRM.</p></div>';
+      overlay.scrollTop=0;
+    }catch(err){
+      error.textContent=err&&err.message?err.message:"No pudimos guardar la cita. Intenta nuevamente.";
+      button.disabled=false;button.textContent="Agendar diagnóstico";
+      if(String(err&&err.message||"").toLowerCase().indexOf("horario")!==-1)loadModalAvailability();
+    }
+  }
+
   function normalize(){
     var root=findContactRoot();
     if(root)installInlineScheduler(root);
@@ -621,9 +807,8 @@ const UNIFIED_BOOKING_CTA = `
       installInlineScheduler(root);submitInline(root,action);return;
     }
 
-    if(typeof window.openModal!=="function")return;
     event.preventDefault();event.stopPropagation();if(event.stopImmediatePropagation)event.stopImmediatePropagation();
-    window.openModal("booking");
+    openBookingModal();
   },true);
 
   if(document.readyState==="loading"){

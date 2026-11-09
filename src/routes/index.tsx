@@ -500,9 +500,18 @@ const UNIFIED_BOOKING_CTA = `
 
   function fieldByLabel(root,labelText){
     var labels=Array.from(root.querySelectorAll("label"));
-    var label=labels.find(function(el){return norm(el).toLowerCase().indexOf(labelText.toLowerCase())!==-1;});
+    var wanted=labelText.toLowerCase();
+    var label=labels.find(function(el){return norm(el).toLowerCase().indexOf(wanted)!==-1;});
     if(label){
-      var input=label.querySelector("input,select,textarea");
+      var controls=Array.from(label.querySelectorAll("input,textarea,select"));
+      var input=null;
+      if(wanted.indexOf("whatsapp")!==-1){
+        input=controls.find(function(el){return el.tagName==="INPUT"&&(el.type==="tel"||el.type==="text");})
+          || controls.find(function(el){return el.tagName==="INPUT"&&el.type!=="checkbox"&&el.type!=="radio";});
+      }else{
+        input=controls.find(function(el){return el.tagName==="INPUT"||el.tagName==="TEXTAREA";})
+          || controls[0];
+      }
       if(input)return input;
       if(label.htmlFor){var linked=root.querySelector("#"+CSS.escape(label.htmlFor));if(linked)return linked;}
       var next=label.nextElementSibling;

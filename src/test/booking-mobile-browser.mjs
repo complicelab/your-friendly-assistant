@@ -2,12 +2,12 @@ import fs from 'node:fs';
 import { chromium } from '@playwright/test';
 
 const source=fs.readFileSync(new URL('../routes/index.tsx',import.meta.url),'utf8');
-const startMarker='const UNIFIED_BOOKING_CTA = `';
-const start=source.indexOf(startMarker);
-const functionStart=source.indexOf('function getOriginalHtml()',start);
-const end=functionStart>0?source.lastIndexOf('`;',functionStart):-1;
-if(start<0||functionStart<0||end<0||end<=start)throw new Error('Could not extract UNIFIED_BOOKING_CTA from index.tsx');
-const runtime=source.slice(start+startMarker.length,end);
+const declaration=source.indexOf('const UNIFIED_BOOKING_CTA');
+const firstTick=declaration>=0?source.indexOf(String.fromCharCode(96),declaration):-1;
+const functionStart=source.indexOf('function getOriginalHtml()',Math.max(0,declaration));
+const lastTick=functionStart>0?source.lastIndexOf(String.fromCharCode(96),functionStart):-1;
+if(declaration<0||firstTick<0||functionStart<0||lastTick<=firstTick)throw new Error('Could not extract UNIFIED_BOOKING_CTA from index.tsx');
+const runtime=source.slice(firstTick+1,lastTick);
 
 const browser=await chromium.launch({headless:true});
 const context=await browser.newContext({

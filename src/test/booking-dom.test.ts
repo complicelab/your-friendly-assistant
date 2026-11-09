@@ -1,6 +1,19 @@
 import { describe, expect, it, vi } from 'vitest';
 import { JSDOM } from 'jsdom';
 import fs from 'node:fs';
+import { gunzipSync } from 'node:zlib';
+import part1 from '../data/v10/part-1';
+import part2 from '../data/v10/part-2';
+import part3 from '../data/v10/part-3';
+import part4 from '../data/v10/part-4';
+import part5 from '../data/v10/part-5';
+import part6 from '../data/v10/part-6';
+import part7 from '../data/v10/part-7';
+import part8 from '../data/v10/part-8';
+import part9 from '../data/v10/part-9';
+import part10 from '../data/v10/part-10';
+import part11 from '../data/v10/part-11';
+import part12 from '../data/v10/part-12';
 
 function bookingScript(){
   const source=fs.readFileSync(new URL('../routes/index.tsx',import.meta.url),'utf8');
@@ -78,4 +91,46 @@ describe('booking client DOM flow',()=>{
     expect(overlay?.classList.contains('is-open')).toBe(true);
     expect(overlay?.querySelector('.cl-booking-form')).toBeTruthy();
   });
+
+  it('enhances the actual compressed homepage contact form',async()=>{
+    const compressed=part1+part2+part3+part4+part5+part6+part7+part8+part9+part10+part11+part12;
+    const html=gunzipSync(Buffer.from(compressed,'base64')).toString('utf8');
+    const dom=new JSDOM(html,{url:'https://complicelab.com/',runScripts:'outside-only',pretendToBeVisual:true});
+    const {window}=dom;
+    Object.defineProperty(window,'matchMedia',{value:()=>({matches:true,addEventListener:()=>{},removeEventListener:()=>{}})});
+    Object.defineProperty(window,'visualViewport',{value:{height:780,addEventListener:()=>{},removeEventListener:()=>{}}});
+    Object.defineProperty(window,'requestAnimationFrame',{value:(cb:FrameRequestCallback)=>{cb(0);return 1;}});
+    const slots=[
+      {slot_start:'2026-11-10T14:00:00-05:00',slot_end:'2026-11-10T15:00:00-05:00'},
+      {slot_start:'2026-11-10T15:00:00-05:00',slot_end:'2026-11-10T16:00:00-05:00'}
+    ];
+    Object.defineProperty(window,'fetch',{value:vi.fn(async()=>({
+      ok:true,
+      json:async()=>({ok:true,slots})
+    }))});
+
+    window.eval(bookingScript());
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(window.document.querySelectorAll('.cl-contact-date').length).toBe(1);
+    expect(window.document.querySelectorAll('.cl-contact-time').length).toBe(1);
+
+    const inlineBox=window.document.querySelector('.cl-contact-booking');
+    expect(inlineBox).toBeTruthy();
+    const inlineRoot=inlineBox?.parentElement;
+    expect((inlineRoot?.textContent||'').toLowerCase()).toContain('autorizo');
+
+    const external=Array.from(window.document.querySelectorAll('a,button')).find(el=>
+      (el.textContent||'').toLowerCase().includes('agendar diagnóstico') &&
+      !el.closest('.cl-contact-booking') &&
+      !el.closest('#cl-booking-overlay')
+    ) as HTMLElement | undefined;
+    expect(external).toBeTruthy();
+    external?.dispatchEvent(new window.MouseEvent('click',{bubbles:true,cancelable:true}));
+
+    const overlay=window.document.querySelector('#cl-booking-overlay');
+    expect(overlay?.classList.contains('is-open')).toBe(true);
+  });
+
 });

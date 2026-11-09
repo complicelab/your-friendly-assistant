@@ -8,11 +8,14 @@ export const bookingStyles = `
   .ag{max-width:100%}
   .days,.slots{max-width:100%;box-sizing:border-box}
   @media(max-width:700px){
-    .ag{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:16px!important;width:100%!important;max-width:100%!important}
-    .ag-pick,.ag-form{width:100%!important;max-width:100%!important;min-width:0!important}
-    .days,.slots{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important}
+    #m-content{width:100%!important;max-width:100%!important;min-width:0!important;overflow:visible!important;max-height:none!important;touch-action:pan-y!important}
+    #m-host{width:100%!important;max-width:100%!important;min-width:0!important;overflow:visible!important}
+    .ag{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:16px!important;width:100%!important;max-width:100%!important;min-width:0!important;overflow:visible!important}
+    .ag-pick,.ag-form{width:100%!important;max-width:100%!important;min-width:0!important;overflow:visible!important}
+    .days,.slots{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important;touch-action:pan-x pan-y!important}
     .days::-webkit-scrollbar,.slots::-webkit-scrollbar{display:none!important}
     .day,.slot{max-width:100%;box-sizing:border-box}
+    #m-form input,#m-form select,#m-form textarea,#m-form button{max-width:100%;box-sizing:border-box}
   }
 </style>
 `;
@@ -131,12 +134,45 @@ export function replaceBookingRuntime(html: string, config: BookingPublicConfig)
         $('#booking-retry').addEventListener('click',loadBookingAvailability);
       });
     }
+    function enableMobileModalScroll(){
+      if(!window.matchMedia||!window.matchMedia('(max-width:700px)').matches)return;
+      var node=mcontent;
+      while(node&&node!==document.body){
+        var style=window.getComputedStyle?window.getComputedStyle(node):null;
+        if(node!==mcontent&&style&&(style.position==='fixed'||style.position==='absolute'||style.overflowY==='hidden'||style.overflow==='hidden')){
+          node.style.setProperty('max-height','none','important');
+          node.style.setProperty('height','auto','important');
+          node.style.setProperty('overflow','visible','important');
+          node.style.setProperty('overflow-y','visible','important');
+        }
+        node.style.setProperty('touch-action','pan-y','important');
+        node=node.parentElement;
+      }
+      var overlay=mcontent;
+      while(overlay&&overlay!==document.body){
+        var s=window.getComputedStyle?window.getComputedStyle(overlay):null;
+        if(s&&s.position==='fixed'){
+          overlay.style.setProperty('overflow-y','auto','important');
+          overlay.style.setProperty('overflow-x','hidden','important');
+          overlay.style.setProperty('-webkit-overflow-scrolling','touch','important');
+          overlay.style.setProperty('overscroll-behavior','contain','important');
+          overlay.style.setProperty('touch-action','pan-y','important');
+          overlay.style.setProperty('align-items','flex-start','important');
+          overlay.style.setProperty('padding-top','max(16px, env(safe-area-inset-top))','important');
+          overlay.style.setProperty('padding-bottom','max(24px, env(safe-area-inset-bottom))','important');
+          break;
+        }
+        overlay=overlay.parentElement;
+      }
+      document.documentElement.style.setProperty('overscroll-behavior-y','none');
+    }
     mcontent.innerHTML='<div id="m-host"><div class="ag"><div class="ag-pick"><h2 class="m-title" id="m-title">Agenda tu diagnóstico</h2><p class="m-sub">Elige un día y una hora. Todos los horarios se muestran en America/Bogota: <b>Hora de Colombia</b>.</p>'+
       '<h3 id="d-l">Día</h3><div class="days" role="radiogroup" aria-labelledby="d-l"><p class="booking-loading">Consultando disponibilidad real…</p></div>'+
       '<h3 id="s-l">Hora</h3><div class="slots" role="radiogroup" aria-labelledby="s-l"></div>'+
       '<p class="err" id="slot-err" role="alert"></p><p class="summary" id="summary" aria-live="polite"></p>'+
       '<p class="m-note">El diagnóstico es una sesión gratuita. Al confirmar, la cita queda registrada en nuestro CRM para que lleguemos preparados a la conversación.</p></div>'+
       '<div class="ag-form">'+leadForm('m','Agendar diagnóstico')+'</div></div></div>';
+    enableMobileModalScroll();
     var f2=$('#m-form');
     bindLead(f2,{
       extraCheck:function(){if(!bookingSelection.day||!bookingSelection.slot){$('#slot-err').textContent='Elige un día y una hora disponibles.';return $('.day',mcontent)||$('.days',mcontent);}return null;},

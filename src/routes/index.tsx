@@ -54,48 +54,43 @@ const SECTION_TITLE_WEIGHT_OVERRIDE = `
 
 const MOBILE_FLOW_FIXES = `
 <style id="mobile-flow-fixes-v10">
-  @media (max-width: 700px) {
-    .cl-mobile-step-track {
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      scroll-snap-type: x mandatory !important;
-      scroll-behavior: smooth !important;
-      -webkit-overflow-scrolling: touch !important;
-      scrollbar-width: none !important;
-      overscroll-behavior-x: contain !important;
-      padding-right: 18vw !important;
+  @media(max-width:700px){
+    html,body{overflow-x:hidden!important;overscroll-behavior-x:none}
+    body{-webkit-overflow-scrolling:touch}
+    #pb-steps.cl-mobile-step-track{
+      display:flex!important;
+      gap:10px!important;
+      width:100%!important;
+      max-width:100vw!important;
+      overflow-x:auto!important;
+      overflow-y:hidden!important;
+      scroll-snap-type:x mandatory!important;
+      scroll-behavior:smooth!important;
+      -webkit-overflow-scrolling:touch!important;
+      scrollbar-width:none!important;
+      overscroll-behavior-x:contain!important;
+      touch-action:pan-x pan-y!important;
+      padding-inline:calc(50vw - 112px)!important;
+      scroll-padding-inline:calc(50vw - 112px)!important;
     }
-
-    .cl-mobile-step-track::-webkit-scrollbar {
-      display: none !important;
+    #pb-steps.cl-mobile-step-track::-webkit-scrollbar{display:none!important}
+    #pb-steps.cl-mobile-step-track .p-st{
+      flex:0 0 auto!important;
+      min-width:max-content!important;
+      scroll-snap-align:center!important;
+      scroll-snap-stop:normal!important;
     }
-
-    .cl-mobile-step-track > * {
-      scroll-snap-align: center !important;
-      flex: 0 0 auto !important;
+    .cl-mobile-flow-line{
+      z-index:3!important;
+      opacity:1!important;
+      visibility:visible!important;
+      pointer-events:none!important;
     }
-
-    .cl-mobile-step-track::after {
-      content: "";
-      flex: 0 0 10vw;
-      width: 10vw;
-      display: block;
-    }
-
-    .cl-mobile-flow-line {
-      z-index: 3 !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: none !important;
-    }
-
-    .cl-mobile-flow-node {
-      z-index: 4 !important;
-      position: relative !important;
-    }
+    .cl-mobile-flow-node{z-index:4!important;position:relative!important}
+    .cl-booking-cta-label{position:relative!important;right:auto!important;left:auto!important}
   }
 </style>
-`;
+`
 
 
 const HOMEPAGE_COPY_FIX = `
@@ -292,70 +287,48 @@ const MOBILE_FLOW_SCRIPT = `
   function fixStepScroller() {
     if (!window.matchMedia("(max-width: 700px)").matches) return;
 
-    var a = exactText("Te buscan");
-    var b = exactText("Tu página");
-    if (!a || !b) return;
-
-    var base = commonAncestor(a, b);
-    if (!base) return;
-
-    var ca = directChildUnder(a, base);
-    var cb = directChildUnder(b, base);
-
-    if (!ca || !cb || ca === cb) {
-      base = commonAncestor(a.parentElement, b.parentElement);
-      if (!base) return;
-    }
-
-    var candidates = [base, base.parentElement].filter(Boolean);
-    var track = candidates.find(function (el) {
-      var s = getComputedStyle(el);
-      return el.scrollWidth > el.clientWidth + 20 || s.display === "flex" || s.display === "grid";
-    }) || base;
-
+    var track=document.getElementById("pb-steps");
+    if(!track)return;
     track.classList.add("cl-mobile-step-track");
 
-    Array.from(track.children).forEach(function (child) {
-      child.style.scrollSnapAlign = "center";
-      child.style.flexShrink = "0";
-    });
+    var items=Array.from(track.querySelectorAll(".p-st"));
+    if(items.length<2)return;
 
-    if (track.dataset.clAutoScroll === "1") return;
-    track.dataset.clAutoScroll = "1";
-
-    var items = Array.from(track.children).filter(function (el) {
-      var r = el.getBoundingClientRect();
-      return r.width > 80 && r.height > 30;
-    });
-    if (items.length < 3) return;
-
-    var index = 0;
-    var paused = false;
-
-    function centerItem(item, behavior) {
-      if (!item) return;
-      var rawLeft = item.offsetLeft + item.offsetWidth / 2 - track.clientWidth / 2;
-      var maxLeft = Math.max(0, track.scrollWidth - track.clientWidth);
-      var left = Math.max(0, Math.min(maxLeft, rawLeft));
-      track.scrollTo({ left: left, behavior: behavior || "smooth" });
+    function activeItem(){
+      return items.find(function(el){
+        return el.classList.contains("on")||
+          el.classList.contains("s")||
+          el.classList.contains("active")||
+          el.getAttribute("aria-selected")==="true"||
+          el.getAttribute("aria-current")==="true";
+      })||items[0];
     }
 
-    function goNext() {
-      if (paused || document.hidden) return;
-      index = (index + 1) % items.length;
-      centerItem(items[index], "smooth");
+    function center(el,behavior){
+      if(!el)return;
+      var left=el.offsetLeft-(track.clientWidth-el.offsetWidth)/2;
+      var max=Math.max(0,track.scrollWidth-track.clientWidth);
+      track.scrollTo({left:Math.max(0,Math.min(max,left)),behavior:behavior||"smooth"});
     }
 
-    centerItem(items[0], "auto");
+    if(track.dataset.clCenterReady!=="1"){
+      track.dataset.clCenterReady="1";
+      items.forEach(function(item){
+        item.addEventListener("click",function(){
+          requestAnimationFrame(function(){center(item,"smooth");});
+        },{passive:true});
+      });
 
-    var timer = setInterval(goNext, 2400);
+      var observer=new MutationObserver(function(){
+        var current=activeItem();
+        requestAnimationFrame(function(){center(current,"smooth");});
+      });
+      items.forEach(function(item){
+        observer.observe(item,{attributes:true,attributeFilter:["class","aria-selected","aria-current"]});
+      });
+    }
 
-    ["touchstart", "pointerdown", "wheel"].forEach(function (evt) {
-      track.addEventListener(evt, function () {
-        paused = true;
-        clearInterval(timer);
-      }, { passive: true, once: true });
-    });
+    requestAnimationFrame(function(){center(activeItem(),"auto");});
   }
 
   function fixDiagnosticFlow() {
@@ -415,11 +388,9 @@ const MOBILE_FLOW_SCRIPT = `
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
       setTimeout(run, 120);
-      setTimeout(run, 700);
     });
   } else {
     setTimeout(run, 120);
-    setTimeout(run, 700);
   }
 
   window.addEventListener("resize", function () {
@@ -434,345 +405,72 @@ const MOBILE_FLOW_SCRIPT = `
 const UNIFIED_BOOKING_CTA = `
 <style id="cl-unified-booking-cta-styles">
   .cl-booking-cta-label{white-space:nowrap}
-  .cl-inline-booking-root{height:auto!important;max-height:none!important;overflow:visible!important}
-  .cl-inline-booking{grid-column:1/-1;margin:4px 0 8px;padding:0;border:0;background:transparent;box-shadow:none;overflow:visible}
-  .cl-inline-booking-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .cl-inline-booking-field{display:grid;gap:6px;min-width:0}
-  .cl-inline-booking-field>span{font:700 11px/1.25 "Montserrat",sans-serif;color:#17233a}
-  .cl-inline-date,.cl-inline-time-select{width:100%;height:48px;border:1px solid #dfe5ee;border-radius:14px;background:#fff;color:#17233a;padding:0 13px;font:500 12px/1 "Montserrat",sans-serif;outline:none;transition:border-color .18s ease,box-shadow .18s ease}
-  .cl-inline-date:focus,.cl-inline-time-select:focus{border-color:#4f6ff0;box-shadow:0 0 0 3px rgba(79,111,240,.10)}
-  .cl-inline-time-select:disabled{color:#8a96aa;background:#f7f9fc;cursor:not-allowed}
-  .cl-inline-booking-note{grid-column:1/-1;margin:0;font:500 10px/1.45 "Montserrat",sans-serif;color:#7b879b}
-  .cl-inline-booking-note.is-error{color:#a72a44}
-  .cl-inline-booking-summary{display:none}
-  .cl-inline-success{grid-column:1/-1;padding:28px 22px;border-radius:22px;border:1px solid #dce5f3;background:linear-gradient(145deg,#f8fbff,#f3f0ff);text-align:left}
-  .cl-inline-success i{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#246ce8,#6659ed);color:#fff;font-style:normal;font-size:20px;margin-bottom:14px}
-  .cl-inline-success h3{margin:0 0 8px;font:700 24px/1.1 "Poppins",sans-serif;color:#0d172a}
-  .cl-inline-success p{margin:0;color:#66758f;font:500 13px/1.55 "Montserrat",sans-serif}
-  .cl-inline-success strong{color:#17233a}
   @media(max-width:700px){
-    .cl-inline-booking-grid{grid-template-columns:1fr}
-    .cl-inline-date,.cl-inline-time-select{height:46px}
+    a.cl-booking-cta-label,button.cl-booking-cta-label{max-width:100%;white-space:normal}
   }
 </style>
 <script id="cl-unified-booking-cta">
 (function(){
-  var CTA_TEXTS=["Continuar por WhatsApp","Hablar por WhatsApp","Agendar videollamada de diagnóstico","Solicitar videollamada","Solicitar videollamada de diagnóstico"];
-  var inlineState={form:null,slots:[],slot:"",loading:false};
+  var CTA_TEXTS=[
+    "Continuar por WhatsApp",
+    "Hablar por WhatsApp",
+    "Agendar videollamada de diagnóstico",
+    "Solicitar videollamada",
+    "Solicitar videollamada de diagnóstico",
+    "Agendar diagnóstico"
+  ];
 
-  function norm(el){return (el&&el.textContent?el.textContent:"").replaceAll("\\n"," ").replaceAll("\\t"," ").split(" ").filter(Boolean).join(" ").trim();}
-  function bookingDateKey(value){
-    var parts=new Intl.DateTimeFormat("en-US",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:"America/Bogota"}).formatToParts(value);
-    var map={};parts.forEach(function(p){map[p.type]=p.value;});
-    return map.year+"-"+map.month+"-"+map.day;
-  }
-  function longDate(value){return new Intl.DateTimeFormat("es-CO",{weekday:"long",day:"numeric",month:"long",year:"numeric",hour:"numeric",minute:"2-digit",hour12:true,timeZone:"America/Bogota"}).format(new Date(value));}
-  function shortDay(value){return new Intl.DateTimeFormat("es-CO",{weekday:"short",timeZone:"America/Bogota"}).format(new Date(value)).replace(".","");}
-  function shortDate(value){return new Intl.DateTimeFormat("es-CO",{day:"numeric",month:"short",timeZone:"America/Bogota"}).format(new Date(value)).replace(".","");}
-  function shortTime(value){return new Intl.DateTimeFormat("es-CO",{hour:"numeric",minute:"2-digit",hour12:true,timeZone:"America/Bogota"}).format(new Date(value));}
-  function inputDate(value){
-    var parts=new Intl.DateTimeFormat("en-CA",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:"America/Bogota"}).formatToParts(new Date(value));
-    var map={};parts.forEach(function(p){map[p.type]=p.value;});
-    return map.year+"-"+map.month+"-"+map.day;
-  }
-  function setTimeOptions(form,dateKey){
-    var select=form.querySelector(".cl-inline-time-select");
-    if(!select)return;
-    var available=inlineState.slots.filter(function(slot){return bookingDateKey(new Date(slot.slot_start))===dateKey;});
-    select.innerHTML='<option value="">'+(available.length?"Selecciona una hora":"Sin horarios disponibles")+'</option>'+
-      available.map(function(slot){return '<option value="'+slot.slot_start+'">'+shortTime(slot.slot_start)+'</option>';}).join("");
-    select.disabled=!available.length;
-    inlineState.slot="";
+  function norm(el){
+    return (el&&el.textContent?el.textContent:"").replace(/\\s+/g," ").trim();
   }
 
-  function isBookingModal(el){
-    if(!el)return false;
-    var node=el;
-    for(var i=0;i<12&&node;i++,node=node.parentElement){
-      var txt=norm(node);
-      var hasPicker=!!(node.querySelector&&node.querySelector(".days")&&node.querySelector(".slots"));
-      if(hasPicker&&(txt.indexOf("Agenda tu diagnóstico")!==-1||txt.indexOf("Agenda tu videollamada de diagnóstico")!==-1))return true;
-    }
-    return false;
+  function isRealBookingUi(el){
+    if(!el||!el.closest)return false;
+    return !!el.closest("#modal,.modal,.m-overlay,#m-overlay,[role=dialog],#m-content,.ag,.ag-form");
   }
 
-  function fieldByLabel(root,labelText){
-    var labels=Array.from(root.querySelectorAll("label"));
-    var wanted=labelText.toLowerCase();
-    var label=labels.find(function(el){return norm(el).toLowerCase().indexOf(wanted)!==-1;});
-    if(label){
-      var controls=Array.from(label.querySelectorAll("input,textarea,select"));
-      var input=null;
-      if(wanted.indexOf("whatsapp")!==-1){
-        input=controls.find(function(el){return el.tagName==="INPUT"&&(el.type==="tel"||el.type==="text");})
-          || controls.find(function(el){return el.tagName==="INPUT"&&el.type!=="checkbox"&&el.type!=="radio";});
-      }else{
-        input=controls.find(function(el){return el.tagName==="INPUT"||el.tagName==="TEXTAREA";})
-          || controls[0];
-      }
-      if(input)return input;
-      if(label.htmlFor){var linked=root.querySelector("#"+CSS.escape(label.htmlFor));if(linked)return linked;}
-      var next=label.nextElementSibling;
-      if(next&&next.matches&&next.matches("input,select,textarea"))return next;
-    }
-    return null;
-  }
-
-  function valueFrom(form,names,label){
-    if(!form)return "";
-    for(var i=0;i<names.length;i++){
-      var el=form.elements&&form.elements.namedItem?form.elements.namedItem(names[i]):null;
-      if(el&&typeof el.value==="string"&&el.value.trim())return el.value.trim();
-    }
-    var labelled=fieldByLabel(form,label);
-    return labelled&&typeof labelled.value==="string"?labelled.value.trim():"";
-  }
-
-  function serviceFromForm(form){
-    var phrases=["sistemas con ia","agentes de ia","marketing digital","quiero un diagnóstico","quiero un diagnostico"];
-    var radios=Array.from(form.querySelectorAll('input[type="radio"]:checked,input[type="checkbox"]:checked'));
-    for(var i=0;i<radios.length;i++){
-      var lab=radios[i].closest("label");
-      if(lab&&phrases.some(function(p){return norm(lab).toLowerCase().indexOf(p)!==-1;}))return norm(lab);
-    }
-    var active=Array.from(form.querySelectorAll("label,button,[role=button]")).find(function(el){
-      var t=norm(el).toLowerCase();
-      if(!phrases.some(function(p){return t.indexOf(p)!==-1;}))return false;
-      var cls=(el.className||"").toString();
-      return /active|selected|checked|(^|\s)(sel|on|s)(\s|$)/i.test(cls)||el.getAttribute("aria-checked")==="true"||el.getAttribute("aria-pressed")==="true";
-    });
-    return active?norm(active):"";
-  }
-
-  function collect(form){
-    var code="";
-    var codeSelect=Array.from(form.querySelectorAll("select")).find(function(el){return String(el.value||"").trim().charAt(0)==="+";});
-    if(codeSelect)code=codeSelect.value;
-    var phone=valueFrom(form,["phone","whatsapp","telefono"],"WhatsApp");
-    return {
-      name:valueFrom(form,["name","nombre","full_name"],"Nombre y apellido"),
-      brand:valueFrom(form,["brand","marca","brand_name"],"Marca personal o empresa"),
-      phone:phone,
-      code:code||"+57",
-      email:valueFrom(form,["email","correo"],"Correo"),
-      country:valueFrom(form,["pais","country"],"País")||"Colombia",
-      service:serviceFromForm(form)
-    };
-  }
-
-  function isContactBookingRoot(root){
-    if(!root||!root.querySelectorAll)return false;
-    var text=norm(root).toLowerCase();
-    return root.querySelectorAll("input").length>=3
-      &&text.indexOf("marca personal o empresa")!==-1
-      &&text.indexOf("whatsapp")!==-1
-      &&text.indexOf("correo")!==-1
-      &&text.indexOf("servicio te interesa")!==-1;
-  }
-
-  function contactBookingRoot(from){
-    if(!from)return null;
-    var node=from;
-    while(node&&node!==document.body){
-      if(isContactBookingRoot(node))return node;
-      node=node.parentElement;
-    }
-    return null;
-  }
-
-  function findContactBookingRoot(){
-    var candidates=Array.from(document.querySelectorAll("form,section,div")).filter(isContactBookingRoot);
-    if(!candidates.length)return null;
-    candidates.sort(function(a,b){
-      var ai=a.querySelectorAll("*").length;
-      var bi=b.querySelectorAll("*").length;
-      return ai-bi;
-    });
-    return candidates[0];
-  }
-
-  async function loadInlineAvailability(form){
-    inlineState.form=form;
-    inlineState.loading=true;
-    var note=form.querySelector(".cl-inline-booking-note");
-    var dateInput=form.querySelector(".cl-inline-date");
-    var timeSelect=form.querySelector(".cl-inline-time-select");
-    if(note){note.textContent="Consultando disponibilidad…";note.classList.remove("is-error");}
-    if(timeSelect){timeSelect.disabled=true;timeSelect.innerHTML='<option value="">Cargando horarios…</option>';}
-    try{
-      var response=await fetch("/api/booking?start="+encodeURIComponent(bookingDateKey(new Date()))+"&days=60",{headers:{"Accept":"application/json"}});
-      var data=await response.json();
-      if(!response.ok||!data.ok)throw new Error(data.error||"No fue posible consultar horarios.");
-      inlineState.slots=Array.isArray(data.slots)?data.slots:[];
-      if(dateInput&&inlineState.slots.length){
-        var dates=inlineState.slots.map(function(slot){return bookingDateKey(new Date(slot.slot_start));}).sort();
-        dateInput.min=dates[0];
-        dateInput.max=dates[dates.length-1];
-      }
-      if(note)note.textContent="Selecciona una fecha para ver las horas disponibles.";
-      if(timeSelect){timeSelect.disabled=true;timeSelect.innerHTML='<option value="">Selecciona primero una fecha</option>';}
-    }catch(error){
-      inlineState.slots=[];
-      if(note){note.textContent="No pudimos cargar la disponibilidad. Recarga la página para intentarlo de nuevo.";note.classList.add("is-error");}
-      if(timeSelect){timeSelect.disabled=true;timeSelect.innerHTML='<option value="">Sin disponibilidad</option>';}
-    }
-    inlineState.loading=false;
-  }
-
-  function directChildUnder(node,root){
-    if(!node||!root)return null;
-    var current=node;
-    while(current.parentElement&&current.parentElement!==root)current=current.parentElement;
-    return current.parentElement===root?current:null;
-  }
-
-  function enhanceContactForm(form){
-    if(!form||form.dataset.clInlineBooking==="1")return;
-    form.dataset.clInlineBooking="1";
-
-    var consent=Array.from(form.querySelectorAll('input[type="checkbox"]')).find(function(input){
-      var label=input.closest("label")||input.parentElement;
-      return label&&norm(label).toLowerCase().indexOf("autorizo")!==-1;
-    });
-    var submit=Array.from(form.querySelectorAll("button,a")).find(function(el){
-      return isUnifiedCta(el)||CTA_TEXTS.indexOf(norm(el))!==-1;
-    });
-    var anchor=consent?(consent.closest("label")||consent.parentElement):submit;
-    var rootAnchor=directChildUnder(anchor,form)||anchor;
-
-    form.classList.add("cl-inline-booking-root");
-    form.style.setProperty("height","auto","important");
-    form.style.setProperty("max-height","none","important");
-    form.style.setProperty("overflow","visible","important");
-
-    var box=document.createElement("div");
-    box.className="cl-inline-booking";
-    box.setAttribute("data-cl-booking-ui","1");
-    box.innerHTML='<div class="cl-inline-booking-grid"><label class="cl-inline-booking-field"><span>Fecha preferida</span><input type="date" class="cl-inline-date" aria-label="Fecha preferida"></label><label class="cl-inline-booking-field"><span>Hora disponible</span><select class="cl-inline-time-select" aria-label="Hora disponible" disabled><option value="">Selecciona primero una fecha</option></select></label><p class="cl-inline-booking-note">Consultando disponibilidad…</p></div>';
-
-    if(rootAnchor&&rootAnchor.parentElement===form)form.insertBefore(box,rootAnchor);
-    else form.appendChild(box);
-
-    var dateInput=box.querySelector(".cl-inline-date");
-    var timeSelect=box.querySelector(".cl-inline-time-select");
-    if(dateInput)dateInput.addEventListener("change",function(){
-      inlineState.slot="";
-      setTimeOptions(form,dateInput.value);
-      var note=form.querySelector(".cl-inline-booking-note");
-      if(note){note.textContent=dateInput.value?"Selecciona la hora que mejor te funcione. Hora de Colombia.":"Selecciona una fecha para ver las horas disponibles.";note.classList.remove("is-error");}
-    });
-    if(timeSelect)timeSelect.addEventListener("change",function(){
-      inlineState.slot=timeSelect.value||"";
-      var note=form.querySelector(".cl-inline-booking-note");
-      if(note&&inlineState.slot){note.textContent="Horario seleccionado: "+longDate(inlineState.slot)+" · hora de Colombia.";note.classList.remove("is-error");}
-    });
-
-    loadInlineAvailability(form);
-  }
-
-  async function submitInlineBooking(form,button){
-    if(inlineState.loading)return;
-    var values=collect(form),status=form.querySelector(".cl-inline-booking-note");
-    if(!values.name||!values.phone||!values.email){if(status){status.textContent="Completa nombre, WhatsApp y correo.";status.classList.add("is-error");}return;}
-    if(!values.service){if(status){status.textContent="Selecciona el servicio que te interesa.";status.classList.add("is-error");}return;}
-    if(!inlineState.slot){
-      var note=form.querySelector(".cl-inline-booking-note");
-      if(note){note.textContent="Elige una fecha y una hora disponibles.";note.classList.add("is-error");}
-      return;
-    }
-    var consent=Array.from(form.querySelectorAll('input[type="checkbox"]')).find(function(input){
-      var label=input.closest("label")||input.parentElement;
-      return label&&norm(label).toLowerCase().indexOf("autorizo")!==-1;
-    });
-    if(consent&&!consent.checked){if(status){status.textContent="Autoriza el uso de tus datos para gestionar la reserva.";status.classList.add("is-error");}return;}
-    var fullPhone=(values.phone.indexOf("+")===0?values.phone:(values.code||"+57")+values.phone).split(" ").join("");
-    var original=button.textContent;button.disabled=true;button.textContent="Agendando…";
-    if(status){status.textContent="Guardando tu diagnóstico…";status.classList.remove("is-error");}
-    try{
-      var response=await fetch("/api/booking",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({
-        full_name:values.name,brand_name:values.brand,country:values.country,country_code:values.code,whatsapp:fullPhone,email:values.email,solution_interest:values.service,starts_at:inlineState.slot
-      })});
-      var data=await response.json();
-      if(!response.ok||!data.ok)throw new Error(data.error||"No fue posible agendar.");
-      var first=values.name.trim().split(" ")[0]||values.name;
-      form.innerHTML='<div class="cl-inline-success"><i>✓</i><h3>Diagnóstico agendado, '+first+'.</h3><p>Tu cita quedó confirmada para <strong>'+longDate(inlineState.slot)+'</strong>, hora de Colombia. La reserva ya quedó registrada en nuestro CRM y preparada para las confirmaciones correspondientes.</p></div>';
-    }catch(error){
-      if(status){status.textContent=error&&error.message?error.message:"No pudimos guardar la cita. Intenta nuevamente.";status.classList.add("is-error");}
-      button.disabled=false;button.textContent=original||"Agendar diagnóstico";
-      if(String(error&&error.message||"").toLowerCase().indexOf("horario")!==-1)loadInlineAvailability(form);
-    }
-  }
-
-  function initializeBookingUI(){
-    Array.from(document.querySelectorAll("button,a")).forEach(function(el){
+  function normalizeCtas(){
+    Array.from(document.querySelectorAll("a,button")).forEach(function(el){
       var text=norm(el);
-      if(CTA_TEXTS.indexOf(text)!==-1){
-        el.textContent="Agendar diagnóstico";
-        el.classList.add("cl-booking-cta-label");
-        el.removeAttribute("onclick");
-        if(el.tagName==="A"){
-          el.removeAttribute("target");
-          el.removeAttribute("href");
-        }
+      if(CTA_TEXTS.indexOf(text)===-1)return;
+      if(isRealBookingUi(el))return;
+      el.textContent="Agendar diagnóstico";
+      el.classList.add("cl-booking-cta-label");
+      el.removeAttribute("onclick");
+      if(el.tagName==="A"){
+        el.removeAttribute("target");
+        el.setAttribute("href","#contacto");
       }
     });
-    var bookingRoot=findContactBookingRoot();
-    if(bookingRoot)enhanceContactForm(bookingRoot);
-  }
-
-  function isUnifiedCta(el){
-    if(!el)return false;
-    var t=norm(el);
-    return t==="Agendar diagnóstico"||CTA_TEXTS.indexOf(t)!==-1;
   }
 
   document.addEventListener("click",function(event){
-    var action=event.target&&event.target.closest?event.target.closest("button,a"):null;
-    if(!action||!isUnifiedCta(action)||isBookingModal(action))return;
+    var action=event.target&&event.target.closest?event.target.closest("a,button"):null;
+    if(!action||isRealBookingUi(action))return;
+    if(norm(action)!=="Agendar diagnóstico"&&CTA_TEXTS.indexOf(norm(action))===-1)return;
 
-    var root=contactBookingRoot(action)||findContactBookingRoot();
     event.preventDefault();
     event.stopPropagation();
     if(event.stopImmediatePropagation)event.stopImmediatePropagation();
 
-    if(root){
-      enhanceContactForm(root);
-      submitInlineBooking(root,action);
+    if(typeof window.openModal==="function"){
+      window.openModal("booking");
       return;
     }
-    if(typeof window.openModal==="function")window.openModal("booking");
-  },true);
 
-  document.addEventListener("submit",function(event){
-    var form=event.target;
-    if(!(form instanceof HTMLFormElement)||isBookingModal(form))return;
-    var action=Array.from(form.querySelectorAll("button,input[type=submit]")).find(function(el){
-      return isUnifiedCta(el)||el.value==="Agendar diagnóstico";
-    });
-    if(!action)return;
-
-    var root=contactBookingRoot(action)||contactBookingRoot(form)||findContactBookingRoot();
-    if(!root)return;
-
-    event.preventDefault();
-    event.stopPropagation();
-    if(event.stopImmediatePropagation)event.stopImmediatePropagation();
-    enhanceContactForm(root);
-    submitInlineBooking(root,action);
+    var contact=document.getElementById("contacto")||document.querySelector("#contact,section[id*=contact]");
+    if(contact)contact.scrollIntoView({behavior:"smooth",block:"start"});
   },true);
 
   if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",function(){
-      initializeBookingUI();
-      setTimeout(initializeBookingUI,350);
-    },{once:true});
+    document.addEventListener("DOMContentLoaded",normalizeCtas,{once:true});
   }else{
-    initializeBookingUI();
+    normalizeCtas();
   }
-  window.addEventListener("load",function(){setTimeout(initializeBookingUI,100);},{once:true});
+  window.addEventListener("load",normalizeCtas,{once:true});
 })();
 </script>
-`;
+`
 
 function getOriginalHtml() {
   const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8")

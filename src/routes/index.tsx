@@ -159,11 +159,6 @@ const HOMEPAGE_COPY_FIX = `
       "Déjanos tus datos y seguimos por WhatsApp",
       "Déjanos tus datos, elige un horario disponible y agenda tu diagnóstico. Todo queda registrado para que podamos preparar la conversación antes de hablar contigo."
     );
-    patchParagraph(
-      "El diagnóstico es una sesión de pago",
-      "El diagnóstico es una sesión gratuita para entender tu negocio, detectar dónde se pierde la oportunidad y definir el mejor siguiente paso."
-    );
-
     var contactHeading=Array.from(document.querySelectorAll("h1,h2,h3")).find(function(el){
       return normalized(el).toLowerCase().indexOf("hablemos de")!==-1 && normalized(el).toLowerCase().indexOf("negocio")!==-1;
     });
@@ -179,7 +174,6 @@ const HOMEPAGE_COPY_FIX = `
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",run);
   else run();
   setTimeout(run,250);
-  setTimeout(run,900);
 })();
 </script>
 `;
@@ -786,6 +780,7 @@ const UNIFIED_BOOKING_CTA = `
 
 function getOriginalHtml() {
   const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8")
+    .replace(/El diagnóstico es una sesión de pago[^<]*/g, "El diagnóstico es una sesión gratuita para entender tu negocio, detectar dónde se pierde la oportunidad y definir el mejor siguiente paso.")
     .replace("Míralo funcionar.", "Así trabajamos.")
     .replace(
       "Tres servicios, tres demostraciones que se mueven solas. Si quieres, toca cualquier paso.",

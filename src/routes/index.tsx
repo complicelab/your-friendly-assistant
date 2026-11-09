@@ -495,7 +495,7 @@ const UNIFIED_BOOKING_CTA = `
   var AVAILABILITY_STORAGE_KEY="cl-booking-availability-v1";
 
   function norm(el){return (el&&el.textContent?el.textContent:"").replace(/\\s+/g," ").trim();}
-  function isInsideModal(el){return !!(el&&el.closest&&el.closest("#modal,.modal,.m-overlay,#m-overlay,[role=dialog],#m-content,.ag,.ag-form"));}
+  function isInsideModal(el){return !!(el&&el.closest&&el.closest("#cl-booking-overlay,#modal,#m-overlay,#m-content"));}
   function dateKey(value){
     var parts=new Intl.DateTimeFormat("en-US",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:"America/Bogota"}).formatToParts(new Date(value));
     var map={};parts.forEach(function(p){map[p.type]=p.value;});return map.year+"-"+map.month+"-"+map.day;

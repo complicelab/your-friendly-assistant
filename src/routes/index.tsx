@@ -511,13 +511,24 @@ const UNIFIED_BOOKING_CTA = `
     if(!section)return null;
     var candidates=Array.from(section.querySelectorAll("form,div")).filter(function(el){
       var t=norm(el).toLowerCase();
+      var hasAction=Array.from(el.querySelectorAll("a,button")).some(function(action){
+        var text=norm(action);
+        return CTA_TEXTS.indexOf(text)!==-1||text==="Agendar diagnóstico";
+      });
+      var hasConsent=el.querySelectorAll('input[type="checkbox"]').length>0;
       return el.querySelectorAll("input").length>=3 &&
         t.indexOf("marca personal o empresa")!==-1 &&
         t.indexOf("whatsapp")!==-1 &&
         t.indexOf("correo")!==-1 &&
-        t.indexOf("servicio te interesa")!==-1;
+        t.indexOf("servicio te interesa")!==-1 &&
+        hasAction && hasConsent;
     });
-    candidates.sort(function(a,b){return a.querySelectorAll("*").length-b.querySelectorAll("*").length;});
+    candidates.sort(function(a,b){
+      var aForm=a.tagName==="FORM"?0:1;
+      var bForm=b.tagName==="FORM"?0:1;
+      if(aForm!==bForm)return aForm-bForm;
+      return a.querySelectorAll("*").length-b.querySelectorAll("*").length;
+    });
     return candidates[0]||null;
   }
 
@@ -660,7 +671,7 @@ const UNIFIED_BOOKING_CTA = `
     });
     var submit=Array.from(root.querySelectorAll("button,a")).find(function(el){return CTA_TEXTS.indexOf(norm(el))!==-1;});
     if(submit){
-      submit.textContent="Agendar diagnóstico";
+      if(norm(submit)!=="Agendar diagnóstico")submit.textContent="Agendar diagnóstico";
       submit.classList.add("cl-booking-cta-label");
       if(submit.tagName==="A"){submit.removeAttribute("href");submit.removeAttribute("target");}
       submit.removeAttribute("onclick");
@@ -911,7 +922,7 @@ const UNIFIED_BOOKING_CTA = `
       var text=norm(el);
       if(CTA_TEXTS.indexOf(text)===-1)return;
       if(isInsideModal(el))return;
-      el.textContent="Agendar diagnóstico";
+      if(text!=="Agendar diagnóstico")el.textContent="Agendar diagnóstico";
       el.classList.add("cl-booking-cta-label");
       if(el.tagName==="A"){
         el.removeAttribute("href");
@@ -970,7 +981,14 @@ const UNIFIED_BOOKING_CTA = `
     var stopTimer=null;
     var observer=new MutationObserver(function(){
       clearTimeout(settleTimer);
-      settleTimer=setTimeout(function(){normalize();},60);
+      settleTimer=setTimeout(function(){
+        normalize();
+        var stableRoot=findContactRoot();
+        if(stableRoot&&stableRoot.dataset.clScheduler==="1"){
+          observer.disconnect();
+          clearTimeout(stopTimer);
+        }
+      },60);
     });
     observer.observe(document.body,{childList:true,subtree:true});
     stopTimer=setTimeout(function(){

@@ -442,8 +442,11 @@ const UNIFIED_BOOKING_CTA = `
   .cl-booking-success{padding:34px 24px;text-align:center}
   .cl-booking-success h3{margin:0 0 10px;font:700 26px/1.15 "Poppins",sans-serif;color:#0d172a}
   .cl-booking-success p{margin:0 auto;max-width:560px;font:500 13px/1.6 "Montserrat",sans-serif;color:#66758f}
-  .cl-contact-booking{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;width:100%;max-width:100%;min-width:0;margin:8px 0 10px;box-sizing:border-box}
+  .cl-contact-booking{grid-column:1/-1;display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;width:100%;max-width:100%;min-width:0;margin:18px 0 14px;padding:18px;border:1px solid #dfe6f0;border-radius:18px;background:#f8faff;box-sizing:border-box;visibility:visible!important;opacity:1!important;position:relative!important;height:auto!important;max-height:none!important;overflow:visible!important}
   .cl-contact-booking,.cl-contact-booking *{box-sizing:border-box}
+  .cl-contact-booking-head{grid-column:1/-1;margin:0 0 2px}
+  .cl-contact-booking-head strong{display:block;font:700 15px/1.25 "Poppins",sans-serif;color:#0d172a}
+  .cl-contact-booking-head span{display:block;margin-top:4px;font:500 11px/1.45 "Montserrat",sans-serif;color:#71809b}
   .cl-contact-booking label{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;min-width:0}
   .cl-contact-booking label>span{font:700 12px/1.25 "Montserrat",sans-serif;color:#111827}
   .cl-contact-booking input,.cl-contact-booking select{display:block;width:100%;max-width:100%;min-width:0;height:48px;border:1px solid #d9e0ea;border-radius:14px;background:#fff;color:#17233a;padding:0 13px;font:500 13px/1 "Montserrat",sans-serif;outline:none}
@@ -454,7 +457,7 @@ const UNIFIED_BOOKING_CTA = `
   @media(max-width:700px){
     body.cl-booking-modal-open{overflow:hidden!important;touch-action:auto!important}
     a.cl-booking-cta-label,button.cl-booking-cta-label{max-width:100%;white-space:normal}
-    .cl-contact-booking{grid-template-columns:minmax(0,1fr);gap:10px}
+    .cl-contact-booking{grid-template-columns:minmax(0,1fr);gap:10px;margin:16px 0 14px;padding:14px;border-radius:16px}
     .cl-contact-booking input,.cl-contact-booking select{height:46px;font-size:16px}
     .cl-contact-date{-webkit-appearance:none;appearance:none;text-align:center}
     .cl-contact-date::-webkit-date-and-time-value{text-align:center;min-width:0}
@@ -711,11 +714,15 @@ const UNIFIED_BOOKING_CTA = `
       if(submit.tagName==="BUTTON")submit.setAttribute("type","button");
     }
     var anchor=consent?(consent.closest("label")||consent.parentElement):submit;
+    var rootAnchor=directChildUnder(anchor,root)||directChildUnder(submit,root);
 
     var box=document.createElement("div");
     box.className="cl-contact-booking";
-    box.innerHTML='<label><span>Fecha preferida</span><input class="cl-contact-date" type="date" aria-label="Fecha preferida"></label><label><span>Hora disponible</span><select class="cl-contact-time" aria-label="Hora disponible" disabled><option value="">Selecciona primero una fecha</option></select></label><p class="cl-contact-booking-note">Consultando disponibilidad…</p>';
-    if(anchor&&anchor.parentElement){
+    box.setAttribute("data-cl-inline-booking","1");
+    box.innerHTML='<div class="cl-contact-booking-head"><strong>Elige fecha y hora para tu videollamada</strong><span>Selecciona un horario disponible. Todos los horarios son hora de Colombia.</span></div><label><span>Fecha preferida</span><input class="cl-contact-date" type="date" aria-label="Fecha preferida"></label><label><span>Hora disponible</span><select class="cl-contact-time" aria-label="Hora disponible" disabled><option value="">Selecciona primero una fecha</option></select></label><p class="cl-contact-booking-note">Consultando disponibilidad…</p>';
+    if(rootAnchor&&rootAnchor.parentElement===root){
+      root.insertBefore(box,rootAnchor);
+    }else if(anchor&&anchor.parentElement){
       anchor.parentElement.insertBefore(box,anchor);
     }else{
       root.appendChild(box);

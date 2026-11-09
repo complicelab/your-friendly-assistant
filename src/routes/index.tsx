@@ -152,7 +152,7 @@ const HOMEPAGE_COPY_FIX = `
     );
     patchParagraph(
       "Déjanos tus datos y seguimos por WhatsApp",
-      "Déjanos tus datos y cuéntanos qué necesitas. Al tocar Agendar diagnóstico podrás elegir fecha y hora en una ventana clara y rápida."
+      "Déjanos tus datos, elige fecha y hora y agenda tu diagnóstico. También puedes usar cualquier botón de Agendar diagnóstico para abrir la agenda rápida."
     );
     var contactHeading=Array.from(document.querySelectorAll("h1,h2,h3")).find(function(el){
       return normalized(el).toLowerCase().indexOf("hablemos de")!==-1 && normalized(el).toLowerCase().indexOf("negocio")!==-1;
@@ -405,43 +405,209 @@ const MOBILE_FLOW_SCRIPT = `
 const UNIFIED_BOOKING_CTA = `
 <style id="cl-unified-booking-cta-styles">
   .cl-booking-cta-label{white-space:nowrap}
+  .cl-contact-booking{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;width:100%;max-width:100%;min-width:0;margin:8px 0 10px;box-sizing:border-box}
+  .cl-contact-booking,.cl-contact-booking *{box-sizing:border-box}
+  .cl-contact-booking label{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;min-width:0}
+  .cl-contact-booking label>span{font:700 12px/1.25 "Montserrat",sans-serif;color:#111827}
+  .cl-contact-booking input,.cl-contact-booking select{display:block;width:100%;max-width:100%;min-width:0;height:48px;border:1px solid #d9e0ea;border-radius:14px;background:#fff;color:#17233a;padding:0 13px;font:500 13px/1 "Montserrat",sans-serif;outline:none}
+  .cl-contact-booking input:focus,.cl-contact-booking select:focus{border-color:#4d6ff0;box-shadow:0 0 0 3px rgba(77,111,240,.10)}
+  .cl-contact-booking select:disabled{background:#f7f9fc;color:#8a96aa}
+  .cl-contact-booking-note{grid-column:1/-1;margin:0;font:500 11px/1.45 "Montserrat",sans-serif;color:#71809b}
+  .cl-contact-booking-note.is-error{color:#b4233b}
   @media(max-width:700px){
     a.cl-booking-cta-label,button.cl-booking-cta-label{max-width:100%;white-space:normal}
+    .cl-contact-booking{grid-template-columns:minmax(0,1fr);gap:10px}
+    .cl-contact-booking input,.cl-contact-booking select{height:46px;font-size:16px}
+    .cl-contact-date{-webkit-appearance:none;appearance:none;text-align:center}
+    .cl-contact-date::-webkit-date-and-time-value{text-align:center;min-width:0}
     #m-content .ag{max-width:100%!important;overflow:hidden}
     #m-content .ag-pick,#m-content .ag-form{min-width:0!important}
-    #m-content input[type="date"],#m-content .day,#m-content .slot{box-sizing:border-box}
-    #m-content input[type="date"]{
-      width:100%!important;
-      max-width:100%!important;
-      min-width:0!important;
-      text-align:center!important;
-      -webkit-appearance:none;
-      appearance:none;
-    }
-    #m-content input[type="date"]::-webkit-date-and-time-value{
-      text-align:center!important;
-      min-width:0!important;
-    }
   }
 </style>
 <script id="cl-unified-booking-cta">
 (function(){
   var CTA_TEXTS=["Continuar por WhatsApp","Hablar por WhatsApp","Agendar videollamada de diagnóstico","Solicitar videollamada","Solicitar videollamada de diagnóstico","Agendar diagnóstico"];
+  var inline={root:null,slots:[],slot:"",loading:false};
 
   function norm(el){return (el&&el.textContent?el.textContent:"").replace(/\\s+/g," ").trim();}
   function isInsideModal(el){return !!(el&&el.closest&&el.closest("#modal,.modal,.m-overlay,#m-overlay,[role=dialog],#m-content,.ag,.ag-form"));}
+  function dateKey(value){
+    var parts=new Intl.DateTimeFormat("en-US",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:"America/Bogota"}).formatToParts(new Date(value));
+    var map={};parts.forEach(function(p){map[p.type]=p.value;});return map.year+"-"+map.month+"-"+map.day;
+  }
+  function longDate(value){return new Intl.DateTimeFormat("es-CO",{weekday:"long",day:"numeric",month:"long",year:"numeric",hour:"numeric",minute:"2-digit",hour12:true,timeZone:"America/Bogota"}).format(new Date(value));}
+  function timeLabel(value){return new Intl.DateTimeFormat("es-CO",{hour:"numeric",minute:"2-digit",hour12:true,timeZone:"America/Bogota"}).format(new Date(value));}
+
+  function findContactRoot(){
+    var heading=Array.from(document.querySelectorAll("h1,h2,h3")).find(function(el){
+      var t=norm(el).toLowerCase();return t.indexOf("hablemos de")!==-1&&t.indexOf("negocio")!==-1;
+    });
+    var section=heading?(heading.closest("section")||heading.parentElement):null;
+    if(!section)return null;
+    var candidates=Array.from(section.querySelectorAll("form,div")).filter(function(el){
+      var t=norm(el).toLowerCase();
+      return el.querySelectorAll("input").length>=3 &&
+        t.indexOf("marca personal o empresa")!==-1 &&
+        t.indexOf("whatsapp")!==-1 &&
+        t.indexOf("correo")!==-1 &&
+        t.indexOf("servicio te interesa")!==-1 &&
+        t.indexOf("agendar diagnóstico")!==-1;
+    });
+    candidates.sort(function(a,b){return a.querySelectorAll("*").length-b.querySelectorAll("*").length;});
+    return candidates[0]||null;
+  }
+
+  function directChildUnder(node,root){
+    if(!node||!root)return null;
+    var cur=node;while(cur.parentElement&&cur.parentElement!==root)cur=cur.parentElement;
+    return cur.parentElement===root?cur:null;
+  }
+
+  function fieldByLabel(root,text){
+    var wanted=text.toLowerCase();
+    var label=Array.from(root.querySelectorAll("label")).find(function(el){return norm(el).toLowerCase().indexOf(wanted)!==-1;});
+    if(!label)return null;
+    var controls=Array.from(label.querySelectorAll("input,textarea,select"));
+    if(wanted.indexOf("whatsapp")!==-1){
+      return controls.find(function(el){return el.tagName==="INPUT"&&(el.type==="tel"||el.type==="text");})||controls.find(function(el){return el.tagName==="INPUT";})||null;
+    }
+    return controls.find(function(el){return el.tagName==="INPUT"||el.tagName==="TEXTAREA";})||controls[0]||null;
+  }
+
+  function value(root,names,label){
+    if(root.elements&&root.elements.namedItem){
+      for(var i=0;i<names.length;i++){var el=root.elements.namedItem(names[i]);if(el&&String(el.value||"").trim())return String(el.value).trim();}
+    }
+    var field=fieldByLabel(root,label);return field?String(field.value||"").trim():"";
+  }
+
+  function serviceFromRoot(root){
+    var phrases=["sistemas con ia","agentes de ia","marketing digital","quiero un diagnóstico","quiero un diagnostico"];
+    var checked=Array.from(root.querySelectorAll('input[type="radio"]:checked,input[type="checkbox"]:checked'));
+    for(var i=0;i<checked.length;i++){
+      var lab=checked[i].closest("label");
+      if(lab&&phrases.some(function(p){return norm(lab).toLowerCase().indexOf(p)!==-1;}))return norm(lab);
+    }
+    var active=Array.from(root.querySelectorAll("label,button,[role=button]")).find(function(el){
+      var t=norm(el).toLowerCase();
+      if(!phrases.some(function(p){return t.indexOf(p)!==-1;}))return false;
+      var cls=(el.className||"").toString();
+      return /active|selected|checked|(^|\\s)(sel|on|s)(\\s|$)/i.test(cls)||el.getAttribute("aria-checked")==="true"||el.getAttribute("aria-pressed")==="true";
+    });
+    return active?norm(active):"";
+  }
+
+  function collect(root){
+    var codeSelect=Array.from(root.querySelectorAll("select")).find(function(el){return String(el.value||"").trim().charAt(0)==="+";});
+    var phone=value(root,["phone","whatsapp","telefono"],"WhatsApp");
+    return {
+      name:value(root,["name","nombre","full_name"],"Nombre y apellido"),
+      brand:value(root,["brand","marca","brand_name"],"Marca personal o empresa"),
+      phone:phone,
+      code:codeSelect?codeSelect.value:"+57",
+      email:value(root,["email","correo"],"Correo"),
+      service:serviceFromRoot(root)
+    };
+  }
+
+  function setTimes(root,date){
+    var select=root.querySelector(".cl-contact-time");if(!select)return;
+    inline.slot="";
+    var rows=inline.slots.filter(function(slot){return dateKey(slot.slot_start)===date;});
+    select.innerHTML='<option value="">'+(rows.length?"Selecciona una hora":"Sin horarios disponibles")+'</option>'+rows.map(function(slot){return '<option value="'+slot.slot_start+'">'+timeLabel(slot.slot_start)+'</option>';}).join("");
+    select.disabled=!rows.length;
+  }
+
+  async function loadInlineAvailability(root){
+    if(inline.loading)return;inline.loading=true;
+    var note=root.querySelector(".cl-contact-booking-note");
+    var dateInput=root.querySelector(".cl-contact-date");
+    var timeSelect=root.querySelector(".cl-contact-time");
+    if(note){note.textContent="Consultando disponibilidad…";note.classList.remove("is-error");}
+    try{
+      var response=await fetch("/api/booking?start="+encodeURIComponent(dateKey(new Date()))+"&days=60",{headers:{"Accept":"application/json"}});
+      var data=await response.json();
+      if(!response.ok||!data.ok)throw new Error(data.error||"No fue posible cargar la disponibilidad.");
+      inline.slots=Array.isArray(data.slots)?data.slots:[];
+      if(dateInput&&inline.slots.length){
+        var dates=inline.slots.map(function(slot){return dateKey(slot.slot_start);}).sort();
+        dateInput.min=dates[0];dateInput.max=dates[dates.length-1];
+      }
+      if(timeSelect){timeSelect.disabled=true;timeSelect.innerHTML='<option value="">Selecciona primero una fecha</option>';}
+      if(note)note.textContent="Selecciona una fecha para ver las horas disponibles.";
+    }catch(error){
+      inline.slots=[];
+      if(timeSelect){timeSelect.disabled=true;timeSelect.innerHTML='<option value="">Sin disponibilidad</option>';}
+      if(note){note.textContent="No pudimos cargar la disponibilidad. Recarga la página para intentarlo de nuevo.";note.classList.add("is-error");}
+    }
+    inline.loading=false;
+  }
+
+  function installInlineScheduler(root){
+    if(!root||root.dataset.clScheduler==="1")return;
+    root.dataset.clScheduler="1";inline.root=root;
+    var consent=Array.from(root.querySelectorAll('input[type="checkbox"]')).find(function(input){
+      var label=input.closest("label")||input.parentElement;return label&&norm(label).toLowerCase().indexOf("autorizo")!==-1;
+    });
+    var submit=Array.from(root.querySelectorAll("button,a")).find(function(el){return norm(el)==="Agendar diagnóstico";});
+    var anchor=consent?(consent.closest("label")||consent.parentElement):submit;
+    var rootAnchor=directChildUnder(anchor,root)||anchor;
+
+    var box=document.createElement("div");
+    box.className="cl-contact-booking";
+    box.innerHTML='<label><span>Fecha preferida</span><input class="cl-contact-date" type="date" aria-label="Fecha preferida"></label><label><span>Hora disponible</span><select class="cl-contact-time" aria-label="Hora disponible" disabled><option value="">Selecciona primero una fecha</option></select></label><p class="cl-contact-booking-note">Consultando disponibilidad…</p>';
+    if(rootAnchor&&rootAnchor.parentElement===root)root.insertBefore(box,rootAnchor);else root.appendChild(box);
+
+    var dateInput=box.querySelector(".cl-contact-date");
+    var timeSelect=box.querySelector(".cl-contact-time");
+    dateInput.addEventListener("change",function(){
+      setTimes(root,dateInput.value);
+      var note=root.querySelector(".cl-contact-booking-note");
+      if(note){note.textContent=dateInput.value?"Selecciona una hora disponible. Hora de Colombia.":"Selecciona una fecha para ver las horas disponibles.";note.classList.remove("is-error");}
+    });
+    timeSelect.addEventListener("change",function(){
+      inline.slot=timeSelect.value||"";
+      var note=root.querySelector(".cl-contact-booking-note");
+      if(note&&inline.slot){note.textContent="Horario seleccionado: "+longDate(inline.slot)+" · hora de Colombia.";note.classList.remove("is-error");}
+    });
+    loadInlineAvailability(root);
+  }
+
+  async function submitInline(root,button){
+    var note=root.querySelector(".cl-contact-booking-note");
+    var data=collect(root);
+    if(!data.name||!data.phone||!data.email){if(note){note.textContent="Completa nombre, WhatsApp y correo.";note.classList.add("is-error");}return;}
+    if(!data.service){if(note){note.textContent="Selecciona el servicio que te interesa.";note.classList.add("is-error");}return;}
+    if(!inline.slot){if(note){note.textContent="Elige una fecha y una hora disponibles.";note.classList.add("is-error");}return;}
+    var consent=Array.from(root.querySelectorAll('input[type="checkbox"]')).find(function(input){
+      var label=input.closest("label")||input.parentElement;return label&&norm(label).toLowerCase().indexOf("autorizo")!==-1;
+    });
+    if(consent&&!consent.checked){if(note){note.textContent="Autoriza el uso de tus datos para gestionar la reserva.";note.classList.add("is-error");}return;}
+
+    var fullPhone=(data.phone.indexOf("+")===0?data.phone:(data.code||"+57")+data.phone).replace(/\\s+/g,"");
+    var old=button.textContent;button.disabled=true;button.textContent="Agendando…";
+    try{
+      var response=await fetch("/api/booking",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({
+        full_name:data.name,brand_name:data.brand,country:"Colombia",country_code:data.code,whatsapp:fullPhone,email:data.email,solution_interest:data.service,starts_at:inline.slot
+      })});
+      var result=await response.json();
+      if(!response.ok||!result.ok)throw new Error(result.error||"No fue posible confirmar el diagnóstico.");
+      root.innerHTML='<div style="grid-column:1/-1;padding:28px 22px;border:1px solid #dce5f3;border-radius:22px;background:#f8fbff"><h3 style="margin:0 0 8px;font:700 24px/1.1 Poppins,sans-serif;color:#0d172a">Diagnóstico agendado.</h3><p style="margin:0;color:#66758f;font:500 13px/1.55 Montserrat,sans-serif">Tu cita quedó confirmada para <strong>'+longDate(inline.slot)+'</strong>, hora de Colombia. Ya quedó registrada en nuestro CRM.</p></div>';
+    }catch(error){
+      if(note){note.textContent=error&&error.message?error.message:"No pudimos guardar la cita. Intenta nuevamente.";note.classList.add("is-error");}
+      button.disabled=false;button.textContent=old||"Agendar diagnóstico";
+      if(String(error&&error.message||"").toLowerCase().indexOf("horario")!==-1)loadInlineAvailability(root);
+    }
+  }
 
   function normalize(){
-    // Remove any scheduler accidentally injected in the visible contact form.
-    document.querySelectorAll(".cl-contact-booking").forEach(function(el){el.remove();});
-    document.querySelectorAll("[data-cl-scheduler]").forEach(function(el){delete el.dataset.clScheduler;});
-
+    var root=findContactRoot();
+    if(root)installInlineScheduler(root);
     Array.from(document.querySelectorAll("a,button")).forEach(function(el){
       var text=norm(el);
       if(CTA_TEXTS.indexOf(text)===-1)return;
       if(isInsideModal(el))return;
-      el.textContent="Agendar diagnóstico";
-      el.classList.add("cl-booking-cta-label");
+      el.textContent="Agendar diagnóstico";el.classList.add("cl-booking-cta-label");
     });
   }
 
@@ -449,21 +615,24 @@ const UNIFIED_BOOKING_CTA = `
     var action=event.target&&event.target.closest?event.target.closest("a,button"):null;
     if(!action||isInsideModal(action)||norm(action)!=="Agendar diagnóstico")return;
 
-    if(typeof window.openModal!=="function")return;
+    var root=findContactRoot();
+    if(root&&root.contains(action)){
+      event.preventDefault();event.stopPropagation();if(event.stopImmediatePropagation)event.stopImmediatePropagation();
+      installInlineScheduler(root);submitInline(root,action);return;
+    }
 
-    event.preventDefault();
-    event.stopPropagation();
-    if(event.stopImmediatePropagation)event.stopImmediatePropagation();
+    if(typeof window.openModal!=="function")return;
+    event.preventDefault();event.stopPropagation();if(event.stopImmediatePropagation)event.stopImmediatePropagation();
     window.openModal("booking");
   },true);
 
   if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",normalize,{once:true});
+    document.addEventListener("DOMContentLoaded",function(){normalize();setTimeout(normalize,250);},{once:true});
   }else normalize();
   window.addEventListener("load",normalize,{once:true});
 })();
 </script>
-`;
+`
 
 function getOriginalHtml() {
   const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8")

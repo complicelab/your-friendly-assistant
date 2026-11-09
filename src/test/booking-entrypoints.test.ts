@@ -48,18 +48,22 @@ describe('diagnostic booking entrypoints', () => {
     expect(normalize).toContain('el.remove();');
   });
 
-  it('uses one mobile scroll container and follows the visual viewport when the keyboard opens',()=>{
+  it('uses panel-owned mobile scrolling and follows the visual viewport when the keyboard opens',()=>{
     expect(index).toContain('window.visualViewport');
     expect(index).toContain('--cl-booking-vh');
-    expect(index).toContain('--cl-booking-vv-top');
+    expect(index).not.toContain('--cl-booking-vv-top');
     expect(index).toContain('var(--cl-booking-vh,100dvh)');
     expect(index).toContain('body.cl-booking-modal-open{overflow:hidden!important;touch-action:auto!important');
+    expect(index).toContain('.cl-booking-overlay{');
+    expect(index).toContain('overflow:hidden!important');
+    expect(index).toContain('touch-action:pan-y!important');
+    expect(index).toContain('.cl-booking-panel{');
     expect(index).toContain('overflow-y:auto!important');
     expect(index).toContain('-webkit-overflow-scrolling:touch!important');
-    expect(index).toContain('.cl-booking-panel{');
-    expect(index).toContain('height:auto!important;max-height:none!important');
-    expect(index).toContain('overflow:visible!important;touch-action:pan-y');
+    expect(index).toContain('function bookingScrollContainer()');
     expect(index).toContain('function keepFocusedBookingFieldVisible()');
+    expect(index).toContain('lockBookingPage()');
+    expect(index).toContain('unlockBookingPage()');
     expect(index).toContain('bookingForm.addEventListener("focusin"');
   });
 

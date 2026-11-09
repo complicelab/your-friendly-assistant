@@ -94,6 +94,32 @@ async function runMobileScenario(browserType,label){
     throw new Error(label+' panel still owns mobile scrolling: '+JSON.stringify(panelMetrics));
   }
 
+  // Complete the real booking flow after keyboard/scroll checks.
+  await page.setViewportSize({width:390,height:844});
+  await page.waitForTimeout(120);
+
+  const day=page.locator('#cl-booking-overlay .cl-booking-day').first();
+  await day.waitFor({state:'visible'});
+  await day.click();
+  const time=page.locator('#cl-booking-overlay .cl-booking-time').first();
+  await time.waitFor({state:'visible'});
+  await time.click();
+
+  await page.locator('#cl-booking-overlay input[name="full_name"]').fill('Cliente Prueba');
+  await page.locator('#cl-booking-overlay input[name="brand_name"]').fill('Marca Prueba');
+  await page.locator('#cl-booking-overlay input[name="whatsapp"]').fill('3001234567');
+  await page.locator('#cl-booking-overlay input[name="email"]').fill('prueba@example.com');
+  await page.locator('#cl-booking-overlay select[name="solution_interest"]').selectOption({label:'Creamos sistemas con IA a la medida'});
+  await page.locator('#cl-booking-overlay input[name="consent"]').check();
+
+  const finalSubmit=page.locator('#cl-booking-overlay .cl-booking-submit');
+  await finalSubmit.scrollIntoViewIfNeeded();
+  await finalSubmit.click();
+
+  await page.locator('#cl-booking-overlay .cl-booking-success').waitFor({state:'visible',timeout:10000});
+  const successText=(await page.locator('#cl-booking-overlay .cl-booking-success').innerText()).toLowerCase();
+  if(!successText.includes('diagnóstico agendado'))throw new Error(label+' booking did not reach success state: '+successText);
+
   await browser.close();
   console.log('MOBILE_BOOKING_'+label.toUpperCase()+'_OK');
 }

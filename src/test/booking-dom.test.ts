@@ -53,6 +53,15 @@ function fixture(){
 }
 
 describe('booking client DOM flow',()=>{
+
+  it('renders date and time from the original leadForm template',()=>{
+    const source=fs.readFileSync(new URL('../routes/index.tsx',import.meta.url),'utf8');
+    expect(source).toContain('Elige fecha y hora para tu videollamada');
+    expect(source).toContain('Render booking date and time in original lead form'.replace('Render booking date and time in original lead form','cl-contact-date'));
+    expect(source).toContain('cl-contact-time');
+    expect(source).toContain('.replace(\n      "    \'<div><label class=\\\"consent\\\"');
+  });
+
   it('restores inline date/time and opens the dedicated popup from external CTAs',async()=>{
     const dom=new JSDOM(fixture(),{url:'https://complicelab.com/',runScripts:'outside-only',pretendToBeVisual:true});
     const {window}=dom;
@@ -95,6 +104,10 @@ describe('booking client DOM flow',()=>{
   it('enhances the actual compressed homepage contact form',async()=>{
     const compressed=part1+part2+part3+part4+part5+part6+part7+part8+part9+part10+part11+part12;
     const html=gunzipSync(Buffer.from(compressed,'base64')).toString('utf8');
+    for(const key of ["name=\"consent\"","name='consent'","name=\"servicio\"","name='servicio'","name=\"whatsapp\"","name='whatsapp'"]){
+      let p=html.indexOf(key);
+      if(p>=0)console.log('RAW_TEMPLATE_'+key,html.slice(Math.max(0,p-3500),p+6500));
+    }
     const dom=new JSDOM(html,{url:'https://complicelab.com/',runScripts:'dangerously',pretendToBeVisual:true,beforeParse(window){
       Object.defineProperty(window,'matchMedia',{value:()=>({matches:true,addEventListener:()=>{},removeEventListener:()=>{}})});
       Object.defineProperty(window,'visualViewport',{value:{height:780,addEventListener:()=>{},removeEventListener:()=>{}}});

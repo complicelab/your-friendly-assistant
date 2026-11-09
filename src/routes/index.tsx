@@ -690,12 +690,15 @@ const UNIFIED_BOOKING_CTA = `
       submit.removeAttribute("onclick");
     }
     var anchor=consent?(consent.closest("label")||consent.parentElement):submit;
-    var rootAnchor=directChildUnder(anchor,root)||anchor;
 
     var box=document.createElement("div");
     box.className="cl-contact-booking";
     box.innerHTML='<label><span>Fecha preferida</span><input class="cl-contact-date" type="date" aria-label="Fecha preferida"></label><label><span>Hora disponible</span><select class="cl-contact-time" aria-label="Hora disponible" disabled><option value="">Selecciona primero una fecha</option></select></label><p class="cl-contact-booking-note">Consultando disponibilidad…</p>';
-    if(rootAnchor&&rootAnchor.parentElement===root)root.insertBefore(box,rootAnchor);else root.appendChild(box);
+    if(anchor&&anchor.parentElement){
+      anchor.parentElement.insertBefore(box,anchor);
+    }else{
+      root.appendChild(box);
+    }
     root.dataset.clScheduler="1";
 
     var dateInput=box.querySelector(".cl-contact-date");

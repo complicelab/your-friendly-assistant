@@ -452,7 +452,7 @@ const UNIFIED_BOOKING_CTA = `
   .cl-contact-booking-note{grid-column:1/-1;margin:0;font:500 11px/1.45 "Montserrat",sans-serif;color:#71809b}
   .cl-contact-booking-note.is-error{color:#b4233b}
   @media(max-width:700px){
-    body.cl-booking-modal-open{overflow:hidden!important;touch-action:none!important}
+    body.cl-booking-modal-open{overflow:hidden!important;touch-action:auto!important}
     a.cl-booking-cta-label,button.cl-booking-cta-label{max-width:100%;white-space:normal}
     .cl-contact-booking{grid-template-columns:minmax(0,1fr);gap:10px}
     .cl-contact-booking input,.cl-contact-booking select{height:46px;font-size:16px}
@@ -460,7 +460,7 @@ const UNIFIED_BOOKING_CTA = `
     .cl-contact-date::-webkit-date-and-time-value{text-align:center;min-width:0}
     #m-content .ag{max-width:100%!important;overflow:hidden}
     #m-content .ag-pick,#m-content .ag-form{min-width:0!important}
-    .cl-booking-overlay{padding:0;background:rgba(11,18,32,.72);overflow:hidden!important;touch-action:none!important}
+    .cl-booking-overlay{padding:0;background:rgba(11,18,32,.72);overflow:hidden!important;touch-action:pan-y!important}
     .cl-booking-panel{width:100%;height:var(--cl-booking-vh,100dvh);max-height:var(--cl-booking-vh,100dvh);min-height:0;margin:0;border-radius:0;box-shadow:none;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y}
     .cl-booking-modal-head{top:0;padding:16px 16px 14px;border-radius:0}
     .cl-booking-modal-head h2{font-size:22px}

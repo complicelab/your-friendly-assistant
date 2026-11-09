@@ -1,0 +1,46 @@
+name: Booking flow audit
+
+on:
+  push:
+    branches:
+      - main
+      - lovable-sync
+    paths:
+      - "src/routes/index.tsx"
+      - "src/routes/api.booking.ts"
+      - "src/data/booking/**"
+      - "src/test/booking-*.test.ts"
+      - "src/test/booking-*.mjs"
+      - "src/routeTree.gen.ts"
+      - "package.json"
+      - "bun.lock"
+      - ".github/workflows/booking-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run booking tests
+        run: bun test src/test/booking-runtime.test.ts src/test/booking-entrypoints.test.ts src/test/booking-dom.test.ts
+
+      - name: Build
+        run: bun run build
+
+      - name: Install browser test runtime
+        run: |
+          npm install --no-save @playwright/test@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: Run mobile booking browser test
+        run: node src/test/booking-mobile-browser.mjs

@@ -4,13 +4,15 @@
 - [x] Ejecutar tipos, compilación y pruebas; no tocar home/SEO ni publicar.
 
 # Agenda real y CRM
-- [x] Sustituir solo los días/horas y el envío del modal público por disponibilidad y reserva reales en America/Bogota.
+- [x] Mantener dos caminos de reserva: formulario inline y popup dedicado; ambos usan /api/booking y el mismo CRM.
+- [x] Sustituir días/horas ficticios por disponibilidad y reserva reales en America/Bogota.
 - [x] Añadir navegación Oportunidades / Agenda / Configuración, calendario, reuniones y estados en /admin.
 - [x] Guardar configuración, reglas semanales y excepciones reales de disponibilidad.
 - [x] Mostrar reuniones en contactos y estados honestos de notificaciones, sin proveedores simulados.
-- [x] Verificar tipos, pruebas, reserva integral, ocupación de horarios y responsive; retirar datos temporales; no publicar.
+- [x] Sincronizar los archivos críticos de agenda entre main y lovable-sync, incluyendo runtime, API, tipos, migraciones y pruebas de regresión.
 
 # Autenticación CRM
+- [x] Corregir recuperación dentro de /admin; el flujo exige evento PASSWORD_RECOVERY y administrador verificado.
 - [x] Cambiar /admin a contraseña; seguridad y recuperación sin pantalla de registro público.
 - [x] Completar dashboard, creación y detalle de contactos, actividades y tareas usando tablas existentes.
 - [x] Verificar escrituras/lecturas bajo sesión admin y vistas desktop/tablet/móvil; no publicar ni tocar SEO público; retirar registros temporales.
@@ -19,7 +21,6 @@
 - [x] Verificar entrada con sesión confirmada y cierre de sesión; acceso a datos comprobado con el administrador.
 
 # Corrección comparador
-
 - [x] Sustituir únicamente las escenas derechas 2 y 3 en el render original v10.
 - [x] Eliminar el montaje anterior y conservar el movimiento existente.
 - [x] Verificar pasos 2 y 3 en escritorio y móvil, y regreso a otros estados.

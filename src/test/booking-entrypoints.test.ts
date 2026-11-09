@@ -12,10 +12,14 @@ describe('diagnostic booking entrypoints', () => {
     expect(index).toContain('submitInline(root,action)');
   });
 
-  it('keeps external booking CTAs connected to the real modal',()=>{
-    expect(index).toContain('window.openModal("booking")');
-    expect(runtime).toContain('window.openModal=function openModal(mode,preset){');
-    expect(runtime).toContain("leadForm('m','Agendar diagnóstico')");
+  it('uses an isolated scroll-safe modal for external booking CTAs',()=>{
+    expect(index).toContain('id="cl-booking-overlay"');
+    expect(index).toContain('openBookingModal();');
+    expect(index).toContain('overflow-y:auto');
+    expect(index).toContain('-webkit-overflow-scrolling:touch');
+    expect(index).toContain('touch-action:pan-y');
+    expect(index).toContain('min-height:100dvh');
+    expect(index).not.toContain('window.openModal("booking")');
   });
 
   it('routes both booking experiences through the same API and CRM RPC',()=>{

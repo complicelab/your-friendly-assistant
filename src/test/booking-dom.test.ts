@@ -168,6 +168,66 @@ describe('booking client DOM flow',()=>{
 
     const overlay=window.document.querySelector('#cl-booking-overlay');
     expect(overlay?.classList.contains('is-open')).toBe(true);
+
+    const inlineBox=window.document.querySelector('.cl-contact-booking') as HTMLElement;
+    const root=inlineBox.parentElement as HTMLElement;
+
+    const labels=Array.from(root.querySelectorAll('label'));
+    const byLabel=(needle:string)=>labels.find(el=>(el.textContent||'').toLowerCase().includes(needle.toLowerCase()));
+
+    const nameInput=byLabel('Nombre y apellido')?.querySelector('input') as HTMLInputElement | null;
+    const brandInput=byLabel('Marca personal o empresa')?.querySelector('input') as HTMLInputElement | null;
+    const emailInput=byLabel('Correo')?.querySelector('input') as HTMLInputElement | null;
+    const whatsappLabel=byLabel('WhatsApp');
+    const phoneInput=Array.from(whatsappLabel?.querySelectorAll('input')||[]).find(el=>(el as HTMLInputElement).type!=='checkbox') as HTMLInputElement | undefined;
+
+    if(nameInput)nameInput.value='Prueba Cómplice';
+    if(brandInput)brandInput.value='Marca Prueba';
+    if(emailInput)emailInput.value='prueba@example.com';
+    if(phoneInput)phoneInput.value='3001234567';
+
+    const serviceButton=Array.from(root.querySelectorAll('button,[role="button"],label')).find(el=>(el.textContent||'').toLowerCase().includes('sistemas con ia')) as HTMLElement | undefined;
+    if(serviceButton){
+      serviceButton.classList.add('selected');
+      serviceButton.setAttribute('aria-pressed','true');
+    }
+
+    const consent=Array.from(root.querySelectorAll('input[type="checkbox"]')).find(input=>{
+      const lab=input.closest('label')||input.parentElement;
+      return !!lab && (lab.textContent||'').toLowerCase().includes('autorizo');
+    }) as HTMLInputElement | undefined;
+    if(consent)consent.checked=true;
+
+    const dateInput=root.querySelector('.cl-contact-date') as HTMLInputElement;
+    dateInput.value='2026-11-10';
+    dateInput.dispatchEvent(new window.Event('change',{bubbles:true}));
+
+    const timeSelect=root.querySelector('.cl-contact-time') as HTMLSelectElement;
+    expect(timeSelect.options.length).toBeGreaterThan(1);
+    timeSelect.value=slots[0].slot_start;
+    timeSelect.dispatchEvent(new window.Event('change',{bubbles:true}));
+
+    const postBodies:any[]=[];
+    const originalFetch=window.fetch as any;
+    Object.defineProperty(window,'fetch',{value:vi.fn(async(input:any,init?:any)=>{
+      if(init?.method==='POST'){
+        postBodies.push(JSON.parse(init.body));
+        return {ok:true,json:async()=>({ok:true,meeting_id:'meeting-test'})};
+      }
+      return originalFetch(input,init);
+    })});
+
+    const inlineAction=Array.from(root.querySelectorAll('button,a')).find(el=>(el.textContent||'').includes('Agendar diagnóstico')) as HTMLElement | undefined;
+    expect(inlineAction).toBeTruthy();
+    inlineAction?.dispatchEvent(new window.MouseEvent('click',{bubbles:true,cancelable:true}));
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(postBodies.length).toBe(1);
+    expect(postBodies[0].starts_at).toBe(slots[0].slot_start);
+    expect(postBodies[0].full_name).toBe('Prueba Cómplice');
+    expect(postBodies[0].email).toBe('prueba@example.com');
+    expect(postBodies[0].solution_interest).toBeTruthy();
   });
 
 });

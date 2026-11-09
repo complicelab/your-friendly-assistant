@@ -52,7 +52,10 @@ describe('diagnostic booking entrypoints', () => {
     expect(index).toContain('window.visualViewport');
     expect(index).toContain('--cl-booking-vh');
     expect(index).toContain('var(--cl-booking-vh,100dvh)');
-    expect(index).toContain('body.cl-booking-modal-open{overflow:auto!important');
+    expect(index).toContain('body.cl-booking-modal-open{overflow:hidden!important;touch-action:auto!important');
+    expect(index).toContain('.cl-booking-overlay{padding:0;background:rgba(11,18,32,.72);overflow:hidden!important;touch-action:pan-y!important');
+    expect(index).toContain('.cl-booking-panel{width:100%;height:var(--cl-booking-vh,100dvh)');
+    expect(index).toContain('overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y');
   });
 
 });

@@ -491,6 +491,7 @@ const UNIFIED_BOOKING_CTA = `
   var modalState={slots:[],day:"",slot:"",loading:false};
   var availabilityCache={slots:[],fetchedAt:0,promise:null,error:null};
   var AVAILABILITY_CACHE_MS=180000;
+  var AVAILABILITY_STORAGE_KEY="cl-booking-availability-v1";
 
   function norm(el){return (el&&el.textContent?el.textContent:"").replace(/\\s+/g," ").trim();}
   function isInsideModal(el){return !!(el&&el.closest&&el.closest("#modal,.modal,.m-overlay,#m-overlay,[role=dialog],#m-content,.ag,.ag-form"));}
@@ -573,6 +574,27 @@ const UNIFIED_BOOKING_CTA = `
     };
   }
 
+  function hydrateAvailabilityCache(){
+    try{
+      var raw=sessionStorage.getItem(AVAILABILITY_STORAGE_KEY);
+      if(!raw)return;
+      var saved=JSON.parse(raw);
+      if(!saved||!Array.isArray(saved.slots)||!saved.fetchedAt)return;
+      if(Date.now()-saved.fetchedAt>=AVAILABILITY_CACHE_MS)return;
+      availabilityCache.slots=saved.slots;
+      availabilityCache.fetchedAt=saved.fetchedAt;
+    }catch(error){}
+  }
+
+  function persistAvailabilityCache(){
+    try{
+      sessionStorage.setItem(AVAILABILITY_STORAGE_KEY,JSON.stringify({
+        slots:availabilityCache.slots,
+        fetchedAt:availabilityCache.fetchedAt
+      }));
+    }catch(error){}
+  }
+
   function fetchSharedAvailability(force){
     var fresh=availabilityCache.slots.length&&Date.now()-availabilityCache.fetchedAt<AVAILABILITY_CACHE_MS;
     if(!force&&fresh)return Promise.resolve(availabilityCache.slots);
@@ -584,6 +606,7 @@ const UNIFIED_BOOKING_CTA = `
           availabilityCache.slots=Array.isArray(data.slots)?data.slots:[];
           availabilityCache.fetchedAt=Date.now();
           availabilityCache.error=null;
+          persistAvailabilityCache();
           return availabilityCache.slots;
         });
       })
@@ -878,6 +901,9 @@ const UNIFIED_BOOKING_CTA = `
     event.preventDefault();event.stopPropagation();if(event.stopImmediatePropagation)event.stopImmediatePropagation();
     openBookingModal();
   },true);
+
+  hydrateAvailabilityCache();
+  prewarmAvailability();
 
   if(document.readyState==="loading"){
     document.addEventListener("DOMContentLoaded",function(){normalize();setTimeout(normalize,250);setTimeout(normalize,900);},{once:true});

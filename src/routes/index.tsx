@@ -671,8 +671,14 @@ const UNIFIED_BOOKING_CTA = `
   }
 
   function installInlineScheduler(root){
-    if(!root||root.dataset.clScheduler==="1")return;
-    root.dataset.clScheduler="1";inline.root=root;
+    if(!root)return;
+    if(root.querySelector(".cl-contact-booking")){
+      root.dataset.clScheduler="1";
+      inline.root=root;
+      return;
+    }
+    if(root.dataset.clScheduler==="1")delete root.dataset.clScheduler;
+    inline.root=root;
     var consent=Array.from(root.querySelectorAll('input[type="checkbox"]')).find(function(input){
       var label=input.closest("label")||input.parentElement;return label&&norm(label).toLowerCase().indexOf("autorizo")!==-1;
     });
@@ -690,6 +696,7 @@ const UNIFIED_BOOKING_CTA = `
     box.className="cl-contact-booking";
     box.innerHTML='<label><span>Fecha preferida</span><input class="cl-contact-date" type="date" aria-label="Fecha preferida"></label><label><span>Hora disponible</span><select class="cl-contact-time" aria-label="Hora disponible" disabled><option value="">Selecciona primero una fecha</option></select></label><p class="cl-contact-booking-note">Consultando disponibilidad…</p>';
     if(rootAnchor&&rootAnchor.parentElement===root)root.insertBefore(box,rootAnchor);else root.appendChild(box);
+    root.dataset.clScheduler="1";
 
     var dateInput=box.querySelector(".cl-contact-date");
     var timeSelect=box.querySelector(".cl-contact-time");
@@ -971,11 +978,20 @@ const UNIFIED_BOOKING_CTA = `
     }
   }
 
-  window.addEventListener("click",function(event){
+  var lastBookingPointerAt=0;
+  function handleBookingAction(event){
     var action=event.target&&event.target.closest?event.target.closest("a,button"):null;
     if(!action||isInsideModal(action))return;
     var actionText=norm(action);
     if(!isBookingActionText(actionText))return;
+
+    if(event.type==="click"&&Date.now()-lastBookingPointerAt<650){
+      event.preventDefault();
+      event.stopPropagation();
+      if(event.stopImmediatePropagation)event.stopImmediatePropagation();
+      return;
+    }
+    if(event.type==="pointerup")lastBookingPointerAt=Date.now();
 
     event.preventDefault();
     event.stopPropagation();
@@ -983,14 +999,17 @@ const UNIFIED_BOOKING_CTA = `
 
     var root=findContactRoot();
     if(root&&root.contains(action)){
-      action.textContent="Agendar diagnóstico";
+      if(norm(action)!=="Agendar diagnóstico")action.textContent="Agendar diagnóstico";
       installInlineScheduler(root);
       submitInline(root,action);
       return;
     }
 
     openBookingModal();
-  },true);
+  }
+
+  if(window.PointerEvent)window.addEventListener("pointerup",handleBookingAction,true);
+  window.addEventListener("click",handleBookingAction,true);
 
   hydrateAvailabilityCache();
   prewarmAvailability();

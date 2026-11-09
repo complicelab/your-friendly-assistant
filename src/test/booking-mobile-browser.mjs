@@ -4,8 +4,9 @@ import { chromium } from '@playwright/test';
 const source=fs.readFileSync(new URL('../routes/index.tsx',import.meta.url),'utf8');
 const startMarker='const UNIFIED_BOOKING_CTA = `';
 const start=source.indexOf(startMarker);
-const end=source.indexOf('`;\n\n\nfunction getOriginalHtml()',start);
-if(start<0||end<0)throw new Error('Could not extract UNIFIED_BOOKING_CTA from index.tsx');
+const functionStart=source.indexOf('function getOriginalHtml()',start);
+const end=functionStart>0?source.lastIndexOf('`;',functionStart):-1;
+if(start<0||functionStart<0||end<0||end<=start)throw new Error('Could not extract UNIFIED_BOOKING_CTA from index.tsx');
 const runtime=source.slice(start+startMarker.length,end);
 
 const browser=await chromium.launch({headless:true});

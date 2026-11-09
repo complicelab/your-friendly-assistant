@@ -18,7 +18,9 @@ describe('diagnostic booking entrypoints', () => {
     expect(index).toContain('overflow-y:auto');
     expect(index).toContain('-webkit-overflow-scrolling:touch');
     expect(index).toContain('touch-action:pan-y');
-    expect(index).toContain('min-height:100dvh');
+    expect(index).toContain('height:100dvh');
+    expect(index).toContain('window.__clOpenBookingModal=openBookingModal');
+    expect(index).toContain('function clearLegacyBookingShell()');
     expect(index).not.toContain('window.openModal("booking")');
   });
 

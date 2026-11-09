@@ -464,14 +464,16 @@ const UNIFIED_BOOKING_CTA = `
     #m-content .ag{max-width:100%!important;overflow:hidden}
     #m-content .ag-pick,#m-content .ag-form{min-width:0!important}
     .cl-booking-overlay{
-      top:var(--cl-booking-vv-top,0px)!important;right:0!important;bottom:auto!important;left:0!important;
+      top:0!important;right:0!important;bottom:auto!important;left:0!important;
       width:100%!important;height:var(--cl-booking-vh,100dvh)!important;max-height:var(--cl-booking-vh,100dvh)!important;
-      padding:0;background:rgba(11,18,32,.72);overflow-x:hidden!important;overflow-y:auto!important;
-      -webkit-overflow-scrolling:touch!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important
+      padding:0!important;background:rgba(11,18,32,.72);overflow:hidden!important;
+      overscroll-behavior:none!important;touch-action:none!important
     }
     .cl-booking-panel{
-      width:100%;height:auto!important;max-height:none!important;min-height:100%;margin:0;border-radius:0;box-shadow:none;
-      overflow:visible!important;touch-action:pan-y
+      position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-height:100%!important;min-height:0!important;
+      margin:0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important;
+      overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;
+      overscroll-behavior-y:contain!important;touch-action:pan-y!important;scroll-behavior:auto!important
     }
     .cl-booking-modal-head{top:0;padding:16px 16px 14px;border-radius:0}
     .cl-booking-modal-head h2{font-size:22px}
@@ -816,11 +818,15 @@ const UNIFIED_BOOKING_CTA = `
     bookingForm.addEventListener("submit",submitModalBooking);
     bookingForm.addEventListener("focusin",function(){
       syncBookingViewport();
+      requestAnimationFrame(keepFocusedBookingFieldVisible);
       setTimeout(function(){
         syncBookingViewport();
         keepFocusedBookingFieldVisible();
-      },80);
-      setTimeout(keepFocusedBookingFieldVisible,260);
+      },120);
+      setTimeout(function(){
+        syncBookingViewport();
+        keepFocusedBookingFieldVisible();
+      },360);
     });
     return overlay;
   }
@@ -830,8 +836,7 @@ const UNIFIED_BOOKING_CTA = `
     if(!overlay)return;
     overlay.classList.remove("is-open");
     document.body.classList.remove("cl-booking-modal-open");
-    document.body.style.removeProperty("overflow");
-    document.body.style.removeProperty("overflow-y");
+    unlockBookingPage();
     document.documentElement.style.removeProperty("overflow");
     document.documentElement.style.removeProperty("overflow-y");
   }
@@ -900,9 +905,15 @@ const UNIFIED_BOOKING_CTA = `
   function syncBookingViewport(){
     var vv=window.visualViewport;
     var h=vv&&vv.height?vv.height:window.innerHeight;
-    var top=vv&&typeof vv.offsetTop==="number"?vv.offsetTop:0;
     if(h)document.documentElement.style.setProperty("--cl-booking-vh",Math.max(320,Math.round(h))+"px");
-    document.documentElement.style.setProperty("--cl-booking-vv-top",Math.max(0,Math.round(top))+"px");
+  }
+
+  function bookingScrollContainer(){
+    var overlay=document.getElementById("cl-booking-overlay");
+    if(!overlay)return null;
+    return window.matchMedia&&window.matchMedia("(max-width:700px)").matches
+      ? overlay.querySelector(".cl-booking-panel")
+      : overlay;
   }
 
   function keepFocusedBookingFieldVisible(){
@@ -910,18 +921,39 @@ const UNIFIED_BOOKING_CTA = `
     if(!overlay||!overlay.classList.contains("is-open"))return;
     var active=document.activeElement;
     if(!active||!overlay.contains(active))return;
-    var vv=window.visualViewport;
-    var visibleTop=vv&&typeof vv.offsetTop==="number"?vv.offsetTop:0;
-    var visibleHeight=vv&&vv.height?vv.height:window.innerHeight;
-    var visibleBottom=visibleTop+visibleHeight;
+    var scroller=bookingScrollContainer();
+    if(!scroller)return;
     var rect=active.getBoundingClientRect();
-    var safeTop=visibleTop+90;
-    var safeBottom=visibleBottom-28;
+    var bounds=scroller.getBoundingClientRect();
+    var safeTop=bounds.top+88;
+    var safeBottom=bounds.bottom-24;
     if(rect.bottom>safeBottom){
-      overlay.scrollTop+=Math.ceil(rect.bottom-safeBottom+18);
+      scroller.scrollTop+=Math.ceil(rect.bottom-safeBottom+20);
     }else if(rect.top<safeTop){
-      overlay.scrollTop-=Math.ceil(safeTop-rect.top+12);
+      scroller.scrollTop-=Math.ceil(safeTop-rect.top+16);
     }
+  }
+
+  var bookingPageScrollY=0;
+  function lockBookingPage(){
+    bookingPageScrollY=window.scrollY||window.pageYOffset||0;
+    document.body.style.setProperty("position","fixed");
+    document.body.style.setProperty("top",(-bookingPageScrollY)+"px");
+    document.body.style.setProperty("left","0");
+    document.body.style.setProperty("right","0");
+    document.body.style.setProperty("width","100%");
+    document.body.style.setProperty("overflow","hidden");
+  }
+
+  function unlockBookingPage(){
+    document.body.style.removeProperty("position");
+    document.body.style.removeProperty("top");
+    document.body.style.removeProperty("left");
+    document.body.style.removeProperty("right");
+    document.body.style.removeProperty("width");
+    document.body.style.removeProperty("overflow");
+    document.body.style.removeProperty("overflow-y");
+    window.scrollTo(0,bookingPageScrollY||0);
   }
 
   function clearLegacyBookingShell(){
@@ -946,7 +978,9 @@ const UNIFIED_BOOKING_CTA = `
     }
     overlay.classList.add("is-open");
     document.body.classList.add("cl-booking-modal-open");
-    overlay.scrollTop=0;
+    lockBookingPage();
+    var openScroller=bookingScrollContainer();
+    if(openScroller)openScroller.scrollTop=0;
     var root=findContactRoot();
     if(root){
       var data=collect(root);
@@ -966,7 +1000,8 @@ const UNIFIED_BOOKING_CTA = `
     }
     requestAnimationFrame(function(){
       syncBookingViewport();
-      overlay.scrollTop=0;
+      var openScroller=bookingScrollContainer();
+      if(openScroller)openScroller.scrollTop=0;
     });
   }
 
@@ -1001,7 +1036,8 @@ const UNIFIED_BOOKING_CTA = `
       var data=await response.json();
       if(!response.ok||!data.ok)throw new Error(data.error||"No fue posible confirmar el diagnóstico.");
       overlay.querySelector(".cl-booking-modal-body").innerHTML='<div class="cl-booking-success"><h3>Diagnóstico agendado.</h3><p>Tu cita quedó confirmada para <strong>'+longDate(modalState.slot)+'</strong>, hora de Colombia. Ya quedó registrada en nuestro CRM.</p></div>';
-      overlay.scrollTop=0;
+      var successScroller=bookingScrollContainer();
+      if(successScroller)successScroller.scrollTop=0;
     }catch(err){
       error.textContent=err&&err.message?err.message:"No pudimos guardar la cita. Intenta nuevamente.";
       button.disabled=false;button.textContent="Agendar diagnóstico";

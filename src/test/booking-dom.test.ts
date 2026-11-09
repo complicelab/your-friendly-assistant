@@ -130,30 +130,6 @@ describe('booking client DOM flow',()=>{
     await Promise.resolve();
     await Promise.resolve();
 
-    if(window.document.querySelectorAll('.cl-contact-date').length===0){
-      const texts=Array.from(window.document.querySelectorAll('body *')).filter(el=>{
-        const t=(el.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
-        return t==='nombre y apellido' || t.includes('autorizo el uso de mis datos') || t.includes('continuar por whatsapp') || t.includes('agendar diagnóstico');
-      }).slice(0,20);
-      console.log('BOOKING_DIAGNOSTIC_MATCHES',texts.map(el=>({
-        tag:el.tagName,id:(el as HTMLElement).id,cls:(el as HTMLElement).className,
-        text:(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,180)
-      })));
-      const structures=Array.from(window.document.querySelectorAll('form,section,div')).filter(el=>{
-        const inputs=el.querySelectorAll('input').length;
-        const checks=el.querySelectorAll('input[type="checkbox"]').length;
-        const t=(el.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
-        return inputs>=3 && (checks>0 || t.includes('nombre y apellido') || t.includes('servicio te interesa'));
-      }).sort((a,b)=>a.querySelectorAll('*').length-b.querySelectorAll('*').length).slice(0,30);
-      console.log('BOOKING_DIAGNOSTIC_STRUCTURES',structures.map(el=>({
-        tag:el.tagName,id:(el as HTMLElement).id,cls:(el as HTMLElement).className,
-        text:(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,700),
-        inputs:el.querySelectorAll('input').length,
-        buttons:el.querySelectorAll('button,a').length,
-        checks:el.querySelectorAll('input[type="checkbox"]').length,
-        labels:el.querySelectorAll('label').length
-      })));
-    }
     expect(window.document.querySelectorAll('.cl-contact-date').length).toBe(1);
     expect(window.document.querySelectorAll('.cl-contact-time').length).toBe(1);
 
@@ -180,16 +156,6 @@ describe('booking client DOM flow',()=>{
     while(root&&root!==window.document.body&&!root.contains(actualAction!))root=root.parentElement;
     expect(root).toBeTruthy();
 
-    console.log('BOOKING_REAL_CONTROLS',Array.from(root!.querySelectorAll('input,select,textarea')).map(el=>({
-      tag:el.tagName,
-      type:(el as HTMLInputElement).type||'',
-      name:(el as HTMLInputElement).name||'',
-      id:(el as HTMLElement).id||'',
-      placeholder:(el as HTMLInputElement).placeholder||'',
-      aria:el.getAttribute('aria-label')||'',
-      value:(el as HTMLInputElement).value||'',
-      parentText:(el.parentElement?.textContent||'').replace(/\s+/g,' ').trim().slice(0,180)
-    })));
     const nameInput=root!.querySelector('input[name="nombre"]') as HTMLInputElement;
     const brandInput=root!.querySelector('input[name="marca"]') as HTMLInputElement;
     const emailInput=root!.querySelector('input[name="email"]') as HTMLInputElement;
@@ -233,21 +199,6 @@ describe('booking client DOM flow',()=>{
     await Promise.resolve();
     await Promise.resolve();
 
-    if(postBodies.length===0){
-      console.log('BOOKING_SUBMIT_DIAGNOSTIC',{
-        note:(root!.querySelector('.cl-contact-booking-note')?.textContent||'').trim(),
-        name:nameInput?.value||'',
-        brand:brandInput?.value||'',
-        email:emailInput?.value||'',
-        phone:phoneInput?.value||'',
-        consent:!!consent?.checked,
-        date:dateInput.value,
-        time:timeSelect.value,
-        actionText:inlineAction?.textContent||'',
-        service:serviceRadio.value,
-        serviceChecked:serviceRadio.checked
-      });
-    }
     expect(postBodies.length).toBe(1);
     expect(postBodies[0].starts_at).toBe(slots[0].slot_start);
     expect(postBodies[0].full_name).toBe('Prueba Cómplice');

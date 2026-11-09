@@ -228,6 +228,22 @@ describe('booking client DOM flow',()=>{
     await Promise.resolve();
     await Promise.resolve();
 
+    if(postBodies.length===0){
+      console.log('BOOKING_SUBMIT_DIAGNOSTIC',{
+        note:(root.querySelector('.cl-contact-booking-note')?.textContent||'').trim(),
+        name:nameInput?.value||'',
+        brand:brandInput?.value||'',
+        email:emailInput?.value||'',
+        phone:phoneInput?.value||'',
+        consent:!!consent?.checked,
+        date:dateInput.value,
+        time:timeSelect.value,
+        actionText:inlineAction?.textContent||'',
+        serviceButton:serviceButton?.textContent||'',
+        serviceClass:(serviceButton as HTMLElement|undefined)?.className||'',
+        servicePressed:serviceButton?.getAttribute('aria-pressed')||''
+      });
+    }
     expect(postBodies.length).toBe(1);
     expect(postBodies[0].starts_at).toBe(slots[0].slot_start);
     expect(postBodies[0].full_name).toBe('Prueba Cómplice');

@@ -30,12 +30,13 @@ describe('booking runtime transformation', () => {
   it('exposes the original modal opener and replaces the legacy booking branch', () => {
     const output=replaceBookingRuntime(fixtureHtml(),{url:'https://example.supabase.co',key:'anon'});
     expect(output).toContain('window.openModal=function openModal(mode,preset){');
-    expect(output).toContain("fetch('/api/booking?'+params.toString()");
-    expect(output).toContain("fetch('/api/booking'");
-    expect(output).toContain("leadForm('m','Agendar diagnóstico')");
-    expect(output).toContain('crm_public_book_meeting');
-    expect(output).toContain('if(window.__clOpenBookingModal){window.__clOpenBookingModal();return;}');
+    expect(output).toContain('if(window.__clOpenBookingModal){');
+    expect(output).toContain('window.__clOpenBookingModal();');
+    expect(output).toContain('window.__clBookingOpenRequested=true;');
     expect(output).not.toContain("mcontent.innerHTML='legacy booking'");
+    expect(output).not.toContain("leadForm('m','Agendar diagnóstico')");
+    expect(output).not.toContain("fetch('/api/booking'");
+    expect(output).not.toContain('crm_public_book_meeting');
   });
 
   it('fails loudly if the expected original modal runtime is missing', () => {

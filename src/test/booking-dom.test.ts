@@ -42,7 +42,7 @@ function fixture(){
         <label>WhatsApp<select name="country"><option value="+57">+57</option></select><input name="whatsapp" type="tel"></label>
         <label>Correo<input name="email" type="email"></label>
         <div>¿Qué servicio te interesa?
-          <button type="button">Creamos sistemas con IA a la medida</button>
+          <label><input type="radio" name="servicio" value="sistemas"> Creamos sistemas con IA a la medida</label>
         </div>
         <label><input type="checkbox" name="consent"> Autorizo el uso de mis datos para responder esta solicitud.</label>
         <button id="submit" type="submit" onclick="window.__legacyClick=true">Continuar por WhatsApp →</button>

@@ -176,6 +176,16 @@ describe('booking client DOM flow',()=>{
     const actualInlineBox=window.document.querySelector('.cl-contact-booking') as HTMLElement;
     const root=actualInlineBox.parentElement as HTMLElement;
 
+    console.log('BOOKING_REAL_CONTROLS',Array.from(root.querySelectorAll('input,select,textarea')).map(el=>({
+      tag:el.tagName,
+      type:(el as HTMLInputElement).type||'',
+      name:(el as HTMLInputElement).name||'',
+      id:(el as HTMLElement).id||'',
+      placeholder:(el as HTMLInputElement).placeholder||'',
+      aria:el.getAttribute('aria-label')||'',
+      value:(el as HTMLInputElement).value||'',
+      parentText:(el.parentElement?.textContent||'').replace(/\s+/g,' ').trim().slice(0,180)
+    })));
     const labels=Array.from(root.querySelectorAll('label'));
     const byLabel=(needle:string)=>labels.find(el=>(el.textContent||'').toLowerCase().includes(needle.toLowerCase()));
 

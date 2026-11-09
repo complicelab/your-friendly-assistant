@@ -169,8 +169,8 @@ describe('booking client DOM flow',()=>{
     const overlay=window.document.querySelector('#cl-booking-overlay');
     expect(overlay?.classList.contains('is-open')).toBe(true);
 
-    const inlineBox=window.document.querySelector('.cl-contact-booking') as HTMLElement;
-    const root=inlineBox.parentElement as HTMLElement;
+    const actualInlineBox=window.document.querySelector('.cl-contact-booking') as HTMLElement;
+    const root=actualInlineBox.parentElement as HTMLElement;
 
     const labels=Array.from(root.querySelectorAll('label'));
     const byLabel=(needle:string)=>labels.find(el=>(el.textContent||'').toLowerCase().includes(needle.toLowerCase()));

@@ -466,7 +466,9 @@ const UNIFIED_BOOKING_CTA = `
   window.addEventListener("load",normalize,{once:true});
 })();
 </script>
-`function getOriginalHtml() {
+`;
+
+function getOriginalHtml() {
   const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8")
     .replace(/El diagnóstico es una sesión de pago[^<]*/g, "El diagnóstico es una sesión gratuita para entender tu negocio, detectar dónde se pierde la oportunidad y definir el mejor siguiente paso.")
     .replace("Míralo funcionar.", "Así trabajamos.")

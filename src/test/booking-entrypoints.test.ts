@@ -25,8 +25,11 @@ describe('diagnostic booking entrypoints', () => {
   });
 
   it('routes both booking experiences through the same API and CRM RPC',()=>{
-    expect(index).toContain('fetch("/api/booking",{method:"POST"');
-    expect(runtime).toContain("fetch('/api/booking'");
+    expect((index.match(/fetch\("\/api\/booking"/g)||[]).length).toBeGreaterThanOrEqual(2);
+    expect(index).toContain('submitInline(root,action)');
+    expect(index).toContain('submitModalBooking');
+    expect(runtime).not.toContain("fetch('/api/booking'");
+    expect(runtime).toContain('window.__clOpenBookingModal');
     expect(api).toContain('supabase.rpc("crm_public_book_meeting"');
     expect(api).toContain('supabase.rpc("crm_public_available_slots"');
   });

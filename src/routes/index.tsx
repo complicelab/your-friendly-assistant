@@ -494,6 +494,14 @@ const UNIFIED_BOOKING_CTA = `
   var AVAILABILITY_STORAGE_KEY="cl-booking-availability-v1";
 
   function norm(el){return (el&&el.textContent?el.textContent:"").replace(/\\s+/g," ").trim();}
+  function isBookingActionText(value){
+    var t=String(value||"").toLowerCase().replace(/diagnostico/g,"diagnóstico");
+    return t.indexOf("agendar diagnóstico")!==-1 ||
+      t.indexOf("agendar videollamada")!==-1 ||
+      t.indexOf("solicitar videollamada")!==-1 ||
+      t.indexOf("continuar por whatsapp")!==-1 ||
+      t.indexOf("hablar por whatsapp")!==-1;
+  }
   function isInsideModal(el){return !!(el&&el.closest&&el.closest("#cl-booking-overlay,#modal,#m-overlay,#m-content"));}
   function dateKey(value){
     var parts=new Intl.DateTimeFormat("en-US",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:"America/Bogota"}).formatToParts(new Date(value));
@@ -512,7 +520,7 @@ const UNIFIED_BOOKING_CTA = `
       var t=norm(el).toLowerCase();
       var hasAction=Array.from(el.querySelectorAll("a,button")).some(function(action){
         var text=norm(action);
-        return CTA_TEXTS.indexOf(text)!==-1||text==="Agendar diagnóstico";
+        return isBookingActionText(text);
       });
       var hasConsent=el.querySelectorAll('input[type="checkbox"]').length>0;
       return el.querySelectorAll("input").length>=3 &&
@@ -668,7 +676,7 @@ const UNIFIED_BOOKING_CTA = `
     var consent=Array.from(root.querySelectorAll('input[type="checkbox"]')).find(function(input){
       var label=input.closest("label")||input.parentElement;return label&&norm(label).toLowerCase().indexOf("autorizo")!==-1;
     });
-    var submit=Array.from(root.querySelectorAll("button,a")).find(function(el){return CTA_TEXTS.indexOf(norm(el))!==-1;});
+    var submit=Array.from(root.querySelectorAll("button,a")).find(function(el){return isBookingActionText(norm(el));});
     if(submit){
       if(norm(submit)!=="Agendar diagnóstico")submit.textContent="Agendar diagnóstico";
       submit.classList.add("cl-booking-cta-label");
@@ -695,6 +703,20 @@ const UNIFIED_BOOKING_CTA = `
       var note=root.querySelector(".cl-contact-booking-note");
       if(note&&inline.slot){note.textContent="Horario seleccionado: "+longDate(inline.slot)+" · hora de Colombia.";note.classList.remove("is-error");}
     });
+
+    if(root.tagName==="FORM"&&root.dataset.clSubmitBound!=="1"){
+      root.dataset.clSubmitBound="1";
+      root.addEventListener("submit",function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        if(event.stopImmediatePropagation)event.stopImmediatePropagation();
+        var action=Array.from(root.querySelectorAll("button,a")).find(function(el){return isBookingActionText(norm(el));});
+        if(action)submitInline(root,action);
+      },true);
+      root.removeAttribute("action");
+      root.removeAttribute("onsubmit");
+    }
+
     loadInlineAvailability(root);
   }
 
@@ -919,7 +941,7 @@ const UNIFIED_BOOKING_CTA = `
 
     Array.from(document.querySelectorAll("a,button")).forEach(function(el){
       var text=norm(el);
-      if(CTA_TEXTS.indexOf(text)===-1)return;
+      if(!isBookingActionText(text))return;
       if(isInsideModal(el))return;
       if(text!=="Agendar diagnóstico")el.textContent="Agendar diagnóstico";
       el.classList.add("cl-booking-cta-label");
@@ -941,7 +963,7 @@ const UNIFIED_BOOKING_CTA = `
       var section=heading?(heading.closest("section")||heading.parentElement):null;
       if(section){
         Array.from(section.querySelectorAll("a,button")).forEach(function(el){
-          if(CTA_TEXTS.indexOf(norm(el))===-1&&norm(el)!=="Agendar diagnóstico")return;
+          if(!isBookingActionText(norm(el)))return;
           if(root.contains(el))return;
           el.remove();
         });
@@ -953,7 +975,7 @@ const UNIFIED_BOOKING_CTA = `
     var action=event.target&&event.target.closest?event.target.closest("a,button"):null;
     if(!action||isInsideModal(action))return;
     var actionText=norm(action);
-    if(CTA_TEXTS.indexOf(actionText)===-1&&actionText!=="Agendar diagnóstico")return;
+    if(!isBookingActionText(actionText))return;
 
     event.preventDefault();
     event.stopPropagation();

@@ -42,14 +42,24 @@ async function runMobileScenario(browserType,label){
   await overlay.waitFor({state:'visible'});
   const panel=page.locator('#cl-booking-overlay .cl-booking-panel');
 
-  const before=await overlay.evaluate(el=>({
+  const beforeOverlay=await overlay.evaluate(el=>({
     overflowY:getComputedStyle(el).overflowY,
     touchAction:getComputedStyle(el).touchAction,
     clientHeight:el.clientHeight,
     scrollHeight:el.scrollHeight
   }));
-  if(before.overflowY!=='auto')throw new Error(label+' overlay is not the mobile scroll container: '+JSON.stringify(before));
-  if(before.scrollHeight<=before.clientHeight)throw new Error(label+' overlay is not scrollable: '+JSON.stringify(before));
+  if(beforeOverlay.overflowY!=='hidden')throw new Error(label+' overlay must stay fixed/non-scrollable: '+JSON.stringify(beforeOverlay));
+  if(!beforeOverlay.touchAction.includes('pan-y'))throw new Error(label+' overlay blocks vertical touch gestures: '+JSON.stringify(beforeOverlay));
+
+  const beforePanel=await panel.evaluate(el=>({
+    overflowY:getComputedStyle(el).overflowY,
+    touchAction:getComputedStyle(el).touchAction,
+    clientHeight:el.clientHeight,
+    scrollHeight:el.scrollHeight
+  }));
+  if(beforePanel.overflowY!=='auto')throw new Error(label+' panel is not the mobile scroll container: '+JSON.stringify(beforePanel));
+  if(!beforePanel.touchAction.includes('pan-y'))throw new Error(label+' panel does not allow vertical panning: '+JSON.stringify(beforePanel));
+  if(beforePanel.scrollHeight<=beforePanel.clientHeight)throw new Error(label+' panel is not scrollable: '+JSON.stringify(beforePanel));
 
   const name=page.locator('#cl-booking-overlay input[name="full_name"]');
   await name.fill('Cliente Prueba');
@@ -63,13 +73,13 @@ async function runMobileScenario(browserType,label){
   await email.focus();
   await page.waitForTimeout(380);
 
-  const afterFocus=await overlay.evaluate(el=>({
+  const afterFocus=await panel.evaluate(el=>({
     scrollTop:el.scrollTop,
     clientHeight:el.clientHeight,
     scrollHeight:el.scrollHeight,
     rect:{top:el.getBoundingClientRect().top,bottom:el.getBoundingClientRect().bottom}
   }));
-  if(afterFocus.scrollTop<=0)throw new Error(label+' overlay did not move after focusing lower field: '+JSON.stringify(afterFocus));
+  if(afterFocus.scrollTop<=0)throw new Error(label+' panel did not move after focusing lower field: '+JSON.stringify(afterFocus));
 
   const consent=page.locator('#cl-booking-overlay input[name="consent"]');
   await consent.scrollIntoViewIfNeeded();
@@ -82,17 +92,44 @@ async function runMobileScenario(browserType,label){
   if(!submitBox)throw new Error(label+' submit button is not reachable');
   const viewport=page.viewportSize();
   if(submitBox.y<0||submitBox.y+submitBox.height>(viewport?.height||520)+4){
-    throw new Error(label+' submit button remains outside visible viewport: '+JSON.stringify({submitBox,viewport,scrollTop:await overlay.evaluate(el=>el.scrollTop)}));
+    throw new Error(label+' submit button remains outside visible viewport: '+JSON.stringify({submitBox,viewport,scrollTop:await panel.evaluate(el=>el.scrollTop)}));
   }
 
   const panelMetrics=await panel.evaluate(el=>({
     overflowY:getComputedStyle(el).overflowY,
     height:getComputedStyle(el).height,
-    maxHeight:getComputedStyle(el).maxHeight
+    maxHeight:getComputedStyle(el).maxHeight,
+    touchAction:getComputedStyle(el).touchAction
   }));
-  if(panelMetrics.overflowY==='auto'||panelMetrics.overflowY==='scroll'){
-    throw new Error(label+' panel still owns mobile scrolling: '+JSON.stringify(panelMetrics));
+  if(panelMetrics.overflowY!=='auto'){
+    throw new Error(label+' panel lost mobile scrolling: '+JSON.stringify(panelMetrics));
   }
+
+  // Complete the real booking flow after keyboard/scroll checks.
+  await page.setViewportSize({width:390,height:844});
+  await page.waitForTimeout(120);
+
+  const day=page.locator('#cl-booking-overlay .cl-booking-day').first();
+  await day.waitFor({state:'visible'});
+  await day.click();
+  const time=page.locator('#cl-booking-overlay .cl-booking-time').first();
+  await time.waitFor({state:'visible'});
+  await time.click();
+
+  await page.locator('#cl-booking-overlay input[name="full_name"]').fill('Cliente Prueba');
+  await page.locator('#cl-booking-overlay input[name="brand_name"]').fill('Marca Prueba');
+  await page.locator('#cl-booking-overlay input[name="whatsapp"]').fill('3001234567');
+  await page.locator('#cl-booking-overlay input[name="email"]').fill('prueba@example.com');
+  await page.locator('#cl-booking-overlay select[name="solution_interest"]').selectOption({label:'Creamos sistemas con IA a la medida'});
+  await page.locator('#cl-booking-overlay input[name="consent"]').check();
+
+  const finalSubmit=page.locator('#cl-booking-overlay .cl-booking-submit');
+  await finalSubmit.scrollIntoViewIfNeeded();
+  await finalSubmit.click();
+
+  await page.locator('#cl-booking-overlay .cl-booking-success').waitFor({state:'visible',timeout:10000});
+  const successText=(await page.locator('#cl-booking-overlay .cl-booking-success').innerText()).toLowerCase();
+  if(!successText.includes('diagnóstico agendado'))throw new Error(label+' booking did not reach success state: '+successText);
 
   await browser.close();
   console.log('MOBILE_BOOKING_'+label.toUpperCase()+'_OK');

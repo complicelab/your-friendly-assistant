@@ -441,6 +441,13 @@ const UNIFIED_BOOKING_CTA = `
         el.removeAttribute("target");
         el.setAttribute("href","#contacto");
       }
+      if(window.matchMedia("(max-width:700px)").matches){
+        var pos=getComputedStyle(el).position;
+        if((pos==="fixed"||pos==="sticky")&&!el.closest("header")){
+          el.style.setProperty("display","none","important");
+          el.setAttribute("aria-hidden","true");
+        }
+      }
     });
   }
 

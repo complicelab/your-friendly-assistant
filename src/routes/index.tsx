@@ -462,7 +462,7 @@ const UNIFIED_BOOKING_CTA = `
     #m-content .ag{max-width:100%!important;overflow:hidden}
     #m-content .ag-pick,#m-content .ag-form{min-width:0!important}
     .cl-booking-overlay{padding:max(10px,env(safe-area-inset-top)) 0 max(16px,env(safe-area-inset-bottom));background:rgba(11,18,32,.72)}
-    .cl-booking-panel{width:100%;min-height:100dvh;margin:0;border-radius:0;box-shadow:none}
+    .cl-booking-panel{width:100%;min-height:var(--cl-booking-vh,100dvh);margin:0;border-radius:0;box-shadow:none}
     .cl-booking-modal-head{top:0;padding:16px 16px 14px;border-radius:0}
     .cl-booking-modal-head h2{font-size:22px}
     .cl-booking-modal-body{padding:16px 16px 28px}

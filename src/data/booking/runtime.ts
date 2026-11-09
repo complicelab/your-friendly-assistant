@@ -164,8 +164,7 @@ export function replaceBookingRuntime(html: string, config: BookingPublicConfig)
         }
         overlay=overlay.parentElement;
       }
-      document.documentElement.style.setProperty('overscroll-behavior-y','none');
-    }
+     }
     mcontent.innerHTML='<div id="m-host"><div class="ag"><div class="ag-pick"><h2 class="m-title" id="m-title">Agenda tu diagnóstico</h2><p class="m-sub">Elige un día y una hora. Todos los horarios se muestran en America/Bogota: <b>Hora de Colombia</b>.</p>'+
       '<h3 id="d-l">Día</h3><div class="days" role="radiogroup" aria-labelledby="d-l"><p class="booking-loading">Consultando disponibilidad real…</p></div>'+
       '<h3 id="s-l">Hora</h3><div class="slots" role="radiogroup" aria-labelledby="s-l"></div>'+

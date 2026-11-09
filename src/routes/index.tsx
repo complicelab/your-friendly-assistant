@@ -471,6 +471,17 @@ const UNIFIED_BOOKING_CTA = `
     .cl-booking-form label,.cl-booking-form label.full,.cl-booking-consent,.cl-booking-submit,.cl-booking-error{grid-column:1/-1}
     .cl-booking-phone{grid-template-columns:98px minmax(0,1fr)}
     .cl-booking-times{grid-template-columns:repeat(2,minmax(0,1fr))}
+    #modal,#m-overlay,.m-overlay,.modal-overlay,[role="dialog"].modal{
+      height:100dvh!important;max-height:100dvh!important;overflow-x:hidden!important;overflow-y:auto!important;
+      -webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important;touch-action:pan-y!important;
+      align-items:flex-start!important;padding-top:max(10px,env(safe-area-inset-top))!important;padding-bottom:max(24px,env(safe-area-inset-bottom))!important;
+    }
+    #m-box,.m-box,.modal-box,.modal-card{
+      height:auto!important;max-height:none!important;overflow:visible!important;margin-top:0!important;margin-bottom:20px!important;
+    }
+    #m-content,.m-content{
+      height:auto!important;max-height:none!important;overflow:visible!important;touch-action:pan-y!important;
+    }
   }
 </style>
 <script id="cl-unified-booking-cta">
@@ -786,7 +797,24 @@ const UNIFIED_BOOKING_CTA = `
     }
   }
 
+  function routeLegacyBookingToSafeModal(){
+    if(typeof window.openModal!=="function")return;
+    if(window.openModal.__clSafeBookingRouter)return;
+    var legacy=window.openModal;
+    var routed=function(mode,preset){
+      if(mode==="booking"){
+        openBookingModal();
+        return;
+      }
+      return legacy.apply(this,arguments);
+    };
+    routed.__clSafeBookingRouter=true;
+    routed.__clLegacy=legacy;
+    window.openModal=routed;
+  }
+
   function normalize(){
+    routeLegacyBookingToSafeModal();
     var root=findContactRoot();
     if(root)installInlineScheduler(root);
     Array.from(document.querySelectorAll("a,button")).forEach(function(el){
@@ -812,9 +840,9 @@ const UNIFIED_BOOKING_CTA = `
   },true);
 
   if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",function(){normalize();setTimeout(normalize,250);},{once:true});
+    document.addEventListener("DOMContentLoaded",function(){normalize();setTimeout(normalize,250);setTimeout(normalize,900);},{once:true});
   }else normalize();
-  window.addEventListener("load",normalize,{once:true});
+  window.addEventListener("load",function(){normalize();setTimeout(normalize,120);},{once:true});
 })();
 </script>
 `

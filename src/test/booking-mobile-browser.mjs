@@ -1,4 +1,12 @@
+import fs from 'node:fs';
 import { chromium } from '@playwright/test';
+
+const source=fs.readFileSync(new URL('../routes/index.tsx',import.meta.url),'utf8');
+const startMarker='const UNIFIED_BOOKING_CTA = `';
+const start=source.indexOf(startMarker);
+const end=source.indexOf('`;\n\n\nfunction getOriginalHtml()',start);
+if(start<0||end<0)throw new Error('Could not extract UNIFIED_BOOKING_CTA from index.tsx');
+const runtime=source.slice(start+startMarker.length,end);
 
 const browser=await chromium.launch({headless:true});
 const context=await browser.newContext({
@@ -24,8 +32,8 @@ await page.route('**/api/booking**',async route=>{
   }
 });
 
-await page.goto('http://127.0.0.1:4173/',{waitUntil:'domcontentloaded'});
-await page.waitForFunction(()=>typeof window.__clOpenBookingModal==='function',{timeout:30000});
+await page.setContent('<!doctype html><html><head><base href="https://complicelab.com/"></head><body><main style="min-height:3000px"></main>'+runtime+'</body></html>',{waitUntil:'domcontentloaded'});
+await page.waitForFunction(()=>typeof window.__clOpenBookingModal==='function',{timeout:10000});
 await page.evaluate(()=>window.__clOpenBookingModal());
 
 const overlay=page.locator('#cl-booking-overlay');
@@ -45,9 +53,8 @@ const name=page.locator('#cl-booking-overlay input[name="full_name"]');
 await name.fill('Cliente Prueba');
 await name.focus();
 
-// Simulate the visual area shrinking when the software keyboard appears.
 await page.setViewportSize({width:390,height:520});
-await page.waitForTimeout(180);
+await page.waitForTimeout(200);
 
 const email=page.locator('#cl-booking-overlay input[name="email"]');
 await email.scrollIntoViewIfNeeded();
@@ -58,9 +65,13 @@ const afterFocus=await overlay.evaluate(el=>({
   scrollTop:el.scrollTop,
   clientHeight:el.clientHeight,
   scrollHeight:el.scrollHeight,
-  rect:el.getBoundingClientRect().toJSON()
+  rect:{top:el.getBoundingClientRect().top,bottom:el.getBoundingClientRect().bottom}
 }));
 if(afterFocus.scrollTop<=0)throw new Error('Overlay did not move after focusing lower field: '+JSON.stringify(afterFocus));
+
+const consent=page.locator('#cl-booking-overlay input[name="consent"]');
+await consent.scrollIntoViewIfNeeded();
+await page.waitForTimeout(80);
 
 const submit=page.locator('#cl-booking-overlay .cl-booking-submit');
 await submit.scrollIntoViewIfNeeded();
@@ -72,7 +83,6 @@ if(submitBox.y<0||submitBox.y+submitBox.height>(viewport?.height||520)+4){
   throw new Error('Submit button remains outside visible viewport: '+JSON.stringify({submitBox,viewport,scrollTop:await overlay.evaluate(el=>el.scrollTop)}));
 }
 
-// Ensure the overlay remains the only scroll container on mobile.
 const panelMetrics=await panel.evaluate(el=>({
   overflowY:getComputedStyle(el).overflowY,
   height:getComputedStyle(el).height,

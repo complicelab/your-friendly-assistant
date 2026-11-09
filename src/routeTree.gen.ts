@@ -21,6 +21,7 @@ import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as TodosLosServiciosRouteImport } from './routes/todos-los-servicios'
+import { Route as ApiBookingRouteImport } from './routes/api.booking'
 import { Route as ApiLeadsRouteImport } from './routes/api.leads'
 import { Route as FoundersCamiloDotjpgRouteImport } from './routes/founders.camilo[.]jpg'
 import { Route as FoundersCristianDotjpgRouteImport } from './routes/founders.cristian[.]jpg'
@@ -100,6 +101,11 @@ const TerminosRoute = TerminosRouteImport.update({
 const TodosLosServiciosRoute = TodosLosServiciosRouteImport.update({
   id: '/todos-los-servicios',
   path: '/todos-los-servicios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBookingRoute = ApiBookingRouteImport.update({
+  id: '/api/booking',
+  path: '/api/booking',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiLeadsRoute = ApiLeadsRouteImport.update({
@@ -227,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
+  '/api/booking': typeof ApiBookingRoute
   '/api/leads': typeof ApiLeadsRoute
   '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
   '/founders/cristian.jpg': typeof FoundersCristianDotjpgRoute
@@ -261,6 +268,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
+  '/api/booking': typeof ApiBookingRoute
   '/api/leads': typeof ApiLeadsRoute
   '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
   '/founders/cristian.jpg': typeof FoundersCristianDotjpgRoute
@@ -296,6 +304,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
+  '/api/booking': typeof ApiBookingRoute
   '/api/leads': typeof ApiLeadsRoute
   '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
   '/founders/cristian.jpg': typeof FoundersCristianDotjpgRoute
@@ -332,6 +341,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terminos'
     | '/todos-los-servicios'
+    | '/api/booking'
     | '/api/leads'
     | '/founders/camilo.jpg'
     | '/founders/cristian.jpg'
@@ -366,6 +376,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terminos'
     | '/todos-los-servicios'
+    | '/api/booking'
     | '/api/leads'
     | '/founders/camilo.jpg'
     | '/founders/cristian.jpg'
@@ -400,6 +411,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terminos'
     | '/todos-los-servicios'
+    | '/api/booking'
     | '/api/leads'
     | '/founders/camilo.jpg'
     | '/founders/cristian.jpg'
@@ -435,6 +447,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   TerminosRoute: typeof TerminosRoute
   TodosLosServiciosRoute: typeof TodosLosServiciosRoute
+  ApiBookingRoute: typeof ApiBookingRoute
   ApiLeadsRoute: typeof ApiLeadsRoute
   FoundersCamiloDotjpgRoute: typeof FoundersCamiloDotjpgRoute
   FoundersCristianDotjpgRoute: typeof FoundersCristianDotjpgRoute
@@ -541,6 +554,13 @@ declare module '@tanstack/react-router' {
       path: '/todos-los-servicios'
       fullPath: '/todos-los-servicios'
       preLoaderRoute: typeof TodosLosServiciosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/booking': {
+      id: '/api/booking'
+      path: '/api/booking'
+      fullPath: '/api/booking'
+      preLoaderRoute: typeof ApiBookingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/leads': {
@@ -699,6 +719,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   TerminosRoute: TerminosRoute,
   TodosLosServiciosRoute: TodosLosServiciosRoute,
+  ApiBookingRoute: ApiBookingRoute,
   ApiLeadsRoute: ApiLeadsRoute,
   FoundersCamiloDotjpgRoute: FoundersCamiloDotjpgRoute,
   FoundersCristianDotjpgRoute: FoundersCristianDotjpgRoute,

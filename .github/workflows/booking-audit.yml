@@ -35,3 +35,21 @@ jobs:
 
       - name: Build
         run: bun run build
+
+      - name: Install Playwright Chromium
+        run: |
+          bun add --dev @playwright/test
+          bunx playwright install chromium
+
+      - name: Run mobile browser booking test
+        run: |
+          bunx vite preview --host 127.0.0.1 --port 4173 > /tmp/booking-preview.log 2>&1 &
+          PREVIEW_PID=$!
+          trap 'kill $PREVIEW_PID || true' EXIT
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/ > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          bunx playwright test src/test/booking-mobile.e2e.ts --workers=1

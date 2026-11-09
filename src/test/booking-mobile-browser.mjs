@@ -33,7 +33,7 @@ await page.route('**/api/booking**',async route=>{
   }
 });
 
-await page.setContent('<!doctype html><html><head><base href="https://complicelab.com/"></head><body><main style="min-height:3000px"></main>'+runtime+'</body></html>',{waitUntil:'domcontentloaded'});
+await page.setContent('<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><base href="https://complicelab.com/"></head><body><main style="min-height:3000px"></main>'+runtime+'</body></html>',{waitUntil:'domcontentloaded'});
 await page.waitForFunction(()=>typeof window.__clOpenBookingModal==='function',{timeout:10000});
 await page.evaluate(()=>window.__clOpenBookingModal());
 

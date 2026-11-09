@@ -442,8 +442,6 @@ const UNIFIED_BOOKING_CTA = `
       if(isInsideModal(el))return;
       el.textContent="Agendar diagnóstico";
       el.classList.add("cl-booking-cta-label");
-      el.removeAttribute("onclick");
-      if(el.tagName==="A"){el.removeAttribute("target");el.removeAttribute("href");}
     });
   }
 
@@ -451,13 +449,12 @@ const UNIFIED_BOOKING_CTA = `
     var action=event.target&&event.target.closest?event.target.closest("a,button"):null;
     if(!action||isInsideModal(action)||norm(action)!=="Agendar diagnóstico")return;
 
+    if(typeof window.openModal!=="function")return;
+
     event.preventDefault();
     event.stopPropagation();
     if(event.stopImmediatePropagation)event.stopImmediatePropagation();
-
-    if(typeof window.openModal==="function"){
-      window.openModal("booking");
-    }
+    window.openModal("booking");
   },true);
 
   if(document.readyState==="loading"){

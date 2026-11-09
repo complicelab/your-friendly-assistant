@@ -101,6 +101,14 @@ describe('booking client DOM flow',()=>{
       Object.defineProperty(window,'requestAnimationFrame',{value:(cb:FrameRequestCallback)=>{cb(0);return 1;}});
       Object.defineProperty(window,'scrollTo',{value:()=>{}});
       Object.defineProperty(window.HTMLElement.prototype,'scrollTo',{value:()=>{}});
+      Object.defineProperty(window.HTMLCanvasElement.prototype,'getContext',{value:()=>new Proxy({},{
+        get(target,prop){
+          if(prop==='canvas')return null;
+          if(prop==='measureText')return ()=>({width:0});
+          return ()=>{};
+        },
+        set(){return true;}
+      })});
     }});
     const {window}=dom;
     await new Promise(resolve=>setTimeout(resolve,80));

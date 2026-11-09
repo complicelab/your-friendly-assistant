@@ -14,6 +14,7 @@ type BookingPublicConfig = { url: string; key: string };
  * modal, lead form, WhatsApp flow, navigation and every other section stay intact.
  */
 export function replaceBookingRuntime(html: string, config: BookingPublicConfig) {
+  html = html.replace("function openModal(mode,preset){", "window.openModal=function openModal(mode,preset){");
   const legacyStart = html.indexOf("function nextDays(n){");
   const legacyEnd = html.indexOf("\n\nfunction openModal(mode,preset){", legacyStart);
   if (legacyStart < 0 || legacyEnd < 0) throw new Error("No se encontró la disponibilidad ficticia anterior.");

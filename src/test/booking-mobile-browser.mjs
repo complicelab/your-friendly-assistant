@@ -61,7 +61,24 @@ async function runMobileScenario(browserType,label){
   }));
   if(beforePanel.overflowY!=='auto')throw new Error(label+' panel is not the mobile scroll container: '+JSON.stringify(beforePanel));
   if(!beforePanel.touchAction.includes('pan-y'))throw new Error(label+' panel does not allow vertical panning: '+JSON.stringify(beforePanel));
-  if(beforePanel.scrollHeight<=beforePanel.clientHeight)throw new Error(label+' panel is not scrollable: '+JSON.stringify(beforePanel));
+
+  const scheduleStep=page.locator('#cl-booking-overlay [data-cl-step="schedule"]');
+  const dataStep=page.locator('#cl-booking-overlay [data-cl-step="data"]');
+  await scheduleStep.waitFor({state:'visible'});
+  if(await dataStep.isVisible())throw new Error(label+' data step must be hidden before choosing a time');
+
+  const day=page.locator('#cl-booking-overlay .cl-booking-day').first();
+  await day.waitFor({state:'visible'});
+  await day.click();
+  const time=page.locator('#cl-booking-overlay .cl-booking-time').first();
+  await time.waitFor({state:'visible'});
+  await time.click();
+
+  const next=page.locator('#cl-booking-overlay .cl-booking-mobile-next');
+  if(await next.isDisabled())throw new Error(label+' continue button stayed disabled after selecting a time');
+  await next.click();
+  await dataStep.waitFor({state:'visible'});
+  if(await scheduleStep.isVisible())throw new Error(label+' schedule step stayed visible after continuing');
 
   const name=page.locator('#cl-booking-overlay input[name="full_name"]');
   await name.fill('Cliente Prueba');
@@ -111,14 +128,6 @@ async function runMobileScenario(browserType,label){
   await page.setViewportSize({width:390,height:844});
   await page.waitForTimeout(120);
 
-  const day=page.locator('#cl-booking-overlay .cl-booking-day').first();
-  await day.waitFor({state:'visible'});
-  await day.click();
-  const time=page.locator('#cl-booking-overlay .cl-booking-time').first();
-  await time.waitFor({state:'visible'});
-  await time.click();
-
-  await page.locator('#cl-booking-overlay input[name="full_name"]').fill('Cliente Prueba');
   await page.locator('#cl-booking-overlay input[name="brand_name"]').fill('Marca Prueba');
   await page.locator('#cl-booking-overlay input[name="whatsapp"]').fill('3001234567');
   await page.locator('#cl-booking-overlay input[name="email"]').fill('prueba@example.com');

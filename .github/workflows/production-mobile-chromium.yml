@@ -1,0 +1,19 @@
+name: Production mobile Chromium probe
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/production-mobile-chromium.yml"
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install --no-save @playwright/test@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - run: PROBE_ENGINE=chromium node src/test/booking-production-mobile.mjs

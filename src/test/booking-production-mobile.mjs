@@ -9,6 +9,12 @@ const slots=[
 async function run(engine,label){
   const browser=await engine.launch({headless:true});
   const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+  const pageErrors=[];
+  page.on('pageerror',err=>pageErrors.push(String(err&&err.stack||err)));
+  page.on('console',msg=>{
+    const text=msg.text();
+    if(/booking|agenda|modal|error/i.test(text))console.log('PRODUCTION_CONSOLE_'+label.toUpperCase(),msg.type(),text);
+  });
 
   await page.route('**/api/booking**',async route=>{
     if(route.request().method()==='GET'){
@@ -20,8 +26,22 @@ async function run(engine,label){
 
   await page.goto('https://complicelab.com/',{waitUntil:'domcontentloaded',timeout:30000});
 
-  const cta=page.locator('a:visible,button:visible').filter({hasText:'Agendar diagnóstico'}).first();
-  await cta.waitFor({state:'visible',timeout:15000});
+  const ctaCandidates=page.locator('a,button').filter({hasText:'Agendar diagnóstico'});
+  const ctaInfo=await ctaCandidates.evaluateAll(nodes=>nodes.map((el,index)=>{
+    const r=el.getBoundingClientRect();
+    const cs=getComputedStyle(el);
+    return {
+      index,tag:el.tagName,id:el.id||'',cls:String(el.className||''),text:(el.textContent||'').replace(/\\s+/g,' ').trim(),
+      dataOpen:el.getAttribute('data-open')||'',href:el.getAttribute('href')||'',
+      display:cs.display,visibility:cs.visibility,opacity:cs.opacity,
+      rect:{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom,right:r.right},
+      inViewport:r.width>0&&r.height>0&&r.bottom>0&&r.right>0&&r.top<innerHeight&&r.left<innerWidth
+    };
+  }));
+  console.log('PRODUCTION_CTA_INFO_'+label.toUpperCase(),JSON.stringify(ctaInfo));
+  const viewportCandidate=ctaInfo.find(x=>x.inViewport&&x.display!=='none'&&x.visibility!=='hidden'&&Number(x.opacity)>0);
+  if(!viewportCandidate)throw new Error(label+' no booking CTA inside viewport: '+JSON.stringify(ctaInfo));
+  const cta=ctaCandidates.nth(viewportCandidate.index);
   await cta.click();
 
   await page.waitForTimeout(700);
@@ -37,7 +57,7 @@ async function run(engine,label){
       tag:el.tagName,id:el.id||'',cls:String(el.className||''),role:el.getAttribute('role')||'',
       text:(el.textContent||'').replace(/\\s+/g,' ').trim().slice(0,260)
     })));
-    throw new Error(label+' production CTA did not open #cl-booking-overlay. Visible modal candidates: '+JSON.stringify(visibleCandidates));
+    throw new Error(label+' production CTA did not open #cl-booking-overlay. Page errors: '+JSON.stringify(pageErrors)+' Visible modal candidates: '+JSON.stringify(visibleCandidates));
   }
 
   const schedule=overlay.locator('[data-cl-step="schedule"]');

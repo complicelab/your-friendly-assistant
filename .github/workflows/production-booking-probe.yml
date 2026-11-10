@@ -15,7 +15,10 @@ jobs:
     steps:
       - name: Probe published site
         run: |
-          curl -L --fail --silent --show-error https://complicelab.com/ -o /tmp/prod.html
+          curl -L --fail --silent --show-error -D /tmp/prod.headers https://complicelab.com/ -o /tmp/prod.html
+          echo "PROD_HEADERS_START"
+          cat /tmp/prod.headers
+          echo "PROD_HEADERS_END"
           echo "PROD_BYTES=$(wc -c < /tmp/prod.html)"
           grep -q "Continuar con mis datos" /tmp/prod.html && echo "PROD_TWO_STEP_TEXT=YES" || echo "PROD_TWO_STEP_TEXT=NO"
           grep -q "cl-mobile-step-data" /tmp/prod.html && echo "PROD_TWO_STEP_CLASS=YES" || echo "PROD_TWO_STEP_CLASS=NO"

@@ -454,6 +454,11 @@ const UNIFIED_BOOKING_CTA = `
   .cl-contact-booking select:disabled{background:#f7f9fc;color:#8a96aa}
   .cl-contact-booking-note{grid-column:1/-1;margin:0;font:500 11px/1.45 "Montserrat",sans-serif;color:#71809b}
   .cl-contact-booking-note.is-error{color:#b4233b}
+  #cl-booking-overlay .cl-contact-booking,
+  #modal .cl-contact-booking,
+  #m-overlay .cl-contact-booking,
+  #m-content .cl-contact-booking,
+  [role="dialog"] .cl-contact-booking{display:none!important}
   @media(max-width:700px){
     body.cl-booking-modal-open{overflow:hidden!important;touch-action:auto!important}
     a.cl-booking-cta-label,button.cl-booking-cta-label{max-width:100%;white-space:normal}
@@ -812,6 +817,7 @@ const UNIFIED_BOOKING_CTA = `
     overlay.setAttribute("aria-labelledby","cl-booking-title");
     overlay.innerHTML='<div class="cl-booking-panel"><div class="cl-booking-modal-head"><div><h2 id="cl-booking-title">Agenda tu diagnóstico</h2><p>Elige un horario y completa tus datos. La cita queda registrada en nuestro CRM.</p></div><button type="button" class="cl-booking-close" aria-label="Cerrar">×</button></div><div class="cl-booking-modal-body"><div class="cl-booking-modal-grid"><section class="cl-booking-box"><h3>1. Elige fecha y hora</h3><p>Todos los horarios se muestran en hora de Colombia.</p><div class="cl-booking-days"><span class="cl-booking-loading">Elige tu horario</span></div><div class="cl-booking-times"></div><p class="cl-booking-summary">Selecciona un día y una hora.</p></section><section class="cl-booking-box"><h3>2. Tus datos</h3><p>Los usamos únicamente para gestionar tu diagnóstico.</p><form class="cl-booking-form" novalidate><label><span>Nombre y apellido</span><input name="full_name" autocomplete="name" required></label><label><span>Marca personal o empresa</span><input name="brand_name" autocomplete="organization"></label><label class="full"><span>WhatsApp</span><span class="cl-booking-phone"><select name="country_code" aria-label="Indicativo"><option value="+57">🇨🇴 +57</option></select><input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required></span></label><label class="full"><span>Correo</span><input name="email" type="email" inputmode="email" autocomplete="email" required></label><label class="full"><span>¿Qué servicio te interesa?</span><select name="solution_interest" required><option value="">Selecciona una opción</option><option>Creamos sistemas con IA a la medida</option><option>Agentes de IA automatizados</option><option>Atraemos clientes con marketing digital</option><option>Aún no lo sé, quiero un diagnóstico</option></select></label><label class="cl-booking-consent"><input name="consent" type="checkbox" required><span>Autorizo el uso de mis datos para gestionar esta solicitud y contactarme sobre el diagnóstico.</span></label><p class="cl-booking-error" role="alert"></p><button class="cl-booking-submit" type="submit">Agendar diagnóstico</button></form></section></div></div></div>';
     document.body.appendChild(overlay);
+    overlay.querySelectorAll(".cl-contact-booking").forEach(function(node){node.remove();});
     overlay.querySelector(".cl-booking-close").addEventListener("click",closeBookingModal);
     overlay.addEventListener("click",function(event){if(event.target===overlay)closeBookingModal();});
     var bookingForm=overlay.querySelector(".cl-booking-form");
@@ -959,6 +965,7 @@ const UNIFIED_BOOKING_CTA = `
   function clearLegacyBookingShell(){
     Array.from(document.querySelectorAll("#modal,#m-overlay,.m-overlay,.modal-overlay,.modal")).forEach(function(node){
       if(node.id==="cl-booking-overlay"||node.closest&&node.closest("#cl-booking-overlay"))return;
+      node.querySelectorAll(".cl-contact-booking").forEach(function(extra){extra.remove();});
       node.setAttribute("aria-hidden","true");
       node.style.setProperty("display","none","important");
       node.style.setProperty("pointer-events","none","important");

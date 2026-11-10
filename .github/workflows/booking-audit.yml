@@ -37,11 +37,6 @@ jobs:
       - name: Build
         run: bun run build
 
-      - name: Install browser test runtime
-        run: |
-          npm install --no-save @playwright/test@1.56.1
-          npx playwright install --with-deps chromium webkit
-
       - name: Probe published production
         run: |
           curl -L --fail --silent --show-error https://complicelab.com/ -o /tmp/complicelab-production.html
@@ -50,6 +45,11 @@ jobs:
           if grep -q "cl-mobile-step-data" /tmp/complicelab-production.html; then echo "PROD_TWO_STEP_CLASS=YES"; else echo "PROD_TWO_STEP_CLASS=NO"; fi
           if grep -q "data-cl-step=\\\"schedule\\\"" /tmp/complicelab-production.html; then echo "PROD_STEP_MARKUP=YES"; else echo "PROD_STEP_MARKUP=NO"; fi
           if grep -q "cl-booking-mobile-next" /tmp/complicelab-production.html; then echo "PROD_MOBILE_NEXT=YES"; else echo "PROD_MOBILE_NEXT=NO"; fi
+
+      - name: Install browser test runtime
+        run: |
+          npm install --no-save @playwright/test@1.56.1
+          npx playwright install --with-deps chromium webkit
 
       - name: Run mobile booking browser test
         run: node src/test/booking-mobile-browser.mjs

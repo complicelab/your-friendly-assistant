@@ -41,6 +41,8 @@ async function runMobileScenario(browserType,label){
   const overlay=page.locator('#cl-booking-overlay');
   await overlay.waitFor({state:'visible'});
   const panel=page.locator('#cl-booking-overlay .cl-booking-panel');
+  const duplicateInlineScheduler=page.locator('#cl-booking-overlay .cl-contact-booking');
+  if(await duplicateInlineScheduler.count())throw new Error(label+' popup contains duplicated inline date/time block');
 
   const beforeOverlay=await overlay.evaluate(el=>({
     overflowY:getComputedStyle(el).overflowY,

@@ -21,3 +21,9 @@ jobs:
           grep -q "cl-mobile-step-data" /tmp/prod.html && echo "PROD_TWO_STEP_CLASS=YES" || echo "PROD_TWO_STEP_CLASS=NO"
           grep -q "cl-booking-mobile-next" /tmp/prod.html && echo "PROD_MOBILE_NEXT=YES" || echo "PROD_MOBILE_NEXT=NO"
           grep -q "data-cl-step=\\\"schedule\\\"" /tmp/prod.html && echo "PROD_STEP_MARKUP=YES" || echo "PROD_STEP_MARKUP=NO"
+          if grep -qi '<meta[^>]*name=["'"'"']viewport["'"'"'][^>]*>' /tmp/prod.html; then
+            echo "PROD_VIEWPORT_META=YES"
+            grep -oi '<meta[^>]*name=["'"'"']viewport["'"'"'][^>]*>' /tmp/prod.html | head -1
+          else
+            echo "PROD_VIEWPORT_META=NO"
+          fi

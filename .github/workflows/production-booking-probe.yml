@@ -1,0 +1,23 @@
+name: Production booking probe
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/production-booking-probe.yml"
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Probe published site
+        run: |
+          curl -L --fail --silent --show-error https://complicelab.com/ -o /tmp/prod.html
+          echo "PROD_BYTES=$(wc -c < /tmp/prod.html)"
+          grep -q "Continuar con mis datos" /tmp/prod.html && echo "PROD_TWO_STEP_TEXT=YES" || echo "PROD_TWO_STEP_TEXT=NO"
+          grep -q "cl-mobile-step-data" /tmp/prod.html && echo "PROD_TWO_STEP_CLASS=YES" || echo "PROD_TWO_STEP_CLASS=NO"
+          grep -q "cl-booking-mobile-next" /tmp/prod.html && echo "PROD_MOBILE_NEXT=YES" || echo "PROD_MOBILE_NEXT=NO"
+          grep -q "data-cl-step=\\\"schedule\\\"" /tmp/prod.html && echo "PROD_STEP_MARKUP=YES" || echo "PROD_STEP_MARKUP=NO"

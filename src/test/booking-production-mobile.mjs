@@ -80,6 +80,7 @@ async function run(engine,label){
   await browser.close();
 }
 
-await run(chromium,'chromium');
-await run(webkit,'webkit');
+const only=(process.env.PROBE_ENGINE||'').toLowerCase();
+if(!only||only==='chromium')await run(chromium,'chromium');
+if(!only||only==='webkit')await run(webkit,'webkit');
 console.log('PRODUCTION_MOBILE_BOOKING_OK');

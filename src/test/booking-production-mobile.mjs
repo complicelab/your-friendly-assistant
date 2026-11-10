@@ -20,7 +20,7 @@ async function run(engine,label){
 
   await page.goto('https://complicelab.com/',{waitUntil:'domcontentloaded',timeout:30000});
 
-  const cta=page.locator('a,button').filter({hasText:'Agendar diagnóstico'}).first();
+  const cta=page.locator('a:visible,button:visible').filter({hasText:'Agendar diagnóstico'}).first();
   await cta.waitFor({state:'visible',timeout:15000});
   await cta.click();
 

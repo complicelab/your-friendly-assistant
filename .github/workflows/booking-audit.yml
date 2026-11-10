@@ -53,3 +53,6 @@ jobs:
 
       - name: Run mobile booking browser test
         run: node src/test/booking-mobile-browser.mjs
+
+      - name: Run production mobile booking probe
+        run: node src/test/booking-production-mobile.mjs

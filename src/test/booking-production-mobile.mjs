@@ -24,8 +24,21 @@ async function run(engine,label){
   await cta.waitFor({state:'visible',timeout:15000});
   await cta.click();
 
+  await page.waitForTimeout(700);
   const overlay=page.locator('#cl-booking-overlay');
-  await overlay.waitFor({state:'visible',timeout:10000});
+  if(!(await overlay.isVisible().catch(()=>false))){
+    const visibleCandidates=await page.locator('body *:visible').evaluateAll(nodes=>nodes.filter(el=>{
+      const id=(el.id||'').toLowerCase();
+      const cls=String(el.className||'').toLowerCase();
+      const role=(el.getAttribute('role')||'').toLowerCase();
+      const text=(el.textContent||'').replace(/\\s+/g,' ').trim().toLowerCase();
+      return id.includes('modal')||id.includes('overlay')||cls.includes('modal')||cls.includes('overlay')||role==='dialog'||text.includes('agenda tu videollamada de diagnóstico');
+    }).slice(0,40).map(el=>({
+      tag:el.tagName,id:el.id||'',cls:String(el.className||''),role:el.getAttribute('role')||'',
+      text:(el.textContent||'').replace(/\\s+/g,' ').trim().slice(0,260)
+    })));
+    throw new Error(label+' production CTA did not open #cl-booking-overlay. Visible modal candidates: '+JSON.stringify(visibleCandidates));
+  }
 
   const schedule=overlay.locator('[data-cl-step="schedule"]');
   const data=overlay.locator('[data-cl-step="data"]');

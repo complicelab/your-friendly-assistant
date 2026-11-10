@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - ".github/workflows/production-mobile-chromium.yml"
+      - "src/test/booking-production-mobile.mjs"
   workflow_dispatch:
 
 jobs:

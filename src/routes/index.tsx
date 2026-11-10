@@ -441,7 +441,7 @@ const UNIFIED_BOOKING_CTA = `
   .cl-booking-loading{font:500 11px/1.45 "Montserrat",sans-serif;color:#71809b}
   .cl-booking-success{padding:34px 24px;text-align:center}
   .cl-booking-success h3{margin:0 0 10px;font:700 26px/1.15 "Poppins",sans-serif;color:#0d172a}
-  .cl-booking-success p{margin:0 auto;max-width:560px;font:500 13px/1.6 "Montserrat",sans-serif;color:#66758f}
+  .cl-booking-success p{margin:0 auto;max-width:560px;font:500 13px/1.6 "Montserrat",sans-serif;color:#66758f}\n  .cl-booking-mobile-next,.cl-booking-mobile-back{display:none}
   .cl-contact-booking{grid-column:1/-1;display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;width:100%;max-width:100%;min-width:0;margin:18px 0 14px;padding:18px;border:1px solid #dfe6f0;border-radius:18px;background:#f8faff;box-sizing:border-box;visibility:visible!important;opacity:1!important;position:relative!important;height:auto!important;max-height:none!important;overflow:visible!important}
   .cl-contact-booking,.cl-contact-booking *{box-sizing:border-box}
   .cl-contact-booking-head{grid-column:1/-1;margin:0 0 2px}
@@ -469,9 +469,9 @@ const UNIFIED_BOOKING_CTA = `
     #m-content .ag{max-width:100%!important;overflow:hidden}
     #m-content .ag-pick,#m-content .ag-form{min-width:0!important}
     .cl-booking-overlay{
-      top:0!important;right:0!important;bottom:auto!important;left:0!important;
-      width:100%!important;height:var(--cl-booking-vh,100dvh)!important;max-height:var(--cl-booking-vh,100dvh)!important;
-      padding:0!important;background:rgba(11,18,32,.72);overflow:hidden!important;
+      top:0!important;right:0!important;bottom:0!important;left:0!important;
+      width:100%!important;height:100dvh!important;max-height:100dvh!important;
+      padding:0!important;background:#fff!important;overflow:hidden!important;
       overscroll-behavior:none!important;touch-action:pan-y!important
     }
     .cl-booking-panel{
@@ -482,13 +482,20 @@ const UNIFIED_BOOKING_CTA = `
     }
     .cl-booking-modal-head{top:0;padding:16px 16px 14px;border-radius:0}
     .cl-booking-modal-head h2{font-size:22px}
-    .cl-booking-modal-body{padding:16px 16px max(44px,calc(env(safe-area-inset-bottom) + 28px))}
-    .cl-booking-modal-grid{grid-template-columns:minmax(0,1fr);gap:14px}
-    .cl-booking-box{padding:15px;border-radius:17px}
-    .cl-booking-form{grid-template-columns:minmax(0,1fr);gap:11px}
+    .cl-booking-modal-body{padding:0 0 max(24px,env(safe-area-inset-bottom))}
+    .cl-booking-modal-grid{display:block!important}
+    .cl-booking-box{padding:20px 18px 24px;border:0!important;border-radius:0!important;background:#fff!important}
+    .cl-booking-box[data-cl-step="data"]{display:none}
+    .cl-booking-overlay.cl-mobile-step-data .cl-booking-box[data-cl-step="schedule"]{display:none}
+    .cl-booking-overlay.cl-mobile-step-data .cl-booking-box[data-cl-step="data"]{display:block}
+    .cl-booking-form{grid-template-columns:minmax(0,1fr);gap:14px}
     .cl-booking-form label,.cl-booking-form label.full,.cl-booking-consent,.cl-booking-submit,.cl-booking-error{grid-column:1/-1}
     .cl-booking-phone{grid-template-columns:98px minmax(0,1fr)}
+    .cl-booking-form input,.cl-booking-form select{height:52px;font-size:16px}
     .cl-booking-times{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .cl-booking-mobile-next{display:block;width:100%;height:52px;margin-top:18px;border:0;border-radius:999px;background:linear-gradient(90deg,#1f6fe8,#6653e9);color:#fff;font:700 14px/1 "Montserrat",sans-serif}
+    .cl-booking-mobile-next:disabled{opacity:.45}
+    .cl-booking-mobile-back{display:inline-flex;align-items:center;gap:6px;margin:0 0 16px;padding:0;border:0;background:transparent;color:#245fea;font:700 13px/1.2 "Montserrat",sans-serif}
     #modal,#m-overlay,.m-overlay,.modal-overlay,[role="dialog"].modal{
       height:100dvh!important;max-height:100dvh!important;overflow-x:hidden!important;overflow-y:auto!important;
       -webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important;touch-action:pan-y!important;
@@ -815,12 +822,26 @@ const UNIFIED_BOOKING_CTA = `
     overlay.setAttribute("role","dialog");
     overlay.setAttribute("aria-modal","true");
     overlay.setAttribute("aria-labelledby","cl-booking-title");
-    overlay.innerHTML='<div class="cl-booking-panel"><div class="cl-booking-modal-head"><div><h2 id="cl-booking-title">Agenda tu diagnóstico</h2><p>Elige un horario y completa tus datos. La cita queda registrada en nuestro CRM.</p></div><button type="button" class="cl-booking-close" aria-label="Cerrar">×</button></div><div class="cl-booking-modal-body"><div class="cl-booking-modal-grid"><section class="cl-booking-box"><h3>1. Elige fecha y hora</h3><p>Todos los horarios se muestran en hora de Colombia.</p><div class="cl-booking-days"><span class="cl-booking-loading">Elige tu horario</span></div><div class="cl-booking-times"></div><p class="cl-booking-summary">Selecciona un día y una hora.</p></section><section class="cl-booking-box"><h3>2. Tus datos</h3><p>Los usamos únicamente para gestionar tu diagnóstico.</p><form class="cl-booking-form" novalidate><label><span>Nombre y apellido</span><input name="full_name" autocomplete="name" required></label><label><span>Marca personal o empresa</span><input name="brand_name" autocomplete="organization"></label><label class="full"><span>WhatsApp</span><span class="cl-booking-phone"><select name="country_code" aria-label="Indicativo"><option value="+57">🇨🇴 +57</option></select><input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required></span></label><label class="full"><span>Correo</span><input name="email" type="email" inputmode="email" autocomplete="email" required></label><label class="full"><span>¿Qué servicio te interesa?</span><select name="solution_interest" required><option value="">Selecciona una opción</option><option>Creamos sistemas con IA a la medida</option><option>Agentes de IA automatizados</option><option>Atraemos clientes con marketing digital</option><option>Aún no lo sé, quiero un diagnóstico</option></select></label><label class="cl-booking-consent"><input name="consent" type="checkbox" required><span>Autorizo el uso de mis datos para gestionar esta solicitud y contactarme sobre el diagnóstico.</span></label><p class="cl-booking-error" role="alert"></p><button class="cl-booking-submit" type="submit">Agendar diagnóstico</button></form></section></div></div></div>';
+    overlay.innerHTML='<div class="cl-booking-panel"><div class="cl-booking-modal-head"><div><h2 id="cl-booking-title">Agenda tu diagnóstico</h2><p>Elige un horario y completa tus datos. La cita queda registrada en nuestro CRM.</p></div><button type="button" class="cl-booking-close" aria-label="Cerrar">×</button></div><div class="cl-booking-modal-body"><div class="cl-booking-modal-grid"><section class="cl-booking-box" data-cl-step="schedule"><h3>1. Elige fecha y hora</h3><p>Todos los horarios se muestran en hora de Colombia.</p><div class="cl-booking-days"><span class="cl-booking-loading">Elige tu horario</span></div><div class="cl-booking-times"></div><p class="cl-booking-summary">Selecciona un día y una hora.</p><button type="button" class="cl-booking-mobile-next" disabled>Continuar con mis datos</button></section><section class="cl-booking-box" data-cl-step="data"><button type="button" class="cl-booking-mobile-back">← Cambiar horario</button><h3>2. Tus datos</h3><p>Los usamos únicamente para gestionar tu diagnóstico.</p><form class="cl-booking-form" novalidate><label><span>Nombre y apellido</span><input name="full_name" autocomplete="name" required></label><label><span>Marca personal o empresa</span><input name="brand_name" autocomplete="organization"></label><label class="full"><span>WhatsApp</span><span class="cl-booking-phone"><select name="country_code" aria-label="Indicativo"><option value="+57">🇨🇴 +57</option></select><input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required></span></label><label class="full"><span>Correo</span><input name="email" type="email" inputmode="email" autocomplete="email" required></label><label class="full"><span>¿Qué servicio te interesa?</span><select name="solution_interest" required><option value="">Selecciona una opción</option><option>Creamos sistemas con IA a la medida</option><option>Agentes de IA automatizados</option><option>Atraemos clientes con marketing digital</option><option>Aún no lo sé, quiero un diagnóstico</option></select></label><label class="cl-booking-consent"><input name="consent" type="checkbox" required><span>Autorizo el uso de mis datos para gestionar esta solicitud y contactarme sobre el diagnóstico.</span></label><p class="cl-booking-error" role="alert"></p><button class="cl-booking-submit" type="submit">Agendar diagnóstico</button></form></section></div></div></div>';
     document.body.appendChild(overlay);
     overlay.querySelectorAll(".cl-contact-booking").forEach(function(node){node.remove();});
     overlay.querySelector(".cl-booking-close").addEventListener("click",closeBookingModal);
     overlay.addEventListener("click",function(event){if(event.target===overlay)closeBookingModal();});
     var bookingForm=overlay.querySelector(".cl-booking-form");
+    var mobileNext=overlay.querySelector(".cl-booking-mobile-next");
+    var mobileBack=overlay.querySelector(".cl-booking-mobile-back");
+    mobileNext.addEventListener("click",function(){
+      if(!modalState.slot)return;
+      overlay.classList.add("cl-mobile-step-data");
+      var scroller=bookingScrollContainer();
+      if(scroller)scroller.scrollTop=0;
+    });
+    mobileBack.addEventListener("click",function(){
+      if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
+      overlay.classList.remove("cl-mobile-step-data");
+      var scroller=bookingScrollContainer();
+      if(scroller)scroller.scrollTop=0;
+    });
     bookingForm.addEventListener("submit",submitModalBooking);
     bookingForm.addEventListener("focusin",function(){
       syncBookingViewport();
@@ -840,7 +861,7 @@ const UNIFIED_BOOKING_CTA = `
   function closeBookingModal(){
     var overlay=document.getElementById("cl-booking-overlay");
     if(!overlay)return;
-    overlay.classList.remove("is-open");
+    overlay.classList.remove("is-open","cl-mobile-step-data");
     document.body.classList.remove("cl-booking-modal-open");
     unlockBookingPage();
     document.documentElement.style.removeProperty("overflow");
@@ -858,6 +879,8 @@ const UNIFIED_BOOKING_CTA = `
         modalState.slot=button.getAttribute("data-slot")||"";
         host.querySelectorAll(".cl-booking-time").forEach(function(x){x.classList.toggle("is-active",x===button);});
         overlay.querySelector(".cl-booking-summary").textContent=modalState.slot?"Horario seleccionado: "+longDate(modalState.slot)+" · hora de Colombia.":"Selecciona un día y una hora.";
+        var next=overlay.querySelector(".cl-booking-mobile-next");
+        if(next)next.disabled=!modalState.slot;
         overlay.querySelector(".cl-booking-error").textContent="";
       });
     });
@@ -943,22 +966,15 @@ const UNIFIED_BOOKING_CTA = `
   var bookingPageScrollY=0;
   function lockBookingPage(){
     bookingPageScrollY=window.scrollY||window.pageYOffset||0;
-    document.body.style.setProperty("position","fixed");
-    document.body.style.setProperty("top",(-bookingPageScrollY)+"px");
-    document.body.style.setProperty("left","0");
-    document.body.style.setProperty("right","0");
-    document.body.style.setProperty("width","100%");
+    document.documentElement.style.setProperty("overflow","hidden");
     document.body.style.setProperty("overflow","hidden");
+    document.body.style.setProperty("overscroll-behavior","none");
   }
 
   function unlockBookingPage(){
-    document.body.style.removeProperty("position");
-    document.body.style.removeProperty("top");
-    document.body.style.removeProperty("left");
-    document.body.style.removeProperty("right");
-    document.body.style.removeProperty("width");
+    document.documentElement.style.removeProperty("overflow");
     document.body.style.removeProperty("overflow");
-    document.body.style.removeProperty("overflow-y");
+    document.body.style.removeProperty("overscroll-behavior");
     window.scrollTo(0,bookingPageScrollY||0);
   }
 
@@ -983,6 +999,9 @@ const UNIFIED_BOOKING_CTA = `
     if(availabilityCache.slots.length){
       applyModalAvailability(availabilityCache.slots);
     }
+    overlay.classList.remove("cl-mobile-step-data");
+    var mobileNext=overlay.querySelector(".cl-booking-mobile-next");
+    if(mobileNext)mobileNext.disabled=!modalState.slot;
     overlay.classList.add("is-open");
     document.body.classList.add("cl-booking-modal-open");
     lockBookingPage();

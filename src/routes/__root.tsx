@@ -118,7 +118,7 @@ const organizationSchema = {
       email: "info@complicelab.com",
       telephone: "+573161772880",
       description:
-        "Diseñamos páginas, sistemas comerciales y automatizaciones para profesionales y negocios de alto valor que quieren convertir reputación en oportunidades.",
+        "Cómplice Lab es una agencia de marketing con IA en Manizales. Creamos páginas web, sistemas con IA a la medida, agentes de IA automatizados y marketing digital para profesionales y empresas.",
       areaServed: [
         { "@type": "City", name: "Manizales" },
         { "@type": "Country", name: "Colombia" },
@@ -130,14 +130,15 @@ const organizationSchema = {
         "https://www.youtube.com/@complicelab",
       ],
       knowsAbout: [
-        "Diseño de experiencias digitales",
-        "Páginas web de conversión",
-        "Landing pages",
-        "Sistemas comerciales",
+        "Agencia de marketing con IA",
+        "Marketing digital",
+        "Páginas web en Manizales",
+        "Sistemas con IA a la medida",
+        "Agentes de IA automatizados",
+        "Meta Ads",
         "CRM",
-        "Automatización de procesos",
         "Agendamiento digital",
-        "Experiencia de usuario",
+        "Automatización comercial",
       ],
       contactPoint: {
         "@type": "ContactPoint",
@@ -226,19 +227,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Cómplice Lab | Sistemas digitales para profesionales de alto valor" },
+      { title: "Cómplice Lab | Agencia de marketing con IA en Manizales" },
       {
         name: "description",
         content:
-          "Páginas, sistemas comerciales y automatizaciones para profesionales de alto valor que necesitan atraer, convertir y gestionar mejores oportunidades.",
+          "Agencia de marketing con IA en Manizales. Creamos páginas web, sistemas con IA a la medida, agentes automatizados y campañas de marketing digital para atraer y gestionar oportunidades.",
       },
       { name: "author", content: "Cómplice Lab" },
       { name: "theme-color", content: "#F6F8FC" },
-      { property: "og:title", content: "Tu reputación ya vale mucho | Cómplice Lab" },
+      { property: "og:title", content: "Cómplice Lab | Marketing, páginas web y sistemas con IA" },
       {
         property: "og:description",
         content:
-          "Creamos experiencias y sistemas digitales para convertir reputación en confianza, citas, clientes y oportunidades reales.",
+          "Páginas web, sistemas con IA a la medida, agentes de IA y marketing digital para profesionales y empresas que necesitan atraer y gestionar oportunidades.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Cómplice Lab" },
@@ -248,7 +249,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image:type", content: "image/jpeg" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Cómplice Lab — servicios creativos y digitales para negocios" },
+      { property: "og:image:alt", content: "Cómplice Lab — marketing, páginas web y sistemas con IA" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: "https://complicelab.com/og-image.jpg" },
       { name: "twitter:image:alt", content: "Cómplice Lab — IA aplicada a tu negocio" },

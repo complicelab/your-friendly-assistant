@@ -151,54 +151,6 @@ const ServiciosSlugRoute = ServiciosSlugRouteImport.update({
   path: '/servicios/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServiciosAgenciaPublicidadManizalesRoute =
-  ServiciosAgenciaPublicidadManizalesRouteImport.update({
-    id: '/servicios/agencia-publicidad-manizales',
-    path: '/servicios/agencia-publicidad-manizales',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ServiciosBrandingIdentidadMarcaRoute =
-  ServiciosBrandingIdentidadMarcaRouteImport.update({
-    id: '/servicios/branding-identidad-marca',
-    path: '/servicios/branding-identidad-marca',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ServiciosContenidoPublicitarioManizalesRoute =
-  ServiciosContenidoPublicitarioManizalesRouteImport.update({
-    id: '/servicios/contenido-publicitario-manizales',
-    path: '/servicios/contenido-publicitario-manizales',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ServiciosContenidoRedesSocialesRoute =
-  ServiciosContenidoRedesSocialesRouteImport.update({
-    id: '/servicios/contenido-redes-sociales',
-    path: '/servicios/contenido-redes-sociales',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ServiciosCrearMarcaNegocioDesdeCeroRoute =
-  ServiciosCrearMarcaNegocioDesdeCeroRouteImport.update({
-    id: '/servicios/crear-marca-negocio-desde-cero',
-    path: '/servicios/crear-marca-negocio-desde-cero',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ServiciosDiagnosticoNegocioManizalesRoute =
-  ServiciosDiagnosticoNegocioManizalesRouteImport.update({
-    id: '/servicios/diagnostico-negocio-manizales',
-    path: '/servicios/diagnostico-negocio-manizales',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ServiciosDisenoGraficoPublicitarioRoute =
-  ServiciosDisenoGraficoPublicitarioRouteImport.update({
-    id: '/servicios/diseno-grafico-publicitario',
-    path: '/servicios/diseno-grafico-publicitario',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ServiciosMarketingDigitalManizalesRoute =
-  ServiciosMarketingDigitalManizalesRouteImport.update({
-    id: '/servicios/marketing-digital-manizales',
-    path: '/servicios/marketing-digital-manizales',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const ServiciosPaginasWebManizalesRoute =
   ServiciosPaginasWebManizalesRouteImport.update({
     id: '/servicios/paginas-web-manizales',

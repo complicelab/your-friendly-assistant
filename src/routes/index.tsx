@@ -92,6 +92,27 @@ const MOBILE_FLOW_FIXES = `
 `
 
 
+const HOMEPAGE_POSITIONING_STYLES = `
+<style id="homepage-positioning-v11">
+  .cl-scope-rail{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .cl-scope-rail span{display:inline-flex;align-items:center;min-height:31px;padding:6px 10px;border:1px solid rgba(36,95,234,.16);border-radius:999px;background:rgba(36,95,234,.045);color:#334765;font:600 11px/1.25 "Montserrat",sans-serif}
+  .cl-acquisition-split{margin-top:17px;padding-top:16px;border-top:1px solid rgba(49,69,101,.13)}
+  .cl-acquisition-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .cl-acquisition-item{padding:2px 16px 2px 0}
+  .cl-acquisition-item+.cl-acquisition-item{padding-left:16px;border-left:1px solid rgba(49,69,101,.13)}
+  .cl-acquisition-item strong{display:block;margin-bottom:5px;color:#14213a;font:700 11px/1.25 "Montserrat",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+  .cl-acquisition-item span{display:block;color:#66758f;font:500 12px/1.5 "Montserrat",sans-serif}
+  .cl-acquisition-note{margin-top:12px!important;color:#53627c!important;font:600 11px/1.45 "Montserrat",sans-serif!important}
+  @media(max-width:700px){
+    .cl-scope-rail{gap:6px}
+    .cl-scope-rail span{font-size:10px}
+    .cl-acquisition-grid{grid-template-columns:1fr}
+    .cl-acquisition-item{padding:0 0 12px}
+    .cl-acquisition-item+.cl-acquisition-item{padding:12px 0 0;border-left:0;border-top:1px solid rgba(49,69,101,.13)}
+  }
+</style>
+`
+
 const HOMEPAGE_COPY_FIX = `
 <script id="homepage-copy-fix-v10">
 (function(){
@@ -168,12 +189,34 @@ const HOMEPAGE_COPY_FIX = `
     );
     patchParagraph(
       "Que más personas te encuentren",
-      "Creamos páginas web y campañas pagas en redes sociales para atraer personas interesadas y llevarlas a una acción clara. Puedes contratar solo la página, solo la pauta o conectar ambas dentro de un sistema más completo; cuando la estrategia lo requiere, también trabajamos Google Ads."
+      "Creamos páginas web y campañas pagas en redes sociales para atraer personas interesadas y llevarlas a una acción clara. Puedes contratar cada servicio por separado o conectarlos dentro de un sistema más completo."
     );
     patchParagraph(
       "Déjanos tus datos y seguimos por WhatsApp",
       "Déjanos tus datos, elige fecha y hora y agenda tu diagnóstico. También puedes usar cualquier botón de Agendar diagnóstico para abrir la agenda rápida."
     );
+    var serviceHeadings=Array.from(document.querySelectorAll(".svc h3,h2,h3"));
+    var systemsHeading=serviceHeadings.find(function(el){ return normalized(el).indexOf("Creamos sistemas con IA")!==-1; });
+    var systemsBox=systemsHeading ? (systemsHeading.closest(".svc") || systemsHeading.parentElement) : null;
+    if(systemsBox && !systemsBox.querySelector(".cl-scope-rail")){
+      var systemsRail=document.createElement("div");
+      systemsRail.className="cl-scope-rail";
+      systemsRail.setAttribute("aria-label","Ejemplos de componentes de un sistema con IA a la medida");
+      systemsRail.innerHTML="<span>Página o portal</span><span>Sistema administrativo</span><span>CRM y agenda</span><span>Agentes de IA</span><span>Paneles e indicadores</span>";
+      var systemsText=systemsBox.querySelector("p");
+      (systemsText||systemsHeading).insertAdjacentElement("afterend",systemsRail);
+    }
+
+    var acquisitionHeading=serviceHeadings.find(function(el){ return normalized(el).indexOf("Creamos páginas web y publicidad")!==-1; });
+    var acquisitionBox=acquisitionHeading ? (acquisitionHeading.closest(".svc") || acquisitionHeading.parentElement) : null;
+    if(acquisitionBox && !acquisitionBox.querySelector(".cl-acquisition-split")){
+      var acquisitionSplit=document.createElement("div");
+      acquisitionSplit.className="cl-acquisition-split";
+      acquisitionSplit.innerHTML='<div class="cl-acquisition-grid"><div class="cl-acquisition-item"><strong>Páginas web</strong><span>Una experiencia que representa tu nivel y facilita escribir, agendar o dejar datos.</span></div><div class="cl-acquisition-item"><strong>Publicidad en redes sociales</strong><span>Campañas pagas para atraer personas interesadas en Meta, TikTok y otras plataformas.</span></div></div><p class="cl-acquisition-note">Puedes contratar solo la página, solo la pauta o ambas. Cuando la estrategia lo requiere, también trabajamos Google Ads.</p>';
+      var acquisitionText=acquisitionBox.querySelector("p");
+      (acquisitionText||acquisitionHeading).insertAdjacentElement("afterend",acquisitionSplit);
+    }
+
     var contactHeading=Array.from(document.querySelectorAll("h1,h2,h3")).find(function(el){
       return normalized(el).toLowerCase().indexOf("hablemos de")!==-1 && normalized(el).toLowerCase().indexOf("negocio")!==-1;
     });
@@ -1274,10 +1317,10 @@ function getOriginalHtml() {
     .replace("con marketing digital", "en redes sociales")
     .replace(
       "Que más personas te encuentren, entiendan por qué elegirte y dejen sus datos.",
-      "Creamos páginas web y campañas pagas en redes sociales para atraer personas interesadas y llevarlas a una acción clara. Puedes contratar solo la página, solo la pauta o conectar ambas dentro de un sistema más completo; cuando la estrategia lo requiere, también trabajamos Google Ads."
+      "Creamos páginas web y campañas pagas en redes sociales para atraer personas interesadas y llevarlas a una acción clara. Puedes contratar cada servicio por separado o conectarlos dentro de un sistema más completo."
     );
   return replaceMarketingRuntime(replaceFlowScenes(replaceCompareScenes(html)))
-    .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + compareStyles + flowStyles + marketingStyles + `\n  <meta name="complice-build" content="mobile-booking-two-step-2026-11-09-v2">\n  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://complicelab.com/#organization","name":"Cómplice Lab","url":"https://complicelab.com/","logo":"https://complicelab.com/brand/complice-lab-logo.svg","email":"info@complicelab.com","telephone":"+573161772880","description":"Cómplice Lab construye sistemas con IA a la medida, agentes automatizados, páginas web y campañas de publicidad para profesionales y empresas.","areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"sameAs":["https://www.instagram.com/complicelab","https://www.facebook.com/complicelab","https://www.youtube.com/@complicelab"]},{"@type":"WebSite","@id":"https://complicelab.com/#website","url":"https://complicelab.com/","name":"Cómplice Lab","publisher":{"@id":"https://complicelab.com/#organization"},"inLanguage":"es-CO"},{"@type":"Service","name":"Sistemas con IA a la medida","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Sistemas con inteligencia artificial a la medida"},{"@type":"Service","name":"Agentes de IA automatizados","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Agentes de inteligencia artificial automatizados"},{"@type":"Service","name":"Marketing digital y Meta Ads","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Marketing digital, Meta Ads y captación de oportunidades"}]}</script>\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n` + "</head>")
+    .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + HOMEPAGE_POSITIONING_STYLES + compareStyles + flowStyles + marketingStyles + `\n  <meta name="complice-build" content="mobile-booking-two-step-2026-11-09-v2">\n  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://complicelab.com/#organization","name":"Cómplice Lab","url":"https://complicelab.com/","logo":"https://complicelab.com/brand/complice-lab-logo.svg","email":"info@complicelab.com","telephone":"+573161772880","description":"Cómplice Lab construye sistemas con IA a la medida, agentes automatizados, páginas web y campañas de publicidad para profesionales y empresas.","areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"sameAs":["https://www.instagram.com/complicelab","https://www.facebook.com/complicelab","https://www.youtube.com/@complicelab"]},{"@type":"WebSite","@id":"https://complicelab.com/#website","url":"https://complicelab.com/","name":"Cómplice Lab","publisher":{"@id":"https://complicelab.com/#organization"},"inLanguage":"es-419"},{"@type":"Service","name":"Sistemas con IA a la medida","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Sistemas con inteligencia artificial a la medida"},{"@type":"Service","name":"Agentes de IA automatizados","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Agentes de inteligencia artificial automatizados"},{"@type":"Service","name":"Páginas web y publicidad en redes sociales","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Páginas web, publicidad en redes sociales, Meta Ads, TikTok Ads y Google Ads"}]}</script>\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n` + "</head>")
     .replace("</body>", HOMEPAGE_COPY_FIX + HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + UNIFIED_BOOKING_CTA + "</body>");
 }
 

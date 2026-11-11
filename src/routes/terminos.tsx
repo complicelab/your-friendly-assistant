@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/marketing/site-footer";
 export const Route = createFileRoute("/terminos")({
   head: () => ({
     meta: [
+      { name: "robots", content: "noindex, follow" },
       { title: "Términos y Condiciones | Cómplice Lab" },
       {
         name: "description",

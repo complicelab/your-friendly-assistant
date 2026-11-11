@@ -92,7 +92,7 @@ const organizationSchema = {
       email: "info@complicelab.com",
       telephone: "+573161772880",
       description:
-        "Cómplice Lab construye sistemas con IA a la medida, agentes automatizados, páginas web y campañas de publicidad para profesionales y empresas.",
+        "Cómplice Lab construye sistemas con IA a la medida, agentes de IA automatizados, páginas web y campañas de publicidad para profesionales y empresas.",
       areaServed: [
         { "@type": "Country", name: "Colombia" },
         { "@type": "Country", name: "United States" },
@@ -206,19 +206,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Cómplice Lab | Sistemas IA, agentes y publicidad en redes" },
+      { title: "Cómplice Lab | Sistemas con IA, agentes de IA y publicidad en redes" },
       {
         name: "description",
         content:
-          "Creamos sistemas con IA a la medida, agentes automatizados, páginas web y pauta en redes sociales para atraer, atender y gestionar oportunidades.",
+          "Creamos sistemas con IA a la medida, agentes de IA automatizados, páginas web y pauta en redes sociales para atraer, atender y gestionar oportunidades.",
       },
       { name: "author", content: "Cómplice Lab" },
       { name: "theme-color", content: "#F6F8FC" },
-      { property: "og:title", content: "Cómplice Lab | Sistemas con IA, agentes, web y pauta" },
+      { property: "og:title", content: "Cómplice Lab | Sistemas con IA, agentes de IA, web y pauta" },
       {
         property: "og:description",
         content:
-          "Sistemas con IA a la medida, agentes automatizados, páginas web y publicidad en redes sociales para profesionales y empresas que necesitan atraer y gestionar oportunidades.",
+          "Sistemas con IA a la medida, agentes de IA automatizados, páginas web y publicidad en redes sociales para profesionales y empresas que necesitan atraer y gestionar oportunidades.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Cómplice Lab" },

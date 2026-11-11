@@ -11,9 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
-import { Route as CapacitacionIaEmpresasRouteImport } from './routes/capacitacion-ia-empresas'
 import { Route as CodigoceroRouteImport } from './routes/codigocero'
-import { Route as FormacionRouteImport } from './routes/formacion'
 import { Route as OgImageDotjpgRouteImport } from './routes/og-image[.]jpg'
 import { Route as PbHeroDotwebpRouteImport } from './routes/pb-hero[.]webp'
 import { Route as PbWebDotwebpRouteImport } from './routes/pb-web[.]webp'
@@ -45,19 +43,9 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CapacitacionIaEmpresasRoute = CapacitacionIaEmpresasRouteImport.update({
-  id: '/capacitacion-ia-empresas',
-  path: '/capacitacion-ia-empresas',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CodigoceroRoute = CodigoceroRouteImport.update({
   id: '/codigocero',
   path: '/codigocero',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FormacionRoute = FormacionRouteImport.update({
-  id: '/formacion',
-  path: '/formacion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OgImageDotjpgRoute = OgImageDotjpgRouteImport.update({
@@ -167,9 +155,7 @@ const ServiciosPublicidadMetaAdsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
-  '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/codigocero': typeof CodigoceroRoute
-  '/formacion': typeof FormacionRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
@@ -194,9 +180,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
-  '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/codigocero': typeof CodigoceroRoute
-  '/formacion': typeof FormacionRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
@@ -222,9 +206,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
-  '/capacitacion-ia-empresas': typeof CapacitacionIaEmpresasRoute
   '/codigocero': typeof CodigoceroRoute
-  '/formacion': typeof FormacionRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
@@ -251,9 +233,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
-    | '/capacitacion-ia-empresas'
     | '/codigocero'
-    | '/formacion'
     | '/og-image.jpg'
     | '/pb-hero.webp'
     | '/pb-web.webp'
@@ -278,9 +258,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin'
-    | '/capacitacion-ia-empresas'
     | '/codigocero'
-    | '/formacion'
     | '/og-image.jpg'
     | '/pb-hero.webp'
     | '/pb-web.webp'
@@ -305,9 +283,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
-    | '/capacitacion-ia-empresas'
     | '/codigocero'
-    | '/formacion'
     | '/og-image.jpg'
     | '/pb-hero.webp'
     | '/pb-web.webp'
@@ -333,9 +309,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
-  CapacitacionIaEmpresasRoute: typeof CapacitacionIaEmpresasRoute
   CodigoceroRoute: typeof CodigoceroRoute
-  FormacionRoute: typeof FormacionRoute
   OgImageDotjpgRoute: typeof OgImageDotjpgRoute
   PbHeroDotwebpRoute: typeof PbHeroDotwebpRoute
   PbWebDotwebpRoute: typeof PbWebDotwebpRoute
@@ -374,25 +348,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/capacitacion-ia-empresas': {
-      id: '/capacitacion-ia-empresas'
-      path: '/capacitacion-ia-empresas'
-      fullPath: '/capacitacion-ia-empresas'
-      preLoaderRoute: typeof CapacitacionIaEmpresasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/codigocero': {
       id: '/codigocero'
       path: '/codigocero'
       fullPath: '/codigocero'
       preLoaderRoute: typeof CodigoceroRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/formacion': {
-      id: '/formacion'
-      path: '/formacion'
-      fullPath: '/formacion'
-      preLoaderRoute: typeof FormacionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/og-image.jpg': {
@@ -541,9 +501,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
-  CapacitacionIaEmpresasRoute: CapacitacionIaEmpresasRoute,
   CodigoceroRoute: CodigoceroRoute,
-  FormacionRoute: FormacionRoute,
   OgImageDotjpgRoute: OgImageDotjpgRoute,
   PbHeroDotwebpRoute: PbHeroDotwebpRoute,
   PbWebDotwebpRoute: PbWebDotwebpRoute,

@@ -9,8 +9,9 @@ import "@/components/marketing/service-directory.css";
 export const Route = createFileRoute("/todos-los-servicios")({
   head: () => ({
     meta: [
+      { name: "robots", content: "noindex, follow" },
       { title: "Servicios de Cómplice Lab | Web, pauta y sistemas con IA" },
-      { name: "description", content: "Conoce los servicios actuales de Cómplice Lab para captar y gestionar oportunidades: páginas web, pauta en Meta Ads y soluciones conectadas al proceso comercial." },
+      { name: "description", content: "Explora las soluciones actuales de Cómplice Lab para captar y gestionar oportunidades: páginas web, Meta Ads y sistemas conectados al proceso comercial." },
       { property: "og:title", content: "Servicios para captar y gestionar oportunidades | Cómplice Lab" },
       { property: "og:url", content: "https://complicelab.com/todos-los-servicios" },
     ],

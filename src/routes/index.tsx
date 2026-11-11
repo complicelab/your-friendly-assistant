@@ -128,10 +128,31 @@ const HOMEPAGE_COPY_FIX = `
   }
 
   function run(){
+    var heroH1=document.querySelector("main h1")||document.querySelector("h1");
+    if(heroH1){
+      var heroAccent=Array.from(heroH1.children).find(function(child){ return normalized(child); });
+      var heroNodes=textNodes(heroH1);
+      if(heroNodes.length){
+        heroNodes[0].nodeValue="Construimos sistemas con IA para ";
+        heroNodes.slice(1).forEach(function(node){ node.nodeValue=" "; });
+        if(heroAccent) heroAccent.textContent="atraer, atender y gestionar oportunidades.";
+      } else if(heroAccent){
+        heroH1.insertBefore(document.createTextNode("Construimos sistemas con IA para "),heroH1.firstChild);
+        heroAccent.textContent="atraer, atender y gestionar oportunidades.";
+      } else {
+        heroH1.textContent="Construimos sistemas con IA para atraer, atender y gestionar oportunidades.";
+      }
+    }
+
+    var heroParagraph=heroH1 && (heroH1.parentElement||document).querySelector("p");
+    if(heroParagraph){
+      heroParagraph.textContent="Sistemas con IA a la medida, agentes automatizados, páginas web y publicidad en redes sociales para atraer, atender y gestionar oportunidades.";
+    }
+
     patchHeading("Míralo funcionar","Así","trabajamos.");
     patchHeading("Sistemas con IA a la medida","Creamos sistemas con IA","a la medida");
     patchHeading("Agentes de IA automatizados","Creamos agentes de IA","automatizados");
-    patchHeading("Atraemos clientes con marketing digital","Creamos tus campañas","de marketing digital");
+    patchHeading("Páginas web y publicidad en redes sociales","Creamos páginas web y publicidad","en redes sociales");
 
     patchParagraph(
       "Tres servicios, tres demostraciones",
@@ -139,7 +160,7 @@ const HOMEPAGE_COPY_FIX = `
     );
     patchParagraph(
       "Que ningún contacto se pierda",
-      "Conectamos tu web, agendamiento, CRM, automatizaciones y seguimiento para que ningún contacto se pierda y tu negocio sepa qué hacer después."
+      "Construimos lo que tu negocio necesita: desde una página web o un sistema administrativo hasta CRM, agendamiento, automatizaciones, agentes de IA, paneles e indicadores, todo conectado según el proyecto."
     );
     patchParagraph(
       "Que nadie se quede sin respuesta",
@@ -147,7 +168,7 @@ const HOMEPAGE_COPY_FIX = `
     );
     patchParagraph(
       "Que más personas te encuentren",
-      "Diseñamos campañas para atraer a las personas correctas y conectamos cada anuncio con una experiencia que capta sus datos, agenda y deja el seguimiento listo."
+      "Creamos páginas web y campañas pagas en redes sociales para atraer personas interesadas y llevarlas a una acción clara. Puedes contratar solo la página, solo la pauta o conectar ambas dentro de un sistema más completo; cuando la estrategia lo requiere, también trabajamos Google Ads."
     );
     patchParagraph(
       "Déjanos tus datos y seguimos por WhatsApp",
@@ -822,7 +843,7 @@ const UNIFIED_BOOKING_CTA = `
     overlay.setAttribute("role","dialog");
     overlay.setAttribute("aria-modal","true");
     overlay.setAttribute("aria-labelledby","cl-booking-title");
-    overlay.innerHTML='<div class="cl-booking-panel"><div class="cl-booking-modal-head"><div><h2 id="cl-booking-title">Agenda tu diagnóstico</h2><p>Elige un horario y completa tus datos. La cita queda registrada en nuestro CRM.</p></div><button type="button" class="cl-booking-close" aria-label="Cerrar">×</button></div><div class="cl-booking-modal-body"><div class="cl-booking-modal-grid"><section class="cl-booking-box" data-cl-step="schedule"><h3>1. Elige fecha y hora</h3><p>Todos los horarios se muestran en hora de Colombia.</p><div class="cl-booking-days"><span class="cl-booking-loading">Elige tu horario</span></div><div class="cl-booking-times"></div><p class="cl-booking-summary">Selecciona un día y una hora.</p><button type="button" class="cl-booking-mobile-next" disabled>Continuar con mis datos</button></section><section class="cl-booking-box" data-cl-step="data"><button type="button" class="cl-booking-mobile-back">← Cambiar horario</button><h3>2. Tus datos</h3><p>Los usamos únicamente para gestionar tu diagnóstico.</p><form class="cl-booking-form" novalidate><label><span>Nombre y apellido</span><input name="full_name" autocomplete="name" required></label><label><span>Marca personal o empresa</span><input name="brand_name" autocomplete="organization"></label><label class="full"><span>WhatsApp</span><span class="cl-booking-phone"><select name="country_code" aria-label="Indicativo"><option value="+57">🇨🇴 +57</option></select><input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required></span></label><label class="full"><span>Correo</span><input name="email" type="email" inputmode="email" autocomplete="email" required></label><label class="full"><span>¿Qué servicio te interesa?</span><select name="solution_interest" required><option value="">Selecciona una opción</option><option>Creamos sistemas con IA a la medida</option><option>Agentes de IA automatizados</option><option>Atraemos clientes con marketing digital</option><option>Aún no lo sé, quiero un diagnóstico</option></select></label><label class="cl-booking-consent"><input name="consent" type="checkbox" required><span>Autorizo el uso de mis datos para gestionar esta solicitud y contactarme sobre el diagnóstico.</span></label><p class="cl-booking-error" role="alert"></p><button class="cl-booking-submit" type="submit">Agendar diagnóstico</button></form></section></div></div></div>';
+    overlay.innerHTML='<div class="cl-booking-panel"><div class="cl-booking-modal-head"><div><h2 id="cl-booking-title">Agenda tu diagnóstico</h2><p>Elige un horario y completa tus datos. La cita queda registrada en nuestro CRM.</p></div><button type="button" class="cl-booking-close" aria-label="Cerrar">×</button></div><div class="cl-booking-modal-body"><div class="cl-booking-modal-grid"><section class="cl-booking-box" data-cl-step="schedule"><h3>1. Elige fecha y hora</h3><p>Todos los horarios se muestran en hora de Colombia.</p><div class="cl-booking-days"><span class="cl-booking-loading">Elige tu horario</span></div><div class="cl-booking-times"></div><p class="cl-booking-summary">Selecciona un día y una hora.</p><button type="button" class="cl-booking-mobile-next" disabled>Continuar con mis datos</button></section><section class="cl-booking-box" data-cl-step="data"><button type="button" class="cl-booking-mobile-back">← Cambiar horario</button><h3>2. Tus datos</h3><p>Los usamos únicamente para gestionar tu diagnóstico.</p><form class="cl-booking-form" novalidate><label><span>Nombre y apellido</span><input name="full_name" autocomplete="name" required></label><label><span>Marca personal o empresa</span><input name="brand_name" autocomplete="organization"></label><label class="full"><span>WhatsApp</span><span class="cl-booking-phone"><select name="country_code" aria-label="Indicativo"><option value="+57">🇨🇴 +57</option></select><input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required></span></label><label class="full"><span>Correo</span><input name="email" type="email" inputmode="email" autocomplete="email" required></label><label class="full"><span>¿Qué servicio te interesa?</span><select name="solution_interest" required><option value="">Selecciona una opción</option><option>Creamos sistemas con IA a la medida</option><option>Agentes de IA automatizados</option><option>Páginas web y publicidad en redes sociales</option><option>Aún no lo sé, quiero un diagnóstico</option></select></label><label class="cl-booking-consent"><input name="consent" type="checkbox" required><span>Autorizo el uso de mis datos para gestionar esta solicitud y contactarme sobre el diagnóstico.</span></label><p class="cl-booking-error" role="alert"></p><button class="cl-booking-submit" type="submit">Agendar diagnóstico</button></form></section></div></div></div>';
     document.body.appendChild(overlay);
     overlay.querySelectorAll(".cl-contact-booking").forEach(function(node){node.remove();});
     overlay.querySelector(".cl-booking-close").addEventListener("click",closeBookingModal);
@@ -1242,32 +1263,32 @@ function getOriginalHtml() {
     .replace("Sistemas con IA a la medida", "Creamos sistemas con IA a la medida")
     .replace(
       "Que ningún contacto se pierda y sepas quién llegó, qué necesita y cuándo hacer seguimiento.",
-      "Conectamos tu web, agendamiento, CRM, automatizaciones y seguimiento para que ningún contacto se pierda y tu negocio sepa qué hacer después."
+      "Construimos lo que tu negocio necesita: desde una página web o un sistema administrativo hasta CRM, agendamiento, automatizaciones, agentes de IA, paneles e indicadores, todo conectado según el proyecto."
     )
     .replace("Agentes de IA", "Creamos agentes de IA")
     .replace(
       "Que nadie se quede sin respuesta, ni de noche ni en fines de semana, y tu equipo atienda solo a quien ya está listo para avanzar.",
       "Responden, filtran, agendan y hacen seguimiento incluso cuando tú no estás, para que tu equipo atienda a quienes realmente están listos para avanzar."
     )
-    .replace("Atraemos clientes", "Creamos tus campañas")
-    .replace("con marketing digital", "de marketing digital")
+    .replace("Atraemos clientes", "Creamos páginas web y publicidad")
+    .replace("con marketing digital", "en redes sociales")
     .replace(
       "Que más personas te encuentren, entiendan por qué elegirte y dejen sus datos.",
-      "Diseñamos campañas para atraer a las personas correctas y conectamos cada anuncio con una experiencia que capta sus datos, agenda y deja el seguimiento listo."
+      "Creamos páginas web y campañas pagas en redes sociales para atraer personas interesadas y llevarlas a una acción clara. Puedes contratar solo la página, solo la pauta o conectar ambas dentro de un sistema más completo; cuando la estrategia lo requiere, también trabajamos Google Ads."
     );
   return replaceMarketingRuntime(replaceFlowScenes(replaceCompareScenes(html)))
-    .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + compareStyles + flowStyles + marketingStyles + `\n  <meta name="complice-build" content="mobile-booking-two-step-2026-11-09-v2">\n  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://complicelab.com/#organization","name":"Cómplice Lab","url":"https://complicelab.com/","logo":"https://complicelab.com/brand/complice-lab-logo.svg","email":"info@complicelab.com","telephone":"+573161772880","description":"Agencia de marketing con IA en Manizales. Páginas web, sistemas con IA a la medida, agentes automatizados y marketing digital para profesionales y empresas.","areaServed":[{"@type":"City","name":"Manizales"},{"@type":"Country","name":"Colombia"}],"sameAs":["https://www.instagram.com/complicelab","https://www.facebook.com/complicelab","https://www.youtube.com/@complicelab"]},{"@type":"WebSite","@id":"https://complicelab.com/#website","url":"https://complicelab.com/","name":"Cómplice Lab","publisher":{"@id":"https://complicelab.com/#organization"},"inLanguage":"es-CO"},{"@type":"Service","name":"Sistemas con IA a la medida","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"City","name":"Manizales"},{"@type":"Country","name":"Colombia"}],"serviceType":"Sistemas con inteligencia artificial a la medida"},{"@type":"Service","name":"Agentes de IA automatizados","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"City","name":"Manizales"},{"@type":"Country","name":"Colombia"}],"serviceType":"Agentes de inteligencia artificial automatizados"},{"@type":"Service","name":"Marketing digital y Meta Ads","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"City","name":"Manizales"},{"@type":"Country","name":"Colombia"}],"serviceType":"Marketing digital, Meta Ads y captación de oportunidades"}]}</script>\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n` + "</head>")
+    .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + compareStyles + flowStyles + marketingStyles + `\n  <meta name="complice-build" content="mobile-booking-two-step-2026-11-09-v2">\n  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://complicelab.com/#organization","name":"Cómplice Lab","url":"https://complicelab.com/","logo":"https://complicelab.com/brand/complice-lab-logo.svg","email":"info@complicelab.com","telephone":"+573161772880","description":"Cómplice Lab construye sistemas con IA a la medida, agentes automatizados, páginas web y campañas de publicidad para profesionales y empresas.","areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"sameAs":["https://www.instagram.com/complicelab","https://www.facebook.com/complicelab","https://www.youtube.com/@complicelab"]},{"@type":"WebSite","@id":"https://complicelab.com/#website","url":"https://complicelab.com/","name":"Cómplice Lab","publisher":{"@id":"https://complicelab.com/#organization"},"inLanguage":"es-CO"},{"@type":"Service","name":"Sistemas con IA a la medida","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Sistemas con inteligencia artificial a la medida"},{"@type":"Service","name":"Agentes de IA automatizados","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Agentes de inteligencia artificial automatizados"},{"@type":"Service","name":"Marketing digital y Meta Ads","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Marketing digital, Meta Ads y captación de oportunidades"}]}</script>\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n` + "</head>")
     .replace("</body>", HOMEPAGE_COPY_FIX + HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + UNIFIED_BOOKING_CTA + "</body>");
 }
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cómplice Lab | Agencia de marketing con IA en Manizales" },
-      { name: "description", content: "Agencia de marketing con IA en Manizales. Creamos páginas web, sistemas con IA a la medida, agentes automatizados y campañas de marketing digital." },
+      { title: "Cómplice Lab | Sistemas con IA, agentes y pauta en redes" },
+      { name: "description", content: "Creamos sistemas con IA a la medida, agentes automatizados, páginas web y pauta en redes sociales para atraer, atender y gestionar oportunidades." },
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
-      { property: "og:title", content: "Cómplice Lab | Marketing, páginas web y sistemas con IA" },
-      { property: "og:description", content: "Sistemas con IA, agentes automatizados y marketing digital para atraer, atender y gestionar mejores oportunidades." },
+      { property: "og:title", content: "Cómplice Lab | Sistemas con IA, agentes, web y pauta" },
+      { property: "og:description", content: "Sistemas con IA a la medida, agentes automatizados, páginas web y pauta en redes sociales para atraer y gestionar oportunidades." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://complicelab.com/" },
       { name: "twitter:card", content: "summary_large_image" },

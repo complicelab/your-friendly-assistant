@@ -103,6 +103,14 @@ const HOMEPAGE_POSITIONING_STYLES = `
   .cl-acquisition-item strong{display:block;margin-bottom:5px;color:#14213a;font:700 11px/1.25 "Montserrat",sans-serif;letter-spacing:.06em;text-transform:uppercase}
   .cl-acquisition-item span{display:block;color:#66758f;font:500 12px/1.5 "Montserrat",sans-serif}
   .cl-acquisition-note{margin-top:12px!important;color:#53627c!important;font:600 11px/1.45 "Montserrat",sans-serif!important}
+  .cl-hero-gradient{
+    display:inline;
+    background:linear-gradient(90deg,#1f6fe8 0%,#6653e9 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:transparent;
+  }
   @media(max-width:700px){
     .cl-scope-rail{gap:6px}
     .cl-scope-rail span{font-size:10px}
@@ -151,23 +159,12 @@ const HOMEPAGE_COPY_FIX = `
   function run(){
     var heroH1=document.querySelector("main h1")||document.querySelector("h1");
     if(heroH1){
-      var heroAccent=Array.from(heroH1.children).find(function(child){ return normalized(child); });
-      var heroNodes=textNodes(heroH1);
-      if(heroNodes.length){
-        heroNodes[0].nodeValue="Construimos sistemas con IA para ";
-        heroNodes.slice(1).forEach(function(node){ node.nodeValue=" "; });
-        if(heroAccent) heroAccent.textContent="atraer, atender y gestionar oportunidades.";
-      } else if(heroAccent){
-        heroH1.insertBefore(document.createTextNode("Construimos sistemas con IA para "),heroH1.firstChild);
-        heroAccent.textContent="atraer, atender y gestionar oportunidades.";
-      } else {
-        heroH1.textContent="Construimos sistemas con IA para atraer, atender y gestionar oportunidades.";
-      }
+      heroH1.innerHTML='Especialistas en <span class="cl-hero-gradient">sistemas con IA</span>, páginas web y <span class="cl-hero-gradient">publicidad digital</span>';
     }
 
     var heroParagraph=heroH1 && (heroH1.parentElement||document).querySelector("p");
     if(heroParagraph){
-      heroParagraph.textContent="Sistemas con IA a la medida, agentes de IA automatizados, páginas web y publicidad en redes sociales para atraer, atender y gestionar oportunidades.";
+      heroParagraph.textContent="Construimos sistemas a la medida, agentes de IA, páginas web y campañas de publicidad para atraer, atender y gestionar oportunidades.";
     }
 
     patchHeading("Míralo funcionar","Así","trabajamos.");
@@ -1327,10 +1324,10 @@ function getOriginalHtml() {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cómplice Lab | Sistemas con IA, agentes de IA y publicidad en redes" },
+      { title: "Cómplice Lab | Sistemas con IA, páginas web y publicidad digital" },
       { name: "description", content: "Creamos sistemas con IA a la medida, agentes de IA automatizados, páginas web y pauta en redes sociales para atraer, atender y gestionar oportunidades." },
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
-      { property: "og:title", content: "Cómplice Lab | Sistemas con IA, agentes de IA, web y pauta" },
+      { property: "og:title", content: "Cómplice Lab | Sistemas con IA, páginas web y publicidad digital" },
       { property: "og:description", content: "Sistemas con IA a la medida, agentes de IA automatizados, páginas web y publicidad en redes sociales para atraer y gestionar oportunidades." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://complicelab.com/" },

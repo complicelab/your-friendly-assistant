@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/marketing/site-footer";
 export const Route = createFileRoute("/privacidad")({
   head: () => ({
     meta: [
+      { name: "robots", content: "noindex, follow" },
       { title: "Política de Privacidad y Tratamiento de Datos | Cómplice Lab" },
       {
         name: "description",

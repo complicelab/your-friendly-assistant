@@ -206,7 +206,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Cómplice Lab | Sistemas con IA, agentes de IA y publicidad en redes" },
+      { title: "Cómplice Lab | Sistemas con IA, páginas web y publicidad digital" },
       {
         name: "description",
         content:
@@ -214,7 +214,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "Cómplice Lab" },
       { name: "theme-color", content: "#F6F8FC" },
-      { property: "og:title", content: "Cómplice Lab | Sistemas con IA, agentes de IA, web y pauta" },
+      { property: "og:title", content: "Cómplice Lab | Sistemas con IA, páginas web y publicidad digital" },
       {
         property: "og:description",
         content:

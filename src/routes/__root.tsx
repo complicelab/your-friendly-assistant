@@ -64,32 +64,6 @@ const analyticsEventsScript = `
       return;
     }
 
-    if (href === '/formacion' || href.indexOf('/formacion#') === 0) {
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'formation_cta_click', common);
-      }
-      if (typeof window.fbq === 'function') {
-        window.fbq('trackCustom', 'FormationCTA', Object.assign({
-          content_name: text,
-          placement: placement
-        }, attribution));
-      }
-      return;
-    }
-
-    if (href.indexOf('/capacitacion-ia-empresas') === 0) {
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'company_training_cta_click', common);
-      }
-      if (typeof window.fbq === 'function') {
-        window.fbq('trackCustom', 'CompanyTrainingCTA', Object.assign({
-          content_name: text,
-          placement: placement
-        }, attribution));
-      }
-      return;
-    }
-
     if (href.indexOf('mailto:') === 0) {
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'email_click', common);

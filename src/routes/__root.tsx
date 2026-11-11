@@ -206,7 +206,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Cómplice Lab | Sistemas con IA, agentes y pauta en redes" },
+      { title: "Cómplice Lab | Sistemas IA, agentes y publicidad en redes" },
       {
         name: "description",
         content:
@@ -218,7 +218,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "Sistemas con IA a la medida, agentes automatizados, páginas web y pauta en redes sociales para profesionales y empresas que necesitan atraer y gestionar oportunidades.",
+          "Sistemas con IA a la medida, agentes automatizados, páginas web y publicidad en redes sociales para profesionales y empresas que necesitan atraer y gestionar oportunidades.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Cómplice Lab" },

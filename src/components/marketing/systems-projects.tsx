@@ -1,4 +1,4 @@
-import { ArrowRight, ArrowUpRight, Bot, CalendarDays, Database, Globe2, LayoutDashboard, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Database, Globe2, LayoutDashboard, Sparkles } from "lucide-react";
 import "./systems-projects.css";
 
 /* Project names are known examples from Cómplice Lab's portfolio.

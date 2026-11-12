@@ -9,14 +9,14 @@ export const commercialServices:CommercialService[]=[
   slug:"paginas-web",
   name:"Páginas Web",
   title:"Páginas Web para Profesionales y Empresas | Cómplice Lab",
-  description:"Creamos páginas web premium para profesionales y empresas, conectadas con agenda, WhatsApp, formularios, CRM y seguimiento según el negocio.",
+  description:"Creamos páginas web premium para profesionales y empresas, pensadas para transmitir confianza y facilitar que las personas escriban, agenden o dejen sus datos.",
   headline:"Páginas web que representan tu nivel y facilitan el siguiente paso.",
-  intro:"Creamos páginas web comerciales para profesionales y empresas que necesitan transmitir confianza, explicar mejor su valor y facilitar que una persona escriba, agende o deje sus datos. Cuando el proyecto lo requiere, conectamos la página con agendamiento, CRM y seguimiento.",
+  intro:"Creamos páginas web comerciales para profesionales y empresas que necesitan transmitir confianza, explicar mejor su valor y facilitar que una persona escriba, agende o deje sus datos. La página se concentra en presentar mejor el negocio y convertir visitas en contactos; si el proyecto necesita CRM, automatizaciones o seguimiento avanzado, eso se desarrolla dentro de un sistema con IA.",
   audience:"Para profesionales, marcas personales y empresas donde la confianza influye en la compra y una presencia digital genérica ya no representa su nivel.",
   deliverables:[
     "Página web comercial adaptada a celular",
     "Captación mediante agenda, formulario o WhatsApp según el objetivo",
-    "Integración con CRM cuando forma parte del alcance",
+    "Conexión con agenda, formulario o WhatsApp según el objetivo",
     "Paneles y funciones a medida cuando el proyecto lo requiere"
   ],
   process:[
@@ -26,7 +26,7 @@ export const commercialServices:CommercialService[]=[
     "Probamos captación, navegación y funcionamiento antes de publicar"
   ],
   questions:[
-    ["¿Solo hacen el diseño de la página?","No necesariamente. Podemos construir la página como parte de un sistema más amplio con captación, agendamiento, CRM y seguimiento, según el proyecto."],
+    ["¿La página incluye CRM y automatizaciones?","La página se enfoca en presencia, claridad y conversión. Si necesitas CRM, automatizaciones, seguimiento o paneles, los construimos como parte de un sistema con IA a la medida."],
     ["¿Trabajan únicamente en Manizales?","No. Trabajamos 100% online con profesionales y empresas en Colombia y otros mercados."]
   ],
   cta:"Quiero una página que represente mi nivel",
@@ -58,6 +58,7 @@ export const commercialServices:CommercialService[]=[
   ],
   questions:[
     ["¿Trabajan únicamente Meta Ads?","No. La plataforma se define según el objetivo y el tipo de demanda. Podemos trabajar Meta Ads, Google Ads u otras plataformas cuando la estrategia lo justifica."],
+    ["¿La publicidad incluye página web, CRM o automatizaciones?","No necesariamente. Publicidad Digital se concentra en atraer oportunidades. Si el negocio necesita una nueva página, CRM, agenda o automatizaciones, se desarrolla como un servicio adicional o como parte de un sistema más completo."],
     ["¿La página web, el CRM o la agenda están incluidos?","No necesariamente. Publicidad Digital se enfoca en atraer demanda. Si el negocio necesita una página, agenda, CRM o automatización, eso se construye como parte de Páginas Web o Sistemas con IA, según el alcance."],
     ["¿Garantizan una cantidad de clientes?","No. Podemos mejorar la captación y la calidad de la campaña, pero no prometer una cantidad fija de ventas."]
   ],
@@ -72,9 +73,9 @@ export const commercialServices:CommercialService[]=[
   slug:"sistemas-ia-a-la-medida",
   name:"Sistemas con IA a la medida",
   title:"Sistemas con IA a la Medida | Cómplice Lab",
-  description:"Construimos sistemas con IA a la medida: páginas web, sistemas administrativos, CRM, agendamiento, automatizaciones, agentes de IA, paneles e indicadores según el negocio.",
+  description:"Construimos sistemas con IA a la medida para organizar, automatizar y dar seguimiento a procesos del negocio mediante CRM, agenda, paneles, integraciones, automatizaciones y agentes de IA.",
   headline:"Tecnología construida alrededor de cómo realmente funciona tu negocio.",
-  intro:"Construimos lo que el negocio realmente necesita. Puede ser una página web, un sistema administrativo, un CRM, una agenda, automatizaciones, agentes de IA, paneles o un ecosistema completo donde todos esos componentes trabajen conectados.",
+  intro:"Construimos sistemas alrededor de cómo realmente funciona el negocio: CRM, agenda, paneles administrativos, automatizaciones, agentes de IA, integraciones e indicadores. Cuando una página web forma parte del ecosistema, puede conectarse al sistema, pero el foco de este servicio es organizar y hacer avanzar la operación y el seguimiento.",
   audience:"Para profesionales y empresas que necesitan una solución construida alrededor de su operación, desde una función puntual hasta un ecosistema completo para captar, atender, administrar o dar seguimiento.",
   deliverables:[
     "Página web, portal o experiencia digital cuando el proyecto lo necesita",

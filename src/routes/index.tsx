@@ -96,6 +96,16 @@ const HOMEPAGE_POSITIONING_STYLES = `
 <style id="homepage-positioning-v11">
   .cl-scope-rail{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
   .cl-scope-rail span{display:inline-flex;align-items:center;min-height:31px;padding:6px 10px;border:1px solid rgba(36,95,234,.16);border-radius:999px;background:rgba(36,95,234,.045);color:#334765;font:600 11px/1.25 "Montserrat",sans-serif}
+  h1 .cl-hero-gradient,
+  .cl-hero-gradient{
+    display:inline-block!important;
+    background-image:linear-gradient(90deg,#1f6fe8 0%,#6653e9 100%)!important;
+    background-repeat:no-repeat!important;
+    -webkit-background-clip:text!important;
+    background-clip:text!important;
+    -webkit-text-fill-color:transparent!important;
+    color:transparent!important;
+  }
   @media(max-width:700px){
     .cl-scope-rail{gap:6px}
     .cl-scope-rail span{font-size:10px}

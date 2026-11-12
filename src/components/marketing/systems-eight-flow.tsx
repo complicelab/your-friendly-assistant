@@ -60,7 +60,7 @@ export function CampaignScene({step=4}:{step?:number}){
    <div className="sd-campaign-device-glow" aria-hidden="true"/>
    <div className="sd-campaign-phone" aria-label="Teléfono de demostración con conversación estilo WhatsApp">
     <div className="sd-phone-status"><strong>9:41</strong><span className="sd-phone-island"/><span>▴ ▰ ▰</span></div>
-    <div className="sd-phone-header"><span>‹</span><div className="sd-phone-avatar"><Gift size={17}/></div><div><strong>Tu negocio</strong><small>Cuenta comercial · Demo</small></div><span>⋮</span></div>
+    <div className="sd-phone-header"><span>‹</span><div className="sd-phone-avatar"><Gift size={17}/></div><div><strong>Tu negocio</strong><small>WhatsApp · Demo ilustrativa</small></div><span>⋮</span></div>
     <div className="sd-phone-chat">
      <div className="sd-chat-date">Hoy</div>
      <div className="sd-phone-bubble incoming">Hola, ¿tienen algún detalle especial para regalar?<small>09:31</small></div>

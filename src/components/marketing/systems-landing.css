@@ -31,21 +31,19 @@
 /* In-page diagnostic; uses the existing booking endpoint and its CRM workflow. */
 .sys-page .sys-action{cursor:pointer;font-family:Montserrat,system-ui,sans-serif}
 .sys-page .sys-action:focus-visible{outline:3px solid #95b5ff;outline-offset:3px}
-.sys-booking-section{background:linear-gradient(145deg,#eaf1ff,#f7f9ff 65%,#f2f0ff);padding:100px 0 115px;scroll-margin-top:25px}
+.sys-booking-section{position:relative;isolation:isolate;background:linear-gradient(115deg,#205bd9 0%,#3469e7 49%,#7254de 100%);padding:100px 0 115px;scroll-margin-top:25px;overflow:hidden}
 .sys-booking-heading{text-align:center;max-width:800px;margin:0 auto 40px}
-.sys-booking-heading>span{font-size:10px;color:#365ee3;font-weight:850;letter-spacing:.14em}
-.sys-booking-heading h2{font-size:clamp(31px,3.5vw,48px);line-height:1.15;letter-spacing:-.052em;margin:17px auto}
-.sys-booking-heading h2 em{display:inline}
-.sys-booking-heading p{font-size:13px;color:#677b98;line-height:1.75}
+.sys-booking-heading>span{font-size:10px;color:#d6e5ff;font-weight:850;letter-spacing:.14em}
+ .sys-booking-heading h2{color:#fff;font-size:clamp(31px,3.5vw,48px);line-height:1.15;letter-spacing:-.052em;margin:17px auto}
+.sys-booking-heading h2 em{display:inline;background:none!important;-webkit-text-fill-color:inherit;color:white}
+.sys-booking-heading p{font-size:13px;color:#e1eaff;line-height:1.75}
 @media(max-width:700px){.sys-booking-section{padding:70px 0}.sys-booking-heading{margin-bottom:25px}.sys-booking-heading h2{font-size:29px}}
 
 /* Closing follows the homepage's wide cobalt-to-violet diagnostic treatment.
    This intentionally overrides the older navy panel; no new color system. */
 .sys-page .sys-closing{background:linear-gradient(112deg,#1f6fe8 0%,#4166e6 48%,#7752df 100%);padding:100px 0;position:relative;color:white;overflow:hidden}
-.sys-page .sys-closing:before{content:"";position:absolute;left:12.4%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.23);pointer-events:none}
-.sys-page .sys-closing:after{content:"";position:absolute;left:calc(12.4% - 7px);top:50%;height:14px;width:14px;border-radius:50%;background:white;pointer-events:none}
-.sys-page .sys-closing-layout{grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);align-items:center;gap:clamp(40px,5vw,100px);min-height:440px;position:relative}
-.sys-page .sys-closing-copy{padding-left:25px}
+.sys-page .sys-closing-layout{display:grid;grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);align-items:center;gap:clamp(40px,5vw,100px);min-height:440px;position:relative}
+.sys-page .sys-closing-copy{padding-left:0;max-width:490px}
 .sys-page .sys-closing-marker{font-size:10px;letter-spacing:.13em;font-weight:850;color:#d7e7ff}
 .sys-page .sys-closing-copy h2{font-size:clamp(34px,3.5vw,51px);max-width:510px;line-height:1.1;letter-spacing:-.048em;margin:23px 0 18px}
 .sys-page .sys-closing-copy h2 em{display:block;background:none!important;-webkit-text-fill-color:inherit;color:white}
@@ -70,7 +68,6 @@
 @media(max-width:900px){
  .sys-page .sys-closing{padding:78px 0}
  .sys-page .sys-closing-layout{grid-template-columns:1fr;gap:36px;min-height:auto}
- .sys-page .sys-closing:before,.sys-page .sys-closing:after{display:none}
  .sys-page .sys-closing-copy{padding-left:0}
  .sys-page .sys-closing-copy h2{max-width:740px}
  .sys-page .sys-closing-card{max-width:650px;width:100%;margin:auto}

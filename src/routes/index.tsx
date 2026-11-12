@@ -20,6 +20,91 @@ import part12 from "@/data/v10/part-12";
 
 const COMPRESSED_HTML = part1 + part2 + part3 + part4 + part5 + part6 + part7 + part8 + part9 + part10 + part11 + part12;
 
+
+type GoogleReviewItem = {
+  author: string;
+  authorUri: string;
+  avatar: string;
+  rating: number;
+  relativeTime: string;
+  text: string;
+};
+
+type GoogleReviewSnapshot = {
+  rating: number;
+  count: number;
+  mapsUri: string;
+  reviews: GoogleReviewItem[];
+};
+
+let googleReviewsCache: { expiresAt: number; value: GoogleReviewSnapshot | null } | null = null;
+
+function serverEnv(name: string) {
+  return typeof process !== "undefined" ? String(process.env[name] || "").trim() : "";
+}
+
+async function fetchGoogleReviewSnapshot(): Promise<GoogleReviewSnapshot | null> {
+  const apiKey = serverEnv("GOOGLE_PLACES_API_KEY");
+  const placeId = serverEnv("GOOGLE_PLACE_ID");
+  if (!apiKey || !placeId) return null;
+
+  const now = Date.now();
+  if (googleReviewsCache && googleReviewsCache.expiresAt > now) return googleReviewsCache.value;
+
+  try {
+    const response = await fetch(
+      `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}?languageCode=es`,
+      {
+        headers: {
+          "X-Goog-Api-Key": apiKey,
+          "X-Goog-FieldMask": "displayName,rating,userRatingCount,googleMapsUri,reviews",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      console.error("Google Places reviews request failed", response.status, (await response.text()).slice(0, 500));
+      googleReviewsCache = { expiresAt: now + 10 * 60 * 1000, value: null };
+      return null;
+    }
+
+    const payload = await response.json() as Record<string, any>;
+    const reviews = Array.isArray(payload["reviews"])
+      ? payload["reviews"].map((review: Record<string, any>) => ({
+          author: String(review?.["authorAttribution"]?.["displayName"] || "Cliente"),
+          authorUri: String(review?.["authorAttribution"]?.["uri"] || ""),
+          avatar: String(review?.["authorAttribution"]?.["photoUri"] || ""),
+          rating: Number(review?.["rating"] || 0),
+          relativeTime: String(review?.["relativePublishTimeDescription"] || ""),
+          text: String(review?.["text"]?.["text"] || review?.["originalText"]?.["text"] || "").trim(),
+        })).filter((review: GoogleReviewItem) => review.text && review.rating > 0)
+      : [];
+
+    const value: GoogleReviewSnapshot = {
+      rating: Number(payload["rating"] || 0),
+      count: Number(payload["userRatingCount"] || 0),
+      mapsUri: String(payload["googleMapsUri"] || ""),
+      reviews,
+    };
+
+    googleReviewsCache = { expiresAt: now + 6 * 60 * 60 * 1000, value };
+    return value;
+  } catch (error) {
+    console.error("Google Places reviews request error", error);
+    googleReviewsCache = { expiresAt: now + 10 * 60 * 1000, value: null };
+    return null;
+  }
+}
+
+function safeJsonForHtml(value: unknown) {
+  return JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}
+
 const SECTION_TITLE_WEIGHT_OVERRIDE = `
 <style id="section-title-weight-v10">
   .h2,
@@ -112,6 +197,59 @@ const HOMEPAGE_POSITIONING_STYLES = `
   @media(max-width:700px){
     .cl-scope-rail{gap:6px}
     .cl-scope-rail span{font-size:10px}
+  }
+</style>
+`
+
+
+const HOMEPAGE_GOOGLE_REVIEWS_STYLES = `
+<style id="homepage-google-reviews-v1">
+  .cl-google-proof{
+    display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:9px 13px;
+    border:1px solid rgba(36,95,234,.14);border-radius:999px;background:rgba(255,255,255,.82);
+    box-shadow:0 10px 28px rgba(26,52,96,.07);text-decoration:none!important;color:#17233b!important;
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    font:600 12px/1.2 "Montserrat",sans-serif
+  }
+  .cl-google-proof:hover{border-color:rgba(36,95,234,.30);transform:translateY(-1px)}
+  .cl-google-proof-g{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:#fff;border:1px solid #e8edf6;font-weight:800;color:#245fea}
+  .cl-google-proof-stars{color:#f4a000;letter-spacing:.02em}
+  .cl-google-proof small{display:block;margin-top:2px;color:#6b7890;font:500 10px/1.2 "Montserrat",sans-serif}
+
+  .cl-google-reviews{position:relative;padding:92px 0 98px;background:#fff;overflow:hidden}
+  .cl-google-reviews:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 78% 18%,rgba(74,104,255,.08),transparent 31%);pointer-events:none}
+  .cl-google-reviews-inner{position:relative;width:min(1120px,calc(100% - 48px));margin:0 auto}
+  .cl-google-reviews-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:30px;align-items:end;margin-bottom:34px}
+  .cl-google-reviews-kicker{display:block;margin-bottom:12px;color:#245fea;font:700 11px/1 "Montserrat",sans-serif;letter-spacing:.16em;text-transform:uppercase}
+  .cl-google-reviews h2{margin:0;max-width:790px;color:#0d1525;font:700 clamp(34px,4.2vw,60px)/1.02 "Montserrat",sans-serif;letter-spacing:-.045em}
+  .cl-google-reviews h2 span{background:linear-gradient(90deg,#2269e8 0%,#6653e9 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+  .cl-google-score{min-width:210px;padding:18px 20px;border:1px solid #e6ebf4;border-radius:22px;background:rgba(255,255,255,.88);box-shadow:0 16px 42px rgba(27,50,91,.08)}
+  .cl-google-score-label{display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#53627c;font:600 11px/1.2 "Montserrat",sans-serif}
+  .cl-google-score-label b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff;border:1px solid #e8edf6;color:#245fea;font-size:13px}
+  .cl-google-score-main{display:flex;align-items:center;gap:10px}
+  .cl-google-score-main strong{color:#101827;font:750 34px/1 "Montserrat",sans-serif}
+  .cl-google-score-stars{color:#f4a000;font-size:17px;letter-spacing:.02em}
+  .cl-google-score-count{margin-top:5px;color:#7a879d;font:500 11px/1.3 "Montserrat",sans-serif}
+  .cl-google-review-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .cl-google-review-card{min-height:245px;padding:22px;border:1px solid #e7ecf5;border-radius:22px;background:#fff;box-shadow:0 14px 36px rgba(21,41,78,.055)}
+  .cl-google-review-author{display:flex;align-items:center;gap:12px;margin-bottom:14px;text-decoration:none!important}
+  .cl-google-review-avatar{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border-radius:50%;overflow:hidden;background:#eef3ff;color:#245fea;font:700 14px/1 "Montserrat",sans-serif}
+  .cl-google-review-avatar img{width:100%;height:100%;object-fit:cover}
+  .cl-google-review-name{display:block;color:#172036;font:700 13px/1.25 "Montserrat",sans-serif}
+  .cl-google-review-time{display:block;margin-top:3px;color:#8a95a8;font:500 10px/1.2 "Montserrat",sans-serif}
+  .cl-google-review-stars{margin-bottom:13px;color:#f4a000;font-size:15px;letter-spacing:.03em}
+  .cl-google-review-text{margin:0;color:#526078;font:500 13px/1.7 "Montserrat",sans-serif}
+  .cl-google-reviews-foot{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:26px}
+  .cl-google-reviews-note{color:#8994a6;font:500 10px/1.4 "Montserrat",sans-serif}
+  .cl-google-reviews-link{display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border:1px solid rgba(36,95,234,.18);border-radius:999px;color:#245fea!important;text-decoration:none!important;font:650 11px/1 "Montserrat",sans-serif}
+  .cl-google-reviews-link:hover{background:#f6f8ff}
+  @media(max-width:800px){
+    .cl-google-reviews{padding:68px 0 72px}
+    .cl-google-reviews-inner{width:min(100% - 28px,1120px)}
+    .cl-google-reviews-top{grid-template-columns:1fr;align-items:start}
+    .cl-google-score{min-width:0;width:min(100%,270px)}
+    .cl-google-review-card{min-height:auto}
+    .cl-google-reviews-foot{align-items:flex-start;flex-direction:column}
   }
 </style>
 `
@@ -217,6 +355,108 @@ const HOMEPAGE_COPY_FIX = `
 })();
 </script>
 `;
+
+
+const HOMEPAGE_GOOGLE_REVIEWS_RUNTIME = `
+<script id="homepage-google-reviews-runtime-v1">
+(function(){
+  var data=__CL_GOOGLE_REVIEWS_PAYLOAD__;
+  if(!data || !Array.isArray(data.reviews) || data.reviews.length===0) return;
+
+  function text(el,value){el.textContent=value==null?"":String(value);return el}
+  function starString(rating){
+    var full=Math.max(1,Math.min(5,Math.round(Number(rating)||0)));
+    return "★".repeat(full)+"☆".repeat(5-full);
+  }
+  function initials(name){
+    return String(name||"C").trim().split(/\\s+/).slice(0,2).map(function(x){return x.charAt(0).toUpperCase()}).join("");
+  }
+
+  function mount(){
+    if(document.querySelector(".cl-google-reviews")) return;
+
+    var heroH1=document.querySelector("main h1")||document.querySelector("h1");
+    var heroCopy=heroH1 && heroH1.parentElement;
+    var heroParagraph=heroCopy && heroCopy.querySelector("p");
+    if(heroCopy && heroParagraph && !heroCopy.querySelector(".cl-google-proof")){
+      var badge=document.createElement(data.mapsUri?"a":"div");
+      badge.className="cl-google-proof";
+      if(data.mapsUri){
+        badge.href=data.mapsUri;badge.target="_blank";badge.rel="noopener noreferrer";
+        badge.setAttribute("aria-label","Ver opiniones de Cómplice Lab en Google");
+      }
+      var g=document.createElement("span");g.className="cl-google-proof-g";g.textContent="G";
+      var wrap=document.createElement("span");
+      var main=document.createElement("span");
+      var rating=Number(data.rating||0).toLocaleString("es-CO",{minimumFractionDigits:1,maximumFractionDigits:1});
+      main.innerHTML='<span class="cl-google-proof-stars">★</span> <strong>'+rating+'</strong> en Google';
+      var small=document.createElement("small");
+      small.textContent=(Number(data.count||0))+" "+(Number(data.count||0)===1?"opinión real":"opiniones reales");
+      wrap.appendChild(main);wrap.appendChild(small);badge.appendChild(g);badge.appendChild(wrap);
+      heroParagraph.insertAdjacentElement("afterend",badge);
+    }
+
+    var section=document.createElement("section");section.className="cl-google-reviews";section.setAttribute("aria-label","Opiniones reales de Cómplice Lab en Google");
+    var inner=document.createElement("div");inner.className="cl-google-reviews-inner";
+    var top=document.createElement("div");top.className="cl-google-reviews-top";
+    var heading=document.createElement("div");
+    var kicker=document.createElement("span");kicker.className="cl-google-reviews-kicker";kicker.textContent="Opiniones en Google";
+    var h2=document.createElement("h2");h2.innerHTML='Lo que dicen quienes han trabajado <span>con nosotros.</span>';
+    heading.appendChild(kicker);heading.appendChild(h2);
+
+    var score=document.createElement("div");score.className="cl-google-score";
+    var scoreLabel=document.createElement("div");scoreLabel.className="cl-google-score-label";scoreLabel.innerHTML="<b>G</b><span>Experiencias en Google</span>";
+    var scoreMain=document.createElement("div");scoreMain.className="cl-google-score-main";
+    var scoreNumber=document.createElement("strong");scoreNumber.textContent=Number(data.rating||0).toLocaleString("es-CO",{minimumFractionDigits:1,maximumFractionDigits:1});
+    var scoreStars=document.createElement("span");scoreStars.className="cl-google-score-stars";scoreStars.textContent=starString(data.rating);
+    scoreMain.appendChild(scoreNumber);scoreMain.appendChild(scoreStars);
+    var count=document.createElement("div");count.className="cl-google-score-count";count.textContent=(Number(data.count||0))+" opiniones en el perfil de Google";
+    score.appendChild(scoreLabel);score.appendChild(scoreMain);score.appendChild(count);
+    top.appendChild(heading);top.appendChild(score);inner.appendChild(top);
+
+    var grid=document.createElement("div");grid.className="cl-google-review-grid";
+    data.reviews.slice(0,5).forEach(function(review){
+      var card=document.createElement("article");card.className="cl-google-review-card";
+      var author=document.createElement(review.authorUri?"a":"div");author.className="cl-google-review-author";
+      if(review.authorUri){author.href=review.authorUri;author.target="_blank";author.rel="noopener noreferrer";}
+      var avatar=document.createElement("span");avatar.className="cl-google-review-avatar";
+      if(review.avatar){
+        var img=document.createElement("img");img.src=review.avatar;img.alt="";img.loading="lazy";img.referrerPolicy="no-referrer";avatar.appendChild(img);
+      }else{avatar.textContent=initials(review.author);}
+      var authorMeta=document.createElement("span");
+      var name=document.createElement("span");name.className="cl-google-review-name";name.textContent=review.author||"Cliente";
+      var time=document.createElement("span");time.className="cl-google-review-time";time.textContent=review.relativeTime||"Opinión en Google";
+      authorMeta.appendChild(name);authorMeta.appendChild(time);author.appendChild(avatar);author.appendChild(authorMeta);
+      var stars=document.createElement("div");stars.className="cl-google-review-stars";stars.setAttribute("aria-label",(review.rating||0)+" de 5 estrellas");stars.textContent=starString(review.rating);
+      var p=document.createElement("p");p.className="cl-google-review-text";p.textContent=review.text;
+      card.appendChild(author);card.appendChild(stars);card.appendChild(p);grid.appendChild(card);
+    });
+    inner.appendChild(grid);
+
+    var foot=document.createElement("div");foot.className="cl-google-reviews-foot";
+    var note=document.createElement("span");note.className="cl-google-reviews-note";note.textContent="Opiniones mostradas desde el perfil de Cómplice Lab en Google. El contenido pertenece a sus autores.";
+    foot.appendChild(note);
+    if(data.mapsUri){
+      var link=document.createElement("a");link.className="cl-google-reviews-link";link.href=data.mapsUri;link.target="_blank";link.rel="noopener noreferrer";link.textContent="Ver todas en Google ↗";foot.appendChild(link);
+    }
+    inner.appendChild(foot);section.appendChild(inner);
+
+    var contactHeading=Array.from(document.querySelectorAll("h1,h2,h3")).find(function(el){
+      var value=(el.textContent||"").replace(/\\s+/g," ").trim().toLowerCase();
+      return value.indexOf("hablemos de")!==-1 && value.indexOf("negocio")!==-1;
+    });
+    var contactSection=contactHeading && (contactHeading.closest("section")||contactHeading.parentElement);
+    var mainEl=document.querySelector("main");
+    if(contactSection && contactSection.parentElement) contactSection.parentElement.insertBefore(section,contactSection);
+    else if(mainEl) mainEl.appendChild(section);
+  }
+
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",mount);
+  else mount();
+  setTimeout(mount,350);
+})();
+</script>
+`
 
 const HOMEPAGE_FOOTER_ENHANCEMENT = `
 <style id="homepage-footer-enhancement-v10">
@@ -1302,8 +1542,8 @@ function getOriginalHtml() {
       "Creamos páginas web y campañas pagas en redes sociales para atraer personas interesadas y llevarlas a una acción clara. Puedes contratar cada servicio por separado o conectarlos dentro de un sistema más completo."
     );
   return replaceMarketingRuntime(replaceFlowScenes(replaceCompareScenes(html)))
-    .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + HOMEPAGE_POSITIONING_STYLES + compareStyles + flowStyles + marketingStyles + `\n  <meta name="complice-build" content="mobile-booking-two-step-2026-11-09-v2">\n  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://complicelab.com/#organization","name":"Cómplice Lab","url":"https://complicelab.com/","logo":"https://complicelab.com/brand/complice-lab-logo.svg","email":"info@complicelab.com","telephone":"+573161772880","description":"Cómplice Lab construye sistemas con IA a la medida, agentes de IA automatizados, páginas web y campañas de publicidad para profesionales y empresas.","areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"sameAs":["https://www.instagram.com/complicelab","https://www.facebook.com/complicelab","https://www.youtube.com/@complicelab"]},{"@type":"WebSite","@id":"https://complicelab.com/#website","url":"https://complicelab.com/","name":"Cómplice Lab","publisher":{"@id":"https://complicelab.com/#organization"},"inLanguage":"es-419"},{"@type":"Service","name":"Sistemas con IA a la medida","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Sistemas con inteligencia artificial a la medida"},{"@type":"Service","name":"Agentes de IA automatizados","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Agentes de inteligencia artificial automatizados"},{"@type":"Service","name":"Páginas web y publicidad en redes sociales","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Páginas web, publicidad en redes sociales, Meta Ads, TikTok Ads y Google Ads"}]}</script>\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n` + "</head>")
-    .replace("</body>", HOMEPAGE_COPY_FIX + HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + UNIFIED_BOOKING_CTA + "</body>");
+    .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + HOMEPAGE_POSITIONING_STYLES + HOMEPAGE_GOOGLE_REVIEWS_STYLES + compareStyles + flowStyles + marketingStyles + `\n  <meta name="complice-build" content="mobile-booking-two-step-2026-11-09-v2">\n  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://complicelab.com/#organization","name":"Cómplice Lab","url":"https://complicelab.com/","logo":"https://complicelab.com/brand/complice-lab-logo.svg","email":"info@complicelab.com","telephone":"+573161772880","description":"Cómplice Lab construye sistemas con IA a la medida, agentes de IA automatizados, páginas web y campañas de publicidad para profesionales y empresas.","areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"sameAs":["https://www.instagram.com/complicelab","https://www.facebook.com/complicelab","https://www.youtube.com/@complicelab"]},{"@type":"WebSite","@id":"https://complicelab.com/#website","url":"https://complicelab.com/","name":"Cómplice Lab","publisher":{"@id":"https://complicelab.com/#organization"},"inLanguage":"es-419"},{"@type":"Service","name":"Sistemas con IA a la medida","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Sistemas con inteligencia artificial a la medida"},{"@type":"Service","name":"Agentes de IA automatizados","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Agentes de inteligencia artificial automatizados"},{"@type":"Service","name":"Páginas web y publicidad en redes sociales","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Páginas web, publicidad en redes sociales, Meta Ads, TikTok Ads y Google Ads"}]}</script>\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n` + "</head>")
+    .replace("</body>", HOMEPAGE_COPY_FIX + HOMEPAGE_GOOGLE_REVIEWS_RUNTIME + HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + UNIFIED_BOOKING_CTA + "</body>");
 }
 
 export const Route = createFileRoute("/")({
@@ -1323,7 +1563,11 @@ export const Route = createFileRoute("/")({
   server: {
     handlers: {
       GET: async () => {
-        const html = getOriginalHtml();
+        const googleReviews = await fetchGoogleReviewSnapshot();
+        const html = getOriginalHtml().replace(
+          "__CL_GOOGLE_REVIEWS_PAYLOAD__",
+          safeJsonForHtml(googleReviews),
+        );
         const body = Buffer.from(html, "utf8");
 
         return new Response(body, {

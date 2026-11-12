@@ -75,9 +75,11 @@ async function resolveGooglePlaceId(apiKey: string): Promise<string> {
 
     const payload = await response.json() as Record<string, any>;
     const candidates = Array.isArray(payload["places"]) ? payload["places"] : [];
-    const exact = candidates.find((place: Record<string, any>) =>
-      String(place?.["displayName"]?.["text"] || "").trim().toLowerCase() === "complice lab"
-    );
+    const exact = candidates.find((place: Record<string, any>) => {
+      const name = String(place?.["displayName"]?.["text"] || "")
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+      return name === "complice lab";
+    });
     return String((exact || candidates[0])?.["id"] || "");
   } catch (error) {
     console.error("Google Places place-id lookup error", error);
@@ -108,7 +110,7 @@ async function fetchGoogleReviewSnapshot(): Promise<GoogleReviewSnapshot | null>
 
     if (!response.ok) {
       console.error("Google Places reviews request failed", response.status, (await response.text()).slice(0, 500));
-      googleReviewsCache = { expiresAt: now + 10 * 60 * 1000, value: null };
+      googleReviewsCache = { expiresAt: now + 60 * 1000, value: null };
       return null;
     }
 
@@ -135,7 +137,7 @@ async function fetchGoogleReviewSnapshot(): Promise<GoogleReviewSnapshot | null>
     return value;
   } catch (error) {
     console.error("Google Places reviews request error", error);
-    googleReviewsCache = { expiresAt: now + 10 * 60 * 1000, value: null };
+    googleReviewsCache = { expiresAt: now + 60 * 1000, value: null };
     return null;
   }
 }
@@ -405,7 +407,16 @@ const HOMEPAGE_GOOGLE_REVIEWS_RUNTIME = `
 <script id="homepage-google-reviews-runtime-v1">
 (function(){
   var data=__CL_GOOGLE_REVIEWS_PAYLOAD__;
-  if(!data || !Array.isArray(data.reviews) || data.reviews.length===0) return;
+  if(!data || !Array.isArray(data.reviews) || data.reviews.length===0){
+    if(location.hostname.indexOf("lovable")!==-1){
+      var notice=document.createElement("div");
+      notice.id="cl-google-reviews-diagnostic";
+      notice.style.cssText="position:fixed;right:18px;bottom:18px;z-index:99999;max-width:320px;padding:12px 14px;border:1px solid rgba(36,95,234,.22);border-radius:14px;background:#fff;color:#25324a;box-shadow:0 12px 34px rgba(20,35,65,.14);font:600 11px/1.45 Montserrat,sans-serif";
+      notice.textContent="Google Reviews: la sección está instalada, pero Google todavía no devolvió reseñas. Revisa Places API (New), facturación y la clave.";
+      document.body.appendChild(notice);
+    }
+    return;
+  }
 
   function text(el,value){el.textContent=value==null?"":String(value);return el}
   function starString(rating){

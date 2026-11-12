@@ -37,3 +37,16 @@
 .sk-crm-shell{grid-template-columns:39px 1fr}.sk-kanban{grid-template-columns:repeat(3,minmax(0,1fr))}.sk-kanban-column{padding:6px 4px}.sk-kanban-heading{font-size:8px}.sk-kanban-card strong{font-size:9px}
 .sk-dash-bottom{grid-template-columns:1fr;gap:7px}.sk-dash-graph,.sk-dash-notices{min-height:auto}.sk-chart-columns{height:80px}.sk-dash-kpis strong{font-size:9px}.sk-dashboard-frame{min-height:0}
 }
+
+/* The eight individual explanatory scenes use full interface compositions, not the homepage rail. */
+.sk-full-scene{border-radius:22px}
+.sk-full-scene>.sf-search,.sk-full-scene>.sf-agenda,.sk-full-scene>.sf-campaign,.sk-full-scene>.sf-metrics{height:auto;min-height:355px;width:100%;border:1px solid #e3eaf8;border-radius:19px;box-shadow:0 22px 52px rgba(46,74,134,.11);overflow:hidden}
+.sk-full-scene>.sf-search{padding:35px 7%}
+.sk-full-scene>.sf-agenda{padding:25px}
+.sk-full-scene>.sf-campaign{gap:15px}
+.sk-full-scene .sf-hidden{opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;pointer-events:none}
+.sk-full-scene .sf-shown{opacity:1;transform:none;transition:opacity .5s,transform .5s}
+.sk-full-scene>.sf-metrics{padding:25px}
+.sk-intro-band{scroll-margin-top:20px}
+@media(max-width:640px){.sk-full-scene>.sf-search,.sk-full-scene>.sf-agenda,.sk-full-scene>.sf-campaign,.sk-full-scene>.sf-metrics{min-height:325px}.sk-full-scene>.sf-campaign{padding:16px}.sk-full-scene>.sf-search{padding:24px 6%}}
+@media(prefers-reduced-motion:reduce){.sk-full-scene .sf-hidden{opacity:1!important;transform:none!important}}

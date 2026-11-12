@@ -32,6 +32,10 @@ type CrmView = "oportunidades"|"agenda"|"configuracion";
 const ADMIN_EMAIL = CRM_ADMIN_EMAIL;
 const STATUS = [
   ["nuevo", "Nuevo"],
+  ["diagnostico_solicitado", "Diagnóstico solicitado"],
+  ["requiere_atencion", "Requiere atención"],
+  ["no_interesado", "No interesado"],
+  ["no_contactar", "No contactar"],
   ["contactado", "Contactado"],
   ["calificado", "Calificado"],
   ["cita_agendada", "Cita agendada"],
@@ -40,7 +44,21 @@ const STATUS = [
   ["ganado", "Ganado"],
   ["perdido", "Perdido"],
 ] as const;
-const SOURCES = ["manual","web","WhatsApp","Meta Ads","Instagram","referido","otro"] as const;
+const SOURCES = ["manual","web","whatsapp_ia","WhatsApp","Meta Ads","Instagram","referido","otro"] as const;
+const whatsappMetadata = (contact:Contact) => {
+  const metadata = contact.metadata;
+  if (!metadata || Array.isArray(metadata) || typeof metadata !== "object") return {} as Record<string,unknown>;
+  const details = metadata["whatsapp_ia"];
+  return details && !Array.isArray(details) && typeof details === "object" ? details as Record<string,unknown> : {} as Record<string,unknown>;
+};
+const waText = (contact:Contact,key:string) => {
+  const value=whatsappMetadata(contact)[key];
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+};
+const socialUrl = (value:string|null) => {
+  if (!value) return null;
+  try { const url=new URL(value); return ["https:","http:"].includes(url.protocol) ? url.href : null; } catch {return null;}
+};
 const SERVICES = ["Sistemas con IA a la medida","Agente de IA automatizado","Marketing digital","Otro"] as const;
 
 const emptyContact = {
@@ -419,7 +437,7 @@ function AdminCrmPage() {
       const matchQ=!q||[c.full_name,c.brand_name,c.whatsapp,c.email,c.profession,c.business_type,c.source,c.status,c.need,c.solution_interest]
         .filter(Boolean).join(" ").toLowerCase().includes(q);
       const matchStatus=statusFilter==="todos"||c.status===statusFilter;
-      const matchSource=sourceFilter==="todos"||c.source===sourceFilter;
+      const matchSource=sourceFilter==="todos"||c.source===sourceFilter||(sourceFilter==="whatsapp_ia"&&whatsappMetadata(c)["received"]===true);
       return matchQ&&matchStatus&&matchSource;
     });
   },[contacts,query,statusFilter,sourceFilter]);
@@ -477,7 +495,7 @@ function AdminCrmPage() {
       <header className="crm-topbar">
         <img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab"/>
         <div className="crm-top-actions">
-          <span className="crm-integration"><i/> WhatsApp / Agente IA: no conectado</span>
+          <span className="crm-integration"><i/> WhatsApp / Agente IA: conexión pendiente de verificar</span>
           <button onClick={()=>setShowSecurity(true)}>Seguridad</button>
           <button onClick={logout}>Salir</button>
         </div>
@@ -537,9 +555,10 @@ function AdminCrmPage() {
                 <div className="crm-contact-main">
                   <b>{contact.full_name}</b>
                   <span>{contact.brand_name||contact.business_type||"Sin marca registrada"}</span>
-                  <small>{contact.whatsapp||contact.email||"Sin dato de contacto"} · {contact.source}</small>
+                  <small>{contact.whatsapp||contact.email||"Sin dato de contacto"} · {contact.source==="whatsapp_ia"?"WhatsApp IA":contact.source}</small>
                   {contact.next_follow_up_at&&<em>Próximo: {formatDateTime(contact.next_follow_up_at)}</em>}
                 </div>
+                {(contact.source==="whatsapp_ia"||whatsappMetadata(contact)["received"]===true)&&<span className="crm-ai-label">WhatsApp IA</span>}
                 <Status status={contact.status}/>
               </button>
             ))}
@@ -559,6 +578,9 @@ function AdminCrmPage() {
                   <div className="crm-section-title"><div><h3>Identidad y contacto</h3><p>Datos del cliente. Puedes corregirlos si hubo un error y completar lo que aprendas en la conversación.</p></div><button className="crm-text-action" onClick={()=>openEditContact(selected)}>Editar</button></div>
                   <div className="crm-fields">
                     <Field label="WhatsApp" value={selected.whatsapp}/>
+                    {selected.whatsapp&&<a className="crm-wa-action" href={"https://wa.me/"+selected.whatsapp.replace(/\D/g,"")} target="_blank" rel="noopener noreferrer">Responder por WhatsApp</a>}
+                    {waText(selected,"redes")&&(socialUrl(waText(selected,"redes"))?<div className="crm-field"><span>Redes</span><a href={socialUrl(waText(selected,"redes"))!} target="_blank" rel="noopener noreferrer">{waText(selected,"redes")}</a></div>:<Field label="Redes" value={waText(selected,"redes")}/>)}
+                    <Field label="Ciudad / país" value={waText(selected,"pais_ciudad")}/>
                     <Field label="Correo" value={selected.email}/>
                     <Field label="Marca / empresa" value={selected.brand_name}/>
                     <Field label="País" value={selected.country}/>
@@ -573,6 +595,9 @@ function AdminCrmPage() {
                   <div className="crm-section-title"><div><h3>Oportunidad</h3><p>Información comercial que se completa a medida que entiendes el negocio.</p></div><button className="crm-text-action" onClick={()=>openEditContact(selected)}>Editar</button></div>
                   <div className="crm-fields">
                     <Field label="Qué necesita" value={selected.need} wide/>
+                    <Field label="Profesionales o sedes" value={waText(selected,"profesionales_o_sedes")}/>
+                    <Field label="Urgencia" value={waText(selected,"urgencia")}/>
+                    <Field label="Sitio web" value={waText(selected,"tiene_pagina_web")}/>
                     <Field label="Servicio de interés" value={selected.solution_interest} wide/>
                   </div>
                   <label className="crm-control-label">Etapa comercial</label>
@@ -600,7 +625,7 @@ function AdminCrmPage() {
                   <div className="crm-section-title"><div><h3>Origen</h3><p>Dato automático para medir qué canal y campaña generan oportunidades. Se conserva como historial y no se edita aquí.</p></div></div>
                   <div className="crm-fields">
                     <Field label="Canal" value={selected.source}/>
-                    <Field label="Detalle" value={selected.source_detail}/>
+                    <Field label="Detalle" value={selected.source_detail||waText(selected,"origen")}/>
                     <Field label="UTM source" value={selected.utm_source}/>
                     <Field label="UTM campaign" value={selected.utm_campaign}/>
                   </div>
@@ -620,7 +645,7 @@ function AdminCrmPage() {
                   <div className="crm-permissions">
                     <span>Respuesta a solicitud <b>{selected.consent_service?"Autorizada":"No registrada"}</b></span>
                     <span>Marketing adicional <b>{selected.consent_marketing?"Autorizado":"No autorizado"}</b></span>
-                    <span>WhatsApp / agente <b>No conectado</b></span>
+                    <span>WhatsApp / agente <b>Recepción de eventos pendiente de verificar</b></span>
                   </div>
                 </section>
 
@@ -727,3 +752,4 @@ function CrmStyles(){return <style>{`
 @media(max-width:980px){.crm-grid{grid-template-columns:1fr}.crm-heading{align-items:stretch;flex-direction:column}.crm-heading-actions{width:100%}.crm-heading-actions input{flex:1;width:auto}.crm-metrics{grid-template-columns:repeat(3,1fr)}.crm-list{max-height:none}.crm-detail{min-height:unset}}
 @media(max-width:680px){.crm-content{padding:26px 16px 50px}.crm-topbar{padding:0 16px}.crm-topbar img{width:132px}.crm-integration{display:none}.crm-heading h1{font-size:34px}.crm-heading-actions{flex-direction:column;align-items:stretch}.crm-heading-actions input{width:100%}.crm-metrics{grid-template-columns:1fr 1fr}.crm-notice{align-items:flex-start;flex-direction:column}.crm-contact{grid-template-columns:40px 1fr}.crm-contact>.crm-status{grid-column:2;justify-self:start}.crm-fields,.crm-form-grid{grid-template-columns:1fr}.crm-field.wide,.crm-input.wide,.crm-check.wide{grid-column:auto}.crm-task-form{grid-template-columns:1fr}.crm-modal-backdrop{padding:10px}.crm-modal{padding:19px}.crm-detail-head{flex-direction:column}.crm-detail-actions{justify-content:flex-start}.crm-section-title{gap:10px}.crm-top-actions button{padding:8px 10px;font-size:11px}}
 `}</style>;}
+

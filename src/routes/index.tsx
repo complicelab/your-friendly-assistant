@@ -1605,17 +1605,17 @@ function getOriginalHtml() {
       "Creamos páginas web y campañas pagas en redes sociales para atraer personas interesadas y llevarlas a una acción clara. Puedes contratar cada servicio por separado o conectarlos dentro de un sistema más completo."
     );
   const seoAlignedHtml = html
-    .replace(/<title[^>]*>[\\s\\S]*?<\\/title>/i, "<title>Cómplice Lab | Sistemas IA, Páginas Web y Publicidad Digital</title>")
+    .replace(/<title[^>]*>[\s\S]*?<\/title>/i, "<title>Cómplice Lab | Sistemas IA, Páginas Web y Publicidad Digital</title>")
     .replace(
-      /<meta\\s+name=["']description["'][^>]*>/i,
+      /<meta\s+name=["']description["'][^>]*>/i,
       '<meta name="description" content="Especialistas en sistemas con IA a la medida, agentes de IA, páginas web y publicidad digital para atraer, atender y gestionar oportunidades.">'
     )
     .replace(
-      /<meta\\s+property=["']og:title["'][^>]*>/i,
+      /<meta\s+property=["']og:title["'][^>]*>/i,
       '<meta property="og:title" content="Cómplice Lab | Sistemas IA, Páginas Web y Publicidad Digital">'
     )
     .replace(
-      /<meta\\s+property=["']og:description["'][^>]*>/i,
+      /<meta\s+property=["']og:description["'][^>]*>/i,
       '<meta property="og:description" content="Sistemas con IA a la medida, agentes de IA automatizados, páginas web y publicidad en redes sociales para profesionales y empresas.">'
     );
   return replaceMarketingRuntime(replaceFlowScenes(replaceCompareScenes(seoAlignedHtml)))

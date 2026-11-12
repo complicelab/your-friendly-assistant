@@ -114,8 +114,8 @@
 .sk-ai-status{height:25px;flex:0 0 25px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#fff;color:#263950;font-size:11px}
 .sk-ai-status>span:last-child{font-size:10px}.sk-ai-island{height:13px;width:52px;border-radius:15px;background:#17243b}
 .sk-ai-chat-header{display:flex;align-items:center;gap:7px;padding:8px 7px;min-height:55px;background:#fff;border-bottom:1px solid #dde5ee}
-.sk-ai-chevron{font-size:24px;color:#3b69aa;line-height:1}
-.sk-ai-avatar{flex-shrink:0;display:grid;place-items:center;height:32px;width:32px;background:linear-gradient(135deg,#dfedff,#dfe7f9);border:1px solid #bcd3ea;border-radius:50%;color:#225daa}
+.sk-ai-chevron{font-size:24px;color:#128b74;line-height:1}
+.sk-ai-avatar{flex-shrink:0;display:grid;place-items:center;height:32px;width:32px;background:#dff2e8;border:1px solid #bfe1d2;border-radius:50%;color:#168a6c}
 .sk-ai-contact{display:flex;flex-direction:column;gap:3px;min-width:0}.sk-ai-contact strong{font-size:11px;color:#172844;white-space:nowrap;letter-spacing:-.02em}.sk-ai-contact small{font-size:10px;color:#8293a9}.sk-ai-menu{color:#7287a5;margin-left:auto}
 .sk-ai-chat-body{padding:11px 9px;display:flex;flex:1;min-height:0;flex-direction:column;gap:7px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;background-color:#eae8e1;background-image:radial-gradient(#d0d1c826 1px,transparent 1px);background-size:12px 12px}
 .sk-ai-chat-body::-webkit-scrollbar{display:none}

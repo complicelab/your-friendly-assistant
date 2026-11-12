@@ -53,6 +53,9 @@ const SECTION_TITLE_WEIGHT_OVERRIDE = `
 
 const MOBILE_FLOW_FIXES = `
 <style id="mobile-flow-fixes-v10">
+  .cl-hero-gradient-descender{
+    padding-bottom:.20em !important;
+  }
   @media(max-width:700px){
     html,body{overflow-x:hidden!important;overscroll-behavior-x:none}
     body{-webkit-overflow-scrolling:touch}
@@ -151,7 +154,7 @@ const HOMEPAGE_COPY_FIX = `
   function run(){
     var heroH1=document.querySelector("main h1")||document.querySelector("h1");
     if(heroH1){
-      heroH1.innerHTML='Especialistas en <span class="cl-hero-gradient">sistemas con IA,</span> páginas web y <span class="cl-hero-gradient">publicidad digital</span>';
+      heroH1.innerHTML='Especialistas en <span class="cl-hero-gradient">sistemas con IA,</span> páginas web y <span class="cl-hero-gradient cl-hero-gradient-descender">publicidad digital</span>';
     }
 
     var heroParagraph=heroH1 && (heroH1.parentElement||document).querySelector("p");

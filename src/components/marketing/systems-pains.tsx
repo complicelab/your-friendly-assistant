@@ -10,10 +10,10 @@ import "./systems-pains.css";
 /** All names, conversations, dates and dashboard values below are illustrative.
  * These scenes describe possible workflows, not working integrations or outcomes. */
 const situations=[
- {category:"MENSAJES SIN RESPUESTA",question:"¿Te escriben y no siempre alcanzas a responder?",brief:"La consulta llega, pero nadie la ve a tiempo.",icon:MessageCircle},
- {category:"CITAS POR TODAS PARTES",question:"¿Agendar una cita implica muchos mensajes?",brief:"Una hora puede requerir demasiadas idas y vueltas.",icon:CalendarClock},
- {category:"CONTACTOS QUE SE OLVIDAN",question:"¿Hay interesados a los que nadie vuelve a contactar?",brief:"Después del primer mensaje, no hay un siguiente paso claro.",icon:BellRing},
- {category:"POCA CLARIDAD",question:"¿Sabes cuántas oportunidades siguen abiertas?",brief:"La información vive en varios lugares.",icon:LayoutDashboard}
+ {category:"MENSAJES SIN RESPUESTA",question:"¿Te escriben y no siempre alcanzas a responder?",brief:"La consulta llega, pero nadie la ve a tiempo.",pain:"El cliente escribe y espera respuesta",solution:"Su consulta queda visible para atenderla",icon:MessageCircle},
+ {category:"CITAS POR TODAS PARTES",question:"¿Agendar una cita implica muchos mensajes?",brief:"Una hora puede requerir demasiadas idas y vueltas.",pain:"Ponerse de acuerdo toma demasiado tiempo",solution:"El cliente puede elegir un horario",icon:CalendarClock},
+ {category:"CONTACTOS QUE SE OLVIDAN",question:"¿Hay interesados a los que nadie vuelve a contactar?",brief:"Después del primer mensaje, no hay un siguiente paso claro.",pain:"Un contacto interesado queda sin seguimiento",solution:"Cada persona tiene una próxima acción",icon:BellRing},
+ {category:"POCA CLARIDAD",question:"¿Sabes cuántas oportunidades siguen abiertas?",brief:"La información vive en varios lugares.",pain:"Cada dato está en un lugar diferente",solution:"Todo el negocio se entiende en una vista",icon:LayoutDashboard}
 ] as const;
 
 function SceneWindow({children,label,className=""}:{children:ReactNode;label:string;className?:string}){
@@ -31,7 +31,7 @@ function MessagePain({phase}:{phase:number}){
    <div className="sx-phone-conversation"><span className="sx-conversation-date">Hoy</span><div className="sx-chat-message incoming">Hola, ¿me pueden explicar cómo funciona su servicio?<small>10:08</small></div><div className={"sx-chat-status "+(phase>=1?"is-urgent":"")}><Clock3 size={13}/><span>{phase>=1?"Consulta pendiente de respuesta":"Nueva consulta"}</span></div>{phase>=3?<div className="sx-chat-message outgoing">¡Hola, Valeria! Gracias por escribirnos. Nuestro equipo continuará contigo.<small>10:09 <CheckCheck size={11}/></small></div>:null}</div>
    <div className="sx-phone-input"><span>Escribe un mensaje…</span><Send size={14}/></div><div className="sx-phone-home"><i/></div>
   </div>
-  <Pop show={phase>=1} className="sx-messages-alert"><span className="sx-pop-symbol warning"><BellRing size={18}/></span><span><strong>Mensaje pendiente</strong><small>El equipo está ocupado</small></span><CircleAlert size={16}/></Pop>
+  <Pop show={phase>=0} className="sx-messages-alert"><span className="sx-pop-symbol warning"><BellRing size={18}/></span><span><strong>Mensaje pendiente</strong><small>El equipo está ocupado</small></span><CircleAlert size={16}/></Pop>
   <Pop show={phase>=2} className="sx-messages-contact"><span className="sx-pop-symbol blue"><Database size={18}/></span><span><strong>Nuevo contacto</strong><small>Valeria · Consulta por WhatsApp</small></span><CheckCircle2 size={17}/></Pop>
   <Pop show={phase>=3} className="sx-messages-resolved"><span className="sx-pop-symbol mint"><Check size={18}/></span><span><strong>Hay alguien a cargo</strong><small>Respuesta y seguimiento visibles</small></span></Pop>
   <div className="sx-messages-trace" aria-hidden="true"><span/><span/><span/></div>
@@ -48,7 +48,7 @@ function SchedulePain({phase}:{phase:number}){
    <div className="sx-calendar-slot-list"><strong>Horarios de ejemplo</strong><div>{["9:00","10:30","14:00"].map((h,i)=><span className={i===1&&phase>=2?"picked":""} key={h}>{h}</span>)}</div></div>
    <div className={"sx-calendar-confirm "+(phase>=3?"confirmed":"")}><CalendarCheck2 size={16}/>{phase>=3?"Solicitud de cita preparada":"Selecciona fecha y hora"}</div>
   </SceneWindow>
-  <Pop show={true} className="sx-schedule-conversation"><span className="sx-pop-symbol blue"><MessageCircle size={17}/></span><span><strong>Antes: coordinar por mensajes</strong><small>«¿Puedes el martes?»</small><small>«Me queda mejor otro día...»</small></span></Pop>
+  <Pop show={phase<3} className="sx-schedule-conversation"><span className="sx-pop-symbol warning"><MessageCircle size={17}/></span><span><strong>«¿Puedes el martes?»</strong><small>«Ese día no puedo...»</small><small>«¿Y el miércoles?»</small></span></Pop>
   <Pop show={phase>=2} className="sx-schedule-selected"><span className="sx-pop-symbol violet"><MousePointer2 size={16}/></span><span><strong>Horario elegido</strong><small>Miércoles · 10:30 a. m.</small></span></Pop>
   <Pop show={phase>=3} className="sx-schedule-success"><CheckCircle2 size={20}/><span><strong>Una solicitud organizada</strong><small>El equipo puede continuar</small></span></Pop>
  </div>;
@@ -65,7 +65,7 @@ function FollowUpPain({phase}:{phase:number}){
    </div>)}</div>
    <div className="sx-pipeline-bottom"><span><Users size={14}/> Contactos de ejemplo</span><span>{phase>=3?"Próxima acción visible":"Una oportunidad necesita continuidad"}</span></div>
   </SceneWindow>
-  <Pop show={phase>=1} className="sx-followup-alert"><span className="sx-pop-symbol warning"><Clock3 size={18}/></span><span><strong>Contacto sin seguimiento</strong><small>¿Quién vuelve a escribirle?</small></span></Pop>
+  <Pop show={phase<3} className="sx-followup-alert"><span className="sx-pop-symbol warning"><Clock3 size={18}/></span><span><strong>Contacto sin seguimiento</strong><small>¿Quién vuelve a escribirle?</small></span></Pop>
   <Pop show={phase>=2} className="sx-followup-task"><span className="sx-pop-symbol violet"><Bell size={18}/></span><span><strong>Recordatorio preparado</strong><small>Asignado al equipo</small></span></Pop>
   <Pop show={phase>=3} className="sx-followup-done"><CheckCircle2 size={20}/><span><strong>Próximo paso definido</strong><small>La oportunidad no queda olvidada</small></span></Pop>
  </div>;
@@ -75,10 +75,10 @@ function VisibilityPain({phase}:{phase:number}){
   <div className="sx-visibility-lines" aria-hidden="true"><span/><span/><span/></div>
   <SceneWindow label="panel.tunegocio.com" className="sx-visibility-window">
    <div className="sx-visibility-app"><aside><span>✳</span><LayoutDashboard size={18}/><Database size={17}/><CalendarDays size={17}/></aside><div className="sx-visibility-body">
-    <div className="sx-visibility-title"><div><span>MI NEGOCIO · EJEMPLO</span><h4>Todo a la vista.</h4></div><span className="sx-online-dot">Vista general</span></div>
-    <div className="sx-visibility-kpis"><div><span>Contactos</span><strong>36</strong><small>Consultas recibidas</small></div><div><span>Citas</span><strong>12</strong><small>Solicitudes registradas</small></div><div><span>Pendientes</span><strong>08</strong><small>Acciones por revisar</small></div></div>
-    <div className="sx-visibility-chart"><div><strong>Actividad del negocio</strong><small>Datos ficticios</small></div><svg viewBox="0 0 310 110" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="sx-pains-chart-fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#5f83e9" stopOpacity=".27"/><stop offset="100%" stopColor="#5f83e9" stopOpacity="0"/></linearGradient></defs>{[27,53,79].map(y=><line key={y} x1="0" x2="310" y1={y} y2={y} stroke="#dfe8f5" strokeDasharray="4 5"/>)}<polygon points="0,110 0,90 35,78 70,88 105,53 140,66 175,39 210,47 245,23 280,34 310,16 310,110" fill="url(#sx-pains-chart-fade)"/><polyline points="0,90 35,78 70,88 105,53 140,66 175,39 210,47 245,23 280,34 310,16" className={phase>=2?"is-traced":""} fill="none" stroke="#4773e8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
-    <div className="sx-visibility-foot"><CheckCircle2 size={14}/>{phase>=3?"Contactos, citas y tareas reunidos":"Canales en una vista central"}</div>
+    <div className="sx-visibility-title"><div><span>MI NEGOCIO · EJEMPLO</span><h4>Todo a la vista.</h4></div><span className="sx-online-dot">{phase<2?"Sin información reunida":"Vista general"}</span></div>
+    <div className={"sx-visibility-kpis "+(phase<2?"sx-is-unavailable":"")}><div><span>Contactos</span><strong>36</strong><small>Consultas recibidas</small></div><div><span>Citas</span><strong>12</strong><small>Solicitudes registradas</small></div><div><span>Pendientes</span><strong>08</strong><small>Acciones por revisar</small></div></div>
+    <div className={"sx-visibility-chart "+(phase<2?"sx-is-unavailable":"")}><div><strong>Actividad del negocio</strong><small>Datos ficticios</small></div><svg viewBox="0 0 310 110" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="sx-pains-chart-fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#5f83e9" stopOpacity=".27"/><stop offset="100%" stopColor="#5f83e9" stopOpacity="0"/></linearGradient></defs>{[27,53,79].map(y=><line key={y} x1="0" x2="310" y1={y} y2={y} stroke="#dfe8f5" strokeDasharray="4 5"/>)}<polygon points="0,110 0,90 35,78 70,88 105,53 140,66 175,39 210,47 245,23 280,34 310,16 310,110" fill="url(#sx-pains-chart-fade)"/><polyline points="0,90 35,78 70,88 105,53 140,66 175,39 210,47 245,23 280,34 310,16" className={phase>=2?"is-traced":""} fill="none" stroke="#4773e8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+    <div className="sx-visibility-foot">{phase<2?<><CircleAlert size={14}/> Mensajes, web y citas aún separados</>:<><CheckCircle2 size={14}/>{phase>=3?"Contactos, citas y tareas reunidos":"La información empieza a conectarse"}</>}</div>
    </div></div>
   </SceneWindow>
   <Pop show={true} className="sx-visibility-source one"><span className="sx-pop-symbol mint"><MessageCircle size={17}/></span><span><strong>Mensajes</strong><small>Consultas</small></span></Pop>
@@ -94,8 +94,7 @@ export function SystemsPains(){
  const [phase,setPhase]=useState(0);
  const [visible,setVisible]=useState(false);
  const [reduceMotion,setReduceMotion]=useState(false);
- const [playing,setPlaying]=useState(true);
- const section=useRef<HTMLElement>(null);
+  const section=useRef<HTMLElement>(null);
  useEffect(()=>{
   const query=window.matchMedia("(prefers-reduced-motion: reduce)");
   const update=()=>setReduceMotion(query.matches);
@@ -110,11 +109,16 @@ export function SystemsPains(){
   return()=>observer.disconnect();
  },[]);
  useEffect(()=>{
-  if(!visible||reduceMotion||!playing)return;
-  const timer=window.setInterval(()=>setPhase(p=>(p+1)%4),1900);
-  return()=>window.clearInterval(timer);
- },[visible,reduceMotion,playing,active]);
- function choose(i:number){setActive(i);setPhase(reduceMotion?3:0);setPlaying(true)}
+  if(!visible||reduceMotion)return;
+  // Each pain tells its own before → after story, then advances automatically.
+  // Stopping offscreen avoids skipping explanations while the visitor scrolls.
+  const timer=window.setTimeout(()=>{
+   if(phase<3)setPhase(p=>p+1);
+   else {setActive(i=>(i+1)%situations.length);setPhase(0);}
+  },phase===3?3200:2600);
+  return()=>window.clearTimeout(timer);
+ },[visible,reduceMotion,active,phase]);
+ function choose(i:number){setActive(i);setPhase(reduceMotion?3:0)}
  const Scene=scenes[active]!;
  const selected=situations[active]!;
  const effectivePhase=reduceMotion?3:phase;
@@ -123,9 +127,9 @@ export function SystemsPains(){
   <div className="sx-pains-composition">
    <div className="sx-pains-choices" aria-label="Situaciones cotidianas">{situations.map((item,i)=><button key={item.category} type="button" className={active===i?"active":""} aria-pressed={active===i} onClick={()=>choose(i)}><span className="sx-choice-number">0{i+1}</span><span className="sx-choice-text"><strong>{item.question}</strong><small>{item.brief}</small></span><ChevronRight size={18}/></button>)}</div>
    <div className={"sx-pains-demo sx-pains-demo-"+active}>
-    <div className="sx-pains-demo-title"><div><span>ASÍ SE VE EN EL DÍA A DÍA</span><h3>{selected.category.toLocaleLowerCase("es-CO")}</h3></div><span className="sx-pains-demo-tag"><i/> SIMULACIÓN</span></div>
+    <div className="sx-pains-demo-title"><div><span>{effectivePhase<2?"EL PROBLEMA EN TU NEGOCIO":"ASÍ PODRÍA RESOLVERSE"}</span><h3>{effectivePhase<2?selected.pain:selected.solution}</h3></div><span className="sx-pains-demo-tag"><i/> EJEMPLO</span></div>
     <div className="sx-stage" key={active}><Scene phase={effectivePhase}/></div>
-    <div className="sx-pains-demo-bottom"><div className="sx-pains-progress"><span>ESCENA</span>{Array.from({length:4},(_,i)=><button key={i} type="button" className={effectivePhase===i?"active":""} aria-pressed={effectivePhase===i} aria-label={"Ver momento "+(i+1)} onClick={()=>{setPhase(i);setPlaying(false)}}><i/></button>)}<span>{effectivePhase+1} / 4</span></div><button type="button" className="sx-replay" onClick={()=>{setPhase(reduceMotion?3:0);setPlaying(true)}}><RotateCcw size={14}/> Repetir</button></div>
+    <div className="sx-pains-demo-bottom"><div className="sx-pains-progress"><span>ASÍ PASA</span>{Array.from({length:4},(_,i)=><button key={i} type="button" className={effectivePhase===i?"active":""} aria-pressed={effectivePhase===i} aria-label={"Ver momento "+(i+1)} onClick={()=>setPhase(i)}><i/></button>)}<span>{effectivePhase+1} / 4</span><small className="sx-pains-autoplay">Las situaciones cambian solas</small></div><button type="button" className="sx-replay" onClick={()=>setPhase(reduceMotion?3:0)}><RotateCcw size={14}/> Repetir</button></div>
     <p className="sx-demo-disclaimer">Montaje ilustrativo. No representa un cliente, mensaje enviado ni resultado real.</p>
    </div>
   </div>

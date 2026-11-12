@@ -19,7 +19,7 @@ const situations=[
 function SceneWindow({children,label,className=""}:{children:ReactNode;label:string;className?:string}){
  return <div className={"sx-interface "+className}><div className="sx-interface-top"><span className="sx-interface-dots"><i/><i/><i/></span><span>{label}</span><span className="sx-interface-demo">DEMO</span></div>{children}</div>;
 }
-function Pop({children,show,className=""}:{children:React.ReactNode;show:boolean;className?:string}){
+function Pop({children,show,className=""}:{children:ReactNode;show:boolean;className?:string}){
  return <div className={"sx-pop "+className+(show?" is-on":"")}>{children}</div>;
 }
 function MessagePain({phase}:{phase:number}){

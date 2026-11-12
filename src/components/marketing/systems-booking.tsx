@@ -3,7 +3,7 @@ import { ArrowRight, CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, Cloc
 import "./systems-booking.css";
 type Slot={slot_start:string;[key:string]:unknown};
 type BookingData={full_name:string;brand_name:string;country_code:string;whatsapp:string;email:string;consent:boolean};
-const dateKey=(value:string)=>new Intl.DateTimeFormat("en-CA",{timeZone:"America/Bogota",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date(value));
+const dateKey=(value:string)=>{const parts=new Intl.DateTimeFormat("en-US",{timeZone:"America/Bogota",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date(value));const p=Object.fromEntries(parts.map(x=>[x.type,x.value]));return p.year+"-"+p.month+"-"+p.day};
 const longDate=(value:string)=>new Intl.DateTimeFormat("es-CO",{timeZone:"America/Bogota",weekday:"long",day:"numeric",month:"long",hour:"numeric",minute:"2-digit",hour12:true}).format(new Date(value));
 const shortDate=(value:string)=>new Intl.DateTimeFormat("es-CO",{timeZone:"America/Bogota",weekday:"short",day:"numeric",month:"short"}).format(new Date(value));
 const hour=(value:string)=>new Intl.DateTimeFormat("es-CO",{timeZone:"America/Bogota",hour:"numeric",minute:"2-digit",hour12:true}).format(new Date(value));
@@ -51,8 +51,9 @@ export function SystemsBooking({modal=false,onClose}:{modal?:boolean;onClose?:()
   setSending(true);
   const phone=form.whatsapp.trim();
   const fullPhone=(phone.startsWith("+")?phone:form.country_code+phone).replace(/\s+/g,"");
+  const countryByCode:Record<string,string>={"+57":"Colombia","+1":"Estados Unidos","+52":"México","+51":"Perú","+34":"España","+56":"Chile"};
   try{
-   const response=await fetch("/api/booking",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({full_name:form.full_name.trim(),brand_name:form.brand_name.trim(),country:"Colombia",country_code:form.country_code,whatsapp:fullPhone,email:form.email.trim(),solution_interest:interest,starts_at:selected})});
+   const response=await fetch("/api/booking",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({full_name:form.full_name.trim(),brand_name:form.brand_name.trim(),country:countryByCode[form.country_code]||"Colombia",country_code:form.country_code,whatsapp:fullPhone,email:form.email.trim(),solution_interest:interest,starts_at:selected})});
    const result=await response.json();
    if(!response.ok||!result.ok)throw new Error(result.error||"No se pudo confirmar el diagnóstico.");
    setConfirmed(selected);
@@ -69,9 +70,9 @@ export function SystemsBooking({modal=false,onClose}:{modal?:boolean;onClose?:()
   <div className="sb-times">{!date?<p>Selecciona primero un día disponible.</p>:times.map(slot=><button key={slot.slot_start} type="button" aria-pressed={selected===slot.slot_start} className={selected===slot.slot_start?"active":""} onClick={()=>{setSelected(slot.slot_start);setError("")}}>{hour(slot.slot_start)}</button>)}</div>
   </>}
   <div className="sb-selection"><Clock3 size={16}/>{selected?longDate(selected):"El horario elegido aparecerá aquí"}</div>
-  <button className="sb-next" type="button" disabled={!selected} onClick={()=>setStep("data")}>Continuar con mis datos <ArrowRight size={15}/></button>
+  <button className="sb-next" type="button" disabled={!selected} onClick={()=>{setStep("data");requestAnimationFrame(()=>document.querySelector(".sb-overlay")?.scrollTo({top:0}))}}>Continuar con mis datos <ArrowRight size={15}/></button>
   </section>
-  <form className="sb-fields" onSubmit={submit}><button type="button" className="sb-back" onClick={()=>setStep("slot")}><ChevronLeft size={15}/> Cambiar horario</button><div className="sb-subhead"><CheckCircle2 size={20}/><div><strong>02. Tus datos</strong><span>Para gestionar tu diagnóstico</span></div></div>
+  <form className="sb-fields" onSubmit={submit}><button type="button" className="sb-back" onClick={()=>{setStep("slot");requestAnimationFrame(()=>document.querySelector(".sb-overlay")?.scrollTo({top:0}))}}><ChevronLeft size={15}/> Cambiar horario</button><div className="sb-subhead"><CheckCircle2 size={20}/><div><strong>02. Tus datos</strong><span>Para gestionar tu diagnóstico</span></div></div>
   <div className="sb-input-grid">
    <label>Nombre y apellido <input required name="full_name" autoComplete="name" value={form.full_name} onChange={e=>setField("full_name",e.target.value)} placeholder="Tu nombre"/></label>
    <label>Empresa o marca <input name="brand_name" autoComplete="organization" value={form.brand_name} onChange={e=>setField("brand_name",e.target.value)} placeholder="Tu empresa"/></label>

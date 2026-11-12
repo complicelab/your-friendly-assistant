@@ -5,7 +5,6 @@ import { SiteFooter } from "@/components/marketing/site-footer";
 import { WhatsAppFloat } from "@/components/marketing/whatsapp-float";
 import "./systems-landing.css";
 import { SystemsStoryboards } from "./systems-storyboard";
-import { SystemsEightFlow } from "./systems-eight-flow";
 import { SystemsProjects } from "./systems-projects";
 import { SystemsBooking } from "./systems-booking";
 
@@ -41,7 +40,23 @@ function SystemDemo() {
  </div>
 }
 
-function Closing(){return <section className="sys-closing"><div className="sys-wrap sys-closing-layout"><div><span className="sys-section-label">03 / TU SIGUIENTE PASO</span><h2>Cuéntanos cómo funciona tu negocio.<br/><em>Te ayudamos a conectar lo que falta.</em></h2><p>Revisamos contigo dónde se están perdiendo oportunidades, qué necesita tu equipo y qué vale la pena construir. Sin ofrecerte un sistema genérico.</p><Action>Agendar diagnóstico</Action></div><div className="sys-closing-card"><span>ASÍ EMPEZAMOS</span><div><b>01</b> Entendemos el recorrido actual</div><div><b>02</b> Definimos qué debe resolver el sistema</div><div><b>03</b> Construimos y probamos por etapas</div><div className="sys-closing-end"><CheckCircle2 size={18}/> Una solución según tu operación, no al revés</div></div></div></section>}
+const questions = [
+  {title:"¿Qué te está costando más hoy?",options:["Los contactos llegan, pero se pierden","Mi equipo pierde tiempo en tareas manuales","Mis herramientas están desconectadas"]},
+  {title:"¿Qué te gustaría tener más organizado?",options:["CRM y oportunidades","Agendamiento y atención","Todo el proceso en un mismo sistema"]},
+  {title:"¿Qué debería mejorar primero?",options:["La atención al cliente","El seguimiento comercial","La visibilidad de lo que ocurre"]}
+] as const;
+function Closing(){
+ const [step,setStep]=useState(0);
+ const [answers,setAnswers]=useState<string[]>([]);
+ const open=useContext(BookingOpenContext);
+ const finished=step>=questions.length;
+ const choose=(text:string)=>{setAnswers(x=>[...x.slice(0,step),text]);setStep(x=>x+1)};
+ const restart=()=>{setStep(0);setAnswers([])};
+ const insight=answers.includes("Los contactos llegan, pero se pierden")||answers.includes("CRM y oportunidades")?"Conectar el primer contacto con un CRM y un seguimiento visible podría ser un buen punto de partida.":answers.includes("Mi equipo pierde tiempo en tareas manuales")||answers.includes("Agendamiento y atención")?"Revisar las tareas repetitivas y los pasos de atención puede revelar qué conviene automatizar.":"Podemos revisar cómo conectar tus procesos para que tu equipo tenga más contexto y control.";
+ return <section className="sys-closing" id="orientacion"><div className="sys-wrap sys-closing-layout"><div className="sys-closing-copy"><span className="sys-closing-marker">EMPECEMOS POR TU NEGOCIO</span><h2>¿Por dónde <em>empezaríamos?</em></h2><p>Responde tres preguntas rápidas y descubre qué parte de tu operación valdría la pena revisar primero. Después podemos aterrizarlo en un diagnóstico.</p><div className="sys-quiz-foot"><span className="sys-quiz-dot"/> Tu sistema empieza con una buena pregunta.</div></div><div className="sys-closing-card">
+ {!finished?<><div className="sys-quiz-progress">{questions.map((q,i)=><span key={q.title} className={i<=step?"active":""}/>)}</div><span className="sys-quiz-index">PREGUNTA {step+1} DE {questions.length}</span><h3>{questions[step]?.title}</h3><div className="sys-quiz-options">{questions[step]?.options.map(option=><button type="button" key={option} onClick={()=>choose(option)}><span>{option}</span><i/></button>)}</div>{step>0?<button type="button" className="sys-quiz-back" onClick={()=>setStep(x=>Math.max(0,x-1))}>← Volver a la anterior</button>:null}</>:<><div className="sys-quiz-progress">{questions.map((q)=><span key={q.title} className="active"/>)}</div><span className="sys-quiz-index">TU PRIMERA ORIENTACIÓN</span><h3>Ya tenemos un punto de partida.</h3><p className="sys-quiz-insight">{insight}</p><div className="sys-quiz-notice">Es una orientación ilustrativa, no un diagnóstico definitivo.</div><button className="sys-quiz-book" type="button" onClick={open}>Agendar diagnóstico <ArrowUpRight size={17}/></button><button type="button" className="sys-quiz-back" onClick={restart}>Volver a empezar</button></>}
+ </div></div></section>
+}
 
 function Questions(){const [open,setOpen]=useState<number|null>(0);const items=[
  ["¿Qué es un sistema con IA a la medida?","Es una solución construida para la forma en que trabaja tu negocio. Puede unir registro de contactos, agenda, automatizaciones, paneles y funciones de IA según las necesidades reales."],
@@ -52,8 +67,8 @@ function Questions(){const [open,setOpen]=useState<number|null>(0);const items=[
 
 export function SystemsLanding(){const [bookingOpen,setBookingOpen]=useState(false);return <BookingOpenContext.Provider value={()=>setBookingOpen(true)}><div className="sys-page">
 <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"Sistemas con IA a la medida","description":"Sistemas con inteligencia artificial para conectar la captación, el CRM, la agenda, los procesos y el seguimiento según las necesidades de profesionales y empresas.","serviceType":"Sistemas con IA a la medida","url":"https://complicelab.com/sistemas-ia-a-la-medida","provider":{"@type":"Organization","@id":"https://complicelab.com/#organization","name":"Cómplice Lab","url":"https://complicelab.com/"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"}]})}}/>
-<header className="sys-navigation"><div className="sys-nav-inner"><BrandMark/><nav aria-label="Navegación de servicios"><a href="/">Inicio</a><a href="#recorrido-completo">Cómo funciona</a><a href="#sistemas-construidos">Proyectos</a><a href="#diagnostico">Contacto</a></nav><Action>Agendar diagnóstico</Action></div></header>
+<header className="sys-navigation"><div className="sys-nav-inner"><BrandMark/><nav aria-label="Navegación de servicios"><a href="/">Inicio</a><a href="#recorrido-sistema">Cómo funciona</a><a href="#sistemas-construidos">Proyectos</a><a href="#diagnostico">Contacto</a></nav><Action>Agendar diagnóstico</Action></div></header>
 <main><section className="sys-hero"><div className="sys-hero-ambient"/><div className="sys-wrap sys-hero-layout"><div className="sys-hero-copy"><span className="sys-eyebrow"><span/> SISTEMAS CON INTELIGENCIA ARTIFICIAL</span><h1>Sistemas con IA <em>a la medida de tu negocio.</em></h1><p>Construimos el sistema que conecta tu información, tus procesos y tu equipo para que cada oportunidad tenga un siguiente paso claro.</p><div className="sys-hero-actions"><Action>Agendar diagnóstico</Action><a href="#recorrido-completo">Mira cómo funciona <ArrowRight size={17}/></a></div><div className="sys-hero-micro"><CheckCircle2 size={16}/> Sin plantillas genéricas. Primero entendemos tu operación.</div></div><div id="ejemplo" className="sys-hero-showcase"><SystemDemo/><div className="sys-hero-visual-caption">Simulación interactiva de un posible sistema. No representa datos reales de clientes.</div></div></div><div className="sys-hero-bottom"><span>ESTRATEGIA</span><i/><span>DISEÑO DEL PROCESO</span><i/><span>CONSTRUCCIÓN CON IA</span><i/><span>SEGUIMIENTO</span></div></section>
-<SystemsEightFlow/><SystemsStoryboards/><SystemsProjects/><Closing/><Questions/><section id="diagnostico" className="sys-booking-section"><div className="sys-wrap"><div className="sys-booking-heading"><span>AGENDA TU DIAGNÓSTICO</span><h2>El siguiente sistema puede ser <em>el de tu negocio.</em></h2><p>Cuéntanos qué necesitas construir. Elige un horario real disponible y conversemos por videollamada.</p></div><SystemsBooking/></div></section>
+<SystemsStoryboards/><SystemsProjects/><Closing/><Questions/><section id="diagnostico" className="sys-booking-section"><div className="sys-wrap"><div className="sys-booking-heading"><span>AGENDA TU DIAGNÓSTICO</span><h2>El siguiente sistema puede ser <em>el de tu negocio.</em></h2><p>Cuéntanos qué necesitas construir. Elige un horario real disponible y conversemos por videollamada.</p></div><SystemsBooking/></div></section>
 <div className="sys-other-services sys-wrap"><span>OTRAS SOLUCIONES DE CÓMPLICE LAB</span><div><a href="/agentes-de-ia">Agentes de IA <ArrowUpRight size={16}/></a><a href="/paginas-web">Páginas Web <ArrowUpRight size={16}/></a><a href="/publicidad-digital">Publicidad Digital <ArrowUpRight size={16}/></a></div></div></main><SiteFooter/><WhatsAppFloat/>
 {bookingOpen?<SystemsBooking modal onClose={()=>setBookingOpen(false)}/>:null}</div></BookingOpenContext.Provider>}

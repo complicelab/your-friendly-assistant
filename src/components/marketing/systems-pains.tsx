@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   ArrowRight, BellRing, CalendarClock, ChevronRight,
   CircleAlert, Clock3, FileText, Inbox, Mail, MessageCircle,
-  MessageSquare, MoreHorizontal, RotateCcw, UserRound
+  MessageSquare, MoreHorizontal, UserRound
 } from "lucide-react";
 import "./systems-pains.css";
 
@@ -180,7 +180,7 @@ export function SystemsPains() {
         <div className="sx-stage" key={active}><Scene moment={displayedMoment}/></div>
         <div className="sx-pains-demo-bottom">
           <div className="sx-pains-progress"><span>EN EL DÍA A DÍA</span>{[0,1,2].map(i=><button key={i} type="button" aria-label={"Ver momento "+(i+1)} aria-pressed={displayedMoment===i} className={displayedMoment===i?"active":""} onClick={()=>setMoment(i)}><i/></button>)}<span>{displayedMoment+1} / 3</span></div>
-          <button type="button" className="sx-replay" onClick={()=>setMoment(0)}><RotateCcw size={14}/> Repetir</button>
+          
         </div>
         <p className="sx-pain-moment"><span>{["01 · QUÉ SUCEDE","02 · QUÉ SE COMPLICA","03 · QUÉ CONSECUENCIA TIENE"][displayedMoment]}</span>{situation.moments[displayedMoment]}</p>
         <p className="sx-demo-disclaimer">Escenas ilustrativas: no representan conversaciones, clientes ni resultados reales.</p>

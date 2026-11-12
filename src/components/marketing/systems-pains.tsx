@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
-  ArrowRight, BellRing, CalendarClock, ChevronRight,
-  CircleAlert, Clock3, FileText, Inbox, Mail, MessageCircle,
-  MessageSquare, MoreHorizontal, UserRound
+  ArrowRight, BellRing, CalendarClock, ChevronLeft, ChevronRight,
+  CircleAlert, Clock3, FileText, Mail, MessageCircle,
+  MoreHorizontal, MoreVertical, Mic, Paperclip, Phone, Video
 } from "lucide-react";
 import "./systems-pains.css";
 
@@ -42,7 +42,7 @@ const situations = [
     question: "¿Sabes cuántas oportunidades siguen abiertas?",
     brief: "Los datos están en mensajes, notas, correo y calendario.",
     moments: ["Cada dato está en un lugar", "El equipo tiene que buscar", "Nadie tiene la vista completa"],
-    icon: Inbox,
+    icon: MessageCircle,
   },
 ] as const;
 
@@ -56,82 +56,83 @@ function Flag({children,show,className=""}:{children:ReactNode;show:boolean;clas
   return <div className={"sx-pain-flag "+className+(show?" is-visible":"")} aria-hidden={!show}>{children}</div>;
 }
 
-function UnansweredMessages({moment}:{moment:number}) {
-  return <div className="sx-pain-scene sx-pain-unanswered" aria-label="El cliente escribe varias veces, pero no obtiene respuesta">
-    <div className="sx-pain-phone-halo" aria-hidden="true"/>
-    <div className="sx-pain-phone">
-      <div className="sx-pain-phone-status"><b>9:41</b><i/><span>●●● ▰</span></div>
-      <div className="sx-pain-phone-header"><span>‹</span><div className="sx-pain-phone-photo"><UserRound size={17}/></div><div><strong>Mi negocio</strong><small>Chat de ejemplo</small></div><MoreHorizontal size={17}/></div>
-      <div className="sx-pain-chat">
-        <span className="sx-pain-chat-date">Hoy</span>
-        <div className="sx-pain-bubble">Hola, quisiera conocer los servicios que ofrecen.<small>10:08</small></div>
-        {moment>=1?<div className="sx-pain-bubble">¿Tienen disponibilidad para esta semana?<small>10:18</small></div>:null}
-        {moment>=2?<div className="sx-pain-bubble">Hola, ¿siguen disponibles?<small>10:43</small></div>:null}
-        <span className="sx-pain-chat-quiet"><Clock3 size={12}/> Sin respuesta</span>
-      </div>
-      <div className="sx-pain-phone-compose"><span>Escribe un mensaje…</span><MessageCircle size={15}/></div>
-      <div className="sx-pain-phone-home"><i/></div>
-    </div>
-    <Flag show={moment>=0} className="sx-pain-unread"><span className="sx-pain-flag-icon"><BellRing size={17}/></span><span><strong>Mensaje nuevo</strong><small>Una persona quiere información</small></span></Flag>
-    <Flag show={moment>=1} className="sx-pain-waiting"><Clock3 size={17}/><span><strong>El equipo está ocupado</strong><small>La consulta sigue esperando</small></span></Flag>
-    <Flag show={moment>=2} className="sx-pain-cooling"><CircleAlert size={18}/><span><strong>Puede buscar otra opción</strong><small>No recibió respuesta a tiempo</small></span></Flag>
-  </div>;
+/* All WhatsApp-like chats are fictional representations of everyday customer pains.
+ * White bubbles are incoming customer messages, pale green are business replies.
+ * Never show replies in the unanswered and forgotten examples. */
+function WhatsAppPhone({contact,children,mode="messages"}:{contact:string;children:ReactNode;mode?:string}){
+ return <div className={"sx-wa-phone sx-wa-phone-"+mode}>
+  <div className="sx-wa-status"><b>9:41</b><i/><span>●●● ▰</span></div>
+  <div className="sx-wa-header"><ChevronLeft size={21}/><span className="sx-wa-avatar">VG</span><div className="sx-wa-contact"><strong>{contact}</strong><small>WhatsApp · ejemplo ilustrativo</small></div><Video size={16}/><Phone size={16}/><MoreVertical size={16}/></div>
+  <div className="sx-wa-chat"><div className="sx-wa-chat-inner"><div className="sx-wa-day">HOY</div>{children}</div></div>
+  <div className="sx-wa-footer"><span>+</span><div>Mensaje</div><Paperclip size={15}/><span className="sx-wa-mic"><Mic size={15}/></span></div>
+  <div className="sx-wa-home"><i/></div>
+ </div>
 }
-
-function SchedulingFriction({moment}:{moment:number}) {
-  return <div className="sx-pain-scene sx-pain-scheduling" aria-label="Varios mensajes de coordinación sin lograr confirmar una cita">
-    <div className="sx-pain-schedule-rings" aria-hidden="true"/>
-    <Window caption="Conversación · coordinación de cita" className="sx-pain-chat-window">
-      <div className="sx-pain-chat-window-head"><span className="sx-pain-convo-icon"><MessageSquare size={20}/></span><div><strong>Coordinar una cita</strong><small>Conversación de ejemplo</small></div><span className="sx-pain-unconfirmed"><Clock3 size={12}/> Sin confirmar</span></div>
-      <div className="sx-pain-thread">
-        <div className="sx-pain-thread-line left"><span>Cliente</span>Hola, ¿puedo ir el martes a las 4?</div>
-        <div className="sx-pain-thread-line right"><span>Recepción</span>Lo reviso. A esa hora no tenemos disponibilidad.</div>
-        {moment>=1?<><div className="sx-pain-thread-line left"><span>Cliente</span>¿Y el miércoles en la mañana?</div><div className="sx-pain-thread-line right"><span>Recepción</span>Déjame consultar nuevamente…</div></>:null}
-        {moment>=2?<div className="sx-pain-thread-line left"><span>Cliente</span>¿Qué otros horarios tienen? Necesito organizarme.</div>:null}
-      </div>
-      <div className="sx-pain-thread-compose"><span>Escribe una respuesta…</span><MessageCircle size={15}/></div>
-    </Window>
-    <Flag show={moment>=0} className="sx-pain-schedule-note"><CalendarClock size={18}/><span><strong>Horarios por confirmar</strong><small>Depende de revisar y responder</small></span></Flag>
-    <Flag show={moment>=1} className="sx-pain-schedule-loop"><Clock3 size={17}/><span><strong>Otra ida y vuelta</strong><small>Más tiempo de ambos lados</small></span></Flag>
-    <Flag show={moment>=2} className="sx-pain-schedule-result"><CircleAlert size={18}/><span><strong>Todavía sin cita</strong><small>Muchos mensajes, ninguna reserva</small></span></Flag>
-  </div>;
+function WhatsAppBubble({children,time="10:08",outgoing=false}:{children:ReactNode;time?:string;outgoing?:boolean}){
+ return <div className={"sx-wa-bubble "+(outgoing?"out":"in")}><span>{children}</span><small>{time}</small></div>;
 }
-
-function ForgottenInterest({moment}:{moment:number}) {
-  return <div className="sx-pain-scene sx-pain-forgotten" aria-label="Una persona pide información, vuelve a escribir y sigue sin seguimiento">
-    <div className="sx-pain-forgotten-track" aria-hidden="true"/>
-    <Window caption="Bandeja de conversaciones" className="sx-pain-inbox">
-      <div className="sx-pain-inbox-head"><div><span>BANDEJA DE ENTRADA</span><strong>Conversaciones</strong></div><Inbox size={22}/></div>
-      <div className="sx-pain-inbox-row"><div className="sx-pain-inbox-avatar">VG</div><div><strong>Valeria Gómez</strong><span>Quedo atenta a la información que hablamos.</span></div><small>Día 1</small></div>
-      <div className={"sx-pain-inbox-row sx-pain-inbox-follow "+(moment>=1?"is-shown":"")}><div className="sx-pain-inbox-avatar">VG</div><div><strong>Valeria Gómez</strong><span>Hola, ¿pudieron enviarme la propuesta?</span></div><small>Día 3</small></div>
-      <div className={"sx-pain-inbox-row sx-pain-inbox-last "+(moment>=2?"is-shown":"")}><div className="sx-pain-inbox-avatar">VG</div><div><strong>Valeria Gómez</strong><span>Sigo sin novedades. Gracias.</span></div><small>Día 5</small></div>
-      <div className="sx-pain-inbox-foot"><Clock3 size={14}/><span>No se ha registrado una respuesta de seguimiento</span></div>
-    </Window>
-    <Flag show={moment>=0} className="sx-pain-forgotten-initial"><Mail size={16}/><span><strong>Pidió información</strong><small>Mostró interés en el servicio</small></span></Flag>
-    <Flag show={moment>=1} className="sx-pain-forgotten-overdue"><BellRing size={17}/><span><strong>Nadie retomó el contacto</strong><small>No hay un siguiente paso claro</small></span></Flag>
-    <Flag show={moment>=2} className="sx-pain-forgotten-consequence"><CircleAlert size={18}/><span><strong>El interés se enfría</strong><small>La persona deja de insistir</small></span></Flag>
-  </div>;
+function UnansweredMessages({moment}:{moment:number}){
+ return <div className="sx-pain-scene sx-pain-unanswered" aria-label="Ejemplo: mensajes por WhatsApp sin respuesta">
+  <div className="sx-pain-phone-halo" aria-hidden="true"/>
+  <WhatsAppPhone contact="Valeria Gómez">
+   <WhatsAppBubble time="10:08">Hola, quisiera conocer los servicios que ofrecen.</WhatsAppBubble>
+   {moment>=1?<WhatsAppBubble time="10:18">¿Tienen disponibilidad esta semana?</WhatsAppBubble>:null}
+   {moment>=2?<WhatsAppBubble time="10:43">Hola, ¿siguen disponibles?</WhatsAppBubble>:null}
+   <span className="sx-wa-no-reply"><Clock3 size={12}/> Sin respuesta del negocio</span>
+  </WhatsAppPhone>
+  <Flag show className="sx-pain-unread"><span className="sx-pain-flag-icon"><MessageCircle size={17}/></span><span><strong>Llega por WhatsApp</strong><small>Una persona pide información</small></span></Flag>
+  <Flag show={moment>=1} className="sx-pain-waiting"><Clock3 size={17}/><span><strong>El cliente insiste</strong><small>El mensaje sigue esperando</small></span></Flag>
+  <Flag show={moment>=2} className="sx-pain-cooling"><CircleAlert size={18}/><span><strong>Puede elegir otra opción</strong><small>Nadie alcanzó a responder</small></span></Flag>
+ </div>;
 }
-
-function ScatteredInformation({moment}:{moment:number}) {
-  return <div className="sx-pain-scene sx-pain-scattered" aria-label="Consultas, citas, notas y correos dispersos sin una vista general">
-    <div className="sx-pain-fragment-lines" aria-hidden="true"><i/><i/><i/></div>
-    <Window caption="Mensajes" className="sx-pain-frag sx-pain-frag-chat">
-      <div className="sx-pain-frag-head"><MessageCircle size={15}/><strong>Mensajes</strong><small>12 sin leer</small></div>
-      <div><span>¿Todavía tienen cupos?</span><span>Quedo pendiente, gracias.</span></div>
-    </Window>
-    <Window caption="Calendario" className={"sx-pain-frag sx-pain-frag-calendar "+(moment>=1?"is-arrived":"")}>
-      <div className="sx-pain-frag-head"><CalendarClock size={16}/><strong>Agenda</strong></div>
-      <div className="sx-pain-frag-days"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span></div>
-      <small className="sx-pain-frag-footer">¿Se confirmó la cita del miércoles?</small>
-    </Window>
-    <div className={"sx-pain-frag sx-pain-frag-note "+(moment>=1?"is-arrived":"")}><span><FileText size={15}/> NOTAS SUELTAS</span><strong>Volver a llamar</strong><small>¿A quién? ¿Cuándo?</small><i/></div>
-    <Window caption="Correo" className={"sx-pain-frag sx-pain-frag-mail "+(moment>=2?"is-arrived":"")}>
-      <div className="sx-pain-frag-head"><Mail size={15}/><strong>Correo</strong><small>5 pendientes</small></div>
-      <p>Asunto: Solicitud de información</p><span>Quedo a la espera de su respuesta…</span>
-    </Window>
-    <Flag show={moment>=2} className="sx-pain-scattered-question"><CircleAlert size={19}/><span><strong>¿Qué sigue abierto?</strong><small>Hay actividad, pero no una vista completa</small></span></Flag>
-  </div>;
+function SchedulingFriction({moment}:{moment:number}){
+ return <div className="sx-pain-scene sx-pain-scheduling" aria-label="Ejemplo: una conversación por WhatsApp que se alarga sin cerrar la cita">
+  <div className="sx-pain-schedule-rings" aria-hidden="true"/>
+  <WhatsAppPhone contact="Valeria Gómez" mode="schedule">
+   <WhatsAppBubble time="9:05">Hola, ¿puedo ir el martes a las 4?</WhatsAppBubble>
+   <WhatsAppBubble outgoing time="9:12">A esa hora no tenemos disponibilidad.</WhatsAppBubble>
+   {moment>=1?<><WhatsAppBubble time="9:23">¿Y el miércoles en la mañana?</WhatsAppBubble><WhatsAppBubble outgoing time="9:35">Déjame consultar de nuevo.</WhatsAppBubble></>:null}
+   {moment>=2?<WhatsAppBubble time="10:02">¿Qué otros horarios tienen? Necesito organizarme.</WhatsAppBubble>:null}
+  </WhatsAppPhone>
+  <Flag show className="sx-pain-schedule-note"><CalendarClock size={18}/><span><strong>Coordinar por mensajes</strong><small>Proponer y revisar horarios</small></span></Flag>
+  <Flag show={moment>=1} className="sx-pain-schedule-loop"><Clock3 size={17}/><span><strong>Otra ida y vuelta</strong><small>Tiempo de ambas personas</small></span></Flag>
+  <Flag show={moment>=2} className="sx-pain-schedule-result"><CircleAlert size={18}/><span><strong>La cita sigue pendiente</strong><small>Sin horario confirmado</small></span></Flag>
+ </div>;
+}
+function ForgottenInterest({moment}:{moment:number}){
+ return <div className="sx-pain-scene sx-pain-forgotten" aria-label="Ejemplo: un cliente interesado escribe por WhatsApp durante días y deja de insistir">
+  <div className="sx-pain-forgotten-track" aria-hidden="true"/>
+  <WhatsAppPhone contact="Valeria Gómez" mode="forgotten">
+   <div className="sx-wa-day sx-wa-history-day">DÍA 1</div>
+   <WhatsAppBubble time="11:20">Quedo atenta a la información que hablamos.</WhatsAppBubble>
+   {moment>=1?<><div className="sx-wa-day sx-wa-history-day">DÍA 3</div><WhatsAppBubble time="3:16">Hola, ¿pudieron enviarme la propuesta?</WhatsAppBubble></>:null}
+   {moment>=2?<><div className="sx-wa-day sx-wa-history-day">DÍA 5</div><WhatsAppBubble time="5:42">Sigo sin novedades. Gracias.</WhatsAppBubble></>:null}
+   <span className="sx-wa-no-reply"><Clock3 size={12}/> No hubo seguimiento</span>
+  </WhatsAppPhone>
+  <Flag show className="sx-pain-forgotten-initial"><MessageCircle size={17}/><span><strong>Mostró interés</strong><small>Quedó esperando información</small></span></Flag>
+  <Flag show={moment>=1} className="sx-pain-forgotten-overdue"><BellRing size={17}/><span><strong>Volvió a escribir</strong><small>Nadie retomó el contacto</small></span></Flag>
+  <Flag show={moment>=2} className="sx-pain-forgotten-consequence"><CircleAlert size={18}/><span><strong>Dejó de insistir</strong><small>La oportunidad se enfría</small></span></Flag>
+ </div>;
+}
+function ScatteredInformation({moment}:{moment:number}){
+ return <div className="sx-pain-scene sx-pain-scattered" aria-label="WhatsApp, correo, notas y calendario separados, sin una vista general">
+  <div className="sx-pain-fragment-lines" aria-hidden="true"><i/><i/><i/></div>
+  <div className="sx-pain-frag sx-pain-frag-chat sx-fragment-whatsapp">
+   <div className="sx-fragment-wa-head"><span className="sx-fragment-wa-logo"><MessageCircle size={16}/></span><strong>WhatsApp</strong><small>12 sin leer</small></div>
+   <div className="sx-fragment-wa-body"><div>¿Todavía tienen cupos?<small>10:08</small></div><div>Quedo pendiente, gracias.<small>10:43</small></div></div>
+  </div>
+  <Window caption="Calendario" className={"sx-pain-frag sx-pain-frag-calendar "+(moment>=1?"is-arrived":"")}>
+   <div className="sx-pain-frag-head"><CalendarClock size={16}/><strong>Agenda</strong></div>
+   <div className="sx-pain-frag-days"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span></div>
+   <small className="sx-pain-frag-footer">¿Se confirmó la cita del miércoles?</small>
+  </Window>
+  <div className={"sx-pain-frag sx-pain-frag-note "+(moment>=1?"is-arrived":"")}><span><FileText size={15}/> NOTAS SUELTAS</span><strong>Volver a llamar</strong><small>¿A quién? ¿Cuándo?</small><i/></div>
+  <Window caption="Correo" className={"sx-pain-frag sx-pain-frag-mail "+(moment>=2?"is-arrived":"")}>
+   <div className="sx-pain-frag-head"><Mail size={15}/><strong>Correo</strong><small>5 pendientes</small></div>
+   <p>Asunto: Solicitud de información</p><span>Quedo a la espera de su respuesta…</span>
+  </Window>
+  <Flag show={moment>=2} className="sx-pain-scattered-question"><CircleAlert size={19}/><span><strong>¿Qué sigue abierto?</strong><small>Hay actividad, pero no una vista completa</small></span></Flag>
+ </div>;
 }
 
 const scenes=[UnansweredMessages,SchedulingFriction,ForgottenInterest,ScatteredInformation] as const;

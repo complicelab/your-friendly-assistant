@@ -1,43 +1,94 @@
-import { useEffect, useRef, useState } from "react";
-import { ArrowRight, ArrowUpRight, BarChart3, Bot, CalendarDays, CheckCircle2, ChevronRight, Database, Globe2, LayoutDashboard, Mail, Megaphone, MessageCircle, Pause, Play, RotateCcw, Search, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Bell, CalendarCheck2, CalendarDays, Check, CheckCheck, CheckCircle2, ChevronDown, Clock3, Database, Globe2, LayoutDashboard, Mail, MessageCircle, MousePointer2, Search, Send, ShieldCheck, Smartphone, Sparkles, Users } from "lucide-react";
 import "./systems-eight-flow.css";
 
-const stations=[
- {label:"Te encuentran",brief:"La oportunidad empieza",icon:Search,description:"Alguien conoce tu negocio y encuentra una forma clara de ponerse en contacto."},
- {label:"Web premium",brief:"Entiende tu valor",icon:Globe2,description:"Tu web presenta lo que haces y permite consultar o dejar una solicitud."},
- {label:"Agenda",brief:"Elige un horario",icon:CalendarDays,description:"Cuando la agenda forma parte del sistema, el cliente puede escoger un espacio disponible."},
- {label:"Atención con IA",brief:"Recibe orientación",icon:Bot,description:"Un asistente puede resolver dudas iniciales y recoger el contexto para continuar."},
- {label:"CRM",brief:"Queda registrado",icon:Database,description:"El contacto y su interés llegan a una ficha centralizada con una etapa definida."},
- {label:"Panel administrativo",brief:"El equipo tiene control",icon:LayoutDashboard,description:"El responsable puede revisar contactos, agenda y acciones pendientes."},
- {label:"Campañas",brief:"La relación continúa",icon:Megaphone,description:"Cuando el proyecto lo contempla, se pueden preparar campañas para públicos definidos, con autorización."},
- {label:"Indicadores",brief:"Sabes qué sucede",icon:BarChart3,description:"El panel ayuda a entender las oportunidades y las acciones del proceso."}
-] as const;
-const mockPerson="Valeria Gómez";
-export function SearchScene({step=4}:{step?:number}){return <div className="sf-search"><div className="sf-search-bar"><Search size={17}/> profesionales en los que puedo confiar <span>✕</span></div><div className="sf-search-hint">Una búsqueda ilustrativa · sin posicionamiento prometido</div><article className={step>=2?"sf-shown":"sf-hidden"}><small>Resultado ilustrativo · tu marca</small><h3>Una atención que transmite confianza</h3><p>Conoce el servicio, cómo trabajamos y qué puedes esperar.</p><button type="button">Conocer más <ArrowUpRight size={14}/></button></article><div className={"sf-sparkle "+(step>=4?"sf-shown":"sf-hidden")}><Sparkles size={20}/> Una presencia clara facilita el siguiente paso</div></div>}
-function WebScene(){return <div className="sf-web"><div className="sf-browser"><span>● ● ●</span><small>tumarca.com</small></div><div className="sf-web-hero"><span>EXPERIENCIA PERSONALIZADA</span><h3>Un servicio que inspira confianza desde el primer momento.</h3><p>Explicamos tu valor y hacemos fácil que la persona contacte contigo.</p><button type="button">Solicitar información <ArrowRight size={15}/></button></div><div className="sf-web-bottom"><span>✓ Atención cercana</span><span>✓ Información clara</span><span>✓ Un siguiente paso</span></div></div>}
-export function AgendaScene({step=4}:{step?:number}){return <div className="sf-agenda"><div className="sf-agenda-head"><CalendarDays size={19}/><div><small>VALORACIÓN / DEMO</small><h3>Elige tu horario</h3></div></div><div className="sf-days">{["LUN 16","MAR 17","MIÉ 18","JUE 19"].map((x,i)=><div className={i===2&&step>=1?"sel":""} key={x}>{x}</div>)}</div><span className="sf-agenda-label">Horarios disponibles · simulación</span><div className="sf-slots"><span>9:00 a. m.</span><span className={step>=2?"sel":""}>10:00 a. m.</span><span>11:30 a. m.</span></div><div className={"sf-agenda-confirm "+(step>=3?"sf-shown":"sf-hidden")}><CheckCircle2 size={16}/> Solicitud de cita preparada</div></div>}
-function AgentScene(){return <div className="sf-chat"><header><span><Bot size={21}/></span><div><b>Asistente IA</b><small>Atención de ejemplo</small></div></header><div className="sf-chat-room"><div className="right">Hola, ¿puedo agendar una primera consulta?</div><div>¡Claro! ¿Qué servicio te interesa?</div><div className="right">Quiero una valoración inicial.</div><div>Perfecto. Te ayudo a continuar con el equipo o revisar la agenda disponible.</div></div><footer><span>Escribe un mensaje…</span><MessageCircle size={16}/></footer></div>}
-function CRMScene(){return <div className="sf-crm"><header><Database size={19}/><b>CRM · Oportunidades</b><span>DEMO</span></header><div className="sf-crm-columns">{["Nuevo","En atención","Seguimiento"].map((x,i)=><div key={x}><strong>{x}</strong>{i===1?<article><span>VG</span><b>{mockPerson}</b><small>Valoración inicial</small><em>Por contactar</em></article>:<div className="sf-empty">+</div>}</div>)}</div><div className="sf-crm-foot"><CheckCircle2 size={15}/> Ficha y próximo paso registrados</div></div>}
-function PanelScene(){return <div className="sf-panel"><div className="sf-panel-side"><span>✳</span><LayoutDashboard size={18}/><Database size={18}/><CalendarDays size={18}/></div><div className="sf-panel-body"><small>MI NEGOCIO / DEMO</small><h3>Un lugar para todo</h3><div className="sf-panel-metrics"><div><Database size={18}/><b>Contactos</b><span>Organizados</span></div><div><CalendarDays size={18}/><b>Citas</b><span>Agenda visible</span></div><div><CheckCircle2 size={18}/><b>Tareas</b><span>Seguimiento</span></div></div><div className="sf-panel-activity"><strong>Actividad del equipo</strong><p><CheckCircle2 size={14}/> Nuevo contacto para revisar</p><p><CalendarDays size={14}/> Solicitud de cita registrada</p><p><MessageCircle size={14}/> Conversación disponible</p></div></div></div>}
-export function CampaignScene({step=4}:{step?:number}){return <div className="sf-campaign"><div><small>CAMPAÑA DE EJEMPLO</small><h3>Comunicación con contexto</h3><p>Una campaña definida para un grupo autorizado, según el alcance contratado.</p><div className="sf-campaign-segments"><span>Segmento seleccionado</span><span>Canal previsto: WhatsApp / correo</span></div><div className={"sf-campaign-status "+(step>=4?"sf-shown":"sf-hidden")}><CheckCircle2 size={16}/> Preparación ilustrativa · ningún mensaje enviado</div></div><div className={"sf-campaign-message "+(step>=2?"sf-shown":"sf-hidden")}><div><Mail size={19}/> Vista de mensaje</div><p>Hola, Valeria. Queremos compartirte novedades que podrían interesarte.</p><small>Plantilla visual de ejemplo</small></div></div>}
-export function MetricsScene({step=4}:{step?:number}){return <div className="sf-metrics"><div className="sf-metrics-head"><div><small>PANEL / VISTA ILUSTRATIVA</small><h3>Indicadores del proceso</h3></div><span>Sin cifras reales</span></div><div className={"sf-metrics-cards "+(step>=1?"sf-shown":"sf-hidden")}><div>Oportunidades <strong>Organizadas</strong></div><div>Citas <strong>Visibles</strong></div><div>Seguimiento <strong>En contexto</strong></div></div><div className={"sf-metrics-graph "+(step>=3?"sf-shown":"sf-hidden")}><div>{[45,63,42,74,58,85,67,91,77,95].map((x,i)=><span key={i} style={{height:x+"%",animationDelay:i*70+"ms"}}/>)}</div><small>Actividad ilustrativa — sin métricas comerciales</small></div></div>}
-const views=[SearchScene,WebScene,AgendaScene,AgentScene,CRMScene,PanelScene,CampaignScene,MetricsScene];
+/** Four full-fledged explanatory scenes. Everything shown is an illustrative simulation,
+ * not actual Google placement, CRM results, bookings, outbound messages or client data.
+ * Timed steps are controlled by the existing viewport-driven storyboard. */
+export function SearchScene({step=4}:{step?:number}){
+ const searched=step>=1;
+ const found=step>=2;
+ return <div className="sd-scene sd-search" aria-label="Simulación de cómo se ve una búsqueda de servicios">
+  <div className="sd-search-chrome"><span className="sd-google-word" aria-label="Búsqueda estilo Google"><b>G</b><b>o</b><b>o</b><b>g</b><b>l</b><b>e</b></span><div className="sd-search-query"><span>profesionales de confianza para mi proyecto</span><Search size={17}/></div><div className="sd-search-avatar">V</div></div>
+  <div className="sd-search-tabs"><span className="active">Todo</span><span>Imágenes</span><span>Videos</span><span>Noticias</span><span>Más</span></div>
+  <div className="sd-serp-main">
+   <div className="sd-search-result"><div className="sd-serp-favicon"><Globe2 size={18}/></div><div className="sd-serp-url"><strong>Tu marca · Sitio oficial</strong><small>https://tumarca.com/servicios</small></div><span className="sd-serp-more">⋮</span></div>
+   <h3>Una experiencia profesional que transmite confianza</h3>
+   <p>Conoce nuestros servicios, cómo trabajamos y cuál es el siguiente paso para recibir atención personalizada.</p>
+   <div className="sd-serp-sitelinks"><span>Conoce nuestros servicios</span><span>Agenda una conversación</span></div>
+   <div className={"sd-serp-action "+(found?"active":"")}><span className="sd-serp-pulse"/><strong>{found?"La persona encuentra una página clara":"La presentación del resultado se prepara"}</strong><ArrowUpRight size={16}/></div>
+  </div>
+  <div className="sd-serp-foot"><ShieldCheck size={15}/><span>Montaje de búsqueda ilustrativo. No representa una posición real ni ofrecemos posicionamiento en Google.</span></div>
+  <span className={"sd-search-pointer "+(step>=3?"active":"")} aria-hidden="true"><MousePointer2 size={20}/></span>
+ </div>;
+}
 
-export function SystemsEightFlow(){
- const [selected,setSelected]=useState(0);
- const [paused,setPaused]=useState(false);
- const [reduced,setReduced]=useState(false);
- const [visible,setVisible]=useState(false);
- const ref=useRef<HTMLElement>(null);
- useEffect(()=>{const m=window.matchMedia("(prefers-reduced-motion: reduce)");const fn=()=>setReduced(m.matches);fn();m.addEventListener?.("change",fn);return()=>m.removeEventListener?.("change",fn)},[]);
- useEffect(()=>{const node=ref.current;if(!node)return;const ob=new IntersectionObserver(e=>setVisible(Boolean(e[0]?.isIntersecting)),{threshold:.12});ob.observe(node);return()=>ob.disconnect()},[]);
- useEffect(()=>{if(!visible||paused||reduced)return;const t=setInterval(()=>setSelected(i=>(i+1)%stations.length),5500);return()=>clearInterval(t)},[visible,paused,reduced]);
- const choose=(i:number)=>{setSelected(i);setPaused(true)};
- const Scene=views[selected]!;
- return <section className="sf-wrap" id="recorrido-completo" ref={ref}><div className="sys-wrap">
- <div className="sf-head"><div><span>EL SISTEMA EN ACCIÓN · 08 ESTACIONES</span><h2>Un cliente llega.<em>Todo empieza a conectarse.</em></h2><p>Explora cada paso como en la home. El montaje es una simulación para explicar posibilidades; la solución final depende del negocio.</p></div><div className="sf-head-actions"><button type="button" onClick={()=>{setSelected(0);setPaused(false)}}><RotateCcw size={15}/> Reiniciar</button><button type="button" aria-label={paused?"Reanudar reproducción":"Pausar reproducción"} onClick={()=>setPaused(x=>!x)}>{paused?<Play size={16}/>:<Pause size={16}/>}</button></div></div>
- <div className="sf-shell"><nav className="sf-rail" aria-label="Pasos del sistema">{stations.map((x,i)=><button key={x.label} type="button" className={selected===i?"active":""} aria-pressed={selected===i} onClick={()=>choose(i)}><span className="sf-icon"><x.icon size={18}/></span><span className="sf-rail-text"><strong>{x.label}</strong><small>{x.brief}</small></span><span className="sf-rail-index">{i+1}</span></button>)}</nav>
- <div className="sf-screen"><div className="sf-screen-top"><span><span className="sf-live-dot"/> Demostración · se reproduce sola</span><b>PASO {selected+1} / 8</b></div><div className="sf-stage" key={selected}><Scene/></div><div className="sf-screen-bottom"><strong>{stations[selected]?.brief}.</strong><p>{stations[selected]?.description}</p></div></div></div>
- <div className="sf-shell-foot"><span>Escenarios ilustrativos; no son clientes, citas ni resultados reales.</span><button type="button" onClick={()=>choose((selected+1)%8)}>Ver siguiente paso <ChevronRight size={17}/></button></div>
- </div></section>;
+export function AgendaScene({step=4}:{step?:number}){
+ return <div className="sd-scene sd-agenda" aria-label="Simulación de una agenda de citas">
+  <div className="sd-agenda-top"><div className="sd-agenda-brand"><span><CalendarCheck2 size={20}/></span><div><strong>Agenda de tu negocio</strong><small>Reserva online · Ejemplo</small></div></div><span className="sd-agenda-secure"><ShieldCheck size={13}/> Reserva de ejemplo</span></div>
+  <div className="sd-agenda-layout">
+   <aside className="sd-agenda-service"><span>01 / SERVICIO</span><div className="sd-agenda-service-card"><CalendarDays size={22}/><strong>Reunión de orientación</strong><small>30 minutos · Videollamada</small></div><div className="sd-agenda-benefit"><CheckCircle2 size={16}/> Sin llamadas de ida y vuelta</div><span className="sd-agenda-note">Los horarios de este montaje son ficticios.</span></aside>
+   <div className="sd-agenda-calendar"><div className="sd-agenda-month"><strong>Selecciona un día</strong><span>Noviembre <ChevronDown size={14}/></span></div><div className="sd-calendar-weekdays">{["L","M","M","J","V","S","D"].map((x,i)=><span key={i}>{x}</span>)}</div><div className="sd-calendar-days">{Array.from({length:28},(_,i)=><span key={i} className={i===17&&step>=1?"selected":i===7||i===14||i===21?"soft":""}>{i+1}</span>)}</div><div className="sd-agenda-date-preview"><Clock3 size={14}/>{step>=1?"Miércoles 18 · horario elegido":"Elige el día que más te convenga"}</div></div>
+   <div className="sd-agenda-hours"><strong>Horarios</strong>{["09:00 a. m.","10:30 a. m.","02:00 p. m.","04:30 p. m."].map((time,i)=><span key={time} className={i===1&&step>=2?"selected":""}>{time}</span>)}<div className={"sd-booking-feedback "+(step>=3?"visible":"")}><CheckCircle2 size={17}/><div><strong>Horario seleccionado</strong><small>Solicitud preparada para confirmar</small></div></div></div>
+  </div>
+  <div className="sd-agenda-footer"><span><Check size={14}/> Datos y disponibilidad en un mismo lugar</span><span>AGENDA · DEMO</span></div>
+ </div>;
+}
+
+export function CampaignScene({step=4}:{step?:number}){
+ return <div className="sd-scene sd-campaign" aria-label="Simulación de seguimiento por WhatsApp y correo electrónico">
+  <div className="sd-campaign-management">
+   <div className="sd-campaign-overline"><span>SEGUIMIENTO CONECTADO</span><span className="sd-campaign-status"><span/> DEMO · SIN ENVÍOS</span></div>
+   <h3>Una conversación no tiene por qué terminar ahí.</h3>
+   <p>Desde el sistema se podría preparar el siguiente contacto con personas que autorizaron recibirlo.</p>
+   <div className="sd-campaign-flow">
+    <div className={"sd-campaign-flow-row "+(step>=0?"active":"")}><span className="sd-flow-icon"><Database size={18}/></span><div><strong>Contacto en CRM</strong><small>Interés registrado</small></div><Check size={15}/></div>
+    <div className="sd-flow-connector"/>
+    <div className={"sd-campaign-flow-row "+(step>=1?"active":"")}><span className="sd-flow-icon"><Users size={18}/></span><div><strong>Grupo definido</strong><small>Personas con autorización</small></div><Check size={15}/></div>
+    <div className="sd-flow-connector"/>
+    <div className={"sd-campaign-flow-row "+(step>=3?"active":"")}><span className="sd-flow-icon"><MessageCircle size={18}/></span><div><strong>Mensaje preparado</strong><small>WhatsApp o correo según el caso</small></div><Check size={15}/></div>
+   </div>
+   <div className="sd-campaign-legal"><ShieldCheck size={15}/><span>Sin conexión a la API ni envío real. Flujo sujeto a configuración y consentimiento.</span></div>
+  </div>
+  <div className="sd-campaign-phone-wrap">
+   <div className="sd-campaign-phone">
+    <div className="sd-phone-status"><strong>9:41</strong><span>●●●  ▮▮  ▰</span></div>
+    <div className="sd-phone-header"><span>‹</span><div className="sd-phone-avatar">✳</div><div><strong>Tu negocio</strong><small>Cuenta comercial · Ejemplo</small></div><span>⋮</span></div>
+    <div className="sd-phone-chat"><div className="sd-chat-date">Hoy</div><div className="sd-phone-bubble incoming">Hola, quería recibir información del servicio.<small>09:31</small></div><div className={"sd-phone-bubble outgoing "+(step>=2?"show":"")}>¡Hola, Valeria! Gracias por contactarnos. Podemos ayudarte a continuar con tu solicitud.<small>09:32 <CheckCheck size={11}/></small></div><div className={"sd-phone-bubble outgoing "+(step>=3?"show":"")}>¿Quieres que nuestro equipo te proponga un horario para conversar?<small>09:32 <CheckCheck size={11}/></small></div>{step>=4?<div className="sd-phone-reminder"><CalendarDays size={13}/> Seguimiento ilustrativo</div>:null}</div>
+    <div className="sd-phone-compose"><span>Escribe un mensaje…</span><Send size={15}/></div>
+   </div>
+   <span className="sd-phone-float"><MessageCircle size={16}/> Mensajes con contexto</span>
+  </div>
+ </div>;
+}
+
+const linePoints="0,112 32,102 64,110 96,78 128,85 160,55 192,66 224,32 256,44 288,17 320,29";
+export function MetricsScene({step=4}:{step?:number}){
+ const [tab,setTab]=useState<"oportunidades"|"atencion">("oportunidades");
+ return <div className="sd-scene sd-metrics" aria-label="Panel de indicadores de ejemplo, todos los valores son ficticios">
+  <div className="sd-metrics-sidebar"><span className="sd-logo">✳</span><LayoutDashboard size={20} className="active"/><Database size={19}/><MessageCircle size={19}/><CalendarDays size={19}/><Bell size={19}/></div>
+  <div className="sd-metrics-main">
+   <header><div><span>PANEL DEL NEGOCIO <small>· DEMO</small></span><h3>Indicadores del sistema</h3></div><span className="sd-metrics-period"><CalendarDays size={13}/> Este mes <ChevronDown size={13}/></span></header>
+   <div className="sd-metric-cards">
+    {[{label:"Clics en enlaces",value:"248",change:"Interacciones",icon:ArrowUpRight},{label:"Nuevas consultas",value:"36",change:"Contactos",icon:Users},{label:"Citas solicitadas",value:"12",change:"Agenda",icon:CalendarDays},{label:"Pendientes",value:"08",change:"Seguimiento",icon:Bell}].map((item,i)=><div className={"sd-metric-card "+(step>=i?"lit":"")} key={item.label}><div><span>{item.label}</span><item.icon size={16}/></div><strong>{item.value}</strong><small>{item.change} · ejemplo</small></div>)}
+   </div>
+   <div className="sd-metrics-data">
+    <div className="sd-analytics-chart"><div className="sd-chart-head"><div><strong>Actividad y oportunidades</strong><small>Vista simulada de los canales de entrada</small></div><span className="sd-chart-legend"><i/> Consultas</span></div>
+     <div className="sd-chart-grid">
+      <div className="sd-chart-axis"><span>40</span><span>30</span><span>20</span><span>10</span><span>0</span></div>
+      <svg viewBox="0 0 320 140" preserveAspectRatio="none" aria-hidden="true">
+       <defs><linearGradient id="sd-chart-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor="#5179ea" stopOpacity=".29"/><stop offset="100%" stopColor="#5179ea" stopOpacity="0"/></linearGradient></defs>
+       {[22,54,86,118].map(y=><line key={y} x1="0" x2="320" y1={y} y2={y} stroke="#dbe4f2" strokeWidth="1" strokeDasharray="4 6"/>)}
+       <polygon points={"0,140 "+linePoints+" 320,140"} fill="url(#sd-chart-fill)"/>
+       <polyline points={linePoints} fill="none" stroke="#446fec" strokeWidth="3.2" strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke" className={step>=2?"sd-line-drawn":""}/>
+       <circle cx="288" cy="17" r="5" fill="#fff" stroke="#4c6fe9" strokeWidth="3"/>
+      </svg>
+     </div><div className="sd-chart-dates"><span>01 nov</span><span>08 nov</span><span>15 nov</span><span>22 nov</span><span>30 nov</span></div>
+    </div>
+    <div className="sd-metrics-sources"><strong>¿Qué ocurre con los contactos?</strong><div className="sd-tab-row"><button type="button" className={tab==="oportunidades"?"active":""} onClick={()=>setTab("oportunidades")}>Etapas</button><button type="button" className={tab==="atencion"?"active":""} onClick={()=>setTab("atencion")}>Atención</button></div>
+     {tab==="oportunidades"?<div className="sd-funnel"><div><span>Recibidos</span><i style={{width:"95%"}}/><b>36</b></div><div><span>Contactados</span><i style={{width:"72%"}}/><b>27</b></div><div><span>Con cita</span><i style={{width:"43%"}}/><b>12</b></div><div><span>Pendientes</span><i style={{width:"30%"}}/><b>08</b></div></div>:<div className="sd-activity-list"><div><CheckCircle2 size={15}/> 27 contactos atendidos</div><div><CalendarDays size={15}/> 12 citas solicitadas</div><div><Clock3 size={15}/> 08 pendientes de revisar</div></div>}
+    </div>
+   </div>
+   <footer><span><ShieldCheck size={14}/> Todas las cifras son ficticias y se usan únicamente para explicar la interfaz.</span><span className="sd-dashboard-demo">DEMO INTERACTIVA</span></footer>
+  </div>
+ </div>;
 }

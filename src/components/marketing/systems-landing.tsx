@@ -1,12 +1,15 @@
-import { useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronDown, Clock3, Database, LayoutDashboard, MessageCircle, Sparkles, Workflow } from "lucide-react";
 import { BrandMark } from "@/components/marketing/brand";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { WhatsAppFloat } from "@/components/marketing/whatsapp-float";
 import "./systems-landing.css";
 import { SystemsStoryboards } from "./systems-storyboard";
+import { SystemsEightFlow } from "./systems-eight-flow";
+import { SystemsProjects } from "./systems-projects";
+import { SystemsBooking } from "./systems-booking";
 
-const contact = "https://api.whatsapp.com/send?phone=573161772880&text=" + encodeURIComponent("Hola, quiero agendar un diagnóstico para construir un sistema con IA a la medida de mi negocio.");
+const BookingOpenContext=createContext<()=>void>(()=>{});
 
 const stages = [
   { title:"Llegó una oportunidad", eyebrow:"01 · ENTRADA", description:"Una persona escribe, agenda o deja sus datos. El sistema registra de dónde viene y qué necesita.", chip:"Contacto recibido", type:"inbox" },
@@ -15,7 +18,7 @@ const stages = [
   { title:"Puedes entender qué está pasando", eyebrow:"04 · VISIBILIDAD", description:"Un panel reúne lo que tu negocio necesita observar: entradas, pendientes y acciones por resolver.", chip:"Vista administrativa", type:"panel" },
 ] as const;
 
-function Action({children}:{children:ReactNode}) { return <a className="sys-action" href={contact} target="_blank" rel="noopener noreferrer">{children}<ArrowUpRight size={17}/></a> }
+function Action({children}:{children:ReactNode}) { const open=useContext(BookingOpenContext);return <button className="sys-action" type="button" onClick={open}>{children}<ArrowUpRight size={17}/></button> }
 
 function SystemDemo() {
  const [active,setActive]=useState(0);
@@ -38,7 +41,7 @@ function SystemDemo() {
  </div>
 }
 
-function Closing(){return <section className="sys-closing"><div className="sys-wrap sys-closing-layout"><div><span className="sys-section-label">03 / TU SIGUIENTE PASO</span><h2>Cuéntanos cómo funciona tu negocio.<br/><em>Te ayudamos a conectar lo que falta.</em></h2><p>Revisamos contigo dónde se están perdiendo oportunidades, qué necesita tu equipo y qué vale la pena construir. Sin ofrecerte un sistema genérico.</p><Action>Hablemos de tu sistema</Action></div><div className="sys-closing-card"><span>ASÍ EMPEZAMOS</span><div><b>01</b> Entendemos el recorrido actual</div><div><b>02</b> Definimos qué debe resolver el sistema</div><div><b>03</b> Construimos y probamos por etapas</div><div className="sys-closing-end"><CheckCircle2 size={18}/> Una solución según tu operación, no al revés</div></div></div></section>}
+function Closing(){return <section className="sys-closing"><div className="sys-wrap sys-closing-layout"><div><span className="sys-section-label">03 / TU SIGUIENTE PASO</span><h2>Cuéntanos cómo funciona tu negocio.<br/><em>Te ayudamos a conectar lo que falta.</em></h2><p>Revisamos contigo dónde se están perdiendo oportunidades, qué necesita tu equipo y qué vale la pena construir. Sin ofrecerte un sistema genérico.</p><Action>Agendar diagnóstico</Action></div><div className="sys-closing-card"><span>ASÍ EMPEZAMOS</span><div><b>01</b> Entendemos el recorrido actual</div><div><b>02</b> Definimos qué debe resolver el sistema</div><div><b>03</b> Construimos y probamos por etapas</div><div className="sys-closing-end"><CheckCircle2 size={18}/> Una solución según tu operación, no al revés</div></div></div></section>}
 
 function Questions(){const [open,setOpen]=useState<number|null>(0);const items=[
  ["¿Qué es un sistema con IA a la medida?","Es una solución construida para la forma en que trabaja tu negocio. Puede unir registro de contactos, agenda, automatizaciones, paneles y funciones de IA según las necesidades reales."],
@@ -47,9 +50,9 @@ function Questions(){const [open,setOpen]=useState<number|null>(0);const items=[
  ["¿Trabajan con empresas fuera de Manizales?","Sí. Trabajamos de forma online con profesionales y empresas en Colombia y otros mercados."]
 ];return <section className="sys-faq"><div className="sys-wrap sys-faq-layout"><div><div className="sys-section-label">04 / RESPUESTAS CLARAS</div><h2>Lo importante es que <em>entiendas qué estás construyendo.</em></h2></div><div>{items.map(([q,a],i)=><div className="sys-faq-item" key={q}><button type="button" onClick={()=>setOpen(open===i?null:i)} aria-expanded={open===i}>{q}<ChevronDown size={19}/></button>{open===i?<p>{a}</p>:null}</div>)}</div></div></section>}
 
-export function SystemsLanding(){return <div className="sys-page">
-<header className="sys-navigation"><div className="sys-nav-inner"><BrandMark/><nav aria-label="Navegación de servicios"><a href="/">Inicio</a><a href="#captacion">Cómo funciona</a><a href="#ejemplo">Ejemplo visual</a></nav><Action>Solicitar diagnóstico</Action></div></header>
+export function SystemsLanding(){const [bookingOpen,setBookingOpen]=useState(false);return <BookingOpenContext.Provider value={()=>setBookingOpen(true)}><div className="sys-page">
+<header className="sys-navigation"><div className="sys-nav-inner"><BrandMark/><nav aria-label="Navegación de servicios"><a href="/">Inicio</a><a href="#captacion">Cómo funciona</a><a href="#ejemplo">Ejemplo visual</a></nav><Action>Agendar diagnóstico</Action></div></header>
 <main><section className="sys-hero"><div className="sys-hero-ambient"/><div className="sys-wrap sys-hero-layout"><div className="sys-hero-copy"><span className="sys-eyebrow"><span/> SISTEMAS CON INTELIGENCIA ARTIFICIAL</span><h1>Sistemas con IA <em>a la medida de tu negocio.</em></h1><p>Construimos el sistema que conecta tu información, tus procesos y tu equipo para que cada oportunidad tenga un siguiente paso claro.</p><div className="sys-hero-actions"><Action>Solicitar diagnóstico</Action><a href="#como-funciona">Mira cómo funciona <ArrowRight size={17}/></a></div><div className="sys-hero-micro"><CheckCircle2 size={16}/> Sin plantillas genéricas. Primero entendemos tu operación.</div></div><div id="ejemplo" className="sys-hero-showcase"><SystemDemo/><div className="sys-hero-visual-caption">Simulación interactiva de un posible sistema. No representa datos reales de clientes.</div></div></div><div className="sys-hero-bottom"><span>ESTRATEGIA</span><i/><span>DISEÑO DEL PROCESO</span><i/><span>CONSTRUCCIÓN CON IA</span><i/><span>SEGUIMIENTO</span></div></section>
-<SystemsStoryboards/><Closing/><Questions/>
+<SystemsEightFlow/><SystemsStoryboards/><SystemsProjects/><Closing/><Questions/><section id="diagnostico" className="sys-booking-section"><div className="sys-wrap"><div className="sys-booking-heading"><span>AGENDA TU DIAGNÓSTICO</span><h2>El siguiente sistema puede ser <em>el de tu negocio.</em></h2><p>Cuéntanos qué necesitas construir. Elige un horario real disponible y conversemos por videollamada.</p></div><SystemsBooking/></div></section>
 <div className="sys-other-services sys-wrap"><span>OTRAS SOLUCIONES DE CÓMPLICE LAB</span><div><a href="/agentes-de-ia">Agentes de IA <ArrowUpRight size={16}/></a><a href="/paginas-web">Páginas Web <ArrowUpRight size={16}/></a><a href="/publicidad-digital">Publicidad Digital <ArrowUpRight size={16}/></a></div></div></main><SiteFooter/><WhatsAppFloat/>
-</div>}
+{bookingOpen?<SystemsBooking modal onClose={()=>setBookingOpen(false)}/>:null}</div></BookingOpenContext.Provider>}

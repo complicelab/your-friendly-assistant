@@ -53,7 +53,7 @@ function SchedulePain({phase}:{phase:number}){
    <div className="sx-schedule-before-chat"><span>¿Tienes cita el martes?</span><span>Ese día no puedo…</span><span>¿Entonces el miércoles?</span><span>Déjame revisar.</span></div>
    <div className="sx-schedule-before-foot"><Clock3 size={14}/> Varias respuestas y todavía sin horario</div>
   </div>
-  <Pop show={phase<2} className="sx-schedule-conversation"><span className="sx-pop-symbol warning"><MessageCircle size={17}/></span><span><strong>«¿Puedes el martes?»</strong><small>«Ese día no puedo...»</small><small>«¿Y el miércoles?»</small></span></Pop>
+  
   <Pop show={phase>=2} className="sx-schedule-selected"><span className="sx-pop-symbol violet"><MousePointer2 size={16}/></span><span><strong>Horario elegido</strong><small>Miércoles · 10:30 a. m.</small></span></Pop>
   <Pop show={phase>=3} className="sx-schedule-success"><CheckCircle2 size={20}/><span><strong>Una solicitud organizada</strong><small>El equipo puede continuar</small></span></Pop>
  </div>;
@@ -121,7 +121,7 @@ export function SystemsPains(){
   const timer=window.setTimeout(()=>{
    if(phase<3)setPhase(p=>p+1);
    else {setActive(i=>(i+1)%situations.length);setPhase(0);}
-  },phase===3?3200:2600);
+  },phase===3?2800:2300);
   return()=>window.clearTimeout(timer);
  },[visible,reduceMotion,active,phase]);
  function choose(i:number){setActive(i);setPhase(reduceMotion?3:0)}

@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { ServiceExperience } from "@/components/marketing/service-experience";
+import { SystemsLanding } from "@/components/marketing/systems-landing";
 import { commercialServices, serviceHref } from "@/data/commercial-services";
 
 const base = "https://complicelab.com";
@@ -25,5 +25,5 @@ export const Route = createFileRoute("/sistemas-ia-a-la-medida")({
       links: [{ rel: "canonical", href: url }],
     };
   },
-  component: () => service ? <ServiceExperience service={service} /> : null,
+  component: () => service ? <SystemsLanding /> : null,
 });

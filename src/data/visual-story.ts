@@ -20,9 +20,8 @@ export const peopleImages = {
 } as const;
 export type StoryImageKey=keyof typeof peopleImages;
 export const photoForService:Record<string,StoryImageKey[]>={
- "diagnostico-negocio-manizales":["consultancy","realtor","brand"],
- "paginas-web-manizales":["dentist","realtor","restaurant","fastfood","doctor"],
- "contenido-publicitario-manizales":["restaurant","fastfood","brand"],
- "publicidad-meta-ads":["realtorDetail","dentistDetail","fastfoodDetail"],
- "crear-marca-negocio-desde-cero":["brand","entrepreneur","consultancy"],
+ "sistemas-ia-a-la-medida":["business","teamwork","consultancy"],
+ "agentes-de-ia":["doctor","consultancy","business"],
+ "paginas-web":["dentist","realtor","restaurant","fastfood","doctor"],
+ "publicidad-digital":["realtorDetail","dentistDetail","fastfoodDetail"],
 };

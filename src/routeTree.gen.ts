@@ -11,12 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AgentesDeIaRouteImport } from './routes/agentes-de-ia'
 import { Route as CodigoceroRouteImport } from './routes/codigocero'
 import { Route as OgImageDotjpgRouteImport } from './routes/og-image[.]jpg'
+import { Route as PaginasWebRouteImport } from './routes/paginas-web'
 import { Route as PbHeroDotwebpRouteImport } from './routes/pb-hero[.]webp'
 import { Route as PbWebDotwebpRouteImport } from './routes/pb-web[.]webp'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
+import { Route as PublicidadDigitalRouteImport } from './routes/publicidad-digital'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SistemasIaALaMedidaRouteImport } from './routes/sistemas-ia-a-la-medida'
 import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as TodosLosServiciosRouteImport } from './routes/todos-los-servicios'
 import { Route as ApiBookingRouteImport } from './routes/api.booking'
@@ -43,6 +47,11 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgentesDeIaRoute = AgentesDeIaRouteImport.update({
+  id: '/agentes-de-ia',
+  path: '/agentes-de-ia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CodigoceroRoute = CodigoceroRouteImport.update({
   id: '/codigocero',
   path: '/codigocero',
@@ -51,6 +60,11 @@ const CodigoceroRoute = CodigoceroRouteImport.update({
 const OgImageDotjpgRoute = OgImageDotjpgRouteImport.update({
   id: '/og-image.jpg',
   path: '/og-image.jpg',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaginasWebRoute = PaginasWebRouteImport.update({
+  id: '/paginas-web',
+  path: '/paginas-web',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PbHeroDotwebpRoute = PbHeroDotwebpRouteImport.update({
@@ -68,9 +82,19 @@ const PrivacidadRoute = PrivacidadRouteImport.update({
   path: '/privacidad',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicidadDigitalRoute = PublicidadDigitalRouteImport.update({
+  id: '/publicidad-digital',
+  path: '/publicidad-digital',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SistemasIaALaMedidaRoute = SistemasIaALaMedidaRouteImport.update({
+  id: '/sistemas-ia-a-la-medida',
+  path: '/sistemas-ia-a-la-medida',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TerminosRoute = TerminosRouteImport.update({
@@ -155,12 +179,16 @@ const ServiciosPublicidadMetaAdsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/agentes-de-ia': typeof AgentesDeIaRoute
   '/codigocero': typeof CodigoceroRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
+  '/paginas-web': typeof PaginasWebRoute
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
   '/privacidad': typeof PrivacidadRoute
+  '/publicidad-digital': typeof PublicidadDigitalRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sistemas-ia-a-la-medida': typeof SistemasIaALaMedidaRoute
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/api/booking': typeof ApiBookingRoute
@@ -180,12 +208,16 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/agentes-de-ia': typeof AgentesDeIaRoute
   '/codigocero': typeof CodigoceroRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
+  '/paginas-web': typeof PaginasWebRoute
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
   '/privacidad': typeof PrivacidadRoute
+  '/publicidad-digital': typeof PublicidadDigitalRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sistemas-ia-a-la-medida': typeof SistemasIaALaMedidaRoute
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/api/booking': typeof ApiBookingRoute
@@ -206,12 +238,16 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/agentes-de-ia': typeof AgentesDeIaRoute
   '/codigocero': typeof CodigoceroRoute
   '/og-image.jpg': typeof OgImageDotjpgRoute
+  '/paginas-web': typeof PaginasWebRoute
   '/pb-hero.webp': typeof PbHeroDotwebpRoute
   '/pb-web.webp': typeof PbWebDotwebpRoute
   '/privacidad': typeof PrivacidadRoute
+  '/publicidad-digital': typeof PublicidadDigitalRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sistemas-ia-a-la-medida': typeof SistemasIaALaMedidaRoute
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/api/booking': typeof ApiBookingRoute
@@ -233,12 +269,16 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/agentes-de-ia'
     | '/codigocero'
     | '/og-image.jpg'
+    | '/paginas-web'
     | '/pb-hero.webp'
     | '/pb-web.webp'
     | '/privacidad'
+    | '/publicidad-digital'
     | '/reset-password'
+    | '/sistemas-ia-a-la-medida'
     | '/terminos'
     | '/todos-los-servicios'
     | '/api/booking'
@@ -258,12 +298,16 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin'
+    | '/agentes-de-ia'
     | '/codigocero'
     | '/og-image.jpg'
+    | '/paginas-web'
     | '/pb-hero.webp'
     | '/pb-web.webp'
     | '/privacidad'
+    | '/publicidad-digital'
     | '/reset-password'
+    | '/sistemas-ia-a-la-medida'
     | '/terminos'
     | '/todos-los-servicios'
     | '/api/booking'
@@ -283,12 +327,16 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/agentes-de-ia'
     | '/codigocero'
     | '/og-image.jpg'
+    | '/paginas-web'
     | '/pb-hero.webp'
     | '/pb-web.webp'
     | '/privacidad'
+    | '/publicidad-digital'
     | '/reset-password'
+    | '/sistemas-ia-a-la-medida'
     | '/terminos'
     | '/todos-los-servicios'
     | '/api/booking'
@@ -309,12 +357,16 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  AgentesDeIaRoute: typeof AgentesDeIaRoute
   CodigoceroRoute: typeof CodigoceroRoute
   OgImageDotjpgRoute: typeof OgImageDotjpgRoute
+  PaginasWebRoute: typeof PaginasWebRoute
   PbHeroDotwebpRoute: typeof PbHeroDotwebpRoute
   PbWebDotwebpRoute: typeof PbWebDotwebpRoute
   PrivacidadRoute: typeof PrivacidadRoute
+  PublicidadDigitalRoute: typeof PublicidadDigitalRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SistemasIaALaMedidaRoute: typeof SistemasIaALaMedidaRoute
   TerminosRoute: typeof TerminosRoute
   TodosLosServiciosRoute: typeof TodosLosServiciosRoute
   ApiBookingRoute: typeof ApiBookingRoute
@@ -348,6 +400,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agentes-de-ia': {
+      id: '/agentes-de-ia'
+      path: '/agentes-de-ia'
+      fullPath: '/agentes-de-ia'
+      preLoaderRoute: typeof AgentesDeIaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/codigocero': {
       id: '/codigocero'
       path: '/codigocero'
@@ -360,6 +419,13 @@ declare module '@tanstack/react-router' {
       path: '/og-image.jpg'
       fullPath: '/og-image.jpg'
       preLoaderRoute: typeof OgImageDotjpgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/paginas-web': {
+      id: '/paginas-web'
+      path: '/paginas-web'
+      fullPath: '/paginas-web'
+      preLoaderRoute: typeof PaginasWebRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pb-hero.webp': {
@@ -383,11 +449,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacidadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/publicidad-digital': {
+      id: '/publicidad-digital'
+      path: '/publicidad-digital'
+      fullPath: '/publicidad-digital'
+      preLoaderRoute: typeof PublicidadDigitalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sistemas-ia-a-la-medida': {
+      id: '/sistemas-ia-a-la-medida'
+      path: '/sistemas-ia-a-la-medida'
+      fullPath: '/sistemas-ia-a-la-medida'
+      preLoaderRoute: typeof SistemasIaALaMedidaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terminos': {
@@ -501,12 +581,16 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  AgentesDeIaRoute: AgentesDeIaRoute,
   CodigoceroRoute: CodigoceroRoute,
   OgImageDotjpgRoute: OgImageDotjpgRoute,
+  PaginasWebRoute: PaginasWebRoute,
   PbHeroDotwebpRoute: PbHeroDotwebpRoute,
   PbWebDotwebpRoute: PbWebDotwebpRoute,
   PrivacidadRoute: PrivacidadRoute,
+  PublicidadDigitalRoute: PublicidadDigitalRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SistemasIaALaMedidaRoute: SistemasIaALaMedidaRoute,
   TerminosRoute: TerminosRoute,
   TodosLosServiciosRoute: TodosLosServiciosRoute,
   ApiBookingRoute: ApiBookingRoute,

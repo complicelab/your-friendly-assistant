@@ -3,7 +3,7 @@ import { ArrowRight, CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, Cloc
 import "./systems-booking.css";
 type Slot={slot_start:string;[key:string]:unknown};
 type BookingData={full_name:string;brand_name:string;country_code:string;whatsapp:string;email:string;consent:boolean};
-const dateKey=(value:string)=>{const parts=new Intl.DateTimeFormat("en-US",{timeZone:"America/Bogota",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date(value));const p=Object.fromEntries(parts.map(x=>[x.type,x.value]));return p.year+"-"+p.month+"-"+p.day};
+const dateKey=(value:string)=>{const parts=new Intl.DateTimeFormat("en-US",{timeZone:"America/Bogota",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date(value));const p=Object.fromEntries(parts.map(x=>[x.type,x.value]));return p["year"]+"-"+p["month"]+"-"+p["day"]};
 const longDate=(value:string)=>new Intl.DateTimeFormat("es-CO",{timeZone:"America/Bogota",weekday:"long",day:"numeric",month:"long",hour:"numeric",minute:"2-digit",hour12:true}).format(new Date(value));
 const shortDate=(value:string)=>new Intl.DateTimeFormat("es-CO",{timeZone:"America/Bogota",weekday:"short",day:"numeric",month:"short"}).format(new Date(value));
 const hour=(value:string)=>new Intl.DateTimeFormat("es-CO",{timeZone:"America/Bogota",hour:"numeric",minute:"2-digit",hour12:true}).format(new Date(value));

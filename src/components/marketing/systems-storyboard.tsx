@@ -12,7 +12,7 @@ const entries = [
  { number:"01", eyebrow:"DESCUBRIMIENTO", title:"Primero, alguien necesita encontrarte.", accent:"Y entender por qué elegirte.", text:"Tu presencia digital ayuda a que una persona conozca tu propuesta y pueda dar el siguiente paso. El sistema se diseña alrededor de esa primera oportunidad, sin prometer posiciones en buscadores.", tags:["Visibilidad","Confianza","Primer contacto"], duration:5 },
  { number:"02", eyebrow:"WEB + CAPTACIÓN", title:"Tu página recibe la oportunidad.", accent:"Y el contacto ya tiene dónde llegar.", text:"Una persona llena un formulario. La demostración muestra cómo sus datos pasan a la ficha de un CRM en lugar de quedarse en un correo olvidado.", tags:["Página web","Formulario","CRM"], duration:5 },
  { number:"03", eyebrow:"AGENDA CONECTADA", title:"La persona puede elegir cuándo hablar.", accent:"Y dejar su cita organizada.", text:"Cuando el proyecto incluye agendamiento, el visitante selecciona un horario disponible. El equipo puede gestionar la solicitud sin llamadas de ida y vuelta.", tags:["Agenda","Disponibilidad","Cita"], duration:5 },
- { number:"04", eyebrow:"ATENCIÓN CON IA", title:"Tu agente conversa con el cliente.", accent:"Y recoge lo que necesita.", text:"Un asistente puede responder dudas iniciales, orientar hacia una cita y dejar el contexto para el equipo. Aquí se ve la conversación paso por paso.", tags:["Agente IA","Conversación","Contexto"], duration:5 },
+ { number:"04", eyebrow:"ATENCIÓN CON IA", title:"Tu agente conversa con el cliente.", accent:"Y recoge lo que necesita.", text:"Un asistente puede responder dudas iniciales, orientar hacia una cita y dejar el contexto para el equipo. Aquí se ve la conversación paso por paso.", tags:["Agente IA","Conversación","Contexto"], duration:7 },
  { number:"05", eyebrow:"CRM A TU MEDIDA", title:"Cada oportunidad entra en tu CRM.", accent:"Y avanza con información.", text:"La ficha muestra quién llegó, su interés, la etapa comercial y la próxima acción. Puedes ver cómo el contacto cambia de estado.", tags:["CRM","Estados","Seguimiento"], duration:5 },
  { number:"06", eyebrow:"PANEL ADMINISTRATIVO", title:"Tu equipo sabe lo que tiene pendiente.", accent:"Sin buscar en cinco lugares.", text:"Un espacio administrativo reúne contactos, agenda, responsables y tareas según el trabajo diario de tu negocio.", tags:["Panel","Equipo","Control"], duration:5 },
  { number:"07", eyebrow:"CAMPAÑAS Y SEGUIMIENTO", title:"Tus clientes también pueden recibir algo especial.", accent:"Y tener una razón para volver.", text:"Imagina una campaña de Amor y Amistad: tus contactos autorizados reciben una invitación a conocer un bono de regalo. El sistema puede ayudarte a preparar el mensaje y continuar la conversación. Aquí ves un ejemplo, no un envío real.", tags:["Amor y Amistad","WhatsApp","Bono de regalo"], duration:5 },
@@ -56,7 +56,62 @@ function LeadsScene({step}:{step:number}){return <div className="sk-leads-scene"
  <div className="sk-leads-crm"><div className="sk-mini-label"><Database size={15}/> CRM · Contactos</div><V on={step>=3}><div className="sk-contact-pop"><div className="sk-avatar">VG</div><div><small>NUEVA OPORTUNIDAD</small><strong>Valeria Gómez</strong><span>Interés: conocer el servicio</span></div><CheckCircle2 size={21}/></div></V><V on={step>=4}><div className="sk-leads-stamps"><span>Origen: Web</span><span>Estado: Pendiente de atención</span></div><div className="sk-complete-note"><Check size={15}/> Contacto registrado en el ejemplo</div></V></div>
  </div>}
 
-function AgentScene({step}:{step:number}){return <div className="sk-agent-scene"><div className="sk-agent-phone"><div className="sk-wa-header"><div className="sk-wa-back">‹</div><div className="sk-wa-avatar"><Bot size={22}/></div><div><strong>Asistente de atención</strong><small>Conversación de ejemplo</small></div><span>⋮</span></div><div className="sk-wa-body"><span className="sk-wa-date">Hoy</span><V on={step>=0} className="sk-wa-right"><div>¡Hola! Quisiera saber cómo puedo agendar una consulta.<small>10:24 ✓✓</small></div></V><V on={step>=1} className="sk-wa-left"><div>¡Hola! Puedo orientarte. ¿Buscas una primera consulta o seguimiento?<small>10:24</small></div></V><V on={step>=2} className="sk-wa-right"><div>Es mi primera consulta.<small>10:25 ✓✓</small></div></V><V on={step>=3} className="sk-wa-left"><div>Perfecto. Puedo mostrarte opciones de agenda o compartir tu solicitud con el equipo.<small>10:25</small></div></V></div><div className="sk-wa-input"><span>Escribe un mensaje</span><Send size={14}/></div></div><div className="sk-agent-transfer"><div className="sk-agent-orbit"><Sparkles size={25}/><span>IA</span></div><div className="sk-agent-rail"/><V on={step>=4} className="sk-transfer-card"><div className="sk-mini-label"><Database size={15}/> CONTEXTO EN CRM</div><b>Valeria Gómez</b><span>Primera consulta</span><div className="sk-transfer-done"><Check size={15}/> Listo para continuar</div></V></div></div>}
+function AgentScene({step}:{step:number}){
+ const chatRef=useRef<HTMLDivElement>(null);
+ useEffect(()=>{
+  const chat=chatRef.current;
+  if(!chat)return;
+  const frame=window.requestAnimationFrame(()=>{
+   chat.scrollTo({top:step===0?0:chat.scrollHeight,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"});
+  });
+  return()=>window.cancelAnimationFrame(frame);
+ },[step]);
+ const analysis=[
+  {at:1,number:"01",heading:"Entiende la intención",detail:"La persona quiere agendar",symbol:MessageCircle},
+  {at:3,number:"02",heading:"Pregunta lo necesario",detail:"Es su primera consulta",symbol:Bot},
+  {at:5,number:"03",heading:"Recoge el contexto",detail:"Prefiere esta semana",symbol:CalendarDays},
+  {at:6,number:"04",heading:"Prepara el siguiente paso",detail:"Solicitud lista para el equipo",symbol:Database},
+ ];
+ return <div className="sk-ai-stage" aria-label="Conversación ilustrativa de un agente de IA que atiende una solicitud y organiza el contexto">
+  <div className="sk-ai-device-column">
+   <div className="sk-ai-signal" aria-hidden="true"><span/><span/><span/></div>
+   <div className="sk-ai-phone">
+    <div className="sk-ai-status"><strong>9:41</strong><span className="sk-ai-island"/><span>●●● ▰</span></div>
+    <div className="sk-ai-chat-header"><span className="sk-ai-chevron">‹</span><span className="sk-ai-avatar"><Bot size={21}/></span><span className="sk-ai-contact"><strong>Asistente de atención</strong><small>Ejemplo de conversación</small></span><span className="sk-ai-menu">⋮</span></div>
+    <div className="sk-ai-chat-body" ref={chatRef}>
+     <span className="sk-ai-day">Hoy</span>
+     <div className="sk-ai-bubble sk-ai-customer">Hola, ¿puedo agendar una primera consulta?<small>10:24 ✓✓</small></div>
+     {step>=1?<div className="sk-ai-bubble sk-ai-agent">¡Claro! ¿Es tu primera consulta o ya has venido?<small>10:24</small></div>:<div className="sk-ai-typing"><i/><i/><i/><span>El agente está leyendo…</span></div>}
+     {step>=2?<div className="sk-ai-bubble sk-ai-customer">Es mi primera vez.<small>10:25 ✓✓</small></div>:null}
+     {step>=3?<div className="sk-ai-bubble sk-ai-agent">Perfecto. ¿Prefieres esta semana o la próxima?<small>10:25</small></div>:null}
+     {step>=4?<div className="sk-ai-bubble sk-ai-customer">Esta semana, por favor.<small>10:26 ✓✓</small></div>:null}
+     {step>=5?<div className="sk-ai-bubble sk-ai-agent">Gracias. Dejo tu solicitud lista para consultar horarios y continuar con el equipo.<small>10:26</small></div>:null}
+     {step>=6?<div className="sk-ai-chat-finish"><CheckCircle2 size={14}/> Solicitud preparada · ejemplo</div>:null}
+    </div>
+    <div className="sk-ai-compose"><span>Escribe un mensaje…</span><Send size={14}/></div><div className="sk-ai-homebar"><i/></div>
+   </div>
+   <div className={"sk-ai-insight-chip "+(step>=1?"visible":"")}><Sparkles size={15}/><span>{step>=6?"Contexto listo":step>=5?"Identifica disponibilidad":step>=3?"Hace la pregunta adecuada":"Detecta intención: agendar"}</span></div>
+  </div>
+  <div className="sk-ai-explainer">
+   <div className="sk-ai-brain"><div className="sk-ai-brain-mark"><Sparkles size={23}/></div><div><span>ASISTENTE CON IA</span><strong>Entiende y acompaña</strong></div><i/></div>
+   <div className="sk-ai-analysis-steps">{analysis.map(item=>{
+    const Icon=item.symbol;const done=step>=item.at;const current=done&&step<(analysis.find(x=>x.at>item.at)?.at??7);
+    return <div key={item.number} className={"sk-ai-analysis-step "+(done?"is-complete ":"")+(current?"is-current":"")}>
+     <div className="sk-ai-step-marker"><span>{done?<Check size={13}/>:item.number}</span></div>
+     <div className="sk-ai-step-copy"><strong>{item.heading}</strong><small>{item.detail}</small></div>
+     <Icon size={15} className="sk-ai-step-icon"/>
+    </div>;
+   })}</div>
+   <div className={"sk-ai-handoff "+(step>=6?"is-ready":"")}>
+    <div><Database size={18}/><span>FICHA PARA EL EQUIPO</span></div>
+    <strong>Valeria Gómez</strong>
+    <small>Primera consulta · Esta semana</small>
+    <span className="sk-ai-handoff-status"><CheckCircle2 size={13}/>{step>=6?"Contexto listo para continuar":"Se prepara con la conversación"}</span>
+   </div>
+   <div className="sk-ai-microcopy">Así el equipo conoce la necesidad antes de continuar la atención.</div>
+  </div>
+ </div>;
+}
 
 function CRMScene({step}:{step:number}){
  const stage=step<=1?0:step===2?1:2;

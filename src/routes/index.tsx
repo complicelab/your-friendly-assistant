@@ -216,12 +216,12 @@ const HOMEPAGE_GOOGLE_REVIEWS_STYLES = `
   .cl-google-proof-stars{color:#f4a000;letter-spacing:.02em}
   .cl-google-proof small{display:block;margin-top:2px;color:#6b7890;font:500 10px/1.2 "Montserrat",sans-serif}
 
-  .cl-google-reviews{position:relative;padding:92px 0 98px;background:#fff;overflow:hidden}
+  .cl-google-reviews{position:relative;padding:54px 0 60px;background:#fff;overflow:hidden;border-top:1px solid rgba(27,50,91,.05);border-bottom:1px solid rgba(27,50,91,.05)}
   .cl-google-reviews:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 78% 18%,rgba(74,104,255,.08),transparent 31%);pointer-events:none}
   .cl-google-reviews-inner{position:relative;width:min(1120px,calc(100% - 48px));margin:0 auto}
   .cl-google-reviews-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:30px;align-items:end;margin-bottom:34px}
   .cl-google-reviews-kicker{display:block;margin-bottom:12px;color:#245fea;font:700 11px/1 "Montserrat",sans-serif;letter-spacing:.16em;text-transform:uppercase}
-  .cl-google-reviews h2{margin:0;max-width:790px;color:#0d1525;font:700 clamp(34px,4.2vw,60px)/1.02 "Montserrat",sans-serif;letter-spacing:-.045em}
+  .cl-google-reviews h2{margin:0;max-width:790px;color:#0d1525;font:700 clamp(30px,3.6vw,50px)/1.03 "Montserrat",sans-serif;letter-spacing:-.04em}
   .cl-google-reviews h2 span{background:linear-gradient(90deg,#2269e8 0%,#6653e9 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
   .cl-google-score{min-width:210px;padding:18px 20px;border:1px solid #e6ebf4;border-radius:22px;background:rgba(255,255,255,.88);box-shadow:0 16px 42px rgba(27,50,91,.08)}
   .cl-google-score-label{display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#53627c;font:600 11px/1.2 "Montserrat",sans-serif}
@@ -231,7 +231,7 @@ const HOMEPAGE_GOOGLE_REVIEWS_STYLES = `
   .cl-google-score-stars{color:#f4a000;font-size:17px;letter-spacing:.02em}
   .cl-google-score-count{margin-top:5px;color:#7a879d;font:500 11px/1.3 "Montserrat",sans-serif}
   .cl-google-review-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-  .cl-google-review-card{min-height:245px;padding:22px;border:1px solid #e7ecf5;border-radius:22px;background:#fff;box-shadow:0 14px 36px rgba(21,41,78,.055)}
+  .cl-google-review-card{min-height:210px;padding:20px;border:1px solid #e7ecf5;border-radius:20px;background:#fff;box-shadow:0 12px 32px rgba(21,41,78,.05)}
   .cl-google-review-author{display:flex;align-items:center;gap:12px;margin-bottom:14px;text-decoration:none!important}
   .cl-google-review-avatar{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border-radius:50%;overflow:hidden;background:#eef3ff;color:#245fea;font:700 14px/1 "Montserrat",sans-serif}
   .cl-google-review-avatar img{width:100%;height:100%;object-fit:cover}

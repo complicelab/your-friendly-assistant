@@ -6,7 +6,7 @@
 .sk-module-copy{position:relative;z-index:2}.sk-module-top{display:flex;align-items:center;gap:12px;margin-bottom:25px}.sk-module-id{font-size:11px;font-weight:850;color:#245ee1}.sk-module-eyebrow{font-size:10px;font-weight:800;letter-spacing:.09em;color:#8b9db8;border-left:1px solid #d1dbef;padding-left:12px}
 .sk-module-copy h2{font-size:clamp(31px,3.2vw,46px);line-height:1.13;letter-spacing:-.047em;font-weight:850;max-width:520px}.sk-module-copy h2 em{display:block;margin-top:3px}
 .sk-module-copy>p{font-size:14px;line-height:1.85;color:#657791;max-width:465px;margin:24px 0}.sk-module-tags{display:flex;gap:7px;flex-wrap:wrap}.sk-module-tags span{font-size:10px;padding:8px 11px;background:#eef3ff;border:1px solid #dce6fa;color:#4669af;border-radius:30px;font-weight:750}.sk-scene-actions{display:flex;align-items:center;gap:15px;margin-top:32px;flex-wrap:wrap}.sk-scene-actions button{background:#fff;color:#2c64e6;border:1px solid #b9cafa;border-radius:50px;padding:10px 15px;display:flex;align-items:center;gap:8px;cursor:pointer;font-size:11px;font-weight:750;transition:transform .2s,box-shadow .2s}.sk-scene-actions button:hover{transform:translateY(-2px);box-shadow:0 8px 20px #4677e11b}.sk-scene-actions>span{font-size:10px;color:#90a0b6}
-.sk-module-art{position:relative;min-width:0;z-index:1;isolation:isolate;padding:16px 7px 10px;background:transparent;border:0;box-shadow:none}.sk-art-glow{pointer-events:none;position:absolute;inset:5% -7% 12%;background:radial-gradient(ellipse at 54% 48%,rgba(65,105,224,.22) 0%,rgba(91,125,221,.11) 34%,transparent 67%);filter:blur(13px);z-index:-2}
+.sk-module-art{position:relative;min-width:0;z-index:1;isolation:isolate;padding:16px 7px 10px;background:transparent;border:0;box-shadow:none}.sk-art-glow{pointer-events:none;position:absolute;inset:0;z-index:-2;filter:none;background:none;opacity:1}
 .sk-frame{border:1px solid #b9cbe6;background:#fff;overflow:hidden;border-radius:19px;box-shadow:0 25px 52px rgba(29,59,118,.21),0 4px 17px rgba(24,54,107,.08)}
 .sk-frame-top{min-height:37px;display:flex;justify-content:space-between;align-items:center;padding:7px 13px;background:#f8faff;border-bottom:1px solid #e6edf8;gap:10px;color:#8a9bb4;font-size:9px}.sk-frame-pill{font-weight:850;color:#5d79c8;border:1px solid #dce5fb;padding:3px 7px;border-radius:20px;font-size:8px}.sk-window-dots{display:flex;gap:5px}.sk-window-dots i{width:7px;height:7px;border-radius:50%;background:#cbd6e8}.sk-window-dots i:first-child{background:#f0a6a1}.sk-window-dots i:nth-child(2){background:#f4d186}.sk-window-dots i:nth-child(3){background:#91d7bc}
 .sk-reveal{opacity:0;transform:translateY(10px) scale(.99);transition:opacity .5s ease,transform .55s cubic-bezier(.16,1,.3,1);pointer-events:none}.sk-reveal.on{opacity:1;transform:none;pointer-events:auto}
@@ -44,14 +44,11 @@
    There is deliberately NO outer box around each demo. */
 .sk-module{overflow:hidden}
 .sk-module-art:before,.sk-module-art:after{content:none}
-.sk-scene-accent{position:absolute;z-index:-1;pointer-events:none}
-.sk-scene-accent-a{width:174px;height:174px;right:-9%;top:-6%;background:radial-gradient(circle at 30% 30%,rgba(126,152,255,.36),rgba(117,104,239,.13) 51%,transparent 70%);border-radius:50%;filter:blur(14px);animation:sk-spatial-drift 9s ease-in-out infinite}
-.sk-scene-accent-b{width:145px;height:145px;left:-5%;bottom:1%;background:radial-gradient(circle,rgba(82,149,235,.19),transparent 70%);border-radius:50%;filter:blur(13px);animation:sk-spatial-drift 11s ease-in-out infinite reverse}
+.sk-scene-accent{position:absolute;z-index:-1;pointer-events:none;background:none;box-shadow:none;filter:none;opacity:1}.sk-scene-accent-a,.sk-scene-accent-b{width:0;height:0;inset:auto;animation:none}
 .sk-module-0 .sk-module-art,.sk-module-7 .sk-module-art{padding:10px 6px}
 .sk-module-2 .sk-module-art{padding:10px}
 .sk-module-6 .sk-module-art{padding:0}
-.sk-module-6 .sk-art-glow{background:radial-gradient(ellipse at 68% 48%,rgba(90,105,242,.25),transparent 65%);filter:blur(18px)}
-.sk-module-3 .sk-art-glow{background:radial-gradient(circle at 45% 40%,rgba(94,117,228,.2),transparent 66%)}
+
 .sk-module-art .sd-scene{width:100%;border:1px solid #c9d8ed;box-shadow:0 29px 55px rgba(29,59,111,.2),0 4px 15px rgba(25,46,91,.07)}
 .sk-module-art .sd-campaign{border:0!important;box-shadow:none!important}
 .sk-module-art .sk-frame{border-color:#b9cce7;box-shadow:0 28px 62px rgba(32,57,107,.23),0 4px 17px rgba(25,46,87,.08)}
@@ -68,6 +65,44 @@
 .sk-contact-pop{border-color:#c3d5ed;box-shadow:0 8px 19px rgba(42,58,97,.13)}
 .sk-agent-phone{border-color:#152440;box-shadow:0 29px 70px rgba(26,43,84,.32)}
 .sk-transfer-card{background:#fff;border-color:#c1d4ef;box-shadow:0 20px 48px rgba(21,42,87,.23)}
+
+/* Each story has distinct light geometry and art direction: no repeated blue blur. */
+/* 01 – Search: a crisp, airy diagonal illumination with a slim vertical guide. */
+.sk-module-0 .sk-art-glow{inset:-9% -6% 15% 8%;background:linear-gradient(116deg,transparent 14%,rgba(189,207,253,.43) 49%,rgba(234,239,255,.2) 64%,transparent 85%);filter:blur(12px);transform:skewY(-3deg)}
+.sk-module-0 .sk-scene-accent-a{width:2px;height:64%;left:4%;top:12%;background:linear-gradient(transparent,#88a4ed80,transparent)}
+.sk-module-0 .sk-scene-accent-b{width:110px;height:2px;right:1%;bottom:17%;background:linear-gradient(90deg,transparent,#bdc9f2a3,transparent)}
+/* 02 – A soft diagonal bridge visually connecting the website with the CRM. */
+.sk-module-1 .sk-art-glow{inset:17% -7% 10% 0;background:linear-gradient(100deg,transparent 9%,rgba(75,151,212,.04) 28%,rgba(75,151,212,.16) 52%,rgba(109,106,226,.09) 72%,transparent 98%);transform:rotate(-9deg);filter:blur(7px)}
+.sk-module-1 .sk-scene-accent-a{width:94px;height:94px;top:3%;right:8%;border:1px solid rgba(91,128,219,.19);border-radius:28px;transform:rotate(24deg)}
+.sk-module-1 .sk-scene-accent-b{width:30px;height:30px;bottom:10%;left:5%;background:#e3edff;border:1px solid #c1d4f4;border-radius:10px;transform:rotate(-16deg)}
+/* 03 – Calendar: illumination confined to the lower-right edge, like daylight. */
+.sk-module-2 .sk-art-glow{inset:22% -17% -10% 32%;background:radial-gradient(ellipse at 81% 78%,rgba(97,138,231,.26) 0%,rgba(106,142,241,.10) 35%,transparent 68%);filter:blur(11px)}
+.sk-module-2 .sk-scene-accent-a{height:130px;width:130px;bottom:-5%;right:-4%;border-radius:50%;border:1px solid #98b7e747;box-shadow:0 0 0 22px #bbcef71b,0 0 0 46px #bfcced14}
+.sk-module-2 .sk-scene-accent-b{width:84px;height:1px;top:15%;left:5%;background:#b5c8f460;transform:rotate(-19deg)}
+/* 04 – AI: narrow vertical wash behind the phone and animated precision lines. */
+.sk-module-3 .sk-art-glow{inset:-8% 33% 0 6%;background:linear-gradient(180deg,transparent 0%,rgba(90,112,234,.11) 16%,rgba(91,121,235,.21) 47%,rgba(131,107,234,.08) 78%,transparent);filter:blur(17px);transform:skewX(-8deg)}
+.sk-module-3 .sk-scene-accent-a{width:1px;height:56%;left:41%;top:19%;background:linear-gradient(transparent,#718dec9c,transparent);box-shadow:0 0 18px 4px #6b89ee24}
+.sk-module-3 .sk-scene-accent-b{width:7px;height:7px;border-radius:50%;left:41%;top:20%;background:#6a76ea;box-shadow:0 0 0 7px #7c93ee18;animation:sk-ai-signal-rise 5.5s ease-in-out infinite}
+/* 05 – CRM: horizontal channel signaling progression across stages. */
+.sk-module-4 .sk-art-glow{inset:33% -13% 19% -6%;background:linear-gradient(90deg,transparent 0%,rgba(86,146,240,.14) 30%,rgba(75,109,232,.23) 55%,rgba(128,111,229,.08) 83%,transparent);filter:blur(18px);transform:rotate(-4deg)}
+.sk-module-4 .sk-scene-accent-a{height:1px;width:78%;top:17%;left:9%;background:linear-gradient(90deg,transparent,#8baee777,transparent);transform:rotate(-4deg)}
+.sk-module-4 .sk-scene-accent-b{height:7px;width:7px;right:7%;bottom:12%;background:#6c8ce1;border-radius:50%;box-shadow:0 0 0 8px #90b2f824}
+/* 06 – Administration: restrained architectural light and grounding shadow. */
+.sk-module-5 .sk-art-glow{inset:58% 6% -5% 3%;background:linear-gradient(0deg,rgba(62,97,177,.13),rgba(62,97,177,.03) 43%,transparent 100%);filter:blur(14px)}
+.sk-module-5 .sk-scene-accent-a{width:72px;height:72px;top:-2%;left:-2%;border-top:1px solid #93acd962;border-left:1px solid #93acd962;border-radius:9px}
+.sk-module-5 .sk-scene-accent-b{width:52px;height:52px;bottom:6%;right:2%;border-bottom:1px solid #93acd94a;border-right:1px solid #93acd94a;border-radius:7px}
+/* 07 – Gift campaign has its own lilac/violet reflections on the voucher and phone. */
+.sk-module-6 .sk-art-glow{inset:3% -5% 0 16%;background:conic-gradient(from 215deg at 62% 46%,transparent 0deg,rgba(181,143,237,.12) 66deg,rgba(92,119,230,.11) 130deg,transparent 225deg);filter:blur(24px)}
+.sk-module-6 .sk-scene-accent-a{width:60px;height:60px;left:0;bottom:18%;border:1px solid rgba(169,130,231,.25);border-radius:18px;transform:rotate(18deg)}
+.sk-module-6 .sk-scene-accent-b{width:90px;height:90px;top:7%;right:4%;border-radius:50%;background:radial-gradient(circle,rgba(166,125,229,.13),transparent 72%)}
+/* 08 – Analytics: fine chart-line grid, no amorphous halo. */
+.sk-module-7 .sk-art-glow{inset:9% -4% 13%;background:repeating-linear-gradient(0deg,transparent 0 45px,rgba(89,134,208,.085) 46px,transparent 47px),repeating-linear-gradient(90deg,transparent 0 59px,rgba(89,134,208,.065) 60px,transparent 61px);mask-image:linear-gradient(110deg,transparent 0%,black 28%,black 69%,transparent 100%);filter:none}
+.sk-module-7 .sk-scene-accent-a{width:160px;height:1px;bottom:7%;left:5%;background:linear-gradient(90deg,#7299e280,transparent);transform:rotate(-12deg)}
+.sk-module-7 .sk-scene-accent-b{width:10px;height:10px;right:8%;top:12%;border:2px solid #759ee477;border-radius:50%}
+@keyframes sk-ai-signal-rise{0%,100%{transform:translateY(0);opacity:.25}45%{transform:translateY(120px);opacity:1}75%{opacity:.3}}
+@media(max-width:640px){.sk-module-3 .sk-art-glow{inset:1% 20% 5% 9%}.sk-module-3 .sk-scene-accent-a,.sk-module-3 .sk-scene-accent-b{display:none}.sk-module-7 .sk-art-glow{inset:7% -9% 16%}}
+@media(prefers-reduced-motion:reduce){.sk-module-3 .sk-scene-accent-b{animation:none}}
+
 /* CRM: visible lead moves between real stages, not duplicated in columns. */
 .sk-crm-scene{position:relative;overflow:visible;padding-bottom:8px}
 .sk-crm-frame{border-color:#b3c9eb}

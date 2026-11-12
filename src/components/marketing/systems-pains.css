@@ -25,10 +25,8 @@
 .sx-pains-demo-title{display:flex;align-items:start;justify-content:space-between;gap:12px;margin-bottom:10px;padding:0 7px}
 .sx-pains-demo-title>div>span{color:#3b69c4;font-size:11px;letter-spacing:.105em;font-weight:850}
 .sx-pains-demo-title h3{font-size:clamp(20px,2vw,25px);line-height:1.2;letter-spacing:-.04em;color:#142747;margin:7px 0 0}
-.sx-pains-demo-tag{display:flex;align-items:center;gap:6px;border:1px solid #d2e0f7;background:#eff4ff;border-radius:28px;padding:7px 10px;color:#5672a8;letter-spacing:.07em;font-size:10px;font-weight:800;white-space:nowrap}
-.sx-pains-demo-tag i{height:6px;width:6px;border-radius:50%;background:#758fcb}
-.sx-stage{position:relative;height:467px;width:100%;overflow:hidden;border-radius:20px}
-.sx-pain-scene{position:relative;width:100%;height:100%;overflow:hidden;isolation:isolate;animation:sx-stage-enter .45s ease-out both;border-radius:20px}
+.sx-stage{position:relative;height:490px;width:100%;overflow:visible;border-radius:20px}
+.sx-pain-scene{position:relative;width:100%;height:100%;overflow:visible;isolation:isolate;animation:sx-stage-enter .45s ease-out both;border-radius:20px}
 .sx-pain-flag{position:absolute;z-index:6;display:flex;align-items:center;gap:9px;padding:12px;background:rgba(255,255,255,.97);border:1px solid #cbd8ef;border-radius:14px;box-shadow:0 15px 38px rgba(21,45,96,.23);opacity:0;transform:translateY(15px) scale(.94);pointer-events:none;transition:opacity .4s ease,transform .55s cubic-bezier(.16,1,.3,1);max-width:235px}
 .sx-pain-flag.is-visible{opacity:1;transform:none}
 .sx-pain-flag>svg{flex-shrink:0;color:#b07b42}
@@ -39,16 +37,6 @@
 .sx-pain-window{border:1px solid #c3d5eb;border-radius:16px;background:white;box-shadow:0 24px 52px rgba(21,47,98,.23),0 4px 13px rgba(17,45,92,.09);overflow:hidden}
 .sx-pain-window-bar{height:33px;display:flex;justify-content:space-between;align-items:center;gap:9px;padding:0 13px;color:#849ab7;font-size:10px;background:linear-gradient(90deg,#f0f4fb,#fff);border-bottom:1px solid #e2eaf6}
 .sx-pain-dots{display:flex;gap:4px}.sx-pain-dots i{width:6px;height:6px;border-radius:50%;background:#e3aaa7}.sx-pain-dots i:nth-child(2){background:#f0cc8a}.sx-pain-dots i:nth-child(3){background:#8ed3b2}
-.sx-pains-demo-bottom{display:flex;align-items:center;justify-content:space-between;gap:13px;padding:13px 7px 0;border-top:1px solid #e3ebf7;position:relative;z-index:2}
-.sx-pains-progress{display:flex;align-items:center;gap:6px}
-.sx-pains-progress>span{font-size:11px;color:#7489ae;font-weight:750;margin-right:4px;white-space:nowrap}
-.sx-pains-progress>span:last-child{margin:0 0 0 6px}
-.sx-pains-progress button{display:grid;place-items:center;cursor:pointer;border:0;background:none;padding:5px 1px}
-.sx-pains-progress button i{height:5px;width:22px;border-radius:12px;background:#c7d5eb;transition:background .3s,width .3s}
-.sx-pains-progress button.active i{width:30px;background:linear-gradient(90deg,#2e6def,#7858e7)}
-.sx-pain-moment{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:11px 7px 0;margin:0;color:#617797;font-size:13px;line-height:1.5;font-weight:650}
-.sx-pain-moment>span{color:#a47748;font-size:11px;letter-spacing:.05em;font-weight:850}
-.sx-demo-disclaimer{padding:4px 7px 0;margin:0;color:#8b9ab0;font-size:11px;line-height:1.6}
 .sx-pains-transition{display:flex;align-items:center;justify-content:space-between;gap:27px;margin-top:50px;padding:29px 0;border-top:1px solid #e1e9f5;border-bottom:1px solid #e1e9f5}
 .sx-pains-transition>div{display:flex;flex-direction:column;gap:8px}
 .sx-pains-transition>div>span{font-size:12px;color:#416fe7;letter-spacing:.1em;font-weight:850}
@@ -64,7 +52,7 @@
 .sx-pain-forgotten:before{inset:16% 9% 12% 13%;background:radial-gradient(ellipse at 40% 55%,rgba(117,125,225,.16),rgba(187,152,203,.08) 38%,transparent 73%);filter:blur(22px)}
 .sx-pain-scattered:before{inset:15% 6% 5% 8%;background:radial-gradient(ellipse at 50% 54%,rgba(139,165,226,.17),transparent 70%);filter:blur(20px)}
 /* WhatsApp-like mobile mockups — recognisable green/cream chat design. */
-.sx-wa-phone{position:absolute;left:21%;top:20px;width:264px;height:424px;z-index:2;display:flex;flex-direction:column;overflow:hidden;background:#efeae2;border:7px solid #14243d;border-radius:36px;box-shadow:0 30px 61px rgba(25,43,80,.34),0 6px 18px rgba(21,53,94,.12);transform:rotate(-1.7deg);animation:sx-wa-float 7s ease-in-out infinite}
+.sx-wa-phone{position:absolute;left:21%;top:20px;width:264px;height:424px;z-index:2;display:flex;flex-direction:column;overflow:hidden;background:#efeae2;border:7px solid #14243d;border-radius:36px;box-shadow:0 23px 46px -12px rgba(25,43,80,.28),0 8px 18px -6px rgba(21,53,94,.16);transform:rotate(-1.7deg);animation:sx-wa-float 7s ease-in-out infinite}
 .sx-wa-status{flex:0 0 24px;height:24px;display:flex;align-items:center;justify-content:space-between;gap:7px;padding:0 13px;color:#22344a;background:#fafbfa;font-size:9px}
 .sx-wa-status i{height:12px;width:54px;border-radius:15px;background:#122238}.sx-wa-status>span{font-size:8px}
 .sx-wa-header{display:flex;align-items:center;gap:6px;flex:0 0 55px;padding:7px 7px;background:#fafbfa;border-bottom:1px solid #dde6e3;color:#51627a}
@@ -170,7 +158,6 @@
  .sx-pains-choices{grid-template-columns:1fr}.sx-pains-choices button{min-height:84px;padding:15px 7px}.sx-pains-choices button.active{padding-left:10px}
  .sx-choice-text strong{font-size:16px}.sx-choice-text small{font-size:13px;line-height:1.5}
  .sx-pains-demo-title{padding:0 2px;gap:7px}.sx-pains-demo-title h3{font-size:19px}.sx-pains-demo-title>div>span{font-size:10px}
- .sx-pains-demo-tag{font-size:9px;padding:6px 8px}
  /* Full phone first; below it a compact stack of consequence callouts, no message occlusion. */
  .sx-stage{height:641px}.sx-pains-demo-3 .sx-stage{height:470px}
  .sx-pain-scene{border-radius:16px}
@@ -190,15 +177,11 @@
  .sx-fragment-whatsapp{left:1%;top:42px;width:60%}
  .sx-pain-frag-mail{left:2%;top:247px;width:56%}.sx-pain-frag-note{right:1%;top:238px;width:41%;height:143px}
  .sx-pain-scattered-question{right:1%;bottom:11px;width:193px}
- .sx-pain-moment{font-size:12px}.sx-pain-moment>span{font-size:10px}
- .sx-pains-progress button i{width:17px}.sx-pains-progress button.active i{width:23px}
- .sx-pains-demo-bottom{padding:12px 2px 0}
  .sx-pains-transition strong{font-size:17px}.sx-pains-transition a{font-size:14px}
 }
 @media(max-width:380px){
  .sx-wa-phone,.sx-wa-phone-schedule,.sx-wa-phone-forgotten{width:min(238px,91%)}
  .sx-pain-scattered-question{width:185px}
- .sx-pains-progress>span:first-child{display:none}
 }
 @media(prefers-reduced-motion:reduce){
  .sx-wa-phone,.sx-wa-bubble,.sx-pain-scene{animation:none!important}

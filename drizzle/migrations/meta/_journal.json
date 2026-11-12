@@ -29,6 +29,13 @@
       "when": 1794451771647,
       "tag": "0003_whatsapp_ia_inbound",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794451814482,
+      "tag": "0004_fix_whatsapp_inbound_digest_search_path",
+      "breakpoints": true
     }
   ]
 }

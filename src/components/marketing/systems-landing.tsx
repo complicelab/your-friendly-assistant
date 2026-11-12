@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ArrowRight, ArrowUpRight, Bell, CalendarDays, Check, CheckCircle2, ChevronDown, Clock3, Database, LayoutDashboard, MessageCircle, MoveUpRight, Sparkles, Workflow } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { ArrowRight, ArrowUpRight, CalendarDays, Check, CheckCircle2, ChevronDown, Clock3, Database, LayoutDashboard, MessageCircle, MoveUpRight, Sparkles, Workflow } from "lucide-react";
 import { BrandMark } from "@/components/marketing/brand";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { WhatsAppFloat } from "@/components/marketing/whatsapp-float";
@@ -14,12 +14,12 @@ const stages = [
   { title:"Puedes entender qué está pasando", eyebrow:"04 · VISIBILIDAD", description:"Un panel reúne lo que tu negocio necesita observar: entradas, pendientes y acciones por resolver.", chip:"Vista administrativa", type:"panel" },
 ] as const;
 
-function Action({children,secondary=false}:{children:React.ReactNode;secondary?:boolean}) { return <a className={secondary?"sys-action sys-action-secondary":"sys-action"} href={contact} target="_blank" rel="noopener noreferrer">{children}<ArrowUpRight size={17}/></a> }
+function Action({children}:{children:ReactNode}) { return <a className="sys-action" href={contact} target="_blank" rel="noopener noreferrer">{children}<ArrowUpRight size={17}/></a> }
 
-function SystemDemo({compact=false}:{compact?:boolean}) {
+function SystemDemo() {
  const [active,setActive]=useState(0);
  const item=stages[active]!;
- return <div className={compact?"sys-demo sys-demo-compact":"sys-demo"} aria-label="Demostración conceptual de un sistema con IA">
+ return <div className="sys-demo" aria-label="Demostración conceptual de un sistema con IA">
   <div className="sys-demo-top"><div className="sys-demo-brand"><span className="sys-demo-mark">C<span>•</span></span><span>CÓMPLICE LAB <small>DEMO CONCEPTUAL</small></span></div><div className="sys-demo-live"><span/> Vista interactiva</div></div>
   <div className="sys-demo-shell">
    <div className="sys-demo-sidebar"><div className="sys-sidebar-label">MI NEGOCIO</div>{[{icon:MessageCircle,label:"Entradas"},{icon:Database,label:"Contactos"},{icon:Workflow,label:"Seguimiento"},{icon:LayoutDashboard,label:"Indicadores"}].map((x,i)=><button type="button" key={x.label} className={active===i?"is-active":""} onClick={()=>setActive(i)} aria-pressed={active===i}><x.icon size={17}/><span>{x.label}</span></button>)}<div className="sys-sidebar-bottom"><Sparkles size={14}/> Sistema conectado</div></div>

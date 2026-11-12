@@ -27,6 +27,8 @@
 .sx-stage{min-height:488px;position:relative}
 .sx-scene{position:relative;min-height:488px;width:100%;isolation:isolate;animation:sx-scene-arrive .45s ease both;overflow:visible}
 .sx-pop{display:flex;gap:10px;align-items:center;position:absolute;z-index:5;background:rgba(255,255,255,.97);border:1px solid #c8d7f1;border-radius:15px;padding:12px;box-shadow:0 18px 43px rgba(28,53,112,.22),0 2px 8px rgba(33,63,114,.05);opacity:0;transform:translateY(18px) scale(.93);pointer-events:none;transition:opacity .48s ease,transform .55s cubic-bezier(.16,1,.3,1);backdrop-filter:blur(7px)}
+.sx-scene-messages .sx-pop:before{content:"";position:absolute;left:-25px;top:50%;width:24px;height:1px;background:linear-gradient(90deg,#7298ea45,#6d91e3a8);transform:translateY(-50%);pointer-events:none}
+.sx-scene-messages .sx-pop:after{content:"";position:absolute;left:-30px;top:calc(50% - 3px);width:6px;height:6px;border-radius:50%;background:#769beb;box-shadow:0 0 0 5px #c5d6f64a;pointer-events:none}
 .sx-pop.is-on{opacity:1;transform:none}
 .sx-pop>span:not(.sx-pop-symbol){display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
 .sx-pop>span>strong{font-size:10px;line-height:1.3;color:#203555;font-weight:850}
@@ -58,9 +60,9 @@
 .sx-interface-dots{display:flex;gap:4px}.sx-interface-dots i{height:6px;width:6px;border-radius:50%;background:#edb2b0}.sx-interface-dots i:nth-child(2){background:#efd58d}.sx-interface-dots i:nth-child(3){background:#96d3b2}
 .sx-interface-demo{border:1px solid #ccdcf4;border-radius:20px;color:#4671c6;font-size:7px;letter-spacing:.05em;padding:4px 7px}
 /* Pain 01 – a full phone, an unread message, and floating CRM handling. */
-.sx-scene-messages:before{content:"";position:absolute;z-index:-1;top:5%;left:8%;width:58%;height:79%;background:radial-gradient(ellipse at center,rgba(64,104,230,.16),rgba(128,156,245,.09) 43%,transparent 70%);filter:blur(18px)}
-.sx-messages-ambient{position:absolute;left:27%;top:9%;width:40%;height:75%;border-radius:50%;border:1px solid #bacff44a;box-shadow:0 0 0 25px #c8d8f317,0 0 0 55px #dce6fb13;transform:rotate(-12deg);z-index:-1}
-.sx-phone-scene{position:absolute;left:12%;top:17px;height:401px;width:230px;background:#eae9e2;border:7px solid #16243d;border-radius:34px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 28px 61px rgba(21,42,81,.35),0 8px 18px rgba(25,47,93,.15);transform:rotate(-3deg);animation:sx-phone-levitate 7s ease-in-out infinite}
+.sx-scene-messages:before{content:"";position:absolute;z-index:-1;top:10%;left:19%;width:67%;height:75%;background:radial-gradient(ellipse at 40% 52%,rgba(64,105,226,.19),rgba(123,151,236,.07) 44%,transparent 72%);filter:blur(13px)}
+.sx-messages-ambient{position:absolute;left:25%;top:11%;width:53%;height:72%;border-radius:50%;border:1px solid #a9c4f157;box-shadow:0 0 0 19px #c8d8f319,0 0 0 42px #dce6fb11;transform:rotate(-9deg);z-index:-1}
+.sx-phone-scene{position:absolute;left:20%;top:19px;height:426px;width:249px;background:#eae9e2;border:7px solid #16243d;border-radius:36px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 67px rgba(21,42,81,.35),0 8px 19px rgba(25,47,93,.16);transform:rotate(-2deg);animation:sx-phone-levitate 7s ease-in-out infinite}
 .sx-phone-top{height:26px;background:white;display:flex;align-items:center;justify-content:space-between;gap:7px;padding:2px 13px;color:#263a52;font-size:8px}
 .sx-phone-top>span:last-child{font-size:8px}.sx-phone-notch{height:13px;width:52px;border-radius:30px;background:#15233b}
 .sx-phone-contact{height:55px;background:#fff;display:flex;gap:7px;align-items:center;padding:8px;border-bottom:1px solid #e4eaf0}
@@ -78,10 +80,10 @@
 .sx-chat-status.is-urgent{background:#fff1dc;color:#a06f3c}
 .sx-phone-input{display:flex;justify-content:space-between;padding:9px 12px;background:#fff;font-size:8px;color:#9cabbc}
 .sx-phone-input svg{color:#238b6d}.sx-phone-home{height:13px;display:grid;place-items:center;background:#fff}.sx-phone-home i{width:68px;height:4px;border-radius:20px;background:#16243d}
-.sx-messages-alert{top:47px;right:0;width:213px;border-color:#f1d8b7;transform-origin:left center}.sx-messages-alert>svg:last-child{color:#c18b47}
-.sx-messages-contact{top:194px;right:-8px;width:228px}
-.sx-messages-resolved{right:3px;bottom:48px;width:223px}
-.sx-messages-trace{position:absolute;right:25%;bottom:24px;z-index:-1;display:flex;gap:12px}.sx-messages-trace span{height:5px;width:5px;background:#86a8f1;border-radius:50%;box-shadow:0 0 0 6px #d7e5ff}.sx-messages-trace span:nth-child(2){opacity:.55}.sx-messages-trace span:nth-child(3){opacity:.3}
+.sx-messages-alert{top:60px;right:6%;width:210px;border-color:#f1d8b7;transform-origin:left center}.sx-messages-alert>svg:last-child{color:#c18b47}
+.sx-messages-contact{top:191px;right:3%;width:220px}
+.sx-messages-resolved{right:5%;bottom:62px;width:218px}
+.sx-messages-trace{position:absolute;right:13%;bottom:36px;z-index:-1;display:flex;gap:12px}.sx-messages-trace span{height:5px;width:5px;background:#86a8f1;border-radius:50%;box-shadow:0 0 0 6px #d7e5ff}.sx-messages-trace span:nth-child(2){opacity:.55}.sx-messages-trace span:nth-child(3){opacity:.3}
 /* Pain 02 – calendar interface and messages become one reservation flow. */
 .sx-scene-schedule:before{content:"";position:absolute;z-index:-1;left:10%;top:10%;width:82%;height:76%;background:linear-gradient(130deg,rgba(179,198,245,.12),rgba(123,135,235,.18) 57%,transparent 83%);transform:skewY(-6deg);filter:blur(20px)}
 .sx-schedule-rays{position:absolute;right:1%;top:3%;height:120px;width:120px;border-radius:50%;border:1px solid #8eacdf44;box-shadow:0 0 0 25px #b7c8f515,0 0 0 52px #bdc8ec0d}
@@ -172,8 +174,8 @@
 @keyframes sx-bubble-appear{from{opacity:.2;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
 @keyframes sx-phone-levitate{0%,100%{transform:rotate(-3deg) translateY(0)}50%{transform:rotate(-2deg) translateY(-6px)}}
 @keyframes sx-chart-trace{to{stroke-dashoffset:0}}
-@media(max-width:1050px){.sx-pains-composition{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:10px}.sx-pop{padding:10px}.sx-pop>span>strong{font-size:9px}.sx-pop>span>small{font-size:8px}.sx-phone-scene{left:7%}.sx-messages-alert{right:-6px}.sx-messages-contact{right:-7px}}
-@media(max-width:900px){.sx-pains{padding:80px 0 88px}.sx-pains-composition{grid-template-columns:1fr;gap:30px}.sx-pains-choices{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.sx-pains-demo{width:min(100%,725px);margin:auto}.sx-pains-transition{flex-direction:column;align-items:flex-start}.sx-phone-scene{left:18%}.sx-messages-alert,.sx-messages-contact{right:5%}.sx-messages-resolved{right:8%}}
+@media(max-width:1050px){.sx-pains-composition{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:10px}.sx-pop{padding:10px}.sx-pop>span>strong{font-size:9px}.sx-pop>span>small{font-size:8px}.sx-phone-scene{left:19%;width:240px}.sx-messages-alert{right:5%;width:190px}.sx-messages-contact{right:3%;width:200px}.sx-messages-resolved{right:5%;width:194px}}
+@media(max-width:900px){.sx-pains{padding:80px 0 88px}.sx-pains-composition{grid-template-columns:1fr;gap:30px}.sx-pains-choices{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.sx-pains-demo{width:min(100%,725px);margin:auto}.sx-pains-transition{flex-direction:column;align-items:flex-start}.sx-phone-scene{left:23%;width:249px}.sx-messages-alert{right:12%;width:207px}.sx-messages-contact{right:10%;width:215px}.sx-messages-resolved{right:13%;width:208px}}
 @media(max-width:590px){
  .sx-pains{padding:68px 0}.sx-pains-head h2{font-size:33px}.sx-pains-head p{font-size:13px}
  .sx-pains-choices{grid-template-columns:1fr;gap:0}.sx-pains-choices button{min-height:67px;padding:12px 7px}.sx-pains-choices button.active{padding-left:11px}
@@ -183,8 +185,8 @@
  .sx-stage,.sx-scene{min-height:480px}.sx-pop{padding:8px;gap:6px;border-radius:11px}
  .sx-pop-symbol{width:26px;height:26px;border-radius:8px}.sx-pop-symbol svg{width:15px}
  .sx-pop>span>strong{font-size:9px}.sx-pop>span>small{font-size:7px}
- .sx-phone-scene{left:3%;width:200px;height:367px;border-width:6px;top:32px}.sx-phone-contact{padding:6px}.sx-chat-message{font-size:9px}
- .sx-messages-alert{right:0;top:50px;width:158px}.sx-messages-contact{right:0;top:180px;width:173px}.sx-messages-resolved{right:2%;bottom:48px;width:172px}.sx-messages-trace{right:12%}
+ .sx-phone-scene{left:5%;width:210px;height:385px;border-width:6px;top:28px}.sx-phone-contact{padding:6px}.sx-chat-message{font-size:9px}
+ .sx-messages-alert{right:1%;top:65px;width:150px}.sx-messages-contact{right:0;top:191px;width:168px}.sx-messages-resolved{right:2%;bottom:53px;width:163px}.sx-messages-trace{right:8%}.sx-scene-messages .sx-pop:before{left:-13px;width:12px}.sx-scene-messages .sx-pop:after{left:-17px;width:5px;height:5px;top:calc(50% - 2px)}
  .sx-schedule-window{left:3%;width:94%;top:62px;min-height:330px}.sx-calendar-heading{padding:19px 14px 4px}.sx-calendar-heading h4{font-size:16px}
  .sx-calendar-weekdays,.sx-calendar-month{padding:0 9px}.sx-calendar-month span{font-size:9px}
  .sx-calendar-slot-list{padding:9px 4px}.sx-calendar-slot-list span{padding:8px 10px}
@@ -199,5 +201,5 @@
  .sx-pains-demo-bottom{padding:3px 2px}.sx-pains-progress button i{width:19px}.sx-pains-progress button.active i{width:26px}
  .sx-pains-transition{margin-top:34px}.sx-pains-transition strong{font-size:16px}.sx-pains-transition a{font-size:12px}
 }
-@media(max-width:380px){.sx-phone-scene{left:0;width:191px}.sx-messages-alert{width:146px}.sx-messages-contact,.sx-messages-resolved{width:154px}.sx-schedule-window{width:98%;left:1%}.sx-pipeline-col-title{font-size:6px}}
+@media(max-width:380px){.sx-phone-scene{left:1%;width:196px;height:370px}.sx-messages-alert{width:139px}.sx-messages-contact,.sx-messages-resolved{width:149px}.sx-schedule-window{width:98%;left:1%}.sx-pipeline-col-title{font-size:6px}}
 @media(prefers-reduced-motion:reduce){.sx-pains *,.sx-pains *:before,.sx-pains *:after{animation:none!important;transition:none!important}.sx-pop.is-on{opacity:1!important;transform:none!important}.sx-visibility-chart svg polyline.is-traced{stroke-dashoffset:0!important}}

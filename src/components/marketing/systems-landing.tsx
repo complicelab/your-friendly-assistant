@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { ArrowRight, ArrowUpRight, CalendarDays, Check, CheckCircle2, ChevronDown, Clock3, Database, LayoutDashboard, MessageCircle, MoveUpRight, Sparkles, Workflow } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronDown, Clock3, Database, LayoutDashboard, MessageCircle, Sparkles, Workflow } from "lucide-react";
 import { BrandMark } from "@/components/marketing/brand";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { WhatsAppFloat } from "@/components/marketing/whatsapp-float";

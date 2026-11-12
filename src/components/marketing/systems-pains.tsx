@@ -40,7 +40,7 @@ function MessagePain({phase}:{phase:number}){
 function SchedulePain({phase}:{phase:number}){
  return <div className="sx-scene sx-scene-schedule" aria-label="Ejemplo animado de coordinación de una cita con calendario">
   <div className="sx-schedule-rays" aria-hidden="true"/>
-  <SceneWindow label="tunegocio.com/agenda" className="sx-schedule-window">
+  <SceneWindow label="tunegocio.com/agenda" className={"sx-schedule-window "+(phase<2?"is-before":"is-after")}>
    <div className="sx-calendar-heading"><div><span>AGENDA DE EJEMPLO</span><h4>Encuentra un horario</h4></div><CalendarDays size={24}/></div>
    <div className="sx-calendar-caption">Noviembre <span>‹ &nbsp; ›</span></div>
    <div className="sx-calendar-weekdays">{["L","M","M","J","V","S","D"].map((x,i)=><span key={i}>{x}</span>)}</div>
@@ -48,7 +48,12 @@ function SchedulePain({phase}:{phase:number}){
    <div className="sx-calendar-slot-list"><strong>Horarios de ejemplo</strong><div>{["9:00","10:30","14:00"].map((h,i)=><span className={i===1&&phase>=2?"picked":""} key={h}>{h}</span>)}</div></div>
    <div className={"sx-calendar-confirm "+(phase>=3?"confirmed":"")}><CalendarCheck2 size={16}/>{phase>=3?"Solicitud de cita preparada":"Selecciona fecha y hora"}</div>
   </SceneWindow>
-  <Pop show={phase<3} className="sx-schedule-conversation"><span className="sx-pop-symbol warning"><MessageCircle size={17}/></span><span><strong>«¿Puedes el martes?»</strong><small>«Ese día no puedo...»</small><small>«¿Y el miércoles?»</small></span></Pop>
+  <div className={"sx-schedule-before "+(phase<2?"is-visible":"")} aria-hidden={phase>=2}>
+   <div className="sx-schedule-before-head"><span><MessageCircle size={15}/></span><strong>Coordinar por mensajes</strong><small>Conversación de ejemplo</small></div>
+   <div className="sx-schedule-before-chat"><span>¿Tienes cita el martes?</span><span>Ese día no puedo…</span><span>¿Entonces el miércoles?</span><span>Déjame revisar.</span></div>
+   <div className="sx-schedule-before-foot"><Clock3 size={14}/> Varias respuestas y todavía sin horario</div>
+  </div>
+  <Pop show={phase<2} className="sx-schedule-conversation"><span className="sx-pop-symbol warning"><MessageCircle size={17}/></span><span><strong>«¿Puedes el martes?»</strong><small>«Ese día no puedo...»</small><small>«¿Y el miércoles?»</small></span></Pop>
   <Pop show={phase>=2} className="sx-schedule-selected"><span className="sx-pop-symbol violet"><MousePointer2 size={16}/></span><span><strong>Horario elegido</strong><small>Miércoles · 10:30 a. m.</small></span></Pop>
   <Pop show={phase>=3} className="sx-schedule-success"><CheckCircle2 size={20}/><span><strong>Una solicitud organizada</strong><small>El equipo puede continuar</small></span></Pop>
  </div>;
@@ -81,6 +86,7 @@ function VisibilityPain({phase}:{phase:number}){
     <div className="sx-visibility-foot">{phase<2?<><CircleAlert size={14}/> Mensajes, web y citas aún separados</>:<><CheckCircle2 size={14}/>{phase>=3?"Contactos, citas y tareas reunidos":"La información empieza a conectarse"}</>}</div>
    </div></div>
   </SceneWindow>
+  <div className={"sx-visibility-disconnected "+(phase<2?"is-visible":"")} aria-hidden={phase>=2}><CircleAlert size={19}/><div><strong>¿Cuántos siguen esperando?</strong><span>Mensajes, citas y contactos en lugares distintos.</span></div></div>
   <Pop show={true} className="sx-visibility-source one"><span className="sx-pop-symbol mint"><MessageCircle size={17}/></span><span><strong>Mensajes</strong><small>Consultas</small></span></Pop>
   <Pop show={phase>=1} className="sx-visibility-source two"><span className="sx-pop-symbol blue"><Globe2 size={17}/></span><span><strong>Página web</strong><small>Formularios</small></span></Pop>
   <Pop show={phase>=2} className="sx-visibility-source three"><span className="sx-pop-symbol violet"><CalendarDays size={17}/></span><span><strong>Agenda</strong><small>Citas</small></span></Pop>

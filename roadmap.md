@@ -1,8 +1,8 @@
 # Activación WhatsApp IA existente
-- [ ] Revisar secreto, migración y conservación de datos/RLS.
-- [ ] Aplicar migración y desplegar la función existente con x-clave obligatorio.
-- [ ] Probar seguridad, duplicados, actualizaciones y contacto ficticio visible en /admin.
-- [ ] Informar URL operativa y resultados sin revelar secretos ni publicar la home.
+- [x] Revisar secreto, migración y conservación de datos/RLS.
+- [x] Aplicar migración y desplegar la función existente con x-clave obligatorio.
+- [x] Probar seguridad, duplicados, actualizaciones y contacto ficticio visible en /admin.
+- [x] Informar endpoint operativo y resultados sin revelar secretos ni publicar la home.
 
 # Módulo interno de agenda
 - [x] Conservar Oportunidades y verificar Agenda, Configuración, notificaciones y responsive.

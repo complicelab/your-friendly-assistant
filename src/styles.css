@@ -816,11 +816,13 @@ svg { flex: 0 0 auto; }
 .faq-item[open] summary svg { transform:rotate(180deg); }
 .faq-item p { margin:0; padding:0 42px 24px 0; color:var(--cl-muted); line-height:1.75; font-size:.86rem; }
 
-.footer { padding:78px 0 24px; background:#020304; border-top:1px solid rgba(255,255,255,.08); }
-.footer-grid { display:grid; grid-template-columns:1.4fr .8fr .9fr .8fr; gap:36px; }
-.footer-grid p { color:#7f8999; font-size:.78rem; line-height:1.7; max-width:520px; }
-.footer-grid b { display:block; margin-bottom:16px; font-size:.72rem; letter-spacing:.1em; }
-.footer-tag { margin-top:22px; color:white!important; font-weight:700; }
+.footer { padding:80px 0 28px; background:#0B1220; background-image:radial-gradient(ellipse at 4% -15%,rgba(48,109,232,.10),transparent 47%); color:#e8eef9; border-top:1px solid rgba(255,255,255,.10); }
+.footer-grid { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,.86fr) minmax(0,1.04fr) minmax(0,.85fr); gap:clamp(26px,3vw,48px); align-items:start; }
+.footer-grid > div { min-width:0; }
+.footer-grid p { color:#aebcd0; font-size:.875rem; line-height:1.72; max-width:38ch; }
+.footer-grid p + p { margin-top:10px; }
+.footer-grid b { display:block; margin-bottom:20px; color:#f1f5fd; font-size:.81rem; line-height:1.4; letter-spacing:.12em; font-weight:800; }
+.footer-grid .footer-tag { margin-top:8px; color:#f8faff!important; font-size:.94rem; line-height:1.55; font-weight:750; }
 .footer-link {
   display:flex;
   align-items:center;
@@ -828,23 +830,24 @@ svg { flex: 0 0 auto; }
   width:max-content;
   max-width:100%;
   margin:10px 0;
-  color:#9ba5b5;
-  font-size:.76rem;
+  color:#bac8db;
+  font-size:.84rem;
+  line-height:1.55;
   transition:color .2s ease, transform .2s ease;
 }
 .footer-link:hover { color:white; transform:translateX(2px); }
-.footer-link svg { color:var(--cl-sky); }
+.footer-link svg { color:#5da6ff; flex-shrink:0; }
 .social-links { display:flex; flex-wrap:wrap; gap:9px; }
 .social-links a {
   display:inline-flex;
   align-items:center;
   gap:7px;
   padding:9px 11px;
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
   border-radius:10px;
-  color:#9da7b7;
-  font-size:.7rem;
-  background:rgba(255,255,255,.02);
+  color:#c2cee0;
+  font-size:.78rem;
+  background:rgba(255,255,255,.035);
   transition:color .2s ease, border-color .2s ease, background .2s ease;
 }
 .social-links a:hover {
@@ -865,8 +868,11 @@ svg { flex: 0 0 auto; }
   font-weight:800;
   letter-spacing:-.04em;
 }
-.social-handle { margin-top:14px; color:#596274!important; }
-.footer-bottom { margin-top:48px; padding-top:20px; border-top:1px solid rgba(255,255,255,.07); color:#505968; font-size:.68rem; }
+.social-handle { margin-top:14px; color:#a7b8cd!important; font-size:.8rem!important; }
+.footer-bottom { margin-top:58px; padding-top:22px; border-top:1px solid rgba(255,255,255,.12); color:#a4b4c9; font-size:.77rem; }
+.footer a:focus-visible { outline:2px solid #8fb7ff; outline-offset:4px; border-radius:4px; }
+@media (max-width:1100px) { .footer-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:38px 52px; } }
+
 
 .whatsapp-float {
   position:fixed;
@@ -956,7 +962,7 @@ svg { flex: 0 0 auto; }
   .principles-grid { grid-template-columns:1fr 1fr; }
   .principle:last-child { grid-column:1/-1; }
   .footer-grid { grid-template-columns:1fr 1fr; }
-  .footer-grid > div:first-child { grid-column:1/-1; }
+  .footer-grid > div:first-child { grid-column:auto; }
 }
 
 @media (max-width: 640px) {
@@ -1462,9 +1468,9 @@ svg { flex: 0 0 auto; }
   padding:0;
   border:0;
   background:none;
-  color:#8f98a8;
+  color:#b9c7da;
   font:inherit;
-  font-size:.8rem;
+  font-size:.84rem;
   cursor:pointer;
   transition:color .2s ease;
 }
@@ -3824,14 +3830,14 @@ a.project-card-pro:hover {
   display:inline-flex;
   align-items:center;
   text-decoration:none;
-  margin-bottom:18px;
+  margin-bottom:12px;
 }
 .footer-official-logo img{
   display:block;
-  width:168px;
-  max-width:78%;
+  width:184px;
+  max-width:100%;
   height:auto;
 }
 @media (max-width:700px){
-  .footer-official-logo img{width:158px}
+  .footer-official-logo img{width:168px}
 }

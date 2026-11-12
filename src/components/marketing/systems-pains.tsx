@@ -19,7 +19,6 @@ export function SystemsPains(){
  useEffect(()=>{if(!visible||window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;const timer=window.setInterval(()=>setPhase(p=>(p+1)%4),1250);return()=>window.clearInterval(timer)},[visible,active]);
  function choose(i:number){setActive(i);setPhase(0)}
  const selected=examples[active]!;
- const Icon=selected.icon;
  return <section className="sx-pains" id="situaciones-reales" ref={node}><div className="sys-wrap">
   <div className="sx-pains-head"><span>ANTES DE HABLAR DE TECNOLOGÍA</span><h2>¿Te pasa alguna de estas cosas <em>en tu negocio?</em></h2><p>Si reconoces una de estas situaciones, ya sabes por qué vale la pena conectar mejor tu atención y tus procesos. No necesitas saber qué es un CRM para entenderlo.</p></div>
   <div className="sx-pains-composition">

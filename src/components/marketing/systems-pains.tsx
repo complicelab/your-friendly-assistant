@@ -14,11 +14,10 @@ export function SystemsPains(){
  const [active,setActive]=useState(0);
  const [phase,setPhase]=useState(0);
  const [visible,setVisible]=useState(false);
- const [manual,setManual]=useState(false);
  const node=useRef<HTMLElement>(null);
  useEffect(()=>{if(!node.current)return;const obs=new IntersectionObserver(x=>setVisible(Boolean(x[0]?.isIntersecting)),{threshold:.18});obs.observe(node.current);return()=>obs.disconnect()},[]);
- useEffect(()=>{if(!visible||manual||window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;const timer=window.setInterval(()=>setPhase(p=>(p+1)%4),1250);return()=>window.clearInterval(timer)},[visible,manual,active]);
- function choose(i:number){setActive(i);setPhase(0);setManual(false)}
+ useEffect(()=>{if(!visible||window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;const timer=window.setInterval(()=>setPhase(p=>(p+1)%4),1250);return()=>window.clearInterval(timer)},[visible,active]);
+ function choose(i:number){setActive(i);setPhase(0)}
  const selected=examples[active]!;
  const Icon=selected.icon;
  return <section className="sx-pains" id="situaciones-reales" ref={node}><div className="sys-wrap">

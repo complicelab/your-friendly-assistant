@@ -1604,7 +1604,21 @@ function getOriginalHtml() {
       "Que más personas te encuentren, entiendan por qué elegirte y dejen sus datos.",
       "Creamos páginas web y campañas pagas en redes sociales para atraer personas interesadas y llevarlas a una acción clara. Puedes contratar cada servicio por separado o conectarlos dentro de un sistema más completo."
     );
-  return replaceMarketingRuntime(replaceFlowScenes(replaceCompareScenes(html)))
+  const seoAlignedHtml = html
+    .replace(/<title[^>]*>[\\s\\S]*?<\\/title>/i, "<title>Cómplice Lab | Sistemas IA, Páginas Web y Publicidad Digital</title>")
+    .replace(
+      /<meta\\s+name=["']description["'][^>]*>/i,
+      '<meta name="description" content="Especialistas en sistemas con IA a la medida, agentes de IA, páginas web y publicidad digital para atraer, atender y gestionar oportunidades.">'
+    )
+    .replace(
+      /<meta\\s+property=["']og:title["'][^>]*>/i,
+      '<meta property="og:title" content="Cómplice Lab | Sistemas IA, Páginas Web y Publicidad Digital">'
+    )
+    .replace(
+      /<meta\\s+property=["']og:description["'][^>]*>/i,
+      '<meta property="og:description" content="Sistemas con IA a la medida, agentes de IA automatizados, páginas web y publicidad en redes sociales para profesionales y empresas.">'
+    );
+  return replaceMarketingRuntime(replaceFlowScenes(replaceCompareScenes(seoAlignedHtml)))
     .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + HOMEPAGE_POSITIONING_STYLES + compareStyles + flowStyles + marketingStyles + `\n  <meta name="complice-build" content="mobile-booking-two-step-2026-11-09-v2">\n  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://complicelab.com/#organization","name":"Cómplice Lab","url":"https://complicelab.com/","logo":"https://complicelab.com/brand/complice-lab-logo.svg","email":"info@complicelab.com","telephone":"+573161772880","description":"Cómplice Lab construye sistemas con IA a la medida, agentes de IA automatizados, páginas web y campañas de publicidad para profesionales y empresas.","areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"sameAs":["https://www.instagram.com/complicelab","https://www.facebook.com/complicelab","https://www.youtube.com/@complicelab"]},{"@type":"WebSite","@id":"https://complicelab.com/#website","url":"https://complicelab.com/","name":"Cómplice Lab","publisher":{"@id":"https://complicelab.com/#organization"},"inLanguage":"es-419"},{"@type":"Service","name":"Sistemas con IA a la medida","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Sistemas con inteligencia artificial a la medida"},{"@type":"Service","name":"Agentes de IA automatizados","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Agentes de inteligencia artificial automatizados"},{"@type":"Service","name":"Páginas web y publicidad en redes sociales","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Páginas web, publicidad en redes sociales, Meta Ads, TikTok Ads y Google Ads"}]}</script>\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n` + "</head>")
     .replace("</body>", HOMEPAGE_COPY_FIX + HOMEPAGE_GOOGLE_REVIEWS_RUNTIME + HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + UNIFIED_BOOKING_CTA + "</body>");
 }

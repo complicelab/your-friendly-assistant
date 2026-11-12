@@ -74,7 +74,7 @@ function AgentScene({step}:{step:number}){
    <div className="sk-ai-signal" aria-hidden="true"><span/><span/><span/></div>
    <div className="sk-ai-phone">
     <div className="sk-ai-status"><strong>9:41</strong><span className="sk-ai-island"/><span>●●● ▰</span></div>
-    <div className="sk-ai-chat-header"><span className="sk-ai-chevron">‹</span><span className="sk-ai-avatar"><Bot size={21}/></span><span className="sk-ai-contact"><strong>Asistente de atención</strong><small>WhatsApp · Ejemplo de conversación</small></span><span className="sk-ai-menu">⋮</span></div>
+    <div className="sk-ai-chat-header"><span className="sk-ai-chevron">‹</span><span className="sk-ai-avatar"><Bot size={21}/></span><span className="sk-ai-contact"><strong>Asistente de atención</strong><small>WhatsApp</small></span><span className="sk-ai-menu">⋮</span></div>
     <div className="sk-ai-chat-body" ref={chatRef}>
      <span className="sk-ai-day">Hoy</span>
      <div className="sk-ai-bubble sk-ai-customer">Hola, ¿puedo agendar una primera consulta?<small>10:24 ✓✓</small></div>

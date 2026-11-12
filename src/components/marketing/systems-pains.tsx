@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
-  ArrowRight, BellRing, CalendarClock, CheckCheck, ChevronRight,
-  CircleAlert, Clock3, FileText, Globe2, Inbox, Mail, MessageCircle,
-  MessageSquare, MoreHorizontal, RotateCcw, Smartphone, UserRound
+  ArrowRight, BellRing, CalendarClock, ChevronRight,
+  CircleAlert, Clock3, FileText, Inbox, Mail, MessageCircle,
+  MessageSquare, MoreHorizontal, RotateCcw, UserRound
 } from "lucide-react";
 import "./systems-pains.css";
 

@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
- ArrowRight, Bell, BellRing, Bot, CalendarCheck2, CalendarClock, CalendarDays,
+ ArrowRight, Bell, BellRing, CalendarCheck2, CalendarClock, CalendarDays,
  Check, CheckCheck, CheckCircle2, ChevronRight, CircleAlert, Clock3,
  Database, Globe2, LayoutDashboard, MessageCircle, MousePointer2,
- Play, RotateCcw, Send, Sparkles, UserRound, Users, Workflow
+ RotateCcw, Send, UserRound, Users, Workflow
 } from "lucide-react";
 import "./systems-pains.css";
 
@@ -16,7 +16,7 @@ const situations=[
  {category:"POCA CLARIDAD",question:"¿Sabes cuántas oportunidades siguen abiertas?",brief:"La información vive en varios lugares.",icon:LayoutDashboard}
 ] as const;
 
-function SceneWindow({children,label,className=""}:{children:React.ReactNode;label:string;className?:string}){
+function SceneWindow({children,label,className=""}:{children:ReactNode;label:string;className?:string}){
  return <div className={"sx-interface "+className}><div className="sx-interface-top"><span className="sx-interface-dots"><i/><i/><i/></span><span>{label}</span><span className="sx-interface-demo">DEMO</span></div>{children}</div>;
 }
 function Pop({children,show,className=""}:{children:React.ReactNode;show:boolean;className?:string}){

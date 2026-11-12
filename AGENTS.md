@@ -14,6 +14,7 @@
 - Public diagnostic booking has two valid entry points: the inline "Hablemos de tu negocio" form and the dedicated scroll-safe modal opened by external "Agendar diagnóstico" CTAs. Both must use /api/booking and the same public booking RPCs so every confirmed booking lands in the same CRM.
 - Keep src/routes/index.tsx, src/data/booking/runtime.ts, src/routes/api.booking.ts, Supabase booking types and booking migrations synchronized between main and lovable-sync whenever the public booking flow changes.
 - CRM booking views live in isolated src/components/crm modules and use the authenticated Cloud client under existing RLS.
+- The existing WhatsApp inbound Edge Function authenticates x-clave before service-role RPC access; its RPC resolves pgcrypto through the extensions search path to keep event writes transactional and idempotent.
 
 - Keep v10 comparison scene replacements in src/data/compare; transform only the two right-hand scene producers before the original script boots so its navigation, timers, and animation runner remain the sole rendering owner.
 - Keep the eight-step system flow replacements in src/data/flow, replacing only selected ST h() producers before v10 boots; the original go(), run() and timer pool own rendering and autoplay, while delegated handlers manage manual interactions.

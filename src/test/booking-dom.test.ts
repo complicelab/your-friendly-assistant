@@ -22,7 +22,7 @@ function bookingScript(){
   if(start<0||end<0)throw new Error('booking script not found');
   const fragment=source.slice(start+'const UNIFIED_BOOKING_CTA = `'.length,end);
   const match=fragment.match(/<script[^>]*>([\s\S]*?)<\/script>/);
-  if(!match)throw new Error('booking client script not found');
+  if(!match?.[1])throw new Error('booking client script not found');
   return match[1];
 }
 
@@ -194,7 +194,9 @@ describe('booking client DOM flow',()=>{
 
     const timeSelect=root!.querySelector('.cl-contact-time') as HTMLSelectElement;
     expect(timeSelect.options.length).toBeGreaterThan(1);
-    timeSelect.value=slots[0].slot_start;
+    const firstSlot=slots[0];
+    if(!firstSlot)throw new Error('missing test slot');
+    timeSelect.value=firstSlot.slot_start;
     timeSelect.dispatchEvent(new window.Event('change',{bubbles:true}));
 
     const postBodies:any[]=[];
@@ -214,7 +216,7 @@ describe('booking client DOM flow',()=>{
     await Promise.resolve();
 
     expect(postBodies.length).toBe(1);
-    expect(postBodies[0].starts_at).toBe(slots[0].slot_start);
+    expect(postBodies[0].starts_at).toBe(firstSlot.slot_start);
     expect(postBodies[0].full_name).toBe('Prueba Cómplice');
     expect(postBodies[0].email).toBe('prueba@example.com');
     expect(postBodies[0].solution_interest).toBeTruthy();

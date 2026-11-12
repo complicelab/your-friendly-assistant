@@ -534,6 +534,15 @@ export type Database = {
         }
         Returns: string
       }
+      crm_receive_whatsapp_event: {
+        Args: {
+          p_event_type: string
+          p_payload: Json
+          p_timestamp: string
+          p_wa_id: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

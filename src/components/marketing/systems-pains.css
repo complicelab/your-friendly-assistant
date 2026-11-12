@@ -10,15 +10,15 @@
 .sx-pains-head p{max-width:720px;font-size:16px;line-height:1.8;color:#5c7296}
 .sx-pains-composition{display:grid;grid-template-columns:minmax(0,.73fr) minmax(0,1.27fr);gap:34px;align-items:center}
 .sx-pains-choices{align-self:center;border-top:1px solid #dce6f4}
-.sx-pains-choices button{display:flex;align-items:center;gap:13px;width:100%;min-height:87px;padding:19px 11px 19px 4px;background:transparent;border:0;border-bottom:1px solid #dce6f4;text-align:left;cursor:pointer;color:#526783;transition:background .2s,padding .2s,color .2s}
+.sx-pains-choices button{display:flex;align-items:center;gap:13px;width:100%;min-height:100px;padding:20px 11px 20px 4px;background:transparent;border:0;border-bottom:1px solid #dce6f4;text-align:left;cursor:pointer;color:#526783;transition:background .2s,padding .2s,color .2s}
 .sx-pains-choices button:hover,.sx-pains-choices button.active{color:#122440}
 .sx-pains-choices button.active{border-left:3px solid #386ff0;padding-left:12px;background:linear-gradient(90deg,#edf3ff,transparent 92%)}
 .sx-choice-number{font-size:12px;color:#8296b8;font-weight:850;flex-shrink:0}
 .sx-pains-choices button.active .sx-choice-number{color:#3168e9}
 .sx-choice-text{display:flex;flex:1;flex-direction:column;gap:6px;min-width:0}
-.sx-choice-text strong{font-size:16px;line-height:1.4;letter-spacing:-.018em}
-.sx-choice-text small{font-size:12px;line-height:1.6;color:#7a8daa}
-.sx-pains-choices button.active .sx-choice-text small{color:#6079a1}
+.sx-choice-text strong{font-size:17px;line-height:1.4;letter-spacing:-.018em}
+.sx-choice-text small{font-size:14px;line-height:1.5;color:#526985;font-weight:500}
+.sx-pains-choices button.active .sx-choice-text small{color:#40597d}
 .sx-pains-choices button>svg{color:#a0b4d0;flex-shrink:0}
 .sx-pains-choices button.active>svg{color:#386fe9}
 .sx-pains-demo{min-width:0;position:relative}
@@ -46,8 +46,6 @@
 .sx-pains-progress button{display:grid;place-items:center;cursor:pointer;border:0;background:none;padding:5px 1px}
 .sx-pains-progress button i{height:5px;width:22px;border-radius:12px;background:#c7d5eb;transition:background .3s,width .3s}
 .sx-pains-progress button.active i{width:30px;background:linear-gradient(90deg,#2e6def,#7858e7)}
-.sx-replay{display:flex;align-items:center;gap:6px;border:1px solid #c9daf3;border-radius:30px;background:#fff;padding:9px 13px;color:#416ac6;font-size:12px;font-weight:750;cursor:pointer}
-.sx-replay:hover{background:#eff5ff;border-color:#7092ea}
 .sx-pain-moment{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:11px 7px 0;margin:0;color:#617797;font-size:13px;line-height:1.5;font-weight:650}
 .sx-pain-moment>span{color:#a47748;font-size:11px;letter-spacing:.05em;font-weight:850}
 .sx-demo-disclaimer{padding:4px 7px 0;margin:0;color:#8b9ab0;font-size:11px;line-height:1.6}
@@ -177,8 +175,8 @@
 }
 @media(max-width:590px){
  .sx-pains{padding:70px 0}.sx-pains-head h2{font-size:32px}.sx-pains-head p{font-size:15px}
- .sx-pains-choices{grid-template-columns:1fr}.sx-pains-choices button{min-height:70px;padding:13px 7px}.sx-pains-choices button.active{padding-left:10px}
- .sx-choice-text strong{font-size:14px}.sx-choice-text small{font-size:11px}
+ .sx-pains-choices{grid-template-columns:1fr}.sx-pains-choices button{min-height:84px;padding:15px 7px}.sx-pains-choices button.active{padding-left:10px}
+ .sx-choice-text strong{font-size:16px}.sx-choice-text small{font-size:13px;line-height:1.5}
  .sx-pains-demo-title{padding:0 2px;gap:7px}.sx-pains-demo-title h3{font-size:19px}.sx-pains-demo-title>div>span{font-size:10px}
  .sx-pains-demo-tag{font-size:10px;padding:6px 8px}
  .sx-stage{height:440px}.sx-pain-scene{border-radius:16px}
@@ -198,7 +196,7 @@
  .sx-pain-frag-note strong{font-size:15px}.sx-pain-scattered-question{right:1%;bottom:8px;width:208px}
  .sx-pain-moment{font-size:12px}.sx-pain-moment>span{font-size:10px}.sx-pains-progress>span:first-child{font-size:10px}
  .sx-pains-progress button i{width:17px}.sx-pains-progress button.active i{width:23px}
- .sx-pains-demo-bottom{padding:12px 2px 0}.sx-replay{padding:8px 9px;font-size:11px}
+ .sx-pains-demo-bottom{padding:12px 2px 0}
  .sx-pains-transition strong{font-size:17px}.sx-pains-transition a{font-size:14px}
 }
 @media(max-width:380px){

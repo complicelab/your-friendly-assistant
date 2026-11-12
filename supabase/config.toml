@@ -1,1 +1,4 @@
 project_id = "nrtokpnkaraltrzrgayi"
+
+[functions.recibir-prospecto-whatsapp]
+verify_jwt = false

@@ -39,16 +39,16 @@ export const commercialServices:CommercialService[]=[
   slug:"publicidad-digital",
   name:"Publicidad Digital",
   title:"Publicidad Digital para Profesionales y Empresas | Cómplice Lab",
-  description:"Creamos campañas de publicidad digital en Meta Ads, Google Ads y otras plataformas, conectadas con páginas, agenda o WhatsApp para generar oportunidades.",
-  headline:"Publicidad digital conectada con una acción clara.",
-  intro:"Diseñamos campañas pagas para atraer personas interesadas y llevarlas hacia una acción concreta: conocer una oferta, escribir, agendar o dejar sus datos. Según la estrategia podemos trabajar Meta Ads, Google Ads u otras plataformas y conectar la campaña con una página, agenda o WhatsApp.",
-  audience:"Para profesionales y empresas que ya tienen una oferta de valor y quieren atraer nuevas oportunidades mediante publicidad paga sin dejar la captación aislada del seguimiento.",
+  description:"Creamos campañas de publicidad digital en Meta Ads, Google Ads y otras plataformas para atraer personas interesadas en servicios de alto valor.",
+  headline:"Publicidad para atraer a las personas correctas.",
+  intro:"Diseñamos y gestionamos campañas pagas para poner tu oferta frente a personas con mayor probabilidad de interesarse. Según el negocio y la intención de búsqueda podemos trabajar Meta Ads, Google Ads u otras plataformas. El foco de este servicio es atraer demanda; la página web, la agenda, el CRM y las automatizaciones se construyen por separado cuando el negocio las necesita.",
+  audience:"Para profesionales y empresas que ya tienen una oferta clara y quieren aumentar su visibilidad ante personas con intención real de conocer, consultar o contratar.",
   deliverables:[
-    "Estrategia y objetivo comercial de la campaña",
-    "Campañas en Meta Ads, Google Ads u otras plataformas según la estrategia",
-    "Creatividades y contenido creados con apoyo de IA, dicho con claridad",
-    "Conexión con página, landing, agenda o WhatsApp según la campaña",
-    "Medición de contactos y oportunidades cuando la infraestructura lo permite"
+    "Estrategia de campaña según oferta, público y objetivo comercial",
+    "Campañas en Meta Ads, Google Ads u otras plataformas cuando la estrategia lo justifica",
+    "Creatividades y piezas publicitarias creadas con apoyo de IA, dicho con claridad",
+    "Configuración, seguimiento y optimización de campañas",
+    "Lectura de métricas para entender qué anuncios y audiencias generan mejor respuesta"
   ],
   process:[
     "Revisamos la oferta, el cliente y el objetivo",
@@ -58,10 +58,11 @@ export const commercialServices:CommercialService[]=[
   ],
   questions:[
     ["¿Trabajan únicamente Meta Ads?","No. La plataforma se define según el objetivo y el tipo de demanda. Podemos trabajar Meta Ads, Google Ads u otras plataformas cuando la estrategia lo justifica."],
-    ["¿Garantizan una cantidad de clientes?","No. Podemos mejorar la captación, la medición y el seguimiento, pero no prometer una cantidad fija de ventas."]
+    ["¿La página web, el CRM o la agenda están incluidos?","No necesariamente. Publicidad Digital se enfoca en atraer demanda. Si el negocio necesita una página, agenda, CRM o automatización, eso se construye como parte de Páginas Web o Sistemas con IA, según el alcance."],
+    ["¿Garantizan una cantidad de clientes?","No. Podemos mejorar la captación y la calidad de la campaña, pero no prometer una cantidad fija de ventas."]
   ],
   cta:"Quiero atraer mejores oportunidades",
-  benefits:["Más personas correctas viendo tu oferta","Captación conectada con el siguiente paso","Mejor control de qué campañas generan contactos"],
+  benefits:["Más personas correctas viendo tu oferta","Mayor claridad sobre qué mensajes generan respuesta","Mejor control de qué campañas atraen interés"],
   scenarios:[
     {kind:"doctor",title:"Del anuncio a una acción concreta",detail:"La campaña lleva a una experiencia donde la persona entiende la oferta y puede agendar, escribir o dejar sus datos sin perderse.",action:"Quiero revisar mi captación"},
     {kind:"realtor",title:"Menos contactos sueltos",detail:"La captación se organiza para que el negocio sepa quién llegó, qué necesita y cuál es el siguiente paso.",action:"Quiero organizar mis oportunidades"}

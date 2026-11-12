@@ -40,6 +40,7 @@ begin
   v_id := v_contact.id;
   if exists(select 1 from public.crm_activities where external_id = v_event_id and channel = 'whatsapp_ia') then return v_id; end if;
   v_metadata := coalesce(v_contact.metadata, '{}'::jsonb);
+  v_metadata := v_metadata || jsonb_build_object('whatsapp_ia',coalesce(v_metadata->'whatsapp_ia','{}'::jsonb));
   for v_key, v_value in select key, value from jsonb_each_text(p_payload) loop
     if v_key in ('redes','pais_ciudad','profesionales_o_sedes','tiene_pagina_web','urgencia','tema','detalle','motivo','fecha','mensaje','origen')
       and nullif(trim(v_value),'') is not null then

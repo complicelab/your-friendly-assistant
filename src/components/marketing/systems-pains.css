@@ -102,7 +102,7 @@
 .sx-pain-waiting{top:205px;right:3%;width:213px;border-color:#e7cdab!important}
 .sx-pain-cooling{bottom:40px;right:5%;width:229px;border-color:#e3cdb2!important}
 .sx-pain-schedule-rings{position:absolute;right:2%;top:6%;height:140px;width:140px;border:1px solid #aec4e65f;border-radius:50%;box-shadow:0 0 0 28px #c1d2ee15,0 0 0 52px #becfed0d;z-index:-1}
-.sx-pain-schedule-note{top:55px;left:1%;width:205px}
+.sx-pain-schedule-note{top:55px;right:3%;width:205px}
 .sx-pain-schedule-loop{top:213px;right:3%;width:205px}
 .sx-pain-schedule-result{bottom:41px;right:3%;width:218px;border-color:#e5cba4!important}
 .sx-pain-scheduling .sx-pain-schedule-note:before,.sx-pain-scheduling .sx-pain-schedule-note:after{display:none}
@@ -165,28 +165,27 @@
  .sx-pain-unread,.sx-pain-waiting,.sx-pain-cooling,.sx-pain-schedule-loop,.sx-pain-schedule-result,.sx-pain-forgotten-initial,.sx-pain-forgotten-overdue,.sx-pain-forgotten-consequence{right:8%}
 }
 @media(max-width:590px){
- .sx-pains{padding:68px 0}.sx-pains-head h2{font-size:32px}.sx-pains-head p{font-size:14px}
+ .sx-pains{padding:68px 0}.sx-pains .sys-wrap{width:calc(100% - 32px)}
+ .sx-pains-head h2{font-size:32px}.sx-pains-head p{font-size:14px}
  .sx-pains-choices{grid-template-columns:1fr}.sx-pains-choices button{min-height:84px;padding:15px 7px}.sx-pains-choices button.active{padding-left:10px}
  .sx-choice-text strong{font-size:16px}.sx-choice-text small{font-size:13px;line-height:1.5}
  .sx-pains-demo-title{padding:0 2px;gap:7px}.sx-pains-demo-title h3{font-size:19px}.sx-pains-demo-title>div>span{font-size:10px}
  .sx-pains-demo-tag{font-size:9px;padding:6px 8px}
- .sx-stage{height:455px}.sx-pain-scene{border-radius:16px}
- .sx-wa-phone,.sx-wa-phone-schedule,.sx-wa-phone-forgotten{left:1%;top:22px;width:210px;height:397px;border-width:6px;border-radius:31px;transform:rotate(-1deg)}
- .sx-wa-header{gap:4px;padding:5px;flex-basis:53px}.sx-wa-header>svg:nth-last-child(2),.sx-wa-header>svg:last-child{display:none}
- .sx-wa-contact strong{font-size:10px}.sx-wa-contact small{font-size:8px}
- .sx-wa-bubble{font-size:10px;padding:8px}.sx-wa-chat-inner{padding:8px 7px 12px;gap:6px}
- .sx-pain-flag{padding:8px;gap:6px;border-radius:11px}
- .sx-pain-flag strong{font-size:9px}.sx-pain-flag small{font-size:8px}
- .sx-pain-flag-icon{width:26px;height:26px;border-radius:8px}.sx-pain-flag-icon svg{width:15px}
- .sx-pain-unread{right:0;top:61px;width:149px}
- .sx-pain-waiting{right:0;top:189px;width:153px}.sx-pain-cooling{right:0;bottom:29px;width:162px}
- .sx-pain-schedule-note{left:auto;right:0;top:58px;width:156px}
- .sx-pain-schedule-loop{right:0;top:196px;width:153px}.sx-pain-schedule-result{right:0;bottom:29px;width:158px}
- .sx-pain-forgotten-initial{right:0;top:59px;width:153px}
- .sx-pain-forgotten-overdue{right:0;top:190px;width:161px}
- .sx-pain-forgotten-consequence{right:0;bottom:26px;width:160px}
- .sx-pain-unanswered .sx-pain-flag:before,.sx-pain-scheduling .sx-pain-flag:before,.sx-pain-forgotten .sx-pain-flag:before{left:-10px;width:9px}
- .sx-pain-unanswered .sx-pain-flag:after,.sx-pain-scheduling .sx-pain-flag:after,.sx-pain-forgotten .sx-pain-flag:after{left:-13px;width:5px;height:5px}
+ /* Full phone first; below it a compact stack of consequence callouts, no message occlusion. */
+ .sx-stage{height:641px}.sx-pains-demo-3 .sx-stage{height:470px}
+ .sx-pain-scene{border-radius:16px}
+ .sx-wa-phone,.sx-wa-phone-schedule,.sx-wa-phone-forgotten{left:50%;top:9px;width:min(242px,88%);height:381px;border-width:6px;border-radius:31px;transform:translateX(-50%);animation:none}
+ .sx-wa-header{gap:5px;padding:6px;flex-basis:53px}.sx-wa-header>svg:nth-last-child(2),.sx-wa-header>svg:last-child{display:none}
+ .sx-wa-contact strong{font-size:10px}.sx-wa-contact small{font-size:9px}
+ .sx-wa-bubble{font-size:11px;padding:8px}.sx-wa-chat-inner{padding:8px 7px 12px;gap:6px}
+ .sx-pain-flag{padding:9px 11px;gap:9px;border-radius:11px;left:4%;right:4%;width:92%;max-width:none;bottom:auto;min-height:58px}
+ .sx-pain-flag strong{font-size:11px}.sx-pain-flag small{font-size:9px}
+ .sx-pain-flag-icon{width:30px;height:30px;border-radius:8px}.sx-pain-flag-icon svg{width:17px}
+ .sx-pain-unread,.sx-pain-schedule-note,.sx-pain-forgotten-initial{left:4%;right:4%;width:92%;top:408px;bottom:auto}
+ .sx-pain-waiting,.sx-pain-schedule-loop,.sx-pain-forgotten-overdue{left:4%;right:4%;width:92%;top:476px;bottom:auto}
+ .sx-pain-cooling,.sx-pain-schedule-result,.sx-pain-forgotten-consequence{left:4%;right:4%;width:92%;top:544px;bottom:auto}
+ .sx-pain-unanswered .sx-pain-flag:before,.sx-pain-scheduling .sx-pain-flag:before,.sx-pain-forgotten .sx-pain-flag:before,
+ .sx-pain-unanswered .sx-pain-flag:after,.sx-pain-scheduling .sx-pain-flag:after,.sx-pain-forgotten .sx-pain-flag:after{display:none}
  .sx-pain-frag-calendar{right:1%;top:68px;width:44%}
  .sx-fragment-whatsapp{left:1%;top:42px;width:60%}
  .sx-pain-frag-mail{left:2%;top:247px;width:56%}.sx-pain-frag-note{right:1%;top:238px;width:41%;height:143px}
@@ -197,15 +196,12 @@
  .sx-pains-transition strong{font-size:17px}.sx-pains-transition a{font-size:14px}
 }
 @media(max-width:380px){
- .sx-wa-phone,.sx-wa-phone-schedule,.sx-wa-phone-forgotten{left:0;width:198px}
- .sx-pain-unread{width:141px}.sx-pain-waiting{width:146px}.sx-pain-cooling{width:148px}
- .sx-pain-schedule-note{width:148px}.sx-pain-schedule-loop{width:142px}.sx-pain-schedule-result{width:150px}
- .sx-pain-forgotten-initial{width:146px}.sx-pain-forgotten-overdue{width:151px}.sx-pain-forgotten-consequence{width:151px}
- .sx-pain-scattered-question{width:183px}
+ .sx-wa-phone,.sx-wa-phone-schedule,.sx-wa-phone-forgotten{width:min(238px,91%)}
+ .sx-pain-scattered-question{width:185px}
  .sx-pains-progress>span:first-child{display:none}
 }
 @media(prefers-reduced-motion:reduce){
- .sx-wa-phone,.sx-wa-bubble,.sx-pain-scene{animation:none!important;transform:none!important}
+ .sx-wa-phone,.sx-wa-bubble,.sx-pain-scene{animation:none!important}
  .sx-pain-flag,.sx-pain-frag{transition:none!important}
  .sx-pain-flag.is-visible{opacity:1!important;transform:none!important}
 }

@@ -183,14 +183,8 @@ export function SystemsPains() {
         </button>)}
       </div>
       <div className={"sx-pains-demo sx-pains-demo-"+active}>
-        <div className="sx-pains-demo-title"><div><span>{situation.eyebrow}</span><h3>{situation.title}</h3></div><span className="sx-pains-demo-tag"><i/> EJEMPLO</span></div>
+        <div className="sx-pains-demo-title"><div><span>{situation.eyebrow}</span><h3>{situation.title}</h3></div></div>
         <div className="sx-stage" key={active}><Scene moment={displayedMoment}/></div>
-        <div className="sx-pains-demo-bottom">
-          <div className="sx-pains-progress"><span>EN EL DÍA A DÍA</span>{[0,1,2].map(i=><button key={i} type="button" aria-label={"Ver momento "+(i+1)} aria-pressed={displayedMoment===i} className={displayedMoment===i?"active":""} onClick={()=>setMoment(i)}><i/></button>)}<span>{displayedMoment+1} / 3</span></div>
-          
-        </div>
-        <p className="sx-pain-moment"><span>{["01 · QUÉ SUCEDE","02 · QUÉ SE COMPLICA","03 · QUÉ CONSECUENCIA TIENE"][displayedMoment]}</span>{situation.moments[displayedMoment]}</p>
-        <p className="sx-demo-disclaimer">Escenas ilustrativas: no representan conversaciones, clientes ni resultados reales.</p>
       </div>
     </div>
     <div className="sx-pains-transition"><div><span>LA IDEA ES SENCILLA</span><strong>Si reconoces estas situaciones, vale la pena revisar cómo llegan y se atienden las oportunidades.</strong></div><a href="#recorrido-sistema">Mira cómo podría funcionar <ArrowRight size={17}/></a></div>

@@ -20,7 +20,7 @@ const entries = [
 ] as const;
 
 function useKineticScene(duration=5) {
- const ref=useRef<HTMLDivElement>(null);
+ const ref=useRef<HTMLElement>(null);
  const [inView,setInView]=useState(false);
  const [step,setStep]=useState(0);
  const [paused,setPaused]=useState(false);

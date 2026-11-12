@@ -59,11 +59,17 @@ function Flag({children,show,className=""}:{children:ReactNode;show:boolean;clas
 /* All WhatsApp-like chats are fictional representations of everyday customer pains.
  * White bubbles are incoming customer messages, pale green are business replies.
  * Never show replies in the unanswered and forgotten examples. */
-function WhatsAppPhone({contact,children,mode="messages"}:{contact:string;children:ReactNode;mode?:string}){
+function WhatsAppPhone({contact,children,mode="messages",moment=0}:{contact:string;children:ReactNode;mode?:string;moment?:number}){
+ const chatRef=useRef<HTMLDivElement>(null);
+ useEffect(()=>{
+  const chat=chatRef.current;
+  if(!chat)return;
+  chat.scrollTop=chat.scrollHeight;
+ },[moment]);
  return <div className={"sx-wa-phone sx-wa-phone-"+mode}>
   <div className="sx-wa-status"><b>9:41</b><i/><span>●●● ▰</span></div>
   <div className="sx-wa-header"><ChevronLeft size={21}/><span className="sx-wa-avatar">VG</span><div className="sx-wa-contact"><strong>{contact}</strong><small>WhatsApp · ejemplo ilustrativo</small></div><Video size={16}/><Phone size={16}/><MoreVertical size={16}/></div>
-  <div className="sx-wa-chat"><div className="sx-wa-chat-inner"><div className="sx-wa-day">HOY</div>{children}</div></div>
+  <div className="sx-wa-chat" ref={chatRef}><div className="sx-wa-chat-inner"><div className="sx-wa-day">HOY</div>{children}</div></div>
   <div className="sx-wa-footer"><span>+</span><div>Mensaje</div><Paperclip size={15}/><span className="sx-wa-mic"><Mic size={15}/></span></div>
   <div className="sx-wa-home"><i/></div>
  </div>
@@ -74,7 +80,7 @@ function WhatsAppBubble({children,time="10:08",outgoing=false}:{children:ReactNo
 function UnansweredMessages({moment}:{moment:number}){
  return <div className="sx-pain-scene sx-pain-unanswered" aria-label="Ejemplo: mensajes por WhatsApp sin respuesta">
   <div className="sx-pain-phone-halo" aria-hidden="true"/>
-  <WhatsAppPhone contact="Valeria Gómez">
+  <WhatsAppPhone contact="Valeria Gómez" moment={moment}>
    <WhatsAppBubble time="10:08">Hola, quisiera conocer los servicios que ofrecen.</WhatsAppBubble>
    {moment>=1?<WhatsAppBubble time="10:18">¿Tienen disponibilidad esta semana?</WhatsAppBubble>:null}
    {moment>=2?<WhatsAppBubble time="10:43">Hola, ¿siguen disponibles?</WhatsAppBubble>:null}
@@ -88,7 +94,7 @@ function UnansweredMessages({moment}:{moment:number}){
 function SchedulingFriction({moment}:{moment:number}){
  return <div className="sx-pain-scene sx-pain-scheduling" aria-label="Ejemplo: una conversación por WhatsApp que se alarga sin cerrar la cita">
   <div className="sx-pain-schedule-rings" aria-hidden="true"/>
-  <WhatsAppPhone contact="Valeria Gómez" mode="schedule">
+  <WhatsAppPhone contact="Valeria Gómez" mode="schedule" moment={moment}>
    <WhatsAppBubble time="9:05">Hola, ¿puedo ir el martes a las 4?</WhatsAppBubble>
    <WhatsAppBubble outgoing time="9:12">A esa hora no tenemos disponibilidad.</WhatsAppBubble>
    {moment>=1?<><WhatsAppBubble time="9:23">¿Y el miércoles en la mañana?</WhatsAppBubble><WhatsAppBubble outgoing time="9:35">Déjame consultar de nuevo.</WhatsAppBubble></>:null}
@@ -102,7 +108,7 @@ function SchedulingFriction({moment}:{moment:number}){
 function ForgottenInterest({moment}:{moment:number}){
  return <div className="sx-pain-scene sx-pain-forgotten" aria-label="Ejemplo: un cliente interesado escribe por WhatsApp durante días y deja de insistir">
   <div className="sx-pain-forgotten-track" aria-hidden="true"/>
-  <WhatsAppPhone contact="Valeria Gómez" mode="forgotten">
+  <WhatsAppPhone contact="Valeria Gómez" mode="forgotten" moment={moment}>
    <div className="sx-wa-day sx-wa-history-day">DÍA 1</div>
    <WhatsAppBubble time="11:20">Quedo atenta a la información que hablamos.</WhatsAppBubble>
    {moment>=1?<><div className="sx-wa-day sx-wa-history-day">DÍA 3</div><WhatsAppBubble time="3:16">Hola, ¿pudieron enviarme la propuesta?</WhatsAppBubble></>:null}

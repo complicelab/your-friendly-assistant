@@ -15,7 +15,7 @@ export function SiteFooter() {
       <div className="container footer-grid">
         <div>
           <a className="footer-official-logo" href="/" aria-label="Cómplice Lab">
-            <img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab" />
+            <img src="/brand/complice-lab-logo-light.svg" alt="Cómplice Lab" />
           </a>
           <p className="footer-tag">Sistemas que convierten atención en oportunidades.</p>
           <p>Sistemas con IA a la medida, agentes automatizados y marketing digital para profesionales y empresas donde la confianza decide la compra.</p>

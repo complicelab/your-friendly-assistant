@@ -1612,10 +1612,10 @@ function getOriginalHtml() {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cómplice Lab | Sistemas con IA, páginas web y publicidad digital" },
-      { name: "description", content: "Creamos sistemas con IA a la medida, agentes de IA automatizados, páginas web y pauta en redes sociales para atraer, atender y gestionar oportunidades." },
+      { title: "Cómplice Lab | Sistemas IA, Páginas Web y Publicidad Digital" },
+      { name: "description", content: "Especialistas en sistemas con IA a la medida, agentes de IA, páginas web y publicidad digital para atraer, atender y gestionar oportunidades." },
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
-      { property: "og:title", content: "Cómplice Lab | Sistemas con IA, páginas web y publicidad digital" },
+      { property: "og:title", content: "Cómplice Lab | Sistemas IA, Páginas Web y Publicidad Digital" },
       { property: "og:description", content: "Sistemas con IA a la medida, agentes de IA automatizados, páginas web y publicidad en redes sociales para atraer y gestionar oportunidades." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://complicelab.com/" },

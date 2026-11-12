@@ -17,32 +17,24 @@ const situations = [
     title: "Mensajes que se quedan esperando.",
     question: "¿Te escriben y no siempre alcanzas a responder?",
     brief: "El cliente pregunta, espera y puede buscar otra opción.",
-    moments: ["Llega una consulta", "Nadie alcanza a responder", "La oportunidad se enfría"],
-    icon: MessageCircle,
   },
   {
     eyebrow: "MUCHAS IDAS Y VUELTAS",
     title: "Una cita que tarda demasiado en concretarse.",
     question: "¿Agendar una cita implica muchos mensajes?",
     brief: "Coordinar una sola hora consume tiempo del equipo y del cliente.",
-    moments: ["Preguntan por horarios", "Los horarios no coinciden", "La cita sigue sin confirmar"],
-    icon: CalendarClock,
   },
   {
     eyebrow: "INTERÉS SIN CONTINUIDAD",
     title: "Personas interesadas que dejan de insistir.",
     question: "¿Hay interesados a los que nadie vuelve a contactar?",
     brief: "La conversación empezó, pero no hubo un siguiente paso.",
-    moments: ["Alguien pide información", "Vuelve a preguntar", "El interés se enfría"],
-    icon: BellRing,
   },
   {
     eyebrow: "INFORMACIÓN REPARTIDA",
     title: "Mucho movimiento. Poca claridad.",
     question: "¿Sabes cuántas oportunidades siguen abiertas?",
     brief: "Los datos están en mensajes, notas, correo y calendario.",
-    moments: ["Cada dato está en un lugar", "El equipo tiene que buscar", "Nadie tiene la vista completa"],
-    icon: MessageCircle,
   },
 ] as const;
 
@@ -68,7 +60,7 @@ function WhatsAppPhone({contact,children,mode="messages",moment=0}:{contact:stri
  },[moment]);
  return <div className={"sx-wa-phone sx-wa-phone-"+mode}>
   <div className="sx-wa-status"><b>9:41</b><i/><span>●●● ▰</span></div>
-  <div className="sx-wa-header"><ChevronLeft size={21}/><span className="sx-wa-avatar">VG</span><div className="sx-wa-contact"><strong>{contact}</strong><small>WhatsApp · ejemplo ilustrativo</small></div><Video size={16}/><Phone size={16}/><MoreVertical size={16}/></div>
+  <div className="sx-wa-header"><ChevronLeft size={21}/><span className="sx-wa-avatar">VG</span><div className="sx-wa-contact"><strong>{contact}</strong><small>WhatsApp</small></div><Video size={16}/><Phone size={16}/><MoreVertical size={16}/></div>
   <div className="sx-wa-chat" ref={chatRef}><div className="sx-wa-chat-inner"><div className="sx-wa-day">HOY</div>{children}</div></div>
   <div className="sx-wa-footer"><span>+</span><div>Mensaje</div><Paperclip size={15}/><span className="sx-wa-mic"><Mic size={15}/></span></div>
   <div className="sx-wa-home"><i/></div>

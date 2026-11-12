@@ -43,10 +43,54 @@ function serverEnv(name: string) {
   return typeof process !== "undefined" ? String(process.env[name] || "").trim() : "";
 }
 
+async function resolveGooglePlaceId(apiKey: string): Promise<string> {
+  const configured = serverEnv("GOOGLE_PLACE_ID");
+  if (configured) return configured;
+
+  try {
+    const response = await fetch("https://places.googleapis.com/v1/places:searchText", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": apiKey,
+        "X-Goog-FieldMask": "places.id,places.displayName",
+      },
+      body: JSON.stringify({
+        textQuery: "Complice Lab, Manizales, Colombia",
+        languageCode: "es",
+        maxResultCount: 5,
+        locationBias: {
+          circle: {
+            center: { latitude: 4.837385, longitude: -75.5908125 },
+            radius: 5000,
+          },
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("Google Places place-id lookup failed", response.status, (await response.text()).slice(0, 500));
+      return "";
+    }
+
+    const payload = await response.json() as Record<string, any>;
+    const candidates = Array.isArray(payload["places"]) ? payload["places"] : [];
+    const exact = candidates.find((place: Record<string, any>) =>
+      String(place?.["displayName"]?.["text"] || "").trim().toLowerCase() === "complice lab"
+    );
+    return String((exact || candidates[0])?.["id"] || "");
+  } catch (error) {
+    console.error("Google Places place-id lookup error", error);
+    return "";
+  }
+}
+
 async function fetchGoogleReviewSnapshot(): Promise<GoogleReviewSnapshot | null> {
   const apiKey = serverEnv("GOOGLE_PLACES_API_KEY");
-  const placeId = serverEnv("GOOGLE_PLACE_ID");
-  if (!apiKey || !placeId) return null;
+  if (!apiKey) return null;
+
+  const placeId = await resolveGooglePlaceId(apiKey);
+  if (!placeId) return null;
 
   const now = Date.now();
   if (googleReviewsCache && googleReviewsCache.expiresAt > now) return googleReviewsCache.value;

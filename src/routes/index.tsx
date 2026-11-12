@@ -151,7 +151,7 @@ const HOMEPAGE_COPY_FIX = `
   function run(){
     var heroH1=document.querySelector("main h1")||document.querySelector("h1");
     if(heroH1){
-      heroH1.innerHTML='Especialistas en <span class="cl-hero-gradient">sistemas con IA</span>, páginas web y <span class="cl-hero-gradient">publicidad digital</span>';
+      heroH1.innerHTML='Especialistas en <span class="cl-hero-gradient">sistemas con IA,</span> páginas web y <span class="cl-hero-gradient">publicidad digital</span>';
     }
 
     var heroParagraph=heroH1 && (heroH1.parentElement||document).querySelector("p");

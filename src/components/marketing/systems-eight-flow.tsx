@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowUpRight, Bell, CalendarCheck2, CalendarDays, Check, CheckCheck, CheckCircle2, ChevronDown, Clock3, Database, Globe2, LayoutDashboard, MessageCircle, MousePointer2, Search, Send, ShieldCheck, Users } from "lucide-react";
+import { ArrowUpRight, Bell, CalendarCheck2, CalendarDays, Check, CheckCheck, CheckCircle2, ChevronDown, Clock3, Database, Gift, Globe2, Heart, LayoutDashboard, MessageCircle, MousePointer2, Search, Send, ShieldCheck, Users } from "lucide-react";
 import "./systems-eight-flow.css";
 
 /** Four full-fledged explanatory scenes. Everything shown is an illustrative simulation,
@@ -36,28 +36,45 @@ export function AgendaScene({step=4}:{step?:number}){
 }
 
 export function CampaignScene({step=4}:{step?:number}){
- return <div className="sd-scene sd-campaign" aria-label="Simulación de seguimiento por WhatsApp y correo electrónico">
+ return <div className="sd-campaign" aria-label="Demo ficticio de campaña de Amor y Amistad por WhatsApp con bono de regalo">
+  <div className="sd-campaign-light" aria-hidden="true"/>
   <div className="sd-campaign-management">
-   <div className="sd-campaign-overline"><span>SEGUIMIENTO CONECTADO</span><span className="sd-campaign-status"><span/> DEMO · SIN ENVÍOS</span></div>
-   <h3>Una conversación no tiene por qué terminar ahí.</h3>
-   <p>Desde el sistema se podría preparar el siguiente contacto con personas que autorizaron recibirlo.</p>
-   <div className="sd-campaign-flow">
-    <div className={"sd-campaign-flow-row "+(step>=0?"active":"")}><span className="sd-flow-icon"><Database size={18}/></span><div><strong>Contacto en CRM</strong><small>Interés registrado</small></div><Check size={15}/></div>
-    <div className="sd-flow-connector"/>
-    <div className={"sd-campaign-flow-row "+(step>=1?"active":"")}><span className="sd-flow-icon"><Users size={18}/></span><div><strong>Grupo definido</strong><small>Personas con autorización</small></div><Check size={15}/></div>
-    <div className="sd-flow-connector"/>
-    <div className={"sd-campaign-flow-row "+(step>=3?"active":"")}><span className="sd-flow-icon"><MessageCircle size={18}/></span><div><strong>Mensaje preparado</strong><small>WhatsApp o correo según el caso</small></div><Check size={15}/></div>
+   <div className="sd-campaign-overline"><span className="sd-campaign-overline-icon"><Heart size={14}/></span> EJEMPLO DE CAMPAÑA <span className="sd-campaign-status">SIN ENVÍOS REALES</span></div>
+   <h3>Una fecha especial. <em>Una razón para volver.</em></h3>
+   <p>Imagina que alguien que ya te conoce recibe una invitación oportuna para compartir un regalo especial.</p>
+   <div className="sd-gift-visual" aria-label="Ejemplo ilustrativo de un bono de regalo">
+    <div className="sd-gift-shine" aria-hidden="true"/>
+    <span className="sd-gift-edition"><Heart size={12} fill="currentColor"/> EDICIÓN AMOR Y AMISTAD</span>
+    <div className="sd-gift-icon"><Gift size={29}/></div>
+    <strong>Bono de regalo</strong>
+    <p>Un detalle especial para alguien especial.</p>
+    <div className="sd-gift-bottom"><span>TU MARCA</span><span>VISTA ILUSTRATIVA</span></div>
    </div>
-   <div className="sd-campaign-legal"><ShieldCheck size={15}/><span>Sin conexión a la API ni envío real. Flujo sujeto a configuración y consentimiento.</span></div>
+   <div className="sd-campaign-preparation">
+    <div className={"sd-campaign-step "+(step>=1?"complete":"")}><span><Check size={13}/></span> Público autorizado</div>
+    <div className={"sd-campaign-step "+(step>=2?"complete":"")}><span><Check size={13}/></span> Mensaje personalizado</div>
+    <div className={"sd-campaign-step "+(step>=4?"complete":"")}><span><Check size={13}/></span> Seguimiento previsto</div>
+   </div>
   </div>
   <div className="sd-campaign-phone-wrap">
-   <div className="sd-campaign-phone">
-    <div className="sd-phone-status"><strong>9:41</strong><span>●●●  ▮▮  ▰</span></div>
-    <div className="sd-phone-header"><span>‹</span><div className="sd-phone-avatar">✳</div><div><strong>Tu negocio</strong><small>Cuenta comercial · Ejemplo</small></div><span>⋮</span></div>
-    <div className="sd-phone-chat"><div className="sd-chat-date">Hoy</div><div className="sd-phone-bubble incoming">Hola, quería recibir información del servicio.<small>09:31</small></div><div className={"sd-phone-bubble outgoing "+(step>=2?"show":"")}>¡Hola, Valeria! Gracias por contactarnos. Podemos ayudarte a continuar con tu solicitud.<small>09:32 <CheckCheck size={11}/></small></div><div className={"sd-phone-bubble outgoing "+(step>=3?"show":"")}>¿Quieres que nuestro equipo te proponga un horario para conversar?<small>09:32 <CheckCheck size={11}/></small></div>{step>=4?<div className="sd-phone-reminder"><CalendarDays size={13}/> Seguimiento ilustrativo</div>:null}</div>
+   <div className="sd-campaign-device-glow" aria-hidden="true"/>
+   <div className="sd-campaign-phone" aria-label="Teléfono de demostración con conversación estilo WhatsApp">
+    <div className="sd-phone-status"><strong>9:41</strong><span className="sd-phone-island"/><span>▴ ▰ ▰</span></div>
+    <div className="sd-phone-header"><span>‹</span><div className="sd-phone-avatar"><Gift size={17}/></div><div><strong>Tu negocio</strong><small>Cuenta comercial · Demo</small></div><span>⋮</span></div>
+    <div className="sd-phone-chat">
+     <div className="sd-chat-date">Hoy</div>
+     <div className="sd-phone-bubble incoming">Hola, ¿tienen algún detalle especial para regalar?<small>09:31</small></div>
+     {step>=1?<div className="sd-chat-typing"><i/><i/><i/><span>Preparando respuesta de ejemplo</span></div>:null}
+     {step>=2?<div className="sd-phone-bubble outgoing sd-phone-bubble-gift"><span className="sd-chat-gift-heading"><Heart size={13} fill="currentColor"/> Amor y Amistad</span>💙 Sorprende a alguien especial con nuestro <strong>bono de regalo</strong>. Un detalle pensado para compartir.<small>09:32 <CheckCheck size={11}/></small></div>:null}
+     {step>=3?<div className="sd-phone-bubble outgoing">¿Te gustaría conocer cómo funciona? Responde <strong>REGALO</strong> y te orientamos.<small>09:32 <CheckCheck size={11}/></small></div>:null}
+     {step>=4?<div className="sd-phone-bubble incoming">¡Sí! Quiero saber más 🎁<small>09:33</small></div>:null}
+    </div>
     <div className="sd-phone-compose"><span>Escribe un mensaje…</span><Send size={15}/></div>
+    <div className="sd-phone-home" aria-hidden="true"><i/></div>
    </div>
-   <span className="sd-phone-float"><MessageCircle size={16}/> Mensajes con contexto</span>
+   <div className={"sd-gift-outbound sd-float-one "+(step>=2?"active":"")} aria-hidden={step<2}><span className="sd-outbound-symbol"><Gift size={17}/></span><div><strong>Bono de regalo</strong><small>Campaña Amor y Amistad</small></div><CheckCircle2 size={17}/></div>
+   <div className={"sd-gift-outbound sd-float-two "+(step>=3?"active":"")} aria-hidden={step<3}><MessageCircle size={15}/><div><strong>Mensaje preparado</strong><small>Seguimiento ilustrativo</small></div></div>
+   <div className="sd-campaign-caption"><ShieldCheck size={13}/> Solo una simulación; no se ha enviado ningún mensaje.</div>
   </div>
  </div>;
 }

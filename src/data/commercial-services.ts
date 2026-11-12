@@ -135,4 +135,4 @@ export const commercialServices:CommercialService[]=[
 }
 ];
 
-export const serviceHref=(slug:string)=>`/servicios/${slug}`;
+export const serviceHref=(slug:string)=>`/${slug}`;

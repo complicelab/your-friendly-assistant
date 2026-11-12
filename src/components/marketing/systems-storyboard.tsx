@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, Bell, Bot, CalendarCheck2, CalendarDays, Check, CheckCircle2, Clock3, Database, LayoutDashboard, MessageCircle, MousePointer2, RotateCcw, Send, Sparkles, UserRound, Workflow } from "lucide-react";
+import { ArrowRight, Bell, Bot, CalendarCheck2, CalendarDays, Check, CheckCircle2, Clock3, Database, LayoutDashboard, MessageCircle, MousePointer2, Send, Sparkles, UserRound, Workflow } from "lucide-react";
 import "./systems-storyboard.css";
 import { SearchScene, AgendaScene, CampaignScene, MetricsScene } from "./systems-eight-flow";
 
@@ -23,7 +23,6 @@ function useKineticScene(duration=5) {
  const ref=useRef<HTMLElement>(null);
  const [inView,setInView]=useState(false);
  const [step,setStep]=useState(0);
- const [paused,setPaused]=useState(false);
  const [reduce,setReduce]=useState(false);
  useEffect(()=>{
   const media=window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -38,13 +37,12 @@ function useKineticScene(duration=5) {
   ob.observe(node);return()=>ob.disconnect();
  },[]);
  useEffect(()=>{
-  if(!inView||paused||reduce)return;
+  if(!inView||reduce)return;
   const id=window.setInterval(()=>setStep(x=>(x+1)%duration),1350);
   return()=>window.clearInterval(id);
- },[inView,paused,reduce,duration]);
- const replay=()=>{setStep(0);setPaused(false)};
- const select=(n:number)=>{setStep(n);setPaused(true)};
- return {ref,step,paused,reduce,replay,select};
+ },[inView,reduce,duration]);
+ const select=(n:number)=>setStep(n);
+ return {ref,step,reduce,select};
 }
 function V({on,children,className=""}:{on:boolean;children:ReactNode;className?:string}){return <div className={"sk-reveal "+className+(on?" on":"")}>{children}</div>}
 function Dots(){return <span className="sk-window-dots"><i/><i/><i/></span>}
@@ -158,10 +156,10 @@ function KineticModule({index}:{index:number}) {
  const content=entries[index]!;
  const anim=useKineticScene(content.duration);
  const Scene=scenes[index]!;
- const currentStep=anim.reduce&&!anim.paused?content.duration-1:anim.step;
+ const currentStep=anim.reduce?content.duration-1:anim.step;
  const id=["descubrimiento","captacion","agenda","agente","crm","administracion","campanas","indicadores"][index];
  return <section className={"sk-module sk-module-"+index} id={id} ref={anim.ref}><div className="sys-wrap sk-module-grid">
-  <div className="sk-module-copy"><div className="sk-module-top"><span className="sk-module-id">{content.number} / 08</span><span className="sk-module-eyebrow">{content.eyebrow}</span></div><h2>{content.title} <em>{content.accent}</em></h2><p>{content.text}</p><div className="sk-module-tags">{content.tags.map(t=><span key={t}>{t}</span>)}</div><div className="sk-scene-actions"><button type="button" onClick={anim.replay}><RotateCcw size={16}/> Repetir demo</button><span>{anim.paused?"Vista seleccionada":anim.reduce?"Modo sin animación":"Simulación en movimiento"}</span></div></div>
+  <div className="sk-module-copy"><div className="sk-module-top"><span className="sk-module-id">{content.number} / 08</span><span className="sk-module-eyebrow">{content.eyebrow}</span></div><h2>{content.title} <em>{content.accent}</em></h2><p>{content.text}</p><div className="sk-module-tags">{content.tags.map(t=><span key={t}>{t}</span>)}</div></div>
   <div className={"sk-module-art "+([0,2,6,7].includes(index)?"sk-full-scene":"")}><div className="sk-art-glow" aria-hidden="true"/><div className="sk-scene-accent sk-scene-accent-a" aria-hidden="true"/><div className="sk-scene-accent sk-scene-accent-b" aria-hidden="true"/><Scene step={currentStep}/><div className="sk-timeline-controls"><span>ETAPA</span>{Array.from({length:content.duration},(_,i)=><button type="button" key={i} aria-label={"Mostrar momento "+(i+1)+" de la demostración "+content.number} aria-pressed={currentStep===i} onClick={()=>anim.select(i)} className={currentStep===i?"active":""}><i/></button>)}<span>{String(currentStep+1).padStart(2,"0")} / 0{content.duration}</span></div><p className="sk-simulation-note">Demostración conceptual. No está conectada con clientes, WhatsApp ni datos reales.</p></div>
  </div></section>;
 }

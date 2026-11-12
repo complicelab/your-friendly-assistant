@@ -4,6 +4,7 @@ import { BrandMark } from "@/components/marketing/brand";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { WhatsAppFloat } from "@/components/marketing/whatsapp-float";
 import "./systems-landing.css";
+import { SystemsStoryboards } from "./systems-storyboard";
 
 const contact = "https://api.whatsapp.com/send?phone=573161772880&text=" + encodeURIComponent("Hola, quiero agendar un diagnóstico para construir un sistema con IA a la medida de mi negocio.");
 
@@ -37,19 +38,6 @@ function SystemDemo() {
  </div>
 }
 
-function SystemsJourney() {
- const [active,setActive]=useState(0);
- return <section id="como-funciona" className="sys-journey"><div className="sys-wrap"><div className="sys-section-label">01 / LO QUE CAMBIA</div><div className="sys-journey-top"><h2>Tu negocio no necesita más herramientas.<br/><em>Necesita que trabajen juntas.</em></h2><p>Cuando la información vive en varios lugares, el equipo pierde tiempo buscando qué pasó y qué debe hacer. Diseñamos un recorrido claro para cada oportunidad.</p></div>
- <div className="sys-journey-content"><div className="sys-journey-steps">{stages.map((s,i)=><button key={s.title} className={"sys-journey-step "+(active===i?"is-active":"")} type="button" onClick={()=>setActive(i)} aria-pressed={active===i}><span className="sys-step-num">0{i+1}</span><span className="sys-step-text"><strong>{s.title}</strong>{active===i?<small>{s.description}</small>:null}</span><MoveUpRight size={17}/></button>)}</div><div className="sys-journey-preview"><div className="sys-journey-frame"><span>EL RECORRIDO / ETAPA 0{active+1}</span><div className="sys-journey-visual"><div className="sys-journey-flow-dot"><CheckCircle2 size={23}/></div><div><small>{stages[active]?.eyebrow}</small><strong>{stages[active]?.chip}</strong><p>{stages[active]?.description}</p></div></div><div className="sys-journey-line">{stages.map((s,i)=><div key={s.eyebrow} className={i<=active?"is-active":""}/>)}</div></div><div className="sys-journey-caption">Recorrido ilustrativo. El flujo real se define según tu negocio.</div></div></div></div></section>
-}
-
-const capabilities=[
- {number:"01",title:"Un lugar para cada oportunidad",text:"Información comercial organizada para saber quién llegó, qué necesita y quién debe atenderlo.",icon:Database},
- {number:"02",title:"Procesos que no dependen de la memoria",text:"Agendas, tareas, avisos y automatizaciones conectadas al funcionamiento del equipo.",icon:CalendarDays},
- {number:"03",title:"Una visión clara del negocio",text:"Paneles administrativos e indicadores útiles para tomar decisiones y no perder seguimiento.",icon:LayoutDashboard}
-];
-function Capabilities(){return <section className="sys-capabilities"><div className="sys-wrap"><div className="sys-section-label">02 / CONSTRUIDO A TU MEDIDA</div><div className="sys-capabilities-heading"><h2>No empiezas comprando un software.<br/><em>Empezamos entendiendo tu negocio.</em></h2><p>Puede ser una función puntual, un sistema administrativo o un ecosistema completo. No añadimos módulos solo para que parezca más grande.</p></div><div className="sys-capabilities-list">{capabilities.map(x=><article key={x.title}><div className="sys-cap-icon"><x.icon size={24}/></div><div><span>{x.number} / POSIBILIDAD</span><h3>{x.title}</h3><p>{x.text}</p></div><ArrowUpRight size={19}/></article>)}</div></div></section>}
-
 function Closing(){return <section className="sys-closing"><div className="sys-wrap sys-closing-layout"><div><span className="sys-section-label">03 / TU SIGUIENTE PASO</span><h2>Cuéntanos cómo funciona tu negocio.<br/><em>Te ayudamos a conectar lo que falta.</em></h2><p>Revisamos contigo dónde se están perdiendo oportunidades, qué necesita tu equipo y qué vale la pena construir. Sin ofrecerte un sistema genérico.</p><Action>Hablemos de tu sistema</Action></div><div className="sys-closing-card"><span>ASÍ EMPEZAMOS</span><div><b>01</b> Entendemos el recorrido actual</div><div><b>02</b> Definimos qué debe resolver el sistema</div><div><b>03</b> Construimos y probamos por etapas</div><div className="sys-closing-end"><CheckCircle2 size={18}/> Una solución según tu operación, no al revés</div></div></div></section>}
 
 function Questions(){const [open,setOpen]=useState<number|null>(0);const items=[
@@ -60,8 +48,8 @@ function Questions(){const [open,setOpen]=useState<number|null>(0);const items=[
 ];return <section className="sys-faq"><div className="sys-wrap sys-faq-layout"><div><div className="sys-section-label">04 / RESPUESTAS CLARAS</div><h2>Lo importante es que <em>entiendas qué estás construyendo.</em></h2></div><div>{items.map(([q,a],i)=><div className="sys-faq-item" key={q}><button type="button" onClick={()=>setOpen(open===i?null:i)} aria-expanded={open===i}>{q}<ChevronDown size={19}/></button>{open===i?<p>{a}</p>:null}</div>)}</div></div></section>}
 
 export function SystemsLanding(){return <div className="sys-page">
-<header className="sys-navigation"><div className="sys-nav-inner"><BrandMark/><nav aria-label="Navegación de servicios"><a href="/">Inicio</a><a href="#como-funciona">Cómo funciona</a><a href="#ejemplo">Ejemplo visual</a></nav><Action>Solicitar diagnóstico</Action></div></header>
+<header className="sys-navigation"><div className="sys-nav-inner"><BrandMark/><nav aria-label="Navegación de servicios"><a href="/">Inicio</a><a href="#captacion">Cómo funciona</a><a href="#ejemplo">Ejemplo visual</a></nav><Action>Solicitar diagnóstico</Action></div></header>
 <main><section className="sys-hero"><div className="sys-hero-ambient"/><div className="sys-wrap sys-hero-layout"><div className="sys-hero-copy"><span className="sys-eyebrow"><span/> SISTEMAS CON INTELIGENCIA ARTIFICIAL</span><h1>Sistemas con IA <em>a la medida de tu negocio.</em></h1><p>Construimos el sistema que conecta tu información, tus procesos y tu equipo para que cada oportunidad tenga un siguiente paso claro.</p><div className="sys-hero-actions"><Action>Solicitar diagnóstico</Action><a href="#como-funciona">Mira cómo funciona <ArrowRight size={17}/></a></div><div className="sys-hero-micro"><CheckCircle2 size={16}/> Sin plantillas genéricas. Primero entendemos tu operación.</div></div><div id="ejemplo" className="sys-hero-showcase"><SystemDemo/><div className="sys-hero-visual-caption">Simulación interactiva de un posible sistema. No representa datos reales de clientes.</div></div></div><div className="sys-hero-bottom"><span>ESTRATEGIA</span><i/><span>DISEÑO DEL PROCESO</span><i/><span>CONSTRUCCIÓN CON IA</span><i/><span>SEGUIMIENTO</span></div></section>
-<SystemsJourney/><Capabilities/><Closing/><Questions/>
+<SystemsStoryboards/><Closing/><Questions/>
 <div className="sys-other-services sys-wrap"><span>OTRAS SOLUCIONES DE CÓMPLICE LAB</span><div><a href="/agentes-de-ia">Agentes de IA <ArrowUpRight size={16}/></a><a href="/paginas-web">Páginas Web <ArrowUpRight size={16}/></a><a href="/publicidad-digital">Publicidad Digital <ArrowUpRight size={16}/></a></div></div></main><SiteFooter/><WhatsAppFloat/>
 </div>}

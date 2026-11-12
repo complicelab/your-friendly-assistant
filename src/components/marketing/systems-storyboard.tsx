@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, ArrowUpRight, Bell, Bot, CalendarCheck2, CalendarDays, Check, CheckCheck, CheckCircle2, CirclePlay, Clock3, Database, Globe2, LayoutDashboard, Mail, MessageCircle, MousePointer2, Play, RotateCcw, Send, Sparkles, UserRound, Workflow } from "lucide-react";
+import { ArrowRight, Bell, Bot, CalendarCheck2, CalendarDays, Check, CheckCircle2, Clock3, Database, LayoutDashboard, MessageCircle, MousePointer2, RotateCcw, Send, Sparkles, UserRound, Workflow } from "lucide-react";
 import "./systems-storyboard.css";
 
 /**
@@ -71,10 +71,11 @@ function KineticModule({index}:{index:number}) {
  const content=entries[index]!;
  const anim=useKineticScene(content.duration);
  const Scene=scenes[index]!;
+ const currentStep=anim.reduce&&!anim.paused?content.duration-1:anim.step;
  const id=["captacion","agente","crm","seguimiento","panel"][index];
  return <section className={"sk-module sk-module-"+index} id={id} ref={anim.ref}><div className="sys-wrap sk-module-grid">
   <div className="sk-module-copy"><div className="sk-module-top"><span className="sk-module-id">{content.number} / 05</span><span className="sk-module-eyebrow">{content.eyebrow}</span></div><h2>{content.title} <em>{content.accent}</em></h2><p>{content.text}</p><div className="sk-module-tags">{content.tags.map(t=><span key={t}>{t}</span>)}</div><div className="sk-scene-actions"><button type="button" onClick={anim.replay}><RotateCcw size={16}/> Repetir demo</button><span>{anim.paused?"Vista seleccionada":anim.reduce?"Modo sin animación":"Simulación en movimiento"}</span></div></div>
-  <div className="sk-module-art"><div className="sk-art-glow"/><Scene step={anim.step}/><div className="sk-timeline-controls"><span>ETAPA</span>{Array.from({length:content.duration},(_,i)=><button type="button" key={i} aria-label={"Mostrar momento "+(i+1)+" de la demostración "+content.number} aria-pressed={anim.step===i} onClick={()=>anim.select(i)} className={anim.step===i?"active":""}><i/></button>)}<span>{String(anim.step+1).padStart(2,"0")} / 0{content.duration}</span></div><p className="sk-simulation-note">Demostración conceptual. No está conectada con clientes, WhatsApp ni datos reales.</p></div>
+  <div className="sk-module-art"><div className="sk-art-glow"/><Scene step={currentStep}/><div className="sk-timeline-controls"><span>ETAPA</span>{Array.from({length:content.duration},(_,i)=><button type="button" key={i} aria-label={"Mostrar momento "+(i+1)+" de la demostración "+content.number} aria-pressed={currentStep===i} onClick={()=>anim.select(i)} className={currentStep===i?"active":""}><i/></button>)}<span>{String(currentStep+1).padStart(2,"0")} / 0{content.duration}</span></div><p className="sk-simulation-note">Demostración conceptual. No está conectada con clientes, WhatsApp ni datos reales.</p></div>
  </div></section>;
 }
 export function SystemsStoryboards(){return <div className="sk-storyboards"><div className="sk-intro-band"><div className="sys-wrap"><span>ASÍ PUEDE FUNCIONAR TU SISTEMA</span><h2>No necesitas imaginarlo.<em>Te mostramos el recorrido.</em></h2><p>Estos ejemplos muestran cómo se pueden conectar las piezas. Cada proyecto se define según la operación del negocio.</p><a href="#captacion">Explora el primer módulo <ArrowRight size={17}/></a></div></div>{entries.map((x,i)=><KineticModule key={x.number} index={i}/>)}</div>}

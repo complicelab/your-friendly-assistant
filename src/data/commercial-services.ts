@@ -16,7 +16,7 @@ export const commercialServices:CommercialService[]=[
   deliverables:[
     "Página web comercial adaptada a celular",
     "Captación mediante agenda, formulario o WhatsApp según el objetivo",
-    "Conexión con agenda, formulario o WhatsApp según el objetivo",
+    "Estructura de contenido pensada para explicar valor y facilitar la decisión",
     "Paneles y funciones a medida cuando el proyecto lo requiere"
   ],
   process:[
@@ -58,8 +58,7 @@ export const commercialServices:CommercialService[]=[
   ],
   questions:[
     ["¿Trabajan únicamente Meta Ads?","No. La plataforma se define según el objetivo y el tipo de demanda. Podemos trabajar Meta Ads, Google Ads u otras plataformas cuando la estrategia lo justifica."],
-    ["¿La publicidad incluye página web, CRM o automatizaciones?","No necesariamente. Publicidad Digital se concentra en atraer oportunidades. Si el negocio necesita una nueva página, CRM, agenda o automatizaciones, se desarrolla como un servicio adicional o como parte de un sistema más completo."],
-    ["¿La página web, el CRM o la agenda están incluidos?","No necesariamente. Publicidad Digital se enfoca en atraer demanda. Si el negocio necesita una página, agenda, CRM o automatización, eso se construye como parte de Páginas Web o Sistemas con IA, según el alcance."],
+    ["¿La publicidad incluye página web, CRM o automatizaciones?","No necesariamente. Publicidad Digital se concentra en atraer oportunidades. Si el negocio necesita una nueva página, CRM, agenda o automatizaciones, eso se desarrolla como un servicio adicional o como parte de un sistema más completo."],
     ["¿Garantizan una cantidad de clientes?","No. Podemos mejorar la captación y la calidad de la campaña, pero no prometer una cantidad fija de ventas."]
   ],
   cta:"Quiero atraer mejores oportunidades",

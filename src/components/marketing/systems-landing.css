@@ -79,3 +79,23 @@
  .sys-page .sys-closing-card{min-height:345px;border-radius:22px;padding:23px 20px}
  .sys-quiz-options button{min-height:60px;font-size:13px;padding:13px}
 }
+
+/* Editorial conversion between the problem, working scenes and portfolio. */
+.sys-decision-cta{padding:36px 0;border-top:1px solid #e8eef7;border-bottom:1px solid #e6edf8;background:#fff}
+.sys-decision-cta-demo{background:linear-gradient(110deg,#f4f8ff,#fff 78%)}
+.sys-decision-inner{display:flex;align-items:center;justify-content:space-between;gap:40px}
+.sys-decision-inner>div{max-width:840px}
+.sys-decision-inner>div>span{font-size:11px;color:#416be1;letter-spacing:.12em;font-weight:850}
+.sys-decision-inner h3{font-size:clamp(19px,2vw,27px);line-height:1.26;letter-spacing:-.04em;font-weight:800;color:#14223b;margin:10px 0 9px}
+.sys-decision-inner p{color:#5e7190;font-size:15px;line-height:1.75;margin-top:9px;max-width:800px}
+.sys-decision-inner>.sys-action{flex:0 0 auto}
+.sys-page .sys-hero-copy>p{margin-top:18px;line-height:1.82}
+.sys-page .sys-booking-heading>p{margin-top:18px;line-height:1.8}
+.sys-page .sys-faq-layout>div:first-child>p{margin-top:19px;line-height:1.77}
+.sys-page .sp-heading>p,.sys-page .sp-feature-copy>p{margin-top:16px;line-height:1.78}
+@media(max-width:780px){
+ .sys-decision-cta{padding:30px 0}
+ .sys-decision-inner{align-items:flex-start;flex-direction:column;gap:20px}
+ .sys-decision-inner h3{font-size:23px}
+ .sys-decision-inner p{font-size:14px}
+}

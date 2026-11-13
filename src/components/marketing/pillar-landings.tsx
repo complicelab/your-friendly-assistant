@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, ArrowUpRight, CheckCircle2, ChevronDown, ChevronLeft, Clock3, Globe2, LayoutDashboard, MessageCircle, MessageSquare, MousePointer2, Phone, Search, Send, ShieldCheck, Sparkles, Target, Users } from "lucide-react";
+import { ArrowRight, ArrowUpRight, CheckCircle2, ChevronDown, ChevronLeft, CircleAlert, Clock3, Globe2, LayoutDashboard, MessageCircle, MessageSquare, MousePointer2, Phone, Search, Send, ShieldCheck, Sparkles, Target, Users } from "lucide-react";
 import { BrandMark } from "./brand";
 import { SiteFooter } from "./site-footer";
 import { WhatsAppFloat } from "./whatsapp-float";
@@ -171,7 +171,7 @@ function useAutoMoment(length:number,ms=2700){
  useEffect(()=>{if(!visible||reduced)return;const timer=window.setTimeout(()=>setActive(x=>(x+1)%length),ms);return()=>window.clearTimeout(timer)},[visible,reduced,active,length,ms]);
  return {ref,active:reduced?length-1:active,setActive};
 }
-function Phone({children,label="WhatsApp"}:{children:ReactNode;label?:string}){
+function ChatPhone({children,label="WhatsApp"}:{children:ReactNode;label?:string}){
  return <div className="pl-wa-phone"><div className="pl-phone-status"><span>9:41</span><i/><span>••• ▰</span></div><div className="pl-wa-head"><ChevronLeft size={18}/><span className="pl-wa-avatar"><Sparkles size={17}/></span><span><strong>{label==="WhatsApp"?"Tu negocio":label}</strong><small>WhatsApp</small></span><Phone size={16}/></div><div className="pl-wa-conversation"><span className="pl-wa-day">HOY</span>{children}</div><div className="pl-wa-input"><span>Escribe un mensaje…</span><Send size={14}/></div><div className="pl-phone-bottom"><i/></div></div>;
 }
 function Bubble({children,out=false}:{children:ReactNode;out?:boolean}){return <div className={"pl-wa-bubble "+(out?"out":"in")}>{children}<small>10:24</small></div>}
@@ -184,7 +184,7 @@ function AgentVisual({stage=0,variant=0}:{stage?:number;variant?:number}){
  const c=chats[variant]??chats[0]!;
  return <div className="pl-agent-composition">
   <div className="pl-agent-lights"/>
-  <Phone>{stage>=0?<Bubble>{c.q}</Bubble>:null}{stage>=1?<Bubble out>{c.a}</Bubble>:null}{stage>=2?<Bubble>{c.q2}</Bubble>:null}{stage>=3?<Bubble out>{c.a2}</Bubble>:null}</Phone>
+  <ChatPhone>{stage>=0?<Bubble>{c.q}</Bubble>:null}{stage>=1?<Bubble out>{c.a}</Bubble>:null}{stage>=2?<Bubble>{c.q2}</Bubble>:null}{stage>=3?<Bubble out>{c.a2}</Bubble>:null}</ChatPhone>
   <div className={"pl-floating pl-agent-signal "+(stage>=1?"is-shown":"")}><Sparkles size={19}/><span><strong>Entiende la consulta</strong><small>Responde con información definida</small></span></div>
   <div className={"pl-floating pl-agent-context "+(stage>=2?"is-shown":"")}><Users size={18}/><span><strong>Reconoce el motivo</strong><small>{variant===2?"Debe pasar al equipo":"Primera consulta · ejemplo"}</small></span></div>
   <div className={"pl-floating pl-agent-handoff "+(stage>=3?"is-shown":"")}><CheckCircle2 size={18}/><span><strong>Contexto preparado</strong><small>El siguiente paso queda claro</small></span></div>

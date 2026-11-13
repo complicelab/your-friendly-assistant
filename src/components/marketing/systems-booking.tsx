@@ -62,7 +62,7 @@ export function SystemsBooking({modal=false,onClose,serviceName="Sistemas con IA
  }
  const body=confirmed?<div className="sb-success" role="status"><CheckCircle2 size={36}/><h3>Diagnóstico agendado</h3><p>Tu reserva quedó registrada para <strong>{longDate(confirmed)}</strong>, hora de Colombia. Las notificaciones se enviarán según los canales configurados.</p>{modal?<button onClick={onClose} type="button">Cerrar</button>:null}</div>:
  <>
- <div className="sb-heading"><span>DIAGNÓSTICO · CÓMPLICE LAB</span><h3>Conversemos sobre tu negocio.</h3><p>Elige una fecha real disponible y deja tus datos. Nos reuniremos por videollamada.</p></div>
+ <div className="sb-heading"><span>{serviceName==="Sistemas con IA a la medida"?"DIAGNÓSTICO PARA SISTEMAS CON IA":"DIAGNÓSTICO · CÓMPLICE LAB"}</span><h3>Conversemos sobre tu negocio.</h3><p>Elige una fecha real disponible y deja tus datos. Nos reuniremos por videollamada.</p></div>
  <div className={"sb-form-layout "+(step==="data"?"sb-mobile-data":"")}>
   <section className="sb-calendar" aria-label="Elige el horario"><div className="sb-subhead"><CalendarDays size={20}/><div><strong>01. Fecha y hora</strong><span>Hora de Colombia</span></div></div>
   {loading?<p className="sb-loading" role="status">Consultando horarios disponibles…</p>:dates.length===0?<p className="sb-loading">No hay horarios disponibles actualmente. Puedes escribirnos para coordinar una alternativa.</p>:<>

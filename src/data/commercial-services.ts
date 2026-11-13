@@ -17,7 +17,7 @@ export const commercialServices:CommercialService[]=[
     "Página web comercial adaptada a celular",
     "Captación mediante agenda, formulario o WhatsApp según el objetivo",
     "Estructura de contenido pensada para explicar valor y facilitar la decisión",
-    "Paneles y funciones a medida cuando el proyecto lo requiere"
+    "Pruebas de navegación y del recorrido de contacto antes de publicar"
   ],
   process:[
     "Entendemos el negocio, el cliente y el objetivo comercial",

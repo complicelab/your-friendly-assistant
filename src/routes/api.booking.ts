@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { normalizedServiceInterest } from "@/lib/crm-model";
 import { createClient } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
@@ -323,7 +324,7 @@ export const Route = createFileRoute("/api/booking")({
         const fullName = String(body["full_name"] || "").trim();
         const whatsapp = String(body["whatsapp"] || "").trim();
         const email = String(body["email"] || "").trim();
-        const solutionInterest = String(body["solution_interest"] || "").trim();
+        const solutionInterest = normalizedServiceInterest(String(body["solution_interest"] || "").trim());
         const startsAt = String(body["starts_at"] || "").trim();
 
         const { data, error } = await supabase.rpc("crm_public_book_meeting", {

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, ArrowUpRight, Bell, Bot, CalendarDays, Check, CheckCircle2, ChevronDown, ChevronLeft, Clock3, FileText, Globe2, LayoutDashboard, Mail, MessageCircle, MessageSquare, MousePointer2, Phone, Search, Send, ShieldCheck, Sparkles, Target, Users, WandSparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight, CheckCircle2, ChevronDown, ChevronLeft, Clock3, Globe2, LayoutDashboard, MessageCircle, MessageSquare, MousePointer2, Phone, Search, Send, ShieldCheck, Sparkles, Target, Users } from "lucide-react";
 import { BrandMark } from "./brand";
 import { SiteFooter } from "./site-footer";
 import { WhatsAppFloat } from "./whatsapp-float";
@@ -27,7 +27,7 @@ type ServiceData={
 const content:Record<Kind,ServiceData>={
  "agentes-de-ia":{
   name:"Agentes de IA",eyebrow:"ATENCIÓN INTELIGENTE · CÓMPLICE LAB",
-  hero:"Tus clientes tienen preguntas.",accent:"Tu atención puede estar mejor preparada.",
+  hero:"Agentes de IA para atender tus consultas.",accent:"Sin perder el trato humano.",
   intro:"Diseñamos agentes de IA para responder dudas, entender qué necesita una persona y dejar el contexto listo para tu equipo. Sin hacerle sentir que está hablando con un formulario.",
   heroAside:"Una conversación que entiende qué busca la persona.",
   painHeading:"No todos los mensajes llegan",painAccent:"cuando puedes atenderlos.",
@@ -72,7 +72,7 @@ const content:Record<Kind,ServiceData>={
  },
  "paginas-web":{
   name:"Páginas Web",eyebrow:"PRESENCIA DIGITAL · CÓMPLICE LAB",
-  hero:"Tu negocio ya tiene valor.",accent:"Que tu página esté a la altura.",
+  hero:"Páginas web que representan tu nivel.",accent:"Y facilitan el siguiente paso.",
   intro:"Construimos páginas web para profesionales y empresas que necesitan transmitir confianza, explicar por qué elegirlos y facilitar que una persona pregunte, escriba o agende.",
   heroAside:"Una presencia que se ve profesional y facilita el contacto.",
   painHeading:"Tu cliente compara antes de escribirte.",painAccent:"¿Qué encuentra cuando llega?",
@@ -117,7 +117,7 @@ const content:Record<Kind,ServiceData>={
  },
  "publicidad-digital":{
   name:"Publicidad Digital",eyebrow:"CAMPAÑAS CON INTENCIÓN · CÓMPLICE LAB",
-  hero:"Que más personas conozcan tu servicio.",accent:"Y sepan por qué preguntar por él.",
+  hero:"Publicidad digital para atraer interés real.",accent:"Con un siguiente paso claro.",
   intro:"Planeamos y gestionamos publicidad digital en Meta Ads, Google Ads y otras plataformas cuando la estrategia lo justifica. Para profesionales y empresas que necesitan atraer consultas de personas interesadas en un servicio de alto valor.",
   heroAside:"Del anuncio a una acción que tenga sentido para tu negocio.",
   painHeading:"Invertir en anuncios no basta.",painAccent:"Importa lo que pasa después.",

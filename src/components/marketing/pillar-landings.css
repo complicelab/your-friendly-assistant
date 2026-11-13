@@ -121,7 +121,7 @@
 .pl-wa-conversation{display:flex;flex:1;min-height:0;flex-direction:column;gap:8px;padding:11px 8px;overflow-y:auto;scrollbar-width:none;background:#efeae2;background-image:radial-gradient(#d5d2c864 .65px,transparent .65px);background-size:21px 21px}
 .pl-wa-conversation::-webkit-scrollbar{display:none}
 .pl-wa-day{font-size:9px;color:#708b80;align-self:center;background:#dfece6;padding:5px 10px;border-radius:6px}
-.pl-wa-bubble{align-self:flex-start;max-width:94%;background:#fff;border-radius:5px 12px 12px 12px;padding:10px 11px 6px;color:#31493f;font-size:11px;line-height:1.45;box-shadow:0 1px 4px #123b2726;animation:pl-scene-enter .5s ease both}
+.pl-wa-bubble{align-self:flex-start;max-width:94%;background:#fff;border-radius:5px 12px 12px 12px;padding:10px 11px 6px;color:#31493f;font-size:12px;line-height:1.45;box-shadow:0 1px 4px #123b2726;animation:pl-scene-enter .5s ease both}
 .pl-wa-bubble.out{align-self:flex-end;background:#d9fdd3;border-radius:12px 5px 12px 12px}
 .pl-wa-bubble small{display:block;text-align:right;color:#839c90;font-size:9px;margin-top:4px}
 .pl-wa-input{height:34px;flex:0 0 34px;display:flex;justify-content:space-between;align-items:center;padding:0 13px;background:#fff;color:#a2aea9;font-size:9px}
@@ -132,8 +132,8 @@
 .pl-floating.is-shown{opacity:1;transform:none}
 .pl-floating>svg{flex-shrink:0;color:#4571dc}
 .pl-floating>span{display:flex;flex-direction:column;gap:3px}
-.pl-floating strong{font-size:11px;line-height:1.35;color:#203758}
-.pl-floating small{font-size:9px;color:#7286a9;line-height:1.4}
+.pl-floating strong{font-size:12px;line-height:1.35;color:#203758}
+.pl-floating small{font-size:11px;color:#7286a9;line-height:1.4}
 .pl-agent-signal{top:92px;right:0;max-width:215px}
 .pl-agent-context{top:265px;right:0;max-width:207px}
 .pl-agent-handoff{bottom:24px;right:5%;max-width:229px}
@@ -151,18 +151,18 @@
 .pl-site-copy{padding:35px 15px 26px 25px}
 .pl-site-copy small{display:block;font-size:10px;color:#4d759d;letter-spacing:.09em;font-weight:800}
 .pl-site-copy strong{display:block;color:#132b46;font-size:clamp(17px,1.8vw,24px);letter-spacing:-.045em;line-height:1.15;margin-top:15px}
-.pl-site-copy p{font-size:10px;color:#5a718e;line-height:1.6;margin-top:13px}
-.pl-site-button{display:inline-flex;align-items:center;gap:6px;margin-top:17px;background:linear-gradient(105deg,#246fdf,#6f5dde);border-radius:30px;color:white;padding:9px 12px;font-size:10px;font-weight:750}
+.pl-site-copy p{font-size:12px;color:#5a718e;line-height:1.6;margin-top:13px}
+.pl-site-button{display:inline-flex;align-items:center;gap:6px;margin-top:17px;background:linear-gradient(105deg,#246fdf,#6f5dde);border-radius:30px;color:white;padding:9px 12px;font-size:11px;font-weight:750}
 .pl-site-hero img{width:100%;height:100%;min-height:267px;object-fit:cover;object-position:center}
 .pl-site-chapter{height:80px;padding:15px;display:flex;justify-content:center;align-items:center;gap:10px}
-.pl-site-chapter span{display:flex;align-items:center;gap:6px;padding:10px 12px;background:#f1f5fc;border:1px solid #e3eaf4;border-radius:10px;color:#44618e;font-size:10px;font-weight:700}
+.pl-site-chapter span{display:flex;align-items:center;gap:6px;padding:10px 12px;background:#f1f5fc;border:1px solid #e3eaf4;border-radius:10px;color:#44618e;font-size:11px;font-weight:700}
 /* The web story actually changes screen: presentation → trust → CTA → contact. */
 .pl-web-services,.pl-web-form-example{height:267px;display:grid;grid-template-columns:40% 1fr;overflow:hidden;background:linear-gradient(122deg,#f0f5fe,#fff)}
 .pl-web-services>img{height:267px;width:100%;object-fit:cover}
 .pl-web-services>div{padding:23px 23px 17px}
 .pl-web-services small,.pl-web-form-example small{font-size:10px;color:#4f76a8;letter-spacing:.07em;font-weight:850}
 .pl-web-services strong,.pl-web-form-example strong{display:block;font-size:19px;letter-spacing:-.045em;line-height:1.22;margin:11px 0;color:#152e4d}
-.pl-web-services p,.pl-web-form-example p{font-size:10px;color:#5b728d;line-height:1.5}
+.pl-web-services p,.pl-web-form-example p{font-size:12px;color:#5b728d;line-height:1.5}
 .pl-web-services ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
 .pl-web-services li{display:flex;align-items:center;gap:6px;color:#326ca1;font-size:10px;font-weight:750}
 .pl-web-services li svg{color:#1e9b80}
@@ -381,9 +381,9 @@
  .pl-wa-head{gap:4px;padding:5px}.pl-wa-head>svg:last-child{display:none}
  .pl-wa-avatar{height:29px;width:29px}
  .pl-wa-contact strong{font-size:10px}
- .pl-wa-bubble{font-size:10px;padding:8px}
+ .pl-wa-bubble{font-size:11px;padding:8px}
  .pl-floating{padding:9px 10px;gap:6px;border-radius:10px}
- .pl-floating strong{font-size:9px}.pl-floating small{font-size:8px}
+ .pl-floating strong{font-size:11px}.pl-floating small{font-size:10px}
  .pl-agent-signal{top:84px;right:0;max-width:156px}
  .pl-agent-context{top:225px;right:0;max-width:152px}
  .pl-agent-handoff{bottom:25px;right:0;max-width:170px}
@@ -392,12 +392,12 @@
  .pl-site-hero{grid-template-columns:1fr 39%;min-height:205px}
  .pl-site-hero img{min-height:205px}
  .pl-site-copy{padding:19px 12px}
- .pl-site-copy small{font-size:8px}
+ .pl-site-copy small{font-size:10px}
  .pl-site-copy strong{font-size:17px;margin-top:10px}
- .pl-site-copy p{font-size:9px;margin-top:9px}
- .pl-site-button{font-size:8px;padding:8px;margin-top:10px}
+ .pl-site-copy p{font-size:11px;margin-top:8px}
+ .pl-site-button{font-size:10px;padding:8px;margin-top:10px}
  .pl-site-chapter{height:69px;padding:7px;gap:5px}
- .pl-site-chapter span{font-size:8px;padding:7px}
+ .pl-site-chapter span{font-size:10px;padding:7px}
  .pl-web-mobile{width:134px;height:273px;right:0;top:170px}
  .pl-web-mobile>strong{font-size:11px}
  .pl-mobile-image{height:90px}
@@ -443,16 +443,16 @@
  .pl-page .pl-web-services img{height:205px}
  .pl-page .pl-web-services>div{padding:13px 10px}
  .pl-page .pl-web-services strong{font-size:14px;margin:7px 0}
- .pl-page .pl-web-services p{font-size:8px}
+ .pl-page .pl-web-services p{font-size:10px}
  .pl-page .pl-web-services ul{margin-top:6px;gap:2px}
- .pl-page .pl-web-services li{font-size:8px}
+ .pl-page .pl-web-services li{font-size:10px}
  .pl-page .pl-web-form-example{grid-template-columns:1fr 48%;padding:12px;gap:8px;height:205px}
  .pl-page .pl-web-form-example strong{font-size:13px;margin:8px 0}
- .pl-page .pl-web-form-example p{font-size:8px}
+ .pl-page .pl-web-form-example p{font-size:10px}
  .pl-page .pl-web-form-fields{gap:4px}
- .pl-page .pl-web-form-fields label{font-size:8px}
- .pl-page .pl-web-form-fields label span{font-size:8px;padding:3px 5px}
- .pl-page .pl-web-form-button{font-size:8px;padding:5px}
+ .pl-page .pl-web-form-fields label{font-size:10px}
+ .pl-page .pl-web-form-fields label span{font-size:10px;padding:3px 5px}
+ .pl-page .pl-web-form-button{font-size:10px;padding:5px}
  /* The agent's three explanations stack below the phone instead of masking chat bubbles. */
  .pl-page .pl-agent-composition{height:680px}
  .pl-page .pl-hero-art:has(.pl-agent-composition){height:720px}
@@ -464,7 +464,7 @@
  .pl-page .pl-agent-handoff{top:595px}
 @media(max-width:370px){
  .pl-wa-phone{width:201px;left:0}
- .pl-floating strong{font-size:9px}
+ .pl-floating strong{font-size:11px}
  .pl-agent-signal,.pl-agent-context{right:-3px;max-width:142px}
  .pl-web-mobile{width:120px}
  .pl-demo-switches button{font-size:10px}

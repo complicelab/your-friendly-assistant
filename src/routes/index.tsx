@@ -244,6 +244,16 @@ const HOMEPAGE_POSITIONING_STYLES = `
     .cl-scope-rail{gap:6px}
     .cl-scope-rail span{font-size:10px}
   }
+
+  /* Readable editorial rhythm without touching mockup contents or interactions. */
+  main .svc h3 + p{margin-top:16px!important;line-height:1.77!important}
+  main .p-h h2 + p, main .p-h .h2 + p{margin-top:18px!important;line-height:1.78!important}
+  main .projects-head .h2 + p, main .projects-head h2 + p{margin-top:19px!important;line-height:1.77!important}
+  main .contact-copy .h2 + p, main .ex-copy .h2 + p{margin-top:18px!important;line-height:1.78!important}
+  @media(max-width:700px){
+    main .svc h3 + p{margin-top:14px!important}
+    main .p-h h2 + p, main .projects-head .h2 + p{margin-top:16px!important}
+  }
 </style>
 `
 

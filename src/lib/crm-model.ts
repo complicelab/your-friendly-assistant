@@ -5,7 +5,44 @@ export type Activity = Database['public']['Tables']['crm_activities']['Row'];
 export type Task = Database['public']['Tables']['crm_tasks']['Row'];
 export const STAGES = [['nuevo','Nuevo'],['contactado','Contactado'],['calificado','Calificado'],['cita_agendada','Cita agendada'],['propuesta','Propuesta'],['seguimiento','Seguimiento'],['ganado','Ganado'],['perdido','Perdido']] as const;
 export const SOURCES = [['manual','Manual'],['web','Web'],['whatsapp','WhatsApp'],['meta_ads','Meta Ads'],['instagram','Instagram'],['referido','Referido'],['otro','Otro']] as const;
-export const SERVICES = ['Sistemas con IA a la medida','Agente de IA automatizado','Marketing digital','Otro'];
+export const SERVICES = [
+  'Sistemas con IA a la medida',
+  'Agentes de IA automatizados',
+  'Páginas Web',
+  'Publicidad Digital',
+  'Diagnóstico general',
+  'Otro',
+] as const;
+
+/**
+ * One commercial classification across the four landing bookings, the
+ * homepage, the CRM list and the meeting detail. Legacy combined interests
+ * are preserved as legacy; do not silently reclassify them as one new service.
+ */
+export function serviceCategory(value: string | null | undefined): string {
+  const raw = String(value ?? '').trim();
+  if (!raw) return 'Sin especificar';
+  const plain = raw.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const isWeb = /pagina(s)? web|sitio(s)? web|web premium/.test(plain);
+  const isAds = /publicidad|pauta|meta ads|google ads/.test(plain);
+  if (isWeb && isAds) return 'Web + Publicidad (anterior)';
+  if (/sistema(s)? con ia|sistema(s)? de ia|sistema(s)? a la medida/.test(plain)) return 'Sistemas con IA a la medida';
+  if (/agente(s)? de ia|asistente(s)? de ia|agente(s)? automatizado/.test(plain)) return 'Agentes de IA automatizados';
+  if (isWeb) return 'Páginas Web';
+  if (isAds) return 'Publicidad Digital';
+  if (/marketing digital/.test(plain)) return 'Marketing digital (anterior)';
+  if (/no lo se|no estoy seguro|diagnostico general|quiero un diagnostico|por definir/.test(plain)) return 'Diagnóstico general';
+  if (plain === 'otro') return 'Otro';
+  return raw;
+}
+
+export function normalizedServiceInterest(value: string): string {
+  return serviceCategory(value);
+}
+
+export function serviceLabel(value: string | null | undefined): string {
+  return serviceCategory(value);
+}
 export function stageLabel(value: string) { return STAGES.find(([key]) => key === value)?.[1] ?? value; }
 export function sourceLabel(value: string) { return SOURCES.find(([key]) => key === value)?.[1] ?? value; }
 export function validatePassword(password: string, confirmation: string) {

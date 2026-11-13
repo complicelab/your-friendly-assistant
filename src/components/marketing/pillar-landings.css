@@ -213,6 +213,22 @@
 .pl-process-event strong{font-size:15px;color:#f6f8ff;line-height:1.5}
 .pl-process-event p{margin-top:6px;font-size:13px;line-height:1.65;color:#acbed8}
 .pl-process-event svg{color:#70b8e9}
+/* Editorial service scope instead of four generic identical cards. */
+.pl-scope{background:linear-gradient(155deg,#f7faff,#fff 58%);padding:105px 0;border-bottom:1px solid #e9eef7}
+.pl-scope-layout{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center;gap:clamp(45px,7vw,100px)}
+.pl-scope-intro h2{font-size:clamp(30px,3.25vw,43px);line-height:1.17;letter-spacing:-.048em;margin:18px 0 20px}
+.pl-scope-intro>p{font-size:16px;line-height:1.77;color:#657994;max-width:510px}
+.pl-scope-intro>.sys-action{margin-top:26px}
+.pl-scope-note{display:flex;align-items:flex-start;gap:10px;margin-top:25px;color:#456189;font-size:13px;line-height:1.7;max-width:510px}
+.pl-scope-note svg{flex-shrink:0;color:#3172e1;margin-top:2px}
+.pl-scope-list{border-top:1px solid #dae5f4}
+.pl-scope-row{display:grid;grid-template-columns:30px 1fr 22px;align-items:center;gap:14px;padding:23px 4px;border-bottom:1px solid #dae5f4}
+.pl-scope-row>span{font-size:11px;font-weight:850;color:#5d80c7}
+.pl-scope-row strong{font-size:15px;font-weight:750;line-height:1.55;color:#203759}
+.pl-scope-row svg{color:#3c7acb}
+@media(max-width:1010px){.pl-scope-layout{grid-template-columns:1fr;gap:32px}}
+@media(max-width:700px){.pl-scope{padding:72px 0}.pl-scope-row{padding:18px 0}.pl-scope-row strong{font-size:14px}}
+
 .pl-page .sp-section{padding:100px 0}
 .pl-quiz{background:linear-gradient(112deg,#1f6fe8,#4566e7 50%,#7453df);padding:105px 0;color:white;overflow:hidden;isolation:isolate}
 .pl-quiz-layout{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);align-items:center;gap:clamp(35px,5.5vw,85px)}

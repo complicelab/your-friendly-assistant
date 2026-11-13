@@ -17,10 +17,12 @@ import part12 from '../data/v10/part-12';
 
 function bookingScript(){
   const source=fs.readFileSync(new URL('../routes/index.tsx',import.meta.url),'utf8');
-  const start=source.indexOf('const UNIFIED_BOOKING_CTA = `');
-  const end=source.indexOf('`\n\nfunction getOriginalHtml()',start);
-  if(start<0||end<0)throw new Error('booking script not found');
-  const fragment=source.slice(start+'const UNIFIED_BOOKING_CTA = `'.length,end);
+  const prefix='const UNIFIED_BOOKING_CTA = `';
+  const start=source.indexOf(prefix);
+  if(start<0)throw new Error('booking script not found');
+  // The booking module can be followed by independent homepage scripts.
+  // Extract its own first script instead of expecting a particular next constant.
+  const fragment=source.slice(start+prefix.length);
   const match=fragment.match(/<script[^>]*>([\s\S]*?)<\/script>/);
   if(!match?.[1])throw new Error('booking client script not found');
   return match[1];

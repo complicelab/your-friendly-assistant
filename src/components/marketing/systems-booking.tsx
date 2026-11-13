@@ -9,9 +9,9 @@ const shortDate=(value:string)=>new Intl.DateTimeFormat("es-CO",{timeZone:"Ameri
 const hour=(value:string)=>new Intl.DateTimeFormat("es-CO",{timeZone:"America/Bogota",hour:"numeric",minute:"2-digit",hour12:true}).format(new Date(value));
 const today=()=>dateKey(new Date().toISOString());
 const DEFAULT_DATA:BookingData={full_name:"",brand_name:"",country_code:"+57",whatsapp:"",email:"",consent:false};
-const interest="Creamos sistemas con IA a la medida";
 
-export function SystemsBooking({modal=false,onClose}:{modal?:boolean;onClose?:()=>void}){
+
+export function SystemsBooking({modal=false,onClose,serviceName="Sistemas con IA a la medida",interest="Creamos sistemas con IA a la medida"}:{modal?:boolean;onClose?:()=>void;serviceName?:string;interest?:string}){
  const id=useId();
  const [slots,setSlots]=useState<Slot[]>([]);
  const [date,setDate]=useState("");
@@ -62,7 +62,7 @@ export function SystemsBooking({modal=false,onClose}:{modal?:boolean;onClose?:()
  }
  const body=confirmed?<div className="sb-success" role="status"><CheckCircle2 size={36}/><h3>Diagnóstico agendado</h3><p>Tu reserva quedó registrada para <strong>{longDate(confirmed)}</strong>, hora de Colombia. Las notificaciones se enviarán según los canales configurados.</p>{modal?<button onClick={onClose} type="button">Cerrar</button>:null}</div>:
  <>
- <div className="sb-heading"><span>DIAGNÓSTICO PARA SISTEMAS CON IA</span><h3>Conversemos sobre tu negocio.</h3><p>Elige una fecha real disponible y deja tus datos. Nos reuniremos por videollamada.</p></div>
+ <div className="sb-heading"><span>DIAGNÓSTICO · CÓMPLICE LAB</span><h3>Conversemos sobre tu negocio.</h3><p>Elige una fecha real disponible y deja tus datos. Nos reuniremos por videollamada.</p></div>
  <div className={"sb-form-layout "+(step==="data"?"sb-mobile-data":"")}>
   <section className="sb-calendar" aria-label="Elige el horario"><div className="sb-subhead"><CalendarDays size={20}/><div><strong>01. Fecha y hora</strong><span>Hora de Colombia</span></div></div>
   {loading?<p className="sb-loading" role="status">Consultando horarios disponibles…</p>:dates.length===0?<p className="sb-loading">No hay horarios disponibles actualmente. Puedes escribirnos para coordinar una alternativa.</p>:<>
@@ -79,7 +79,7 @@ export function SystemsBooking({modal=false,onClose}:{modal?:boolean;onClose?:()
    <label className="sb-wide">WhatsApp<div className="sb-phone"><select aria-label="Indicativo del país" value={form.country_code} onChange={e=>setField("country_code",e.target.value)}><option value="+57">🇨🇴 +57</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option><option value="+51">🇵🇪 +51</option><option value="+34">🇪🇸 +34</option><option value="+56">🇨🇱 +56</option></select><input required name="whatsapp" type="tel" autoComplete="tel-national" value={form.whatsapp} onChange={e=>setField("whatsapp",e.target.value)} placeholder="Número de contacto" minLength={7}/></div></label>
    <label className="sb-wide">Correo electrónico<input required name="email" type="email" autoComplete="email" value={form.email} onChange={e=>setField("email",e.target.value)} placeholder="correo@empresa.com"/></label>
   </div>
-  <p className="sb-service-label">Servicio: <strong>Sistemas con IA a la medida</strong></p>
+  <p className="sb-service-label">Servicio: <strong>{serviceName}</strong></p>
   <label className="sb-consent"><input type="checkbox" required checked={form.consent} onChange={e=>setField("consent",e.target.checked)}/><span>Autorizo el uso de mis datos para gestionar este diagnóstico y sus confirmaciones. <a href="/privacidad" target="_blank" rel="noopener noreferrer">Política de privacidad.</a></span></label>
   {error?<p role="alert" className="sb-error">{error}</p>:null}
   <button className="sb-submit" type="submit" disabled={sending||loading||!selected}>{sending?"Confirmando disponibilidad…":"Agendar diagnóstico"} <ChevronRight size={17}/></button>

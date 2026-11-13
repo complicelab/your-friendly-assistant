@@ -931,7 +931,7 @@ const UNIFIED_BOOKING_CTA = `
   }
 
   function serviceFromRoot(root){
-    var phrases=["sistemas con ia","agentes de ia","marketing digital","quiero un diagnóstico","quiero un diagnostico"];
+    var phrases=["sistemas con ia","agentes de ia","pagina web","paginas web","publicidad digital","publicidad en redes","marketing digital","quiero un diagnóstico","quiero un diagnostico"];
     var checked=Array.from(root.querySelectorAll('input[type="radio"]:checked,input[type="checkbox"]:checked'));
     for(var i=0;i<checked.length;i++){
       var lab=checked[i].closest("label");
@@ -1171,7 +1171,7 @@ const UNIFIED_BOOKING_CTA = `
     overlay.setAttribute("role","dialog");
     overlay.setAttribute("aria-modal","true");
     overlay.setAttribute("aria-labelledby","cl-booking-title");
-    overlay.innerHTML='<div class="cl-booking-panel"><div class="cl-booking-modal-head"><div><h2 id="cl-booking-title">Agenda tu diagnóstico</h2><p>Elige un horario y completa tus datos. La cita queda registrada en nuestro CRM.</p></div><button type="button" class="cl-booking-close" aria-label="Cerrar">×</button></div><div class="cl-booking-modal-body"><div class="cl-booking-modal-grid"><section class="cl-booking-box" data-cl-step="schedule"><h3>1. Elige fecha y hora</h3><p>Todos los horarios se muestran en hora de Colombia.</p><div class="cl-booking-days"><span class="cl-booking-loading">Elige tu horario</span></div><div class="cl-booking-times"></div><p class="cl-booking-summary">Selecciona un día y una hora.</p><button type="button" class="cl-booking-mobile-next" disabled>Continuar con mis datos</button></section><section class="cl-booking-box" data-cl-step="data"><button type="button" class="cl-booking-mobile-back">← Cambiar horario</button><h3>2. Tus datos</h3><p>Los usamos únicamente para gestionar tu diagnóstico.</p><form class="cl-booking-form" novalidate><label><span>Nombre y apellido</span><input name="full_name" autocomplete="name" required></label><label><span>Marca personal o empresa</span><input name="brand_name" autocomplete="organization"></label><label class="full"><span>WhatsApp</span><span class="cl-booking-phone"><select name="country_code" aria-label="Indicativo"><option value="+57">🇨🇴 +57</option></select><input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required></span></label><label class="full"><span>Correo</span><input name="email" type="email" inputmode="email" autocomplete="email" required></label><label class="full"><span>¿Qué servicio te interesa?</span><select name="solution_interest" required><option value="">Selecciona una opción</option><option>Creamos sistemas con IA a la medida</option><option>Agentes de IA automatizados</option><option>Páginas web y publicidad en redes sociales</option><option>Aún no lo sé, quiero un diagnóstico</option></select></label><label class="cl-booking-consent"><input name="consent" type="checkbox" required><span>Autorizo el uso de mis datos para gestionar esta solicitud y contactarme sobre el diagnóstico.</span></label><p class="cl-booking-error" role="alert"></p><button class="cl-booking-submit" type="submit">Agendar diagnóstico</button></form></section></div></div></div>';
+    overlay.innerHTML='<div class="cl-booking-panel"><div class="cl-booking-modal-head"><div><h2 id="cl-booking-title">Agenda tu diagnóstico</h2><p>Elige un horario y completa tus datos. La cita queda registrada en nuestro CRM.</p></div><button type="button" class="cl-booking-close" aria-label="Cerrar">×</button></div><div class="cl-booking-modal-body"><div class="cl-booking-modal-grid"><section class="cl-booking-box" data-cl-step="schedule"><h3>1. Elige fecha y hora</h3><p>Todos los horarios se muestran en hora de Colombia.</p><div class="cl-booking-days"><span class="cl-booking-loading">Elige tu horario</span></div><div class="cl-booking-times"></div><p class="cl-booking-summary">Selecciona un día y una hora.</p><button type="button" class="cl-booking-mobile-next" disabled>Continuar con mis datos</button></section><section class="cl-booking-box" data-cl-step="data"><button type="button" class="cl-booking-mobile-back">← Cambiar horario</button><h3>2. Tus datos</h3><p>Los usamos únicamente para gestionar tu diagnóstico.</p><form class="cl-booking-form" novalidate><label><span>Nombre y apellido</span><input name="full_name" autocomplete="name" required></label><label><span>Marca personal o empresa</span><input name="brand_name" autocomplete="organization"></label><label class="full"><span>WhatsApp</span><span class="cl-booking-phone"><select name="country_code" aria-label="Indicativo"><option value="+57">🇨🇴 +57</option></select><input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required></span></label><label class="full"><span>Correo</span><input name="email" type="email" inputmode="email" autocomplete="email" required></label><label class="full"><span>¿Qué servicio te interesa?</span><select name="solution_interest" required><option value="">Selecciona una opción</option><option value="Sistemas con IA a la medida">Sistemas con IA a la medida</option><option value="Agentes de IA automatizados">Agentes de IA automatizados</option><option value="Páginas Web">Páginas Web</option><option value="Publicidad Digital">Publicidad Digital</option><option value="Diagnóstico general">Aún no lo sé, quiero orientación</option></select></label><label class="cl-booking-consent"><input name="consent" type="checkbox" required><span>Autorizo el uso de mis datos para gestionar esta solicitud y contactarme sobre el diagnóstico.</span></label><p class="cl-booking-error" role="alert"></p><button class="cl-booking-submit" type="submit">Agendar diagnóstico</button></form></section></div></div></div>';
     document.body.appendChild(overlay);
     overlay.querySelectorAll(".cl-contact-booking").forEach(function(node){node.remove();});
     overlay.querySelector(".cl-booking-close").addEventListener("click",closeBookingModal);
@@ -1572,6 +1572,58 @@ const UNIFIED_BOOKING_CTA = `
 </script>
 `
 
+const HOMEPAGE_STRATEGIC_CTAS = `
+<style id="cl-home-strategic-ctas-v1">
+.cl-home-bridge{position:relative;display:block;width:100%;padding:43px 24px;background:#fff;isolation:isolate;border-top:1px solid #e8eef8;border-bottom:1px solid #e8eef8}
+.cl-home-bridge.is-accent{background:linear-gradient(110deg,#f4f8ff,#fff 72%)}
+.cl-home-bridge-inner{display:flex;align-items:center;justify-content:space-between;gap:34px;width:min(1130px,100%);margin:auto}
+.cl-home-bridge-copy{flex:1;min-width:0}
+.cl-home-bridge-eyebrow{display:block;font:800 11px/1.3 "Montserrat",sans-serif;letter-spacing:.12em;color:#3569d9}
+.cl-home-bridge h3{margin:12px 0 8px;font:750 clamp(22px,2.2vw,29px)/1.25 "Montserrat",sans-serif;letter-spacing:-.038em;color:#111e37}
+.cl-home-bridge p{margin:0;max-width:780px;font:500 15px/1.8 "Montserrat",sans-serif;color:#60728f}
+.cl-home-bridge button{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:80px;background:linear-gradient(104deg,#246fe8,#6754e7);box-shadow:0 13px 29px #315fe92d;padding:15px 24px;color:white;font:750 14px/1.3 "Montserrat",sans-serif;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.cl-home-bridge button:hover{transform:translateY(-2px);box-shadow:0 15px 32px #315fe944}
+.cl-home-bridge button:focus-visible{outline:3px solid #9fb5ff;outline-offset:4px}
+@media(max-width:720px){.cl-home-bridge{padding:34px 22px}.cl-home-bridge-inner{display:flex;flex-direction:column;gap:20px;align-items:flex-start}.cl-home-bridge h3{font-size:22px}.cl-home-bridge p{font-size:14px}.cl-home-bridge button{font-size:13px;padding:14px 20px}}
+</style>
+<script id="cl-home-strategic-ctas-runtime">
+(function(){
+ function norm(el){return String(el&&el.textContent||"").replace(/\s+/g," ").trim().toLowerCase();}
+ function sectionFor(selectors,words){
+  for(var k=0;k<selectors.length;k++){var target=document.querySelector(selectors[k]);if(target){var section=target.closest("section");if(section)return section;}}
+  var headings=Array.from(document.querySelectorAll("main h2, main h3, section h2, section h3"));
+  for(var i=0;i<words.length;i++){var heading=headings.find(function(el){return norm(el).indexOf(words[i])!==-1;});if(heading){var host=heading.closest("section");if(host)return host;}}
+  return null;
+ }
+ function insert(id,host,eyebrow,title,detail,accent){
+  if(!host||document.getElementById(id))return;
+  var box=document.createElement("aside");box.id=id;
+  box.className="cl-home-bridge"+(accent?" is-accent":"");
+  box.setAttribute("aria-label","Invitación a agendar un diagnóstico");
+  var inner=document.createElement("div");inner.className="cl-home-bridge-inner";
+  var copy=document.createElement("div");copy.className="cl-home-bridge-copy";
+  var small=document.createElement("span");small.className="cl-home-bridge-eyebrow";small.textContent=eyebrow;
+  var heading=document.createElement("h3");heading.textContent=title;
+  var paragraph=document.createElement("p");paragraph.textContent=detail;
+  var button=document.createElement("button");button.type="button";button.textContent="Agendar diagnóstico";button.className="cl-booking-cta-label";
+  copy.append(small,heading,paragraph);inner.append(copy,button);box.appendChild(inner);
+  host.insertAdjacentElement("afterend",box);
+ }
+ function mount(){
+  var services=sectionFor(["#servicios",".svc"],["creamos sistemas con ia","nuestros servicios"]);
+  insert("cl-home-after-services",services,"TU NEGOCIO, TU PUNTO DE PARTIDA","No tienes que decidir qué tecnología necesitas.","Revisemos dónde se pierden oportunidades y qué tendría sentido construir primero.",false);
+  var demos=sectionFor(["#como-funciona","#como-trabajamos"],["así trabajamos","mira cómo funciona"]);
+  if(demos&&demos!==services)insert("cl-home-after-demo",demos,"LLEVEMOS EL EJEMPLO A TU NEGOCIO","¿Te gustaría ver cómo funcionaría en tu operación?","Un diagnóstico nos ayuda a entender tu proceso y diseñar el recorrido adecuado.",true);
+  var projects=sectionFor(["#proyectos",".projects-head"],["proyectos que hemos construido","lo que hemos construido"]);
+  if(projects&&projects!==services&&projects!==demos)insert("cl-home-after-projects",projects,"ANTES DE CONSTRUIR","Hablemos de lo que quieres conseguir.","No necesitas una propuesta técnica lista. Empecemos por tu negocio y tu cliente.",false);
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",mount,{once:true});
+ else mount();
+ window.addEventListener("load",function(){setTimeout(mount,250);},{once:true});
+})();
+</script>
+`;
+
 function getOriginalHtml() {
   const html = gunzipSync(Buffer.from(COMPRESSED_HTML, "base64")).toString("utf8")
     .replaceAll("Continuar por WhatsApp", "Agendar diagnóstico")
@@ -1620,7 +1672,7 @@ function getOriginalHtml() {
     );
   return replaceMarketingRuntime(replaceFlowScenes(replaceCompareScenes(seoAlignedHtml)))
     .replace("</head>", SECTION_TITLE_WEIGHT_OVERRIDE + MOBILE_FLOW_FIXES + HOMEPAGE_POSITIONING_STYLES + compareStyles + flowStyles + marketingStyles + `\n  <meta name="complice-build" content="mobile-booking-two-step-2026-11-09-v2">\n  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://complicelab.com/#organization","name":"Cómplice Lab","url":"https://complicelab.com/","logo":"https://complicelab.com/brand/complice-lab-logo.svg","email":"info@complicelab.com","telephone":"+573161772880","description":"Cómplice Lab construye sistemas con IA a la medida, agentes de IA automatizados, páginas web y campañas de publicidad para profesionales y empresas.","areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"sameAs":["https://www.instagram.com/complicelab","https://www.facebook.com/complicelab","https://www.youtube.com/@complicelab"]},{"@type":"WebSite","@id":"https://complicelab.com/#website","url":"https://complicelab.com/","name":"Cómplice Lab","publisher":{"@id":"https://complicelab.com/#organization"},"inLanguage":"es-419"},{"@type":"Service","name":"Sistemas con IA a la medida","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Sistemas con inteligencia artificial a la medida"},{"@type":"Service","name":"Agentes de IA automatizados","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Agentes de inteligencia artificial automatizados"},{"@type":"Service","name":"Páginas web y publicidad en redes sociales","provider":{"@id":"https://complicelab.com/#organization"},"areaServed":[{"@type":"Country","name":"Colombia"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Mexico"},{"@type":"Country","name":"Dominican Republic"},{"@type":"AdministrativeArea","name":"Puerto Rico"}],"serviceType":"Páginas web, publicidad en redes sociales, Meta Ads, TikTok Ads y Google Ads"}]}</script>\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"shortcut icon\" type=\"image/png\" href=\"/favicon.png\">\n  <link rel=\"apple-touch-icon\" href=\"/favicon.png\">\n` + "</head>")
-    .replace("</body>", HOMEPAGE_COPY_FIX + HOMEPAGE_GOOGLE_REVIEWS_RUNTIME + HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + UNIFIED_BOOKING_CTA + "</body>");
+    .replace("</body>", HOMEPAGE_COPY_FIX + HOMEPAGE_GOOGLE_REVIEWS_RUNTIME + HOMEPAGE_FOOTER_ENHANCEMENT + MOBILE_FLOW_SCRIPT + compareInteractions + flowInteractions + marketingInteractions + UNIFIED_BOOKING_CTA + HOMEPAGE_STRATEGIC_CTAS + "</body>");
 }
 
 export const Route = createFileRoute("/")({

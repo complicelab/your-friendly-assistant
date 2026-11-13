@@ -4,10 +4,10 @@ import { chromium, webkit } from '@playwright/test';
 const source=fs.readFileSync(new URL('../routes/index.tsx',import.meta.url),'utf8');
 const declaration=source.indexOf('const UNIFIED_BOOKING_CTA');
 const firstTick=declaration>=0?source.indexOf(String.fromCharCode(96),declaration):-1;
-const functionStart=source.indexOf('function getOriginalHtml()',Math.max(0,declaration));
-const lastTick=functionStart>0?source.lastIndexOf(String.fromCharCode(96),functionStart):-1;
-if(declaration<0||firstTick<0||functionStart<0||lastTick<=firstTick)throw new Error('Could not extract UNIFIED_BOOKING_CTA from index.tsx');
-const runtime=source.slice(firstTick+1,lastTick);
+// End at the booking module's own client script, not at a later homepage module.
+const lastScript=firstTick>=0?source.indexOf('</script>',firstTick):-1;
+if(declaration<0||firstTick<0||lastScript<=firstTick)throw new Error('Could not extract UNIFIED_BOOKING_CTA from index.tsx');
+const runtime=source.slice(firstTick+1,lastScript+'</script>'.length);
 
 const slots=[
   {slot_start:'2026-11-10T09:00:00-05:00',slot_end:'2026-11-10T10:00:00-05:00'},

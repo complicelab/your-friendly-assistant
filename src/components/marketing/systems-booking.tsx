@@ -11,7 +11,7 @@ const today=()=>dateKey(new Date().toISOString());
 const DEFAULT_DATA:BookingData={full_name:"",brand_name:"",country_code:"+57",whatsapp:"",email:"",consent:false};
 
 
-export function SystemsBooking({modal=false,onClose,serviceName="Sistemas con IA a la medida",interest="Creamos sistemas con IA a la medida"}:{modal?:boolean;onClose?:()=>void;serviceName?:string;interest?:string}){
+export function SystemsBooking({modal=false,onClose,serviceName="Sistemas con IA a la medida",interest="Sistemas con IA a la medida"}:{modal?:boolean;onClose?:()=>void;serviceName?:string;interest?:string}){
  const id=useId();
  const [slots,setSlots]=useState<Slot[]>([]);
  const [date,setDate]=useState("");

@@ -156,6 +156,33 @@
 .pl-site-hero img{width:100%;height:100%;min-height:267px;object-fit:cover;object-position:center}
 .pl-site-chapter{height:80px;padding:15px;display:flex;justify-content:center;align-items:center;gap:10px}
 .pl-site-chapter span{display:flex;align-items:center;gap:6px;padding:10px 12px;background:#f1f5fc;border:1px solid #e3eaf4;border-radius:10px;color:#44618e;font-size:10px;font-weight:700}
+/* The web story actually changes screen: presentation → trust → CTA → contact. */
+.pl-web-services,.pl-web-form-example{height:267px;display:grid;grid-template-columns:40% 1fr;overflow:hidden;background:linear-gradient(122deg,#f0f5fe,#fff)}
+.pl-web-services>img{height:267px;width:100%;object-fit:cover}
+.pl-web-services>div{padding:23px 23px 17px}
+.pl-web-services small,.pl-web-form-example small{font-size:10px;color:#4f76a8;letter-spacing:.07em;font-weight:850}
+.pl-web-services strong,.pl-web-form-example strong{display:block;font-size:19px;letter-spacing:-.045em;line-height:1.22;margin:11px 0;color:#152e4d}
+.pl-web-services p,.pl-web-form-example p{font-size:10px;color:#5b728d;line-height:1.5}
+.pl-web-services ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.pl-web-services li{display:flex;align-items:center;gap:6px;color:#326ca1;font-size:10px;font-weight:750}
+.pl-web-services li svg{color:#1e9b80}
+.pl-web-form-example{grid-template-columns:1fr 44%;padding:25px;gap:23px;align-items:center}
+.pl-web-form-example>div:first-child{align-self:center}
+.pl-web-form-fields{display:grid;gap:7px}
+.pl-web-form-fields label{display:flex;flex-direction:column;gap:4px;font-size:9px;font-weight:750;color:#2e4669}
+.pl-web-form-fields label span{display:block;border:1px solid #cddcf1;border-radius:7px;background:white;padding:6px 8px;color:#91a0b6;font-size:9px;font-weight:500}
+.pl-web-form-button{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 9px;border-radius:8px;background:linear-gradient(105deg,#286fe6,#6d5be6);color:white;font-weight:800;font-size:9px}
+.pl-site-button.is-highlighted{box-shadow:0 0 0 5px #628ff32e,0 12px 24px #306de748;animation:pl-action-pulse 1.6s ease-in-out infinite}
+@keyframes pl-action-pulse{50%{box-shadow:0 0 0 9px #628ff31a,0 12px 24px #306de748}}
+/* Small, purposeful review surface: never fabricate ad results. */
+.pl-ad-review-board{position:absolute;right:0;top:217px;width:228px;max-width:42%;z-index:7;display:flex;flex-direction:column;gap:10px;padding:17px;border:1px solid #bfd1f1;border-radius:15px;background:#fff;box-shadow:0 18px 42px rgba(29,48,100,.22);opacity:0;transform:translateY(12px);transition:opacity .45s,transform .45s}
+.pl-ad-review-board.is-shown{opacity:1;transform:none}
+.pl-ad-review-board>div{display:flex;align-items:center;gap:8px;color:#2e68df}
+.pl-ad-review-board strong{font-size:12px;color:#1d3559}
+.pl-ad-review-board>span{display:flex;align-items:center;gap:7px;color:#4e678d;font-size:11px;line-height:1.45}
+.pl-ad-review-board>span svg{color:#1e9d85;flex-shrink:0}
+.pl-ad-review-board>small{border-top:1px solid #dce6f5;padding-top:10px;color:#8194ae;font-size:9px;line-height:1.5}
+
 .pl-web-mobile{position:absolute;right:0;top:150px;width:170px;height:325px;border:6px solid #142741;border-radius:25px;overflow:hidden;background:#f4f7fb;box-shadow:0 23px 43px -8px rgba(27,44,88,.26);transform:rotate(5deg)}
 .pl-mobile-top{height:39px;background:#fff;display:flex;align-items:center;justify-content:center;gap:12px;color:#8195ac}
 .pl-mobile-top i{height:8px;width:22px;background:#172b45;border-radius:7px}
@@ -168,7 +195,7 @@
 .pl-web-callout{bottom:9px;left:3%;max-width:223px}
 .pl-web-contact{top:85px;right:0;max-width:213px}
 .pl-ads-backlight{inset:12% 6% 10%;background:radial-gradient(ellipse at 43% 55%,rgba(99,126,238,.20),transparent 67%);filter:blur(17px)}
-.pl-social-post{position:absolute;top:18px;left:11%;width:385px;height:472px;background:#fff;border:1px solid #d1dced;border-radius:17px;box-shadow:0 28px 53px -12px rgba(30,47,94,.26);overflow:hidden;transform:rotate(-1.5deg)}
+.pl-social-post{position:absolute;top:18px;left:3%;width:365px;height:472px;background:#fff;border:1px solid #d1dced;border-radius:17px;box-shadow:0 28px 53px -12px rgba(30,47,94,.26);overflow:hidden;transform:rotate(-1.5deg)}
 .pl-ad-post-head{height:64px;display:flex;align-items:center;gap:11px;padding:11px 14px}
 .pl-ad-post-head>span:nth-child(2){display:flex;flex:1;flex-direction:column;gap:4px}
 .pl-ad-post-head strong{font-size:12px;color:#1c2f4c}
@@ -183,8 +210,8 @@
 .pl-ad-post-bottom{height:90px;padding:15px 17px;display:flex;justify-content:space-between;gap:13px;align-items:center;color:#496484}
 .pl-ad-post-bottom span{font-size:11px;max-width:55%;line-height:1.4}
 .pl-ad-post-bottom b{background:#eef3ff;color:#2c65d8;border-radius:12px;padding:11px;display:flex;align-items:center;gap:5px;font-size:10px;white-space:nowrap}
-.pl-ad-target{top:98px;right:0;max-width:210px}
-.pl-ad-action{top:271px;right:0;max-width:210px}
+.pl-ad-target{top:98px;right:0;max-width:200px}
+.pl-ad-action{top:271px;right:0;max-width:200px}
 .pl-ad-review{bottom:18px;right:4%;max-width:215px}
 .pl-search-ad{position:absolute;left:4%;top:70px;width:90%;background:white;border:1px solid #d3ddef;border-radius:17px;overflow:hidden;box-shadow:0 26px 60px -13px rgba(30,50,92,.24);padding:0 0 27px}
 .pl-search-top{display:flex;align-items:center;gap:12px;padding:20px 24px;border-bottom:1px solid #e6edf6}
@@ -272,7 +299,7 @@
  .pl-hero-grid{gap:20px}
  .pl-wa-phone{left:4%}
  .pl-agent-signal,.pl-agent-context{right:-1%}
- .pl-social-post{left:4%;width:360px}
+ .pl-social-post{left:2%;width:340px}
  .pl-ad-target,.pl-ad-action{right:0}
  .pl-web-browser{width:84%}
 }
@@ -401,6 +428,40 @@
  .pl-quiz-form{min-height:385px}
  .pl-faq-item button{font-size:14px}
 }
+
+ /* Keep creative fully legible: a single explanatory note appears below each ad. */
+ .pl-page .pl-ads-composition{height:595px}
+ .pl-page .pl-demo-art:has(.pl-ads-composition){min-height:665px}
+ .pl-page .pl-hero-art:has(.pl-ads-composition){height:655px}
+ .pl-page .pl-social-post{left:50%;transform:translateX(-50%) rotate(-1deg);top:13px;width:min(330px,94%);max-width:none;height:430px}
+ .pl-page .pl-ad-target,.pl-page .pl-ad-action,.pl-page .pl-ad-review-board{top:468px;left:4%;right:4%;bottom:auto;width:92%;max-width:none}
+ .pl-page .pl-ad-review-board{gap:5px;padding:12px 14px}
+ .pl-page .pl-ad-review-board>span{font-size:10px}
+ .pl-page .pl-search-ad{top:38px;width:98%;left:1%}
+ .pl-page .pl-ads-google .pl-ad-target,.pl-page .pl-ads-google .pl-ad-action,.pl-page .pl-ads-google .pl-ad-review-board{top:455px}
+ .pl-page .pl-web-services{grid-template-columns:38% 1fr;height:205px}
+ .pl-page .pl-web-services img{height:205px}
+ .pl-page .pl-web-services>div{padding:13px 10px}
+ .pl-page .pl-web-services strong{font-size:14px;margin:7px 0}
+ .pl-page .pl-web-services p{font-size:8px}
+ .pl-page .pl-web-services ul{margin-top:6px;gap:2px}
+ .pl-page .pl-web-services li{font-size:8px}
+ .pl-page .pl-web-form-example{grid-template-columns:1fr 48%;padding:12px;gap:8px;height:205px}
+ .pl-page .pl-web-form-example strong{font-size:13px;margin:8px 0}
+ .pl-page .pl-web-form-example p{font-size:8px}
+ .pl-page .pl-web-form-fields{gap:4px}
+ .pl-page .pl-web-form-fields label{font-size:8px}
+ .pl-page .pl-web-form-fields label span{font-size:8px;padding:3px 5px}
+ .pl-page .pl-web-form-button{font-size:8px;padding:5px}
+ /* The agent's three explanations stack below the phone instead of masking chat bubbles. */
+ .pl-page .pl-agent-composition{height:680px}
+ .pl-page .pl-hero-art:has(.pl-agent-composition){height:720px}
+ .pl-page .pl-demo-art:has(.pl-agent-composition){min-height:755px}
+ .pl-page .pl-agent-composition .pl-wa-phone{left:50%;transform:translateX(-50%);animation:none}
+ .pl-page .pl-agent-signal,.pl-page .pl-agent-context,.pl-page .pl-agent-handoff{left:4%;right:4%;width:92%;max-width:none;bottom:auto;min-height:56px}
+ .pl-page .pl-agent-signal{top:465px}
+ .pl-page .pl-agent-context{top:530px}
+ .pl-page .pl-agent-handoff{top:595px}
 @media(max-width:370px){
  .pl-wa-phone{width:201px;left:0}
  .pl-floating strong{font-size:9px}

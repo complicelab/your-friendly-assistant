@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { ServiceExperience } from "@/components/marketing/service-experience";
+import { PillarLanding } from "@/components/marketing/pillar-landings";
 import { commercialServices, serviceHref } from "@/data/commercial-services";
 
 const base = "https://complicelab.com";
@@ -25,5 +25,5 @@ export const Route = createFileRoute("/agentes-de-ia")({
       links: [{ rel: "canonical", href: url }],
     };
   },
-  component: () => service ? <ServiceExperience service={service} /> : null,
+  component: () => service ? <PillarLanding kind="agentes-de-ia" /> : null,
 });

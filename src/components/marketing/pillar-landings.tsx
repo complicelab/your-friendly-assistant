@@ -236,6 +236,20 @@ function Demonstration({kind,data}:{kind:Kind;data:ServiceData}){
 function BusinessProcess({data,kind}:{data:ServiceData;kind:Kind}){
  return <section className={"pl-process pl-process-"+kind}><div className="sys-wrap pl-process-layout"><div className="pl-process-copy"><span className="pl-kicker">ASÍ TRABAJAMOS CONTIGO</span><h2>{data.howHeading} <em>{data.howAccent}</em></h2><p>{data.howIntro}</p><CTA>Hablemos de mi negocio</CTA></div><div className="pl-process-timeline">{data.how.map((m,i)=><div className="pl-process-event" key={m.title}><span>0{i+1}</span><div><strong>{m.title}</strong><p>{m.description}</p></div>{i===data.how.length-1?<CheckCircle2 size={18}/>:null}</div>)}</div></div></section>;
 }
+function Scope({kind,service}:{kind:Kind;service:CommercialService}){
+ const note=kind==="agentes-de-ia"
+  ?"Agendamiento, registro y canales de mensajería se conectan únicamente cuando se acuerdan y es viable integrarlos."
+  :kind==="paginas-web"
+  ?"La página web no incluye por defecto CRM completo, automatizaciones ni campañas de pauta. Podemos construirlos con un alcance aparte."
+  :"La publicidad no incluye automáticamente web, agenda, CRM o automatizaciones. Las campañas se preparan en pausa y necesitan aprobación antes de gastar dinero.";
+ const lead=kind==="agentes-de-ia"?"Qué puede hacer un agente diseñado para tu negocio."
+  :kind==="paginas-web"?"Una página que representa tu nivel y facilita el contacto."
+  :"Lo que hacemos para atraer oportunidades con publicidad.";
+ return <section className="pl-scope"><div className="sys-wrap pl-scope-layout">
+  <div className="pl-scope-intro"><span className="pl-kicker">ALCANCE DEL SERVICIO</span><h2>{lead}</h2><p>Definimos la solución a partir de tu servicio, de cómo decide tu cliente y de qué tendría que ocurrir después.</p><div className="pl-scope-note"><ShieldCheck size={18}/><span>{note}</span></div><CTA>Revisemos mi caso</CTA></div>
+  <div className="pl-scope-list">{service.deliverables.map((item,i)=><div className="pl-scope-row" key={item}><span>0{i+1}</span><strong>{item}</strong><CheckCircle2 size={18}/></div>)}</div>
+ </div></section>;
+}
 function Quiz({data}:{data:ServiceData}){
  const [step,setStep]=useState(0),[answers,setAnswers]=useState<string[]>([]);
  const open=useContext(BookingContext);
@@ -256,7 +270,7 @@ export function PillarLanding({kind}:{kind:Kind}){
  return <BookingContext.Provider value={showBooking}><div className={"sys-page pl-page pl-page-"+kind}>
   <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({"@context":"https://schema.org","@type":"Service",name:service.name,serviceType:service.name,description:service.description,url:"https://complicelab.com/"+kind,provider:{"@id":"https://complicelab.com/#organization","@type":"Organization",name:"Cómplice Lab"},areaServed:[{"@type":"Country",name:"Colombia"},{"@type":"Country",name:"United States"},{"@type":"Country",name:"Mexico"}]})}}/>
   <header className="sys-navigation"><div className="sys-nav-inner"><BrandMark/><nav aria-label="Navegación de la página"><a href="/">Inicio</a><a href="#problemas">El problema</a><a href="#demostracion">Cómo funciona</a><a href="#sistemas-construidos">Proyectos</a><a href="#diagnostico">Contacto</a></nav><CTA>Agendar diagnóstico</CTA></div></header>
-  <main><Hero data={data} kind={kind}/><Problems kind={kind} data={data}/><Demonstration kind={kind} data={data}/><BusinessProcess kind={kind} data={data}/><SystemsProjects/><Quiz data={data}/><FAQ data={data}/>
+  <main><Hero data={data} kind={kind}/><Problems kind={kind} data={data}/><Demonstration kind={kind} data={data}/><BusinessProcess kind={kind} data={data}/><Scope kind={kind} service={service}/><SystemsProjects/><Quiz data={data}/><FAQ data={data}/>
   <section id="diagnostico" className="sys-booking-section"><div className="sys-wrap"><div className="sys-booking-heading"><span>AGENDA TU DIAGNÓSTICO</span><h2>{data.bookingTitle} <em>{data.bookingAccent}</em></h2><p>{data.bookingIntro}</p></div><SystemsBooking serviceName={data.name} interest={data.interest}/></div></section>
   <div className="sys-other-services sys-wrap"><span>OTRAS SOLUCIONES DE CÓMPLICE LAB</span><div>{otherServices.filter(x=>x.slug!==kind).map(item=><a key={item.slug} href={"/"+item.slug}>{item.name} <ArrowUpRight size={16}/></a>)}</div></div></main><SiteFooter onSchedule={showBooking}/><WhatsAppFloat/>
   {bookingOpen?<SystemsBooking modal onClose={()=>setBookingOpen(false)} serviceName={data.name} interest={data.interest}/>:null}

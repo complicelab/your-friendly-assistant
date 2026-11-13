@@ -1588,7 +1588,7 @@ const HOMEPAGE_STRATEGIC_CTAS = `
 </style>
 <script id="cl-home-strategic-ctas-runtime">
 (function(){
- function norm(el){return String(el&&el.textContent||"").replace(/\s+/g," ").trim().toLowerCase();}
+ function norm(el){return String(el&&el.textContent||"").replace(/\\s+/g," ").trim().toLowerCase();}
  function sectionFor(selectors,words){
   for(var k=0;k<selectors.length;k++){var target=document.querySelector(selectors[k]);if(target){var section=target.closest("section");if(section)return section;}}
   var headings=Array.from(document.querySelectorAll("main h2, main h3, section h2, section h3"));

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { CalendarEventReview } from '@/components/crm/calendar-event-review';
 
 type CalendarStatus={
   configured:boolean;database_ready:boolean;connected:boolean;email:string|null;
@@ -23,6 +24,20 @@ async function calendarApi(action?:string,meeting_id?:string) {
  return result;
 }
 export {calendarApi};
+export async function calendarCommand(input:Record<string,string>) {
+ const {data}=await supabase.auth.getSession();
+ const token=data.session?.access_token;
+ if(!token)throw Error('Inicia sesión nuevamente para gestionar el calendario.');
+ const response=await fetch('/api/calendar',{
+  method:'POST',
+  headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},
+  body:JSON.stringify(input),cache:'no-store',
+ });
+ const payload=await response.json();
+ if(!response.ok||!payload.ok)throw Error(payload.error||'No se pudo completar la operación.');
+ return payload;
+}
+
 
 export function CalendarConnectionSettings(){
  const [status,setStatus]=useState<CalendarStatus>(INITIAL);
@@ -120,6 +135,7 @@ export function CalendarConnectionSettings(){
      <><button className="crm-primary" type="button" onClick={()=>void synchronize()} disabled={!!action}>{action==='sync'?'Sincronizando...':'Sincronizar ahora'}</button>
      <button type="button" className="crm-secondary" onClick={()=>void disconnect()} disabled={!!action}>{action==='disconnect'?'Desconectando...':'Desconectar'}</button></>}
   </div>
+  {status.connected&&<CalendarEventReview refreshKey={status.last_synced_at||''}/>}
   <p className="clb-muted">Las reuniones se relacionan por correo o WhatsApp verificable. Si Google no permite identificar de forma inequívoca al cliente, no se crean registros de contacto nuevos. Para sincronización permanente con el panel cerrado se requiere activar la tarea programada del servidor.</p>
  </section>;
 }

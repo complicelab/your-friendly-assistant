@@ -55,3 +55,30 @@ Los pasos anteriores NO han sido ejecutados en la cuenta de producción solo por
 - La ruta /api/calendar/cron utiliza un solo secreto, no los secretos OAuth; no reutilizar GOOGLE_CALENDAR_ENCRYPTION_KEY.
 - Si un evento se modificó en ambos lados casi simultáneamente, el servidor rechazará el cambio concurrente; primero sincronizar y revisar.
 - Los cambios en Google que no tengan vínculo inequívoco o que estén marcados como ignorados no crearán citas de cliente automáticamente.
+
+
+## Corrección de la agenda visual — 21/11/2026
+
+**Problema observado:** en `calendar.google.com` se ven varias franjas tituladas “Diagnóstico Cómplice Lab”, y en `complicelab.com/admin > Agenda` solamente se veía la reunión del CRM del 10 de noviembre. Era un comportamiento del código: la agenda del CRM solo consultaba `crm_meetings`, mientras que la rutina de conciliación de Google solo importaba citas con contacto inequívoco.
+
+**Solución integrada:**
+- La agenda consulta `POST /api/calendar` con `action=agenda` y el rango del mes/semana visible. Solo el administrador autenticado puede llamar esta acción. Google se consulta desde el servidor con el OAuth existente.
+- Los eventos de Google aparecen directamente en las celdas, en el listado del día y en “Eventos próximos de Google”, aunque no existan en `crm_meetings`.
+- Las reuniones ya asociadas a Google se muestran **una sola vez**, comparando `external_calendar_id` y el identificador del evento de Google.
+- Los eventos sin vínculo quedan en un color diferenciado, se pueden abrir y llevan a Configuración para asociarlos a un contacto verificado.
+- Si Google API falla o la autorización expira, el administrador ve una alerta clara; no se sustituye el fallo por “0 reuniones”.
+- La vista se actualiza cada minuto con el panel visible o al recuperar el foco y ofrece un botón de actualización manual.
+- Este cambio es **solo lectura**: no crea ni cancela reservas, contactos, notificaciones o eventos; no requiere migraciones adicionales.
+
+**Importante acerca de las capturas:** el panel izquierdo de Google Calendar enseña `Páginas de reserva > Diagnóstico Cómplice Lab`. Sus franjas de disponibilidad suelen aparecer como bloques largos; **no son necesariamente reservas confirmadas**. La API Google Calendar Events sí entrega eventos reales (reservas ya creadas, reuniones, bloqueos), pero no replica automáticamente la configuración de esa página de reservas. Hay que revisar un bloque concreto en Google para distinguir disponibilidad de reserva confirmada. Las franjas de citas de la captura parecen tener duración de 45 minutos, mientras la configuración del CRM mostrada antes tenía 60 minutos de duración e intervalo: ambos sistemas deben alinearse manualmente si se requiere el mismo horario.
+
+**Validación pendiente en el entorno real:**
+1. Publicar el último código `main` en Lovable y abrir `https://complicelab.com/admin`.
+2. Entrar a **Agenda**, comprobar que aparece “Mostrar eventos reales de Google Calendar”, pulsar “Actualizar Google”.
+3. Verificar una reserva confirmada de Google que tenga fecha y hora conocidas: debe verse en la fecha correspondiente con etiqueta de Google, aunque no tenga cliente CRM.
+4. Comprobar que la misma reunión no aparece dos veces si ya tiene `external_calendar_id` en el CRM.
+5. Verificar que si hay solo franjas de disponibilidad en Google, no se inventan reuniones y se explica la diferencia.
+6. Abrir un evento sin vínculo y usar “Revisar y vincular cliente” si la migración de conciliación del PR #4 fue aplicada a la base existente. No asignar un evento personal a un cliente.
+7. Si hace falta sincronización con el panel cerrado, activar por separado `CRM_CALENDAR_CRON_SECRET` en Lovable y GitHub Actions, y confirmar la fecha del último ciclo exitoso.
+
+La ejecución de pruebas de GitHub valida el código y la compilación, no demuestra todavía que el backend Lovable haya servido la revisión nueva ni que los eventos reales de esta cuenta aparezcan.

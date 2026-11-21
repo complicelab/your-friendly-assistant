@@ -6,7 +6,18 @@ export const Route = createFileRoute('/api/calendar')({
    try{
     const {requireCalendarAdmin,calendarStatus}=await import('@/lib/calendar-connection.server');
     await requireCalendarAdmin(request);
-    return Response.json({ok:true,...await calendarStatus()},{headers:{'Cache-Control':'no-store'}});
+    const basic=await calendarStatus();
+    let bookingDuration=null;
+    if(basic.connected){
+      try{
+        const {readGoogleBookingDurationStatus}=await import('@/lib/google-booking-duration.server');
+        bookingDuration=await readGoogleBookingDurationStatus();
+      }catch{
+        bookingDuration={connected:true,minutes:null,observations:0,checkedAt:null,
+          status:'error',source:'none'};
+      }
+    }
+    return Response.json({ok:true,...basic,booking_duration:bookingDuration},{headers:{'Cache-Control':'no-store'}});
    }catch(error){
     return Response.json({ok:false,error:error instanceof Error&&error.message==='NO_AUTH'?'Acceso denegado.':'No se pudo consultar el estado de Calendar.'},{
      status:error instanceof Error&&error.message==='NO_AUTH'?401:503,
@@ -24,6 +35,11 @@ export const Route = createFileRoute('/api/calendar')({
     if(body.action==='disconnect'){
       await cal.disconnectCalendar();
       return Response.json({ok:true});
+    }
+    if(body.action==='duration_sync'){
+      const {syncGoogleBookingDuration}=await import('@/lib/google-booking-duration.server');
+      const status=await syncGoogleBookingDuration(true);
+      return Response.json({ok:true,booking_duration:status},{headers:{'Cache-Control':'no-store'}});
     }
     if(body.action==='sync'){
       const {synchronizeGoogleAppointments}=await import('@/lib/google-calendar-sync.server');

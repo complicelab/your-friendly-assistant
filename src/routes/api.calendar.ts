@@ -18,7 +18,7 @@ export const Route = createFileRoute('/api/calendar')({
    try{
     const cal=await import('@/lib/calendar-connection.server');
     await cal.requireCalendarAdmin(request);
-    const body=await request.json() as {action?:string;meeting_id?:string};
+    const body=await request.json() as {action?:string;meeting_id?:string;event_id?:string;contact_id?:string;starts_at?:string};
     if(body.action==='connect')return Response.json({ok:true,url:await cal.startCalendarConsent(request)});
     if(body.action==='status')return Response.json({ok:true,...await cal.calendarStatus()});
     if(body.action==='disconnect'){
@@ -28,6 +28,32 @@ export const Route = createFileRoute('/api/calendar')({
     if(body.action==='sync'){
       const {synchronizeGoogleAppointments}=await import('@/lib/google-calendar-sync.server');
       return Response.json({ok:true,stats:await synchronizeGoogleAppointments()});
+    }
+    if(body.action==='review'){
+      const {reviewCalendarEvents}=await import('@/lib/calendar-review.server');
+      return Response.json({ok:true,...await reviewCalendarEvents()},{headers:{'Cache-Control':'no-store'}});
+    }
+    if(body.action==='ignore'&&body.event_id){
+      const {markCalendarEventIgnored}=await import('@/lib/calendar-review.server');
+      await markCalendarEventIgnored(body.event_id);
+      return Response.json({ok:true});
+    }
+    if(body.action==='restore'&&body.event_id){
+      const {restoreCalendarEvent}=await import('@/lib/calendar-review.server');
+      await restoreCalendarEvent(body.event_id);
+      return Response.json({ok:true});
+    }
+    if(body.action==='link'&&body.event_id&&body.contact_id){
+      const {linkCalendarEventToClient}=await import('@/lib/calendar-review.server');
+      return Response.json({ok:true,...await linkCalendarEventToClient(body.event_id,body.contact_id)});
+    }
+    if(body.action==='probe'){
+      const {verifyCalendarConnectionWithoutWrites}=await import('@/lib/calendar-review.server');
+      return Response.json({ok:true,...await verifyCalendarConnectionWithoutWrites()});
+    }
+    if(body.action==='reschedule'&&body.meeting_id&&body.starts_at){
+      const {moveCalendarMeeting}=await import('@/lib/calendar-review.server');
+      return Response.json({ok:true,...await moveCalendarMeeting(body.meeting_id,body.starts_at)});
     }
     if(body.action==='cancel'&&body.meeting_id){
       const {cancelGoogleMeeting}=await import('@/lib/google-calendar-sync.server');

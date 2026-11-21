@@ -22,7 +22,7 @@ const ready = () =>
 
 const toB64 = (bytes: Uint8Array) =>
   btoa(Array.from(bytes, (v) => String.fromCharCode(v)).join(''))
-    .replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=+$/g, '');
+    .replaceAll('+', '-').replaceAll('/', '_').replace(/=+$/g, '');
 const fromB64 = (value: string) =>
   Uint8Array.from(atob(value.replace(/-/g, '+').replace(/_/g, '/')), (v) => v.charCodeAt(0));
 

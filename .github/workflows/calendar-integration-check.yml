@@ -2,13 +2,16 @@ name: Calendar integration verification
 on:
   push:
     branches:
+      - main
       - feat/complice-lab-google-calendar-20261121
   pull_request:
     paths:
+      - "src/routes/admin.tsx"
       - "src/lib/*calendar*"
       - "src/routes/api.calendar*"
       - "src/components/crm/**"
       - "src/test/google-calendar*"
+      - "src/test/crm-admin-navigation.test.ts"
       - "supabase/migrations/20261121_*"
       - ".github/workflows/calendar-integration-check.yml"
   workflow_dispatch:
@@ -23,7 +26,7 @@ jobs:
       - name: Install
         run: bun install --frozen-lockfile
       - name: Calendar matching + availability tests
-        run: bun test src/test/google-calendar-server.test.ts src/test/google-calendar-matching.test.ts
+        run: bun test src/test/google-calendar-server.test.ts src/test/google-calendar-matching.test.ts src/test/crm-admin-navigation.test.ts
       - name: Production build (generates TanStack routes)
         run: bun run build
       - name: Typecheck

@@ -75,6 +75,21 @@ export function CalendarConnectionSettings(){
    }else setMessage(state==='denied'?'Se canceló la autorización de Google.':'No se completó la conexión con Google. Reintenta desde aquí.');
   }
  },[]);
+ useEffect(()=>{
+  if(!status.connected)return;
+  let busy=false;
+  const tick=async()=>{
+   if(document.hidden||busy)return;
+   busy=true;
+   try{await calendarApi('sync');await refresh();}
+   catch{/* Failure is shown in the manual sync/status area. */}
+   finally{busy=false;}
+  };
+  const timer=window.setInterval(()=>void tick(),300000);
+  const visible=()=>{if(!document.hidden)void tick();};
+  document.addEventListener('visibilitychange',visible);
+  return()=>{window.clearInterval(timer);document.removeEventListener('visibilitychange',visible);};
+ },[status.connected]);
  const date=status.last_synced_at?new Intl.DateTimeFormat('es-CO',{
   timeZone:'America/Bogota',dateStyle:'medium',timeStyle:'short',
  }).format(new Date(status.last_synced_at)):null;

@@ -80,7 +80,8 @@ describe('Google Calendar integration implementation safeguards',()=>{
   expect(server).toContain('verifyCalendarConnectionWithoutWrites');
   const block=server.slice(server.indexOf('export async function verifyCalendarConnectionWithoutWrites'),
     server.indexOf('function normalizeStart'));
-  expect(block).not.toContain("method:'POST',headers:{Authorization:");
+  // Google freeBusy is a read-only API even though the HTTP method is POST.
+  expect(block).not.toContain('/events?sendUpdates');
   expect(block).not.toContain('crm_meetings');
  });
 });

@@ -28,7 +28,7 @@ async function loadAll(table:string,columns:string){
  for(let offset=0;offset<20000;offset+=1000){
   const {data,error}=await db.from(table).select(columns).range(offset,offset+999);
   if(error)throw Error('No se pudieron cargar datos del CRM.');
-  result.push(...((data||[]) as Record<string,unknown>[]));
+  result.push(...((data||[]) as unknown as Record<string,unknown>[]));
   if(!data||data.length<1000)return result;
  }
  throw Error('Hay demasiados registros para sincronizar en una operación.');
@@ -82,9 +82,9 @@ export async function synchronizeGoogleAppointments():Promise<SyncStats>{
    if(existing){
     const patch:Record<string,unknown>={};
     if(existing.starts_at!==starts_at||existing.ends_at!==ends_at){
-      patch.starts_at=starts_at;patch.ends_at=ends_at;
+      patch['starts_at']=starts_at;patch['ends_at']=ends_at;
     }
-    if(existing.status==='cancelada')patch.status='confirmada';
+    if(existing.status==='cancelada')patch['status']='confirmada';
     if(Object.keys(patch).length){
       const result=await db.from('crm_meetings').update(patch).eq('id',existing.id);
       if(result.error)throw Error('No se pudo actualizar una reunión vinculada.');

@@ -164,6 +164,8 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
       m.status!=='cancelada' && m.status!=='realizada').length,
     confirmed:futureMeetings.filter(m=>m.attendance_status==='confirmada' &&
       m.status==='confirmada').length,
+    reminded:futureMeetings.filter(m=>m.attendance_reminder_at &&
+      m.attendance_status==='por_confirmar'&&m.status==='pendiente').length,
     needsAttention:futureMeetings.filter(m=>m.attendance_status==='requiere_atencion' &&
       m.status!=='cancelada').length,
     cancelled:futureMeetings.filter(m=>m.status==='cancelada').length,
@@ -214,6 +216,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
     <div className="clb-attendance-summary" aria-label="Confirmaciones de asistencia del agente WhatsApp">
       <div><span>Por confirmar</span><strong>{attendanceCounts.pending}</strong></div>
       <div><span>Confirmadas por respuesta</span><strong>{attendanceCounts.confirmed}</strong></div>
+      <div><span>Recordatorios enviados sin respuesta</span><strong>{attendanceCounts.reminded}</strong></div>
       <div><span>Requieren atención</span><strong>{attendanceCounts.needsAttention}</strong></div>
       <div><span>Canceladas</span><strong>{attendanceCounts.cancelled}</strong></div>
     </div>
@@ -305,6 +308,9 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
         {selected.attendance_response_text&&<p>Respuesta: {selected.attendance_response_text}</p>}
         {selected.calendar_cancel_pending&&<p className="crm-alert">El cliente rechazó la asistencia.
           La cita ya está cancelada en el CRM, pero falta comprobar su cancelación en Google Calendar.</p>}
+        {selected.attendance_status==='no_asistira'&&!selected.external_calendar_id&&
+          <p className="crm-alert">El CRM canceló la cita. Este registro no tiene un identificador de Google
+            vinculado; revisa si existe una reserva independiente en Google Calendar.</p>}
         <small>El evento "cita_confirmada" del agente comercial NO significa que el cliente haya aceptado asistir.</small>
       </div>
       <label className="crm-control-label">Resultado operativo de la reunión</label>

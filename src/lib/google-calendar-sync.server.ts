@@ -7,9 +7,11 @@ const cleanEmail=(s?:string|null)=>String(s||'').trim().toLowerCase();
 const cleanPhone=(s?:string|null)=>String(s||'').replace(/\D/g,'');
 
 export type ContactIdentity={id:string;email:string|null;whatsapp:string|null};
-export type GoogleEventIdentity={attendees?:{email?:string;self?:boolean}[];description?:string};
+export type GoogleEventIdentity={attendees?:{email?:string;self?:boolean}[];organizer?:{email?:string};description?:string};
 export function matchContactForGoogleEvent(event:GoogleEventIdentity,contacts:ContactIdentity[]){
  const emails=new Set((event.attendees||[]).filter(a=>!a.self).map(a=>cleanEmail(a.email)).filter(e=>e&&e!=='complicelab@gmail.com'));
+ const organizer=cleanEmail(event.organizer?.email);
+ if(organizer&&organizer!=='complicelab@gmail.com')emails.add(organizer);
  const em=event.description?.match(/(?:^|\n)\s*(?:correo|email)\s*:\s*([^\s,;]+)/i)?.[1];
  if(em&&cleanEmail(em)!=='complicelab@gmail.com')emails.add(cleanEmail(em));
  const phone=cleanPhone(event.description?.match(/(?:^|\n)\s*(?:whatsapp|telefono|teléfono)\s*:\s*([+\d ()-]{8,25})/i)?.[1]);

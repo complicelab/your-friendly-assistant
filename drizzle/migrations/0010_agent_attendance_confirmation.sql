@@ -28,7 +28,7 @@ returns trigger language plpgsql security definer set search_path=public
 as $$
 begin
   if tg_op='INSERT' then
-    if new.status='confirmada' and new.source in ('web','google_calendar') then
+    if new.status='confirmada' and new.meeting_type='diagnostico' then
       new.status:='pendiente';
     end if;
     return new;
@@ -70,7 +70,6 @@ on public.crm_meetings for each row execute function public.crm_guard_meeting_at
 -- evidence. Historical meetings and outcomes stay untouched.
 update public.crm_meetings set status='pendiente'
  where starts_at>now() and status='confirmada' and meeting_type='diagnostico'
-   and source in ('web','google_calendar')
    and attendance_responded_at is null;
 
 -- Exactly-once consumer for the WhatsApp agent's 24-hour reminder and reply.

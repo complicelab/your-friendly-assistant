@@ -4,10 +4,10 @@ import { CalendarEventReview } from '@/components/crm/calendar-event-review';
 
 type CalendarStatus={
   configured:boolean;database_ready:boolean;connected:boolean;email:string|null;
-  last_synced_at:string|null;last_error:string|null;
+  last_synced_at:string|null;last_cron_at:string|null;last_error:string|null;
 };
 type SyncStats={reviewed:number;linked:number;imported:number;updated:number;unlinked:number;ambiguous:number};
-const INITIAL:CalendarStatus={configured:false,database_ready:false,connected:false,email:null,last_synced_at:null,last_error:null};
+const INITIAL:CalendarStatus={configured:false,database_ready:false,connected:false,email:null,last_synced_at:null,last_cron_at:null,last_error:null};
 
 async function calendarApi(action?:string,meeting_id?:string) {
  const {data}=await supabase.auth.getSession();
@@ -117,6 +117,9 @@ export function CalendarConnectionSettings(){
   {status.connected&&<div className="clb-google-details">
     <span>Cuenta vinculada <strong>{status.email}</strong></span>
     <span>Última sincronización <strong>{date||'Pendiente'}</strong></span>
+    <span>Sincronización con panel cerrado <strong>{status.last_cron_at
+      ? new Intl.DateTimeFormat('es-CO',{timeZone:'America/Bogota',dateStyle:'short',timeStyle:'short'}).format(new Date(status.last_cron_at))
+      : 'Aún sin ejecución programada confirmada'}</strong></span>
   </div>}
   {status.last_error&&<p role="alert" className="crm-alert">Última sincronización: {status.last_error}</p>}
   {!loading&&!status.configured&&<p className="crm-alert">La configuración de servidor está incompleta. Comprueba que las variables GOOGLE_CALENDAR_CLIENT_ID, GOOGLE_CALENDAR_CLIENT_SECRET y GOOGLE_CALENDAR_REDIRECT_URI estén guardadas, y que GOOGLE_CALENDAR_ENCRYPTION_KEY sea una clave de 64 caracteres hexadecimales. No compartas sus valores.</p>}

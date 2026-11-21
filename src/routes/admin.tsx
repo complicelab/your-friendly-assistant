@@ -708,7 +708,7 @@ function AdminCrmPage() {
         </div>
         </>}
         {view==="clientes"&&<CrmClientsList onOpen={id=>void openContactFromMeeting(id)}/>}
-        {view==="agenda"&&<CrmAgenda onOpenContact={openContactFromMeeting} onChanged={()=>void loadUpcomingCount()}/>}
+        {view==="agenda"&&<CrmAgenda onOpenContact={openContactFromMeeting} onChanged={()=>void loadUpcomingCount()} onOpenReview={()=>setView("configuracion")}/>}
         {view==="configuracion"&&<div className="clb-admin-config"><CrmWhatsAppIntegrationDetails status={whatsappStatus} refreshing={whatsappRefreshing} onRefresh={()=>void refreshWhatsAppStatus()}/><CalendarConnectionSettings/><CrmBookingSettings/></div>}
       </section>
 

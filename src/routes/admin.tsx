@@ -110,6 +110,9 @@ function AdminCrmPage() {
   const [taskTitle,setTaskTitle]=useState("");
   const [taskDue,setTaskDue]=useState("");
   const [view,setView]=useState<CrmView>("oportunidades");
+  useEffect(()=>{
+    if(new URLSearchParams(window.location.search).has("calendar"))setView("configuracion");
+  },[]);
   const [upcomingCount,setUpcomingCount]=useState(0);
   const [contactMeetings,setContactMeetings]=useState<Meeting[]>([]);
 

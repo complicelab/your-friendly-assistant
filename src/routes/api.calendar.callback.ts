@@ -4,7 +4,7 @@ export const Route = createFileRoute('/api/calendar/callback')({
  server:{handlers:{
   GET:async({request})=>{
    // Trust only the explicitly configured callback origin, not arbitrary Host.
-   const redirect=String(process.env.GOOGLE_CALENDAR_REDIRECT_URI||'');
+   const redirect=String(process.env['GOOGLE_CALENDAR_REDIRECT_URI'||'');
    const host=redirect?new URL(redirect).origin:new URL(request.url).origin;
    const back=(code:string)=>Response.redirect(new URL('/admin?calendar='+code,host),303);
    const url=new URL(request.url);

@@ -37,7 +37,10 @@ Deno.serve(async (request) => {
     if(typeof payload.meeting_id!=="string" ||
        !/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(payload.meeting_id) ||
        typeof payload.message_id!=="string" ||
-       !/^[a-zA-Z0-9_.:-]{6,180}$/.test(payload.message_id) ||
+       !/^[a-zA-Z0-9_.:/+=-]{6,180}$/.test(payload.message_id) ||
+       (attendanceEvent && String(event.event_type)!=="recordatorio_asistencia_enviado" &&
+        (typeof payload.respuesta_texto!=="string" ||
+         !payload.respuesta_texto.trim() || payload.respuesta_texto.length>500)) ||
        (payload.respuesta_texto!==undefined && typeof payload.respuesta_texto!=="string"))
        return response(400,{ok:false,error:"La respuesta de asistencia debe indicar meeting_id y message_id válidos."});
   }
@@ -56,7 +59,12 @@ Deno.serve(async (request) => {
           p_event_type:event.event_type,p_wa_id:wa,
           p_timestamp:timestamp,p_payload:event.payload,
         });
-    if(error){console.error("CRM inbound RPC failed",error.code);return response(500,{ok:false,error:"No se pudo guardar el evento."});}
+    if(error){
+      console.error("CRM inbound RPC failed",error.code);
+      if(attendanceEvent && error.code==="P0001")
+        return response(422,{ok:false,error:"No se pudo aplicar la respuesta a esa reunión. Verifica meeting_id, teléfono, recordatorio y horario."});
+      return response(500,{ok:false,error:"No se pudo guardar el evento."});
+    }
     return response(200,{ok:true});
   } catch(e){console.error("CRM inbound failed",e instanceof Error?e.name:"unknown");return response(500,{ok:false,error:"No se pudo guardar el evento."});}
 });

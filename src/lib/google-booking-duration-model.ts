@@ -16,7 +16,7 @@ export type DurationInference={minutes:number|null;observations:number;sampleSiz
 
 const agency='complicelab@gmail.com';
 export const isAgencyBookingTitle=(title:string|undefined)=>
- /^diagn[oó]stico\s+c[oó]mplice\s+lab(?:\s*[·:–-].*)?$/iu.test((title||'').trim());
+ /^diagn[oó]stico\s+c[oó]mplice\s+lab(?:\s*[·,:–-].*)?$/iu.test((title||'').trim());
 
 export function bookingDurationSample(event:GoogleDurationEvent):{minutes:number;created:number}|null {
  if(event.status==='cancelled'||event.transparency==='transparent'||

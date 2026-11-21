@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 type CalendarStatus={
-  configured:boolean;connected:boolean;email:string|null;
+  configured:boolean;database_ready:boolean;connected:boolean;email:string|null;
   last_synced_at:string|null;last_error:string|null;
 };
 type SyncStats={reviewed:number;linked:number;imported:number;updated:number;unlinked:number;ambiguous:number};
-const INITIAL:CalendarStatus={configured:false,connected:false,email:null,last_synced_at:null,last_error:null};
+const INITIAL:CalendarStatus={configured:false,database_ready:false,connected:false,email:null,last_synced_at:null,last_error:null};
 
 async function calendarApi(action?:string,meeting_id?:string) {
  const {data}=await supabase.auth.getSession();
@@ -104,7 +104,9 @@ export function CalendarConnectionSettings(){
     <span>Última sincronización <strong>{date||'Pendiente'}</strong></span>
   </div>}
   {status.last_error&&<p role="alert" className="crm-alert">Última sincronización: {status.last_error}</p>}
-  {!loading&&!status.configured&&<p className="crm-alert">Se requiere una configuración inicial única de Google Cloud por parte del administrador técnico. Después podrás conectar o reconectar aquí con un botón.</p>}
+  {!loading&&!status.configured&&<p className="crm-alert">La configuración de servidor está incompleta. Comprueba que las variables GOOGLE_CALENDAR_CLIENT_ID, GOOGLE_CALENDAR_CLIENT_SECRET y GOOGLE_CALENDAR_REDIRECT_URI estén guardadas, y que GOOGLE_CALENDAR_ENCRYPTION_KEY sea una clave de 64 caracteres hexadecimales. No compartas sus valores.</p>}
+  {!loading&&status.configured&&!status.database_ready&&<p className="crm-alert">Las credenciales tienen el formato esperado, pero las tablas privadas de Google Calendar no están disponibles. Verifica en la base EXISTENTE las migraciones 20261121_google_calendar_connection.sql y 20261121_calendar_import_no_notifications.sql antes de enlazar.</p>}
+  {!loading&&status.configured&&status.database_ready&&!status.connected&&<p role="status" className="clb-muted">Configuración preparada. Ahora puedes enlazar complicelab@gmail.com desde el botón.</p>}
   {message&&<p role="status" className="crm-alert">{message}</p>}
   {stats&&<div className="clb-google-stats">
     <span><b>{stats.imported}</b>Nuevas citas vinculadas</span>
@@ -114,7 +116,7 @@ export function CalendarConnectionSettings(){
   </div>}
   <div className="clb-google-actions">
    {!status.connected?
-     <button className="crm-primary" type="button" onClick={()=>void connect()} disabled={loading||!!action||!status.configured}>{action==='connect'?'Abriendo Google...':'Enlazar Google Calendar'}</button>:
+     <button className="crm-primary" type="button" onClick={()=>void connect()} disabled={loading||!!action||!status.configured||!status.database_ready}>{action==='connect'?'Abriendo Google...':'Enlazar Google Calendar'}</button>:
      <><button className="crm-primary" type="button" onClick={()=>void synchronize()} disabled={!!action}>{action==='sync'?'Sincronizando...':'Sincronizar ahora'}</button>
      <button type="button" className="crm-secondary" onClick={()=>void disconnect()} disabled={!!action}>{action==='disconnect'?'Desconectando...':'Desconectar'}</button></>}
   </div>

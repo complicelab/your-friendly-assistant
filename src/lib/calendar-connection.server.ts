@@ -194,7 +194,7 @@ export async function disconnectCalendar() {
 
 export async function recordCalendarSync(result: { error?: string }) {
   const patch: Record<string,string|null> = { last_error: result.error || null };
-  if (!result.error) patch.last_synced_at = new Date().toISOString();
+  if (!result.error) patch['last_synced_at'] = new Date().toISOString();
   const { error } = await db.from('crm_calendar_connections').update(patch).eq('id', 1);
   if (error) throw new Error('No se pudo guardar el estado de sincronización.');
 }

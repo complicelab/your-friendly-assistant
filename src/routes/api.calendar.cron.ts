@@ -16,7 +16,7 @@ export const Route = createFileRoute('/api/calendar/cron')({
       return Response.json({ok:false,error:'Acceso denegado.'},{status:401});
    try{
     const {synchronizeGoogleAppointments}=await import('@/lib/google-calendar-sync.server');
-    const stats=await synchronizeGoogleAppointments();
+    const stats=await synchronizeGoogleAppointments('cron');
     return Response.json({ok:true,stats},{headers:{'Cache-Control':'no-store'}});
    }catch{
     return Response.json({ok:false,error:'No se pudo sincronizar el calendario.'},{status:503});

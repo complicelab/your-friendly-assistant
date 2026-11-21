@@ -229,7 +229,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
           {dayGoogle.map(event=><GoogleAgendaRow key={event.id} event={event} onClick={()=>setSelectedGoogle(event)}/>)}
         </div>
       </div>
-      <aside className="clb-upcoming"><div className="clb-panel-title"><div><span>AGENDA</span><h2>Próximas reuniones</h2></div><b>{upcoming.length}</b></div>
+      <aside className="clb-upcoming"><div className="clb-panel-title"><div><span>AGENDA</span><h2>Próximas reuniones del CRM</h2></div><b>{upcoming.length}</b></div>
         {loading?<p className="clb-muted">Cargando agenda…</p>:!upcoming.length?<p className="clb-muted">No hay citas próximas del CRM confirmadas o pendientes.</p>:upcoming.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} onClick={()=>setSelected(meeting)}/>) }
         {showGoogle&&<div className="clb-google-upcoming">
           <h3>Eventos próximos de Google <b>{googleLoaded?upcomingGoogle.length:'—'}</b></h3>

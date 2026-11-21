@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { calendarApi } from '@/components/crm/calendar-connection-settings';
 import type { Tables } from '@/integrations/supabase/types';
 import { BOOKING_TIMEZONE, MEETING_STATUSES, formatMeetingDate, meetingStatusLabel, notificationStatusLabel } from '@/lib/booking-model';
 
@@ -74,8 +75,19 @@ export function CrmAgenda({onOpenContact,onChanged}:{onOpenContact:(contactId:st
   async function updateMeetingStatus(status:string){
     if(!selected)return;
     setSaving(true);setMessage('');
-    const {data,error}=await supabase.from('crm_meetings').update({status,updated_at:new Date().toISOString()}).eq('id',selected.id).select('*').single();
-    if(error||!data)setMessage('No pude actualizar el estado de la reunión.');
+    if(status==='cancelada'&&!window.confirm('¿Cancelar esta reunión también en Google Calendar?')){setSaving(false);return;}
+    let data: Tables<'crm_meetings'> | null = null;
+    let errorMessage = '';
+    if(status==='cancelada'){
+      try {
+        await calendarApi('cancel',selected.id);
+        data={...selected,status:'cancelada',updated_at:new Date().toISOString()};
+      } catch(error){errorMessage=error instanceof Error?error.message:'No se pudo cancelar la reunión.';}
+    } else {
+      const result=await supabase.from('crm_meetings').update({status,updated_at:new Date().toISOString()}).eq('id',selected.id).select('*').single();
+      data=result.data;errorMessage=result.error?.message||'';
+    }
+    if(errorMessage||!data)setMessage(errorMessage||'No pude actualizar el estado de la reunión.');
     else{
       const updated={...selected,...data,crm_contacts:selected.crm_contacts};
       setMeetings(items=>items.map(item=>item.id===updated.id?updated:item));setSelected(updated);onChanged();

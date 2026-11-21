@@ -64,7 +64,7 @@ let running:Promise<DurationSyncStatus>|null=null;
  * A failed or inconclusive sample NEVER overwrites previously saved durations.
  */
 export async function syncGoogleBookingDuration(force=false):Promise<DurationSyncStatus>{
- if(!force && cached && Date.now()-cachedAt<REFRESH_MS)return cached;
+ if(!force && cached?.connected && Date.now()-cachedAt<REFRESH_MS)return cached;
  if(running)return running;
  running=(async()=>{
   const access=await googleConnectionAccess();

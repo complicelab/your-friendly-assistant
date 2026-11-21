@@ -103,3 +103,14 @@
 .clb-google-upcoming h3{font-size:12px;color:#214f5a;display:flex;align-items:center;justify-content:space-between}
 .clb-google-upcoming h3 b{background:#e3f4f2;color:#117673;border-radius:99px;font-size:11px;padding:4px 9px}
 @media(max-width:650px){.clb-agenda-google-tools{align-items:flex-start}.clb-agenda-google-tools>span{flex-basis:100%}}
+
+
+/* Google-owned booking duration; admin can view evidence but not override. */
+.clb-duration-policy{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;
+  padding:15px 17px;background:#f1f8ff;border:1px solid #cbdff8;border-radius:14px}
+.clb-duration-policy>div{flex:1;min-width:250px;display:grid;gap:7px}
+.clb-duration-policy b{font-size:12px;color:#163e83}
+.clb-duration-policy p{font-size:11px;line-height:1.6;color:#435c85;margin:0}
+.clb-duration-policy small{font-size:10px;line-height:1.65;color:#697c96}
+.clb-duration-policy button{margin:0;white-space:nowrap}
+.clb-settings-grid input:disabled{background:#eef3fc!important;border-color:#d7e2f4!important;color:#344b74!important;cursor:not-allowed;opacity:1!important;font-weight:750}

@@ -5,6 +5,7 @@ on:
       - main
       - fix/crm-whatsapp-real-status-20261121
       - feat/crm-agent-attendance-rsvp-20261121
+      - fix/agent-rsvp-admin-readonly-20261121
     paths:
       - "src/routes/admin.tsx"
       - "src/components/crm/whatsapp-integration-details.tsx"

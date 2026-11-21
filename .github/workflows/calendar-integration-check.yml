@@ -4,12 +4,17 @@ on:
     branches:
       - main
       - feat/complice-lab-google-calendar-20261121
+      - feat/calendar-unmatched-reconcile-bidirectional-20261121
   pull_request:
     paths:
       - "src/routes/admin.tsx"
       - "src/lib/*calendar*"
       - "src/routes/api.calendar*"
       - "src/components/crm/**"
+      - "src/lib/calendar-review-model.ts"
+      - "src/lib/calendar-review.server.ts"
+      - "src/test/calendar-review-reconciliation.test.ts"
+      - ".github/workflows/calendar-scheduled-sync.yml"
       - "src/test/google-calendar*"
       - "src/test/crm-admin-navigation.test.ts"
       - "supabase/migrations/20261121_*"
@@ -26,7 +31,7 @@ jobs:
       - name: Install
         run: bun install --frozen-lockfile
       - name: Calendar matching + availability tests
-        run: bun test src/test/google-calendar-server.test.ts src/test/google-calendar-matching.test.ts src/test/crm-admin-navigation.test.ts src/test/calendar-setup-readiness.test.ts
+        run: bun test src/test/google-calendar-server.test.ts src/test/google-calendar-matching.test.ts src/test/crm-admin-navigation.test.ts src/test/calendar-setup-readiness.test.ts src/test/calendar-review-reconciliation.test.ts
       - name: Production build (generates TanStack routes)
         run: bun run build
       - name: Typecheck

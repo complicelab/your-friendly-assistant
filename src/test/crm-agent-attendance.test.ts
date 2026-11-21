@@ -65,6 +65,12 @@ describe('Authenticated WhatsApp agent confirmation contract',()=>{
   expect(sql).toContain('external_id=v_fingerprint');
   expect(sql).toContain('on conflict do nothing');
  });
+ it('admin cannot independently change RSVP to pending/confirmed or reopen a decline',()=>{
+  expect(sql).toContain("new.status in ('pendiente','confirmada')");
+  expect(sql).toContain("or old.attendance_status='no_asistira'");
+  const agenda=readFileSync('src/components/crm/agenda.tsx','utf8');
+  expect(agenda).toContain("selected.status!=='cancelada'&&['realizada','no_asistio','cancelada'].includes(value)");
+ });
  it('protects browser updates and future meetings are initially unconfirmed',()=>{
   expect(sql).toContain("new.status:='pendiente'");
   expect(sql).toContain("auth.role() is distinct from 'service_role'");

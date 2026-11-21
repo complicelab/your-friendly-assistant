@@ -318,7 +318,8 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
         onChange={event=>void updateMeetingStatus(event.target.value)}>
         {!MEETING_STATUSES.some(([value])=>value===selected.status)&&
           <option value={selected.status}>{meetingStatusLabel(selected.status)}</option>}
-        {MEETING_STATUSES.filter(([value])=>value!=='confirmada'||selected.attendance_status==='confirmada')
+        {MEETING_STATUSES.filter(([value])=>value===selected.status ||
+          (selected.status!=='cancelada'&&['realizada','no_asistio','cancelada'].includes(value)))
           .map(([value,label])=><option key={value} value={value}>{label}</option>)}
       </select>
       <p className="clb-muted">La confirmación de asistencia la determina el agente.

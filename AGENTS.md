@@ -15,6 +15,7 @@
 - Keep src/routes/index.tsx, src/data/booking/runtime.ts, src/routes/api.booking.ts, Supabase booking types and booking migrations synchronized between main and lovable-sync whenever the public booking flow changes.
 - CRM booking views live in isolated src/components/crm modules and use the authenticated Cloud client under existing RLS.
 - Calendar OAuth tables are server-only with RLS, no browser grants or policies; the booking-import trigger function is service-role-only to keep credentials and internal operations private.
+- Google-linked booking duration and slot interval are server-owned; enforce browser update rejection through the database trigger and derive changes only from the existing verified-booking inference model.
 - The existing WhatsApp inbound Edge Function authenticates x-clave before service-role RPC access; its RPC resolves pgcrypto through the extensions search path to keep event writes transactional and idempotent.
 
 - Keep v10 comparison scene replacements in src/data/compare; transform only the two right-hand scene producers before the original script boots so its navigation, timers, and animation runner remain the sole rendering owner.

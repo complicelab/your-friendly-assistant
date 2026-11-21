@@ -1,14 +1,14 @@
 # Duración automática Google Calendar
-- [ ] Verificar commit solicitado, migración y conservación de datos.
-- [ ] Aplicar migración faltante y comprobar duración con evidencia real sin modificar citas.
-- [ ] Verificar bloqueo manual, reserva pública y regresiones.
-- [ ] Publicar versión verificada y comprobar complicelab.com.
+- [x] Verificar commit solicitado, migración y conservación de datos.
+- [x] Aplicar migración faltante y comprobar duración con evidencia real sin modificar citas: cero muestras válidas; conservar 45 minutos existentes.
+- [x] Verificar bloqueo manual, reserva pública y regresiones: 56 pruebas aprobadas.
+- [ ] Publicar versión verificada y comprobar complicelab.com: publicación rechazada por el usuario.
 
 # Preparación Google Calendar
 - [x] Revisar migraciones, dependencias y permisos de las tablas privadas en el CRM existente.
 - [x] Aplicar solo migraciones faltantes sin modificar datos, secretos ni importar citas.
 - [x] Verificar diagnóstico autenticado, seguridad y conservación de registros; informar si puede enlazar.
-- [ ] Habilitar enlace Google Calendar: bloqueado por formato inválido de GOOGLE_CALENDAR_ENCRYPTION_KEY; el usuario pidió no sobrescribir secretos.
+- [x] Habilitar enlace Google Calendar: conexión existente comprobada en la revisión de duración automática.
 
 # Activación WhatsApp IA existente
 - [x] Revisar secreto, migración y conservación de datos/RLS.

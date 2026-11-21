@@ -18,7 +18,7 @@ export const Route = createFileRoute('/api/calendar')({
    try{
     const cal=await import('@/lib/calendar-connection.server');
     await cal.requireCalendarAdmin(request);
-    const body=await request.json() as {action?:string;meeting_id?:string;event_id?:string;contact_id?:string;starts_at?:string};
+    const body=await request.json() as {action?:string;meeting_id?:string;event_id?:string;contact_id?:string;starts_at?:string;from?:string;to?:string};
     if(body.action==='connect')return Response.json({ok:true,url:await cal.startCalendarConsent(request)});
     if(body.action==='status')return Response.json({ok:true,...await cal.calendarStatus()});
     if(body.action==='disconnect'){
@@ -28,6 +28,13 @@ export const Route = createFileRoute('/api/calendar')({
     if(body.action==='sync'){
       const {synchronizeGoogleAppointments}=await import('@/lib/google-calendar-sync.server');
       return Response.json({ok:true,stats:await synchronizeGoogleAppointments()});
+    }
+    if(body.action==='agenda'&&body.from&&body.to){
+      // This endpoint is authenticated above. Never return raw Google descriptions,
+      // guest emails, OAuth credentials or event-conference metadata.
+      const {googleAgendaForAdmin}=await import('@/lib/calendar-agenda.server');
+      const result=await googleAgendaForAdmin(body.from,body.to);
+      return Response.json({ok:true,...result},{headers:{'Cache-Control':'no-store'}});
     }
     if(body.action==='review'){
       const {reviewCalendarEvents}=await import('@/lib/calendar-review.server');

@@ -1,55 +1,46 @@
-# Cómplice Lab · conexión a Google Calendar (preparación segura)
+# Cómplice Lab · Google Calendar desde el administrador
 
-**Repositorio:** complicelab/your-friendly-assistant  
-**Calendario esperado:** complicelab@gmail.com  
-**Zona horaria:** America/Bogota  
-**Estado:** integración preparada en rama de revisión, **NO autorizada ni probada en producción**.
+## Experiencia de uso
+En /admin > Configuración: Enlazar Google Calendar, Sincronizar ahora, Desconectar, estado de cuenta, última sincronización y contadores.
+En /admin > Clientes: listado independiente de oportunidades con nombre, empresa, email, WhatsApp, país, fecha de contacto, estado, buscador y paginación.
 
-## Hallazgos previos
+## Configuración inicial ÚNICA
+Google exige registrar una aplicación OAuth y obtener el consentimiento de la cuenta propietaria. Después de completar estos pasos, el administrador podrá enlazar o reconectar desde el botón.
 
-La rama main ya tiene Agenda y Configuración en /admin; la rama lovable-sync, divergente, no tiene esas vistas. No mezclar automáticamente ramas: resolver primero los cambios de Lovable y ejecutar la batería completa de pruebas.
-
-Las reservas públicas se guardan con crm_public_book_meeting y aparecen en crm_meetings si el backend y las políticas RLS están configurados. Google Calendar no estaba vinculado.
-
-## Configuración OAuth para una sola cuenta
-
-1. Ingresar a https://console.cloud.google.com/ con el proyecto correcto.
-2. Habilitar Google Calendar API en **APIs y servicios**.
-3. Configurar la pantalla de consentimiento OAuth, y autorizar complicelab@gmail.com. Para uso persistente, verificar el estado de publicación de OAuth: en modo de pruebas algunos refresh tokens caducan en 7 días.
-4. Crear un cliente OAuth 2.0, obtener autorización **offline** con el scope exacto https://www.googleapis.com/auth/calendar y obtener un refresh token mediante un flujo autorizado de Google. La cuenta que da consentimiento debe ser complicelab@gmail.com. No copiar secretos al chat, a commits ni a variables VITE_.
-5. Guardar **solo como secretos de servidor** de Lovable Cloud:
+1. En https://console.cloud.google.com habilitar Google Calendar API.
+2. Configurar pantalla OAuth. Si queda en Testing, algunos refresh tokens caducan a los 7 días; revisar el estado de publicación y sus requisitos.
+3. Crear credencial OAuth Client tipo Web Application y registrar EXACTAMENTE https://complicelab.com/api/calendar/callback (ajustar si se utiliza otro dominio confirmado).
+4. Guardar secretos exclusivamente en el servidor Lovable Cloud (nunca en variables públicas VITE_):
    - GOOGLE_CALENDAR_CLIENT_ID
    - GOOGLE_CALENDAR_CLIENT_SECRET
-   - GOOGLE_CALENDAR_REFRESH_TOKEN
-   - GOOGLE_CALENDAR_ID = complicelab@gmail.com
-6. Comprobar que SUPABASE_URL y SUPABASE_SECRET_KEY (o SUPABASE_SERVICE_ROLE_KEY) están configuradas en servidor, para guardar el ID del evento en crm_meetings.
+   - GOOGLE_CALENDAR_REDIRECT_URI = https://complicelab.com/api/calendar/callback
+   - GOOGLE_CALENDAR_ENCRYPTION_KEY = 32 bytes aleatorios expresados en 64 caracteres hexadecimales; generar localmente con openssl rand -hex 32
+   - SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY ya existentes.
+5. Ejecutar en la MISMA base del CRM y en este orden:
+   - supabase/migrations/20261121_google_calendar_connection.sql
+   - supabase/migrations/20261121_calendar_import_no_notifications.sql
+6. Confirmar que Lovable está utilizando el código de esta revisión. Entrar a /admin con complicelab@gmail.com y presionar Enlazar Google Calendar. Solo se acepta el consentimiento de esa misma cuenta Google.
+7. Al volver del consentimiento, el panel abre Configuración e intenta sincronizar las citas existentes.
 
-## Flujo implementado en esta rama
+Seguridad: refresh token cifrado con AES-256-GCM en base de datos; tablas privadas con RLS y sin permisos de navegador; estado OAuth de un solo uso con PKCE y vencimiento; operaciones administrativas autenticadas.
 
-- GET /api/booking usa la disponibilidad de la base existente y consulta Google FreeBusy cuando las cuatro variables están configuradas; quita horarios con solapamientos.
-- Si Google Calendar está configurado pero falla, responde 503 y **no muestra horarios sin verificar**.
-- POST /api/booking vuelve a comprobar el horario en la base y en Google antes de crear la reserva.
-- Tras registrar la reserva en crm_meetings, crea un evento en Google Calendar e invita al correo del cliente. Usa un ID determinista derivado del UUID de crm_meetings para reducir duplicados en reintentos.
-- Si se crea el evento y existe la clave de servidor de Supabase, registra external_calendar_id en crm_meetings.
-- Si Google falla **después** de guardar la reserva, el CRM conserva la cita y responde calendar_status=pending; es necesario revisar y recuperar la sincronización antes de considerar el flujo totalmente operativo.
-- Sin credenciales, el comportamiento de reservas existente se conserva; **no significa que Google esté conectado**.
-- La interfaz del CRM muestra si una reunión tiene external_calendar_id.
+## Sincronización
+Busca citas de los últimos 180 días y próximos 365 días. Vincula solo si encuentra UNA coincidencia inequívoca por email de invitado, organizador o campos etiquetados de email/WhatsApp en la descripción. Ante ambigüedad no vincula ni crea contactos ficticios. Los eventos de todo el día bloquean disponibilidad, pero no se importan como citas de cliente.
 
-## Limitaciones para la siguiente fase
+Si ya hay una reunión del mismo contacto y hora en el CRM, añade el ID Google sin crear duplicados. Los eventos históricos importados no deben generar nuevas confirmaciones, WhatsApp ni trabajos de agente. Google -> CRM actualiza hora y cancelaciones al sincronizar; la cancelación desde Agenda actualiza Google antes de marcar el CRM.
 
-- La rama prepara consulta de ocupación y creación inicial; todavía **no implementa sincronización automática de cambios/cancelaciones, reintentos programados, ni lectura/importación de eventos existentes al CRM**.
-- Google Meet no se crea automáticamente; el campo meeting_url solo muestra un enlace si realmente existe.
-- Si una cita queda pending, requiere reparación; antes del despliegue real debe implementarse y probarse un reintento autenticado y el tratamiento de cancelaciones.
-- Los cambios en GitHub no demuestran que las migraciones se ejecutaron en Lovable Cloud ni que las credenciales se hayan autorizado.
+El panel de configuración sincroniza cada cinco minutos cuando está abierto. Para continuar con el panel CERRADO hay que configurar un programador HTTPS que invoque POST https://complicelab.com/api/calendar/cron con Authorization: Bearer y el valor privado de CRM_CALENDAR_CRON_SECRET (mínimo 32 caracteres). El archivo de código incluye el endpoint, pero NO configura ni activa por sí solo el programador en Lovable.
 
-## Pruebas obligatorias antes de desplegar
+Límites actuales: no hay editor de reprogramación CRM -> Google, importación de eventos sin identidad verificable, Google Meet automático, ni garantía de recuperación de todos los eventos eliminados fuera de la ventana de consulta.
 
-1. Verificar la rama que publica Lovable, reconciliar main/lovable-sync sin borrar versiones.
-2. Ejecutar bun install --frozen-lockfile, bun test y bun run build.
-3. Abrir /admin con el administrador autorizado y comprobar que se ven **Oportunidades, Agenda y Configuración**.
-4. Verificar que una cuenta normal no pueda leer ni editar crm_meetings, settings o clientes.
-5. Bloquear un horario de prueba en el calendario Google y confirmar que no aparece en /api/booking.
-6. Registrar una reserva de prueba, confirmar que aparece una sola vez en CRM y en Google, y que el cliente recibe invitación según permisos.
-7. Simular fallo de acceso a Google y comprobar que la disponibilidad no se publica equivocadamente.
-8. Probar cancelación y reprogramación; no activar producción mientras estas operaciones no estén sincronizadas.
-9. Validar uso de America/Bogota en cambios de día y horarios con UTC.
+## Validaciones previas a producción
+- Ejecutar CI (tests, typecheck, build) y revisar su resultado.
+- Conciliar main y lovable-sync sin sobrescribir historial; son ramas divergentes.
+- Verificar RLS de clientes y tablas de OAuth, secreto servidor y migraciones.
+- Conectar cuenta correcta y rechazar cualquier otra.
+- Probar hora ocupada en Google, cita creada en web, importación de una anterior, duplicados, coincidencias ambiguas y cancelaciones desde ambos lados.
+- Simular token revocado, caída temporal de Google y fallo de base.
+- Confirmar política de tratamiento de datos para citas previamente almacenadas.
+- No activar producción ni cron sin pruebas completas y aprobación de despliegue.
+
+La existencia de estos archivos no demuestra por sí sola que Lovable Cloud ya esté conectado ni que Google haya sido autorizado.

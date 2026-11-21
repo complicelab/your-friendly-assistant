@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { calendarApi } from '@/components/crm/calendar-connection-settings';
 import type { Tables } from '@/integrations/supabase/types';
 import { BOOKING_TIMEZONE, MEETING_STATUSES, formatMeetingDate, meetingStatusLabel, notificationStatusLabel } from '@/lib/booking-model';
 
@@ -74,8 +75,19 @@ export function CrmAgenda({onOpenContact,onChanged}:{onOpenContact:(contactId:st
   async function updateMeetingStatus(status:string){
     if(!selected)return;
     setSaving(true);setMessage('');
-    const {data,error}=await supabase.from('crm_meetings').update({status,updated_at:new Date().toISOString()}).eq('id',selected.id).select('*').single();
-    if(error||!data)setMessage('No pude actualizar el estado de la reunión.');
+    if(status==='cancelada'&&!window.confirm('¿Cancelar esta reunión también en Google Calendar?')){setSaving(false);return;}
+    let data: Tables<'crm_meetings'> | null = null;
+    let errorMessage = '';
+    if(status==='cancelada'){
+      try {
+        await calendarApi('cancel',selected.id);
+        data={...selected,status:'cancelada',updated_at:new Date().toISOString()};
+      } catch(error){errorMessage=error instanceof Error?error.message:'No se pudo cancelar la reunión.';}
+    } else {
+      const result=await supabase.from('crm_meetings').update({status,updated_at:new Date().toISOString()}).eq('id',selected.id).select('*').single();
+      data=result.data;errorMessage=result.error?.message||'';
+    }
+    if(errorMessage||!data)setMessage(errorMessage||'No pude actualizar el estado de la reunión.');
     else{
       const updated={...selected,...data,crm_contacts:selected.crm_contacts};
       setMeetings(items=>items.map(item=>item.id===updated.id?updated:item));setSelected(updated);onChanged();
@@ -112,7 +124,12 @@ export function CrmAgenda({onOpenContact,onChanged}:{onOpenContact:(contactId:st
       <div className="crm-fields"><Field label="Marca / empresa" value={selected.crm_contacts?.brand_name}/><Field label="Servicio" value={selected.service_interest||selected.crm_contacts?.solution_interest}/><Field label="WhatsApp" value={selected.attendee_whatsapp||selected.crm_contacts?.whatsapp}/><Field label="Correo" value={selected.attendee_email||selected.crm_contacts?.email}/></div>
       <label className="crm-control-label">Estado de la reunión</label><select className="crm-control" value={selected.status} disabled={saving} onChange={event=>void updateMeetingStatus(event.target.value)}>{!MEETING_STATUSES.some(([value])=>value===selected.status)&&<option value={selected.status}>{meetingStatusLabel(selected.status)}</option>}{MEETING_STATUSES.map(([value,label])=><option key={value} value={value}>{label}</option>)}</select>
       <div className="clb-notifications"><h3>Notificaciones</h3>{!notifications.length&&<p className="clb-muted">No hay registros de notificación para esta reunión.</p>}{notifications.map(notification=><div key={notification.id}><span><b>{notification.channel==='whatsapp'?'WhatsApp':'Email'} · {notification.recipient_type==='admin'?'Administrador':'Cliente'}</b><small>{notification.recipient}</small></span><em className={'notification-'+notification.status}>{notificationStatusLabel(notification.channel,notification.status)}</em></div>)}</div>
-      <p className="clb-muted">El enlace de videollamada se agregará cuando exista una integración real. No se ha generado ninguno.</p>
+      {selected.external_calendar_id
+        ? <p className="clb-muted">Esta reunión está registrada en Google Calendar. Si la cancelas o cambias aquí, actualiza también el evento en Google hasta habilitar sincronización de cambios.</p>
+        : <p className="clb-muted">Esta reserva está guardada en el CRM, pero no tiene una sincronización confirmada con Google Calendar. Revisa la configuración y el estado del calendario.</p>}
+      {selected.meeting_url
+        ? <p><a href={selected.meeting_url} target="_blank" rel="noopener noreferrer">Abrir enlace de videollamada</a></p>
+        : <p className="clb-muted">Todavía no se ha generado un enlace de videollamada.</p>}
       <div className="crm-modal-actions"><button onClick={()=>setSelected(null)}>Cerrar</button><button className="crm-primary" onClick={()=>{const id=selected.contact_id;setSelected(null);onOpenContact(id);}}>Ir al contacto</button></div>
     </section></div>}
   </section>;

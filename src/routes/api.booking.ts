@@ -307,7 +307,21 @@ export const Route = createFileRoute("/api/booking")({
           p_days: days,
         });
         if (error) return Response.json({ ok:false, error:"No fue posible cargar la disponibilidad." }, { status:500 });
-        return Response.json({ ok:true, timezone:BOOKING_TIMEZONE, slots:data || [] });
+        const slots = data || [];
+        const { googleCalendarBusy, overlapsBusy } = await import("@/lib/google-calendar-server");
+        try {
+          if (!slots.length) return Response.json({ ok:true, timezone:BOOKING_TIMEZONE, slots });
+          const firstStart = slots.map((slot) => slot.slot_start).sort()[0]!;
+          const lastEnd = slots.map((slot) => slot.slot_end).sort().at(-1)!;
+          const busy = await googleCalendarBusy(firstStart, lastEnd);
+          const available = busy
+            ? slots.filter((slot) => !overlapsBusy(slot.slot_start, slot.slot_end, busy))
+            : slots;
+          return Response.json({ ok:true, timezone:BOOKING_TIMEZONE, slots:available });
+        } catch {
+          // Fail closed: never advertise a slot if the connected calendar cannot be checked.
+          return Response.json({ ok:false, error:"No se pudo verificar la disponibilidad del calendario. Intenta más tarde." }, { status:503 });
+        }
       },
       POST: async ({ request }) => {
         let body: Record<string, unknown>;
@@ -326,6 +340,39 @@ export const Route = createFileRoute("/api/booking")({
         const email = String(body["email"] || "").trim();
         const solutionInterest = normalizedServiceInterest(String(body["solution_interest"] || "").trim());
         const startsAt = String(body["starts_at"] || "").trim();
+        const startTimestamp = Date.parse(startsAt);
+        if (!Number.isFinite(startTimestamp)) {
+          return Response.json({ok:false,error:"La fecha seleccionada no es válida."},{status:400});
+        }
+
+        // Resolve the authoritative slot end from the existing booking RPC before
+        // checking Google. Do not guess a duration or write directly to meetings.
+        const dateParts = new Intl.DateTimeFormat("en-US", {
+          timeZone: BOOKING_TIMEZONE, year: "numeric", month: "2-digit", day: "2-digit",
+        }).formatToParts(new Date(startTimestamp));
+        const dateValues = Object.fromEntries(dateParts.map((part) => [part.type, part.value]));
+        const bookingDate = dateValues["year"]+"-"+dateValues["month"]+"-"+dateValues["day"];
+        const {data:validSlots,error:slotError} = await supabase.rpc("crm_public_available_slots", {
+          p_start_date: bookingDate, p_days: 2,
+        });
+        if (slotError) {
+          return Response.json({ok:false,error:"No se pudo verificar el horario."},{status:503});
+        }
+        const selectedSlot = (validSlots || []).find((slot) =>
+          Date.parse(slot.slot_start) === startTimestamp
+        );
+        if (!selectedSlot) {
+          return Response.json({ok:false,error:"El horario ya no está disponible."},{status:409});
+        }
+        const { googleCalendarBusy, overlapsBusy, createGoogleCalendarEvent } = await import("@/lib/google-calendar-server");
+        try {
+          const busy = await googleCalendarBusy(selectedSlot.slot_start, selectedSlot.slot_end);
+          if (busy && overlapsBusy(selectedSlot.slot_start, selectedSlot.slot_end, busy)) {
+            return Response.json({ok:false,error:"Ese horario está ocupado en el calendario. Elige otro."},{status:409});
+          }
+        } catch {
+          return Response.json({ok:false,error:"No se pudo confirmar disponibilidad con Google Calendar."},{status:503});
+        }
 
         const { data, error } = await supabase.rpc("crm_public_book_meeting", {
           p_full_name: fullName,
@@ -358,9 +405,36 @@ export const Route = createFileRoute("/api/booking")({
             })
           : [];
 
+        // Booking stays confirmed in the CRM even if Google has a transient error.
+        // The external event ID is deterministic, so retries cannot duplicate it.
+        let calendarStatus: "not_configured" | "synced" | "pending" = "not_configured";
+        if (meetingId) {
+          try {
+            const event = await createGoogleCalendarEvent({
+              meetingId, fullName, attendeeEmail: email, attendeeWhatsapp: whatsapp,
+              service: solutionInterest,
+              startsAt: selectedSlot.slot_start, endsAt: selectedSlot.slot_end,
+            });
+            if (event) {
+              const admin = serverAdminClient();
+              if (!admin) throw new Error("Falta el cliente servidor de Supabase.");
+              const {error:updateError} = await admin.from("crm_meetings").update({
+                external_calendar_id: event.id,
+                ...(event.meetingUrl ? {meeting_url: event.meetingUrl} : {}),
+              }).eq("id",meetingId);
+              if (updateError) throw updateError;
+              calendarStatus = "synced";
+            }
+          } catch {
+            calendarStatus = "pending";
+            console.error("[booking] Google Calendar synchronization pending for meeting",meetingId);
+          }
+        }
+
         return Response.json({
           ok:true,
           meeting_id:meetingId,
+          calendar_status:calendarStatus,
           notifications:notifications.map(({channel,recipient_type,status})=>({channel,recipient_type,status})),
         });
       },

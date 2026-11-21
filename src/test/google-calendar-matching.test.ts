@@ -9,6 +9,9 @@ describe('Google Calendar matches verified clients only',()=>{
  it('matches an existing attendee by exact email',()=>{
   expect(matchContactForGoogleEvent({attendees:[{email:'ANA@EMPRESA.COM'}]},contacts)).toEqual({contactId:'one',ambiguous:false});
  });
+ it('matches the client when they organized the event and invited the agency',()=>{
+  expect(matchContactForGoogleEvent({organizer:{email:'pablo@empresa.com'},attendees:[{email:'complicelab@gmail.com',self:true}]},contacts).contactId).toBe('two');
+ });
  it('matches a CRM-labelled WhatsApp when the attendee list is empty',()=>{
   expect(matchContactForGoogleEvent({description:'Reunión comercial\nWhatsApp: +57 300 222 2222'},contacts).contactId).toBe('two');
  });

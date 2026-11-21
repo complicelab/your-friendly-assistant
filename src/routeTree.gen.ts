@@ -24,6 +24,7 @@ import { Route as SistemasIaALaMedidaRouteImport } from './routes/sistemas-ia-a-
 import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as TodosLosServiciosRouteImport } from './routes/todos-los-servicios'
 import { Route as ApiBookingRouteImport } from './routes/api.booking'
+import { Route as ApiCalendarRouteImport } from './routes/api.calendar'
 import { Route as ApiLeadsRouteImport } from './routes/api.leads'
 import { Route as FoundersCamiloDotjpgRouteImport } from './routes/founders.camilo[.]jpg'
 import { Route as FoundersCristianDotjpgRouteImport } from './routes/founders.cristian[.]jpg'
@@ -36,6 +37,8 @@ import { Route as ProyectosPulsoDataRouteImport } from './routes/proyectos.pulso
 import { Route as ServiciosSlugRouteImport } from './routes/servicios.$slug'
 import { Route as ServiciosPaginasWebManizalesRouteImport } from './routes/servicios.paginas-web-manizales'
 import { Route as ServiciosPublicidadMetaAdsRouteImport } from './routes/servicios.publicidad-meta-ads'
+import { Route as ApiCalendarCallbackRouteImport } from './routes/api.calendar.callback'
+import { Route as ApiCalendarCronRouteImport } from './routes/api.calendar.cron'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -112,6 +115,11 @@ const ApiBookingRoute = ApiBookingRouteImport.update({
   path: '/api/booking',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCalendarRoute = ApiCalendarRouteImport.update({
+  id: '/api/calendar',
+  path: '/api/calendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiLeadsRoute = ApiLeadsRouteImport.update({
   id: '/api/leads',
   path: '/api/leads',
@@ -175,6 +183,16 @@ const ServiciosPublicidadMetaAdsRoute =
     path: '/servicios/publicidad-meta-ads',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiCalendarCallbackRoute = ApiCalendarCallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
+  getParentRoute: () => ApiCalendarRoute,
+} as any)
+const ApiCalendarCronRoute = ApiCalendarCronRouteImport.update({
+  id: '/cron',
+  path: '/cron',
+  getParentRoute: () => ApiCalendarRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -192,6 +210,7 @@ export interface FileRoutesByFullPath {
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/api/booking': typeof ApiBookingRoute
+  '/api/calendar': typeof ApiCalendarRouteWithChildren
   '/api/leads': typeof ApiLeadsRoute
   '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
   '/founders/cristian.jpg': typeof FoundersCristianDotjpgRoute
@@ -204,6 +223,8 @@ export interface FileRoutesByFullPath {
   '/servicios/$slug': typeof ServiciosSlugRoute
   '/servicios/paginas-web-manizales': typeof ServiciosPaginasWebManizalesRoute
   '/servicios/publicidad-meta-ads': typeof ServiciosPublicidadMetaAdsRoute
+  '/api/calendar/callback': typeof ApiCalendarCallbackRoute
+  '/api/calendar/cron': typeof ApiCalendarCronRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -221,6 +242,7 @@ export interface FileRoutesByTo {
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/api/booking': typeof ApiBookingRoute
+  '/api/calendar': typeof ApiCalendarRouteWithChildren
   '/api/leads': typeof ApiLeadsRoute
   '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
   '/founders/cristian.jpg': typeof FoundersCristianDotjpgRoute
@@ -233,6 +255,8 @@ export interface FileRoutesByTo {
   '/servicios/$slug': typeof ServiciosSlugRoute
   '/servicios/paginas-web-manizales': typeof ServiciosPaginasWebManizalesRoute
   '/servicios/publicidad-meta-ads': typeof ServiciosPublicidadMetaAdsRoute
+  '/api/calendar/callback': typeof ApiCalendarCallbackRoute
+  '/api/calendar/cron': typeof ApiCalendarCronRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -251,6 +275,7 @@ export interface FileRoutesById {
   '/terminos': typeof TerminosRoute
   '/todos-los-servicios': typeof TodosLosServiciosRoute
   '/api/booking': typeof ApiBookingRoute
+  '/api/calendar': typeof ApiCalendarRouteWithChildren
   '/api/leads': typeof ApiLeadsRoute
   '/founders/camilo.jpg': typeof FoundersCamiloDotjpgRoute
   '/founders/cristian.jpg': typeof FoundersCristianDotjpgRoute
@@ -263,6 +288,8 @@ export interface FileRoutesById {
   '/servicios/$slug': typeof ServiciosSlugRoute
   '/servicios/paginas-web-manizales': typeof ServiciosPaginasWebManizalesRoute
   '/servicios/publicidad-meta-ads': typeof ServiciosPublicidadMetaAdsRoute
+  '/api/calendar/callback': typeof ApiCalendarCallbackRoute
+  '/api/calendar/cron': typeof ApiCalendarCronRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -282,6 +309,7 @@ export interface FileRouteTypes {
     | '/terminos'
     | '/todos-los-servicios'
     | '/api/booking'
+    | '/api/calendar'
     | '/api/leads'
     | '/founders/camilo.jpg'
     | '/founders/cristian.jpg'
@@ -294,6 +322,8 @@ export interface FileRouteTypes {
     | '/servicios/$slug'
     | '/servicios/paginas-web-manizales'
     | '/servicios/publicidad-meta-ads'
+    | '/api/calendar/callback'
+    | '/api/calendar/cron'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -311,6 +341,7 @@ export interface FileRouteTypes {
     | '/terminos'
     | '/todos-los-servicios'
     | '/api/booking'
+    | '/api/calendar'
     | '/api/leads'
     | '/founders/camilo.jpg'
     | '/founders/cristian.jpg'
@@ -323,6 +354,8 @@ export interface FileRouteTypes {
     | '/servicios/$slug'
     | '/servicios/paginas-web-manizales'
     | '/servicios/publicidad-meta-ads'
+    | '/api/calendar/callback'
+    | '/api/calendar/cron'
   id:
     | '__root__'
     | '/'
@@ -340,6 +373,7 @@ export interface FileRouteTypes {
     | '/terminos'
     | '/todos-los-servicios'
     | '/api/booking'
+    | '/api/calendar'
     | '/api/leads'
     | '/founders/camilo.jpg'
     | '/founders/cristian.jpg'
@@ -352,6 +386,8 @@ export interface FileRouteTypes {
     | '/servicios/$slug'
     | '/servicios/paginas-web-manizales'
     | '/servicios/publicidad-meta-ads'
+    | '/api/calendar/callback'
+    | '/api/calendar/cron'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -370,6 +406,7 @@ export interface RootRouteChildren {
   TerminosRoute: typeof TerminosRoute
   TodosLosServiciosRoute: typeof TodosLosServiciosRoute
   ApiBookingRoute: typeof ApiBookingRoute
+  ApiCalendarRoute: typeof ApiCalendarRouteWithChildren
   ApiLeadsRoute: typeof ApiLeadsRoute
   FoundersCamiloDotjpgRoute: typeof FoundersCamiloDotjpgRoute
   FoundersCristianDotjpgRoute: typeof FoundersCristianDotjpgRoute
@@ -491,6 +528,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiBookingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/calendar': {
+      id: '/api/calendar'
+      path: '/api/calendar'
+      fullPath: '/api/calendar'
+      preLoaderRoute: typeof ApiCalendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/leads': {
       id: '/api/leads'
       path: '/api/leads'
@@ -575,8 +619,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServiciosPublicidadMetaAdsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/calendar/callback': {
+      id: '/api/calendar/callback'
+      path: '/callback'
+      fullPath: '/api/calendar/callback'
+      preLoaderRoute: typeof ApiCalendarCallbackRouteImport
+      parentRoute: typeof ApiCalendarRoute
+    }
+    '/api/calendar/cron': {
+      id: '/api/calendar/cron'
+      path: '/cron'
+      fullPath: '/api/calendar/cron'
+      preLoaderRoute: typeof ApiCalendarCronRouteImport
+      parentRoute: typeof ApiCalendarRoute
+    }
   }
 }
+
+interface ApiCalendarRouteChildren {
+  ApiCalendarCallbackRoute: typeof ApiCalendarCallbackRoute
+  ApiCalendarCronRoute: typeof ApiCalendarCronRoute
+}
+
+const ApiCalendarRouteChildren: ApiCalendarRouteChildren = {
+  ApiCalendarCallbackRoute: ApiCalendarCallbackRoute,
+  ApiCalendarCronRoute: ApiCalendarCronRoute,
+}
+
+const ApiCalendarRouteWithChildren = ApiCalendarRoute._addFileChildren(
+  ApiCalendarRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -594,6 +666,7 @@ const rootRouteChildren: RootRouteChildren = {
   TerminosRoute: TerminosRoute,
   TodosLosServiciosRoute: TodosLosServiciosRoute,
   ApiBookingRoute: ApiBookingRoute,
+  ApiCalendarRoute: ApiCalendarRouteWithChildren,
   ApiLeadsRoute: ApiLeadsRoute,
   FoundersCamiloDotjpgRoute: FoundersCamiloDotjpgRoute,
   FoundersCristianDotjpgRoute: FoundersCristianDotjpgRoute,

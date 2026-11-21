@@ -3,7 +3,6 @@ import { normalizedServiceInterest } from "@/lib/crm-model";
 import { createClient } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
-import { googleCalendarBusy, overlapsBusy, createGoogleCalendarEvent } from "@/lib/google-calendar-server";
 
 const BOOKING_TIMEZONE = "America/Bogota";
 const DEFAULT_ADMIN_EMAIL = "complicelab@gmail.com";
@@ -309,6 +308,7 @@ export const Route = createFileRoute("/api/booking")({
         });
         if (error) return Response.json({ ok:false, error:"No fue posible cargar la disponibilidad." }, { status:500 });
         const slots = data || [];
+        const { googleCalendarBusy, overlapsBusy } = await import("@/lib/google-calendar-server");
         try {
           if (!slots.length) return Response.json({ ok:true, timezone:BOOKING_TIMEZONE, slots });
           const firstStart = slots.map((slot) => slot.slot_start).sort()[0]!;
@@ -364,6 +364,7 @@ export const Route = createFileRoute("/api/booking")({
         if (!selectedSlot) {
           return Response.json({ok:false,error:"El horario ya no está disponible."},{status:409});
         }
+        const { googleCalendarBusy, overlapsBusy, createGoogleCalendarEvent } = await import("@/lib/google-calendar-server");
         try {
           const busy = await googleCalendarBusy(selectedSlot.slot_start, selectedSlot.slot_end);
           if (busy && overlapsBusy(selectedSlot.slot_start, selectedSlot.slot_end, busy)) {

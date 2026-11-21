@@ -215,6 +215,10 @@ export type Database = {
       }
       crm_calendar_connections: {
         Row: {
+          booking_duration_checked_at: string | null
+          booking_duration_minutes: number | null
+          booking_duration_observations: number
+          booking_duration_status: string
           calendar_id: string
           connected_at: string
           google_email: string
@@ -225,6 +229,10 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          booking_duration_checked_at?: string | null
+          booking_duration_minutes?: number | null
+          booking_duration_observations?: number
+          booking_duration_status?: string
           calendar_id: string
           connected_at?: string
           google_email: string
@@ -235,6 +243,10 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          booking_duration_checked_at?: string | null
+          booking_duration_minutes?: number | null
+          booking_duration_observations?: number
+          booking_duration_status?: string
           calendar_id?: string
           connected_at?: string
           google_email?: string

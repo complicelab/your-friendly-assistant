@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import fs from 'node:fs';
 
 describe('diagnostic booking entrypoints', () => {
-  const index=fs.readFileSync(new URL('../routes/index.tsx',import.meta.url),'utf8');
-  const runtime=fs.readFileSync(new URL('../data/booking/runtime.ts',import.meta.url),'utf8');
-  const api=fs.readFileSync(new URL('../routes/api.booking.ts',import.meta.url),'utf8');
+  const index=fs.readFileSync('src/routes/index.tsx','utf8');
+  const runtime=fs.readFileSync('src/data/booking/runtime.ts','utf8');
+  const api=fs.readFileSync('src/routes/api.booking.ts','utf8');
 
   it('keeps date and time inside the visible contact form',()=>{
     expect(index).toContain('class="cl-contact-date"');

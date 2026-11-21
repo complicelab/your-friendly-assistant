@@ -1,3 +1,9 @@
+# Duración automática Google Calendar
+- [ ] Verificar commit solicitado, migración y conservación de datos.
+- [ ] Aplicar migración faltante y comprobar duración con evidencia real sin modificar citas.
+- [ ] Verificar bloqueo manual, reserva pública y regresiones.
+- [ ] Publicar versión verificada y comprobar complicelab.com.
+
 # Preparación Google Calendar
 - [x] Revisar migraciones, dependencias y permisos de las tablas privadas en el CRM existente.
 - [x] Aplicar solo migraciones faltantes sin modificar datos, secretos ni importar citas.

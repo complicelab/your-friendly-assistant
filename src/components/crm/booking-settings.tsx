@@ -8,10 +8,46 @@ type Exception = Tables<'crm_availability_exceptions'>;
 type Range = AvailabilityRangeInput & {active?:boolean};
 const DAYS=[['Domingo',0],['Lunes',1],['Martes',2],['Miércoles',3],['Jueves',4],['Viernes',5],['Sábado',6]] as const;
 const DEFAULT_RANGES:Record<number,Range[]>={0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
+type GoogleDuration={
+ connected:boolean;minutes:number|null;observations:number;checkedAt:string|null;
+ status:'disconnected'|'pending'|'verified'|'mixed'|'error';
+ source:'confirmed_google_bookings'|'none';
+};
 
 export function CrmBookingSettings(){
   const [settings,setSettings]=useState<Settings|null>(null);
   const [duration,setDuration]=useState('60');const [interval,setInterval]=useState('60');
+  const [googleMode,setGoogleMode]=useState<'checking'|'connected'|'disconnected'|'error'>('checking');
+  const [googleDuration,setGoogleDuration]=useState<GoogleDuration|null>(null);
+  const [checkingGoogle,setCheckingGoogle]=useState(false);
+  const durationLocked=googleMode!=='disconnected';
+  async function readGoogleStatus(force=false) {
+    setCheckingGoogle(true);
+    try{
+      const {data}=await supabase.auth.getSession();
+      const token=data.session?.access_token;
+      if(!token)throw Error('No hay sesión administrativa para consultar Google.');
+      const response=await fetch('/api/calendar',{
+        method:force?'POST':'GET',
+        headers:{Authorization:'Bearer '+token,...(force?{'Content-Type':'application/json'}:{})},
+        ...(force?{body:JSON.stringify({action:'duration_sync'})}:{}),
+        cache:'no-store',
+      });
+      const result=await response.json();
+      if(!response.ok||!result.ok)throw Error(result.error||'Google Calendar no respondió.');
+      // POST returns booking_duration; GET also contains the linked state.
+      const connected=force?true:Boolean(result.connected);
+      setGoogleMode(connected?'connected':'disconnected');
+      const info=result.booking_duration as GoogleDuration|null;
+      setGoogleDuration(info);
+      if(connected&&info?.status==='verified'&&info.minutes!==null){
+        setDuration(String(info.minutes));setInterval(String(info.minutes));
+      }
+    }catch(error){
+      setGoogleMode('error');
+      setMessage(error instanceof Error?error.message:'No se pudo comprobar el estado de Google.');
+    }finally{setCheckingGoogle(false);}
+  }
   const [adminEmail,setAdminEmail]=useState('complicelab@gmail.com');const [adminWhatsapp,setAdminWhatsapp]=useState('');
   const [ranges,setRanges]=useState<Record<number,Range[]>>(DEFAULT_RANGES);
   const [exceptions,setExceptions]=useState<Exception[]>([]);
@@ -33,7 +69,17 @@ export function CrmBookingSettings(){
     (rulesResult.data||[]).filter(rule=>rule.active).forEach(rule=>(next[rule.day_of_week]??=[]).push({id:rule.id,day_of_week:rule.day_of_week,start_time:rule.start_time.slice(0,5),end_time:rule.end_time.slice(0,5)}));
     setRanges(next);setExceptions(exceptionsResult.data||[]);setLoading(false);
   }
-  useEffect(()=>{void load();},[]);
+  useEffect(()=>{
+    void load();
+    // First inspect the connection, then request an evidence-based refresh.
+    void (async()=>{
+      await readGoogleStatus();
+      // A verified Google OAuth connection is required before the server will
+      // infer a duration. This operation does not create or alter events.
+    })();
+    const timer=window.setInterval(()=>{void readGoogleStatus();},300_000);
+    return()=>window.clearInterval(timer);
+  },[]);
 
   function updateRange(day:number,index:number,key:'start_time'|'end_time',value:string){setRanges(current=>({...current,[day]:(current[day]??[]).map((range,i)=>i===index?{...range,[key]:value}:range)}));}
   function toggleDay(day:number,enabled:boolean){setRanges(current=>{const existing=current[day]??[];return {...current,[day]:enabled?(existing.length?existing:[{day_of_week:day,start_time:'09:00',end_time:'17:00'}]):[]};});}
@@ -42,13 +88,22 @@ export function CrmBookingSettings(){
   async function save(){
     setMessage('');
     const settingsError=validateBookingSettings({meeting_duration_minutes:Number(duration),slot_minutes:Number(interval),admin_email:adminEmail});
+    if(durationLocked&&!settings)return setMessage('La configuración de agenda no existe. No se puede crear manualmente mientras Google está conectado.');
     if(settingsError)return setMessage(settingsError);
     const activeRanges=Object.values(ranges).flat();
     const rangeError=validateAvailabilityRanges(activeRanges);
     if(rangeError)return setMessage(rangeError);
     setSaving(true);
-    const payload={meeting_duration_minutes:Number(duration),slot_minutes:Number(interval),admin_email:adminEmail.trim(),admin_whatsapp:adminWhatsapp.trim()||null,timezone:BOOKING_TIMEZONE,updated_at:new Date().toISOString()};
-    const settingsQuery=settings?supabase.from('crm_booking_settings').update(payload).eq('id',settings.id):supabase.from('crm_booking_settings').insert(payload);
+    // This UI never writes Google-owned booking lengths. The DB trigger
+    // independently rejects browser overrides while OAuth is connected.
+    const payload={...(durationLocked?{}:{
+      meeting_duration_minutes:Number(duration),slot_minutes:Number(interval)}),
+      admin_email:adminEmail.trim(),admin_whatsapp:adminWhatsapp.trim()||null,
+      timezone:BOOKING_TIMEZONE,updated_at:new Date().toISOString()};
+    const settingsQuery=settings
+      ?supabase.from('crm_booking_settings').update(payload).eq('id',settings.id)
+      :supabase.from('crm_booking_settings').insert({...payload,
+        meeting_duration_minutes:Number(duration),slot_minutes:Number(interval)});
     const {error:settingsSaveError}=await settingsQuery;
     if(settingsSaveError){setMessage('No pude guardar la configuración general.');setSaving(false);return;}
     const {data:existing}=await supabase.from('crm_availability_rules').select('id');
@@ -75,8 +130,25 @@ export function CrmBookingSettings(){
   return <section className="clb-settings">
     {message&&<div className="crm-alert">{message}</div>}
     <div className="clb-settings-card"><div className="clb-panel-title"><div><span>AGENDA DE DIAGNÓSTICO</span><h2>Configuración general</h2></div><b>{BOOKING_TIMEZONE}</b></div>
-      <div className="clb-settings-grid"><label>Duración de reunión (minutos)<input type="number" min="15" max="180" step="5" value={duration} onChange={event=>setDuration(event.target.value)}/></label><label>Intervalo entre horarios (minutos)<input type="number" min="15" max="180" step="5" value={interval} onChange={event=>setInterval(event.target.value)}/></label><label>Correo administrador<input type="email" value={adminEmail} onChange={event=>setAdminEmail(event.target.value)}/></label><label>WhatsApp administrador<input value={adminWhatsapp} onChange={event=>setAdminWhatsapp(event.target.value)} placeholder="+57…"/></label></div>
-      <p className="clb-muted">Zona horaria fija: America/Bogota. La duración y el intervalo cambian los horarios que se ofrecen en la home.</p>
+      <div className="clb-settings-grid"><label>Duración de reunión (minutos)<input type="number" min="15" max="180" step="5" value={duration} disabled={durationLocked} onChange={event=>setDuration(event.target.value)}/></label><label>Intervalo entre horarios (minutos)<input type="number" min="15" max="180" step="5" value={interval} disabled={durationLocked} onChange={event=>setInterval(event.target.value)}/></label><label>Correo administrador<input type="email" value={adminEmail} onChange={event=>setAdminEmail(event.target.value)}/></label><label>WhatsApp administrador<input value={adminWhatsapp} onChange={event=>setAdminWhatsapp(event.target.value)} placeholder="+57…"/></label></div>
+      <div className="clb-duration-policy" role="status">
+        <div><b>{googleMode==='connected'?'Duración gestionada automáticamente por Google Calendar':
+          googleMode==='disconnected'?'Duración configurable sin Google Calendar':
+          'Comprobando duración de Google Calendar'}</b>
+        <p>{googleMode==='connected'&&googleDuration?.status==='verified'
+          ?'Duración verificada a partir de '+googleDuration.observations+' reservas reales de diagnóstico: '+googleDuration.minutes+' minutos. El CRM usa el mismo valor como paso entre horarios.'
+          :googleMode==='connected'
+          ?'Google está conectado, pero todavía no hay suficientes reservas reales coincidentes para verificar su duración. Se conserva el último valor; no se permite cambiarlo manualmente.'
+          :googleMode==='disconnected'
+          ?'Sin Google conectado, la duración y el intervalo pueden editarse en el administrador.'
+          :'No se modificará la duración hasta comprobar el estado de Google.'}</p>
+        <small>Google Calendar no ofrece mediante su API pública la duración configurada en Páginas de reserva ni sus reglas de intervalos y descansos. Esta detección usa únicamente reservas confirmadas con participantes identificables, no franjas visuales de disponibilidad.</small></div>
+        {googleMode==='connected'&&<button type="button" className="crm-secondary"
+          onClick={()=>void readGoogleStatus(true)} disabled={checkingGoogle||saving}>
+          {checkingGoogle?'Verificando…':'Verificar duración con Google'}
+        </button>}
+      </div>
+      <p className="clb-muted">Zona horaria fija: America/Bogota. El paso entre horarios se iguala a la duración detectada, mientras que las franjas semanales y bloqueos siguen siendo reglas independientes del CRM.</p>
     </div>
     <div className="clb-settings-card"><div className="clb-panel-title"><div><span>DISPONIBILIDAD SEMANAL</span><h2>Días y franjas horarias</h2></div></div>
       <div className="clb-rules">{DAYS.map(([label,day])=><div className={'clb-rule '+((ranges[day]??[]).length?'active':'')} key={day}><label className="clb-day-toggle"><input type="checkbox" checked={(ranges[day]??[]).length>0} onChange={event=>toggleDay(day,event.target.checked)}/><b>{label}</b></label><div className="clb-ranges">{!(ranges[day]??[]).length&&<span>No disponible</span>}{(ranges[day]??[]).map((range,index)=><div className="clb-range" key={range.id||index}><input aria-label={`Inicio ${label} ${index+1}`} type="time" value={range.start_time} onChange={event=>updateRange(day,index,'start_time',event.target.value)}/><span>a</span><input aria-label={`Fin ${label} ${index+1}`} type="time" value={range.end_time} onChange={event=>updateRange(day,index,'end_time',event.target.value)}/></div>)}</div>{(ranges[day]??[]).length>0&&<button className="clb-text-button" onClick={()=>toggleSecondRange(day)}>{(ranges[day]??[]).length===2?'Quitar segunda franja':'+ Segunda franja'}</button>}</div>)}</div>

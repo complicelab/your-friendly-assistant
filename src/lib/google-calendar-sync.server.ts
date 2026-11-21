@@ -72,18 +72,8 @@ export async function synchronizeGoogleAppointments(source:'manual'|'cron'='manu
   for(const meeting of meetings.filter(m=>m.attendance_status==='no_asistira' &&
        m.calendar_cancel_pending && m.external_calendar_id)){
     try {
-      const url='https://www.googleapis.com/calendar/v3/calendars/'+
-        encodeURIComponent(access.calendarId)+'/events/'+
-        encodeURIComponent(meeting.external_calendar_id!)+'?sendUpdates=all';
-      const cancelled=await fetch(url,{
-        method:'DELETE',headers:{Authorization:'Bearer '+access.token},
-      });
-      if(!cancelled.ok && cancelled.status!==404 && cancelled.status!==410)
-        throw Error('Google rechazó la cancelación.');
-      const {error}=await db.from('crm_meetings').update({
-        calendar_cancel_pending:false,calendar_cancel_synced_at:new Date().toISOString(),
-      }).eq('id',meeting.id).eq('attendance_status','no_asistira');
-      if(error)throw Error('Google canceló la cita, pero no se pudo registrar el resultado.');
+      const {reconcileAttendanceCancellation}=await import('@/lib/calendar-attendance.server');
+      await reconcileAttendanceCancellation(meeting.id);
     } catch {
       console.warn('[calendar] Cancelación del agente pendiente de reconciliar en Google.');
     }

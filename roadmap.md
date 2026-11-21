@@ -1,3 +1,9 @@
+# Auditoría de asistencia WhatsApp
+- [ ] Auditar commit, migración real, webhook y automatizaciones existentes.
+- [ ] Corregir y activar recepción segura de asistencia sin duplicar recordatorios.
+- [ ] Probar estados, seguridad, cancelación Google y agenda con datos controlados.
+- [ ] Verificar integridad, regresiones y publicación; informar límites del agente externo.
+
 # Duración automática Google Calendar
 - [x] Verificar commit solicitado, migración y conservación de datos.
 - [x] Aplicar migración faltante y comprobar duración con evidencia real sin modificar citas: cero muestras válidas; conservar 45 minutos existentes.

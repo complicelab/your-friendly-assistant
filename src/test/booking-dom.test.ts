@@ -16,7 +16,7 @@ import part11 from '../data/v10/part-11';
 import part12 from '../data/v10/part-12';
 
 function bookingScript(){
-  const source=fs.readFileSync(new URL('../routes/index.tsx',import.meta.url),'utf8');
+  const source=fs.readFileSync('src/routes/index.tsx','utf8');
   const prefix='const UNIFIED_BOOKING_CTA = `';
   const start=source.indexOf(prefix);
   if(start<0)throw new Error('booking script not found');
@@ -57,7 +57,7 @@ function fixture(){
 describe('booking client DOM flow',()=>{
 
   it('renders date and time from the original leadForm template',()=>{
-    const source=fs.readFileSync(new URL('../routes/index.tsx',import.meta.url),'utf8');
+    const source=fs.readFileSync('src/routes/index.tsx','utf8');
     expect(source).toContain('Elige fecha y hora para tu videollamada');
     expect(source).toContain('Render booking date and time in original lead form'.replace('Render booking date and time in original lead form','cl-contact-date'));
     expect(source).toContain('cl-contact-time');

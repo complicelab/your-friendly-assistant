@@ -65,6 +65,17 @@ Deno.serve(async (request) => {
         return response(422,{ok:false,error:"No se pudo aplicar la respuesta a esa reunión. Verifica meeting_id, teléfono, recordatorio y horario."});
       return response(500,{ok:false,error:"No se pudo guardar el evento."});
     }
+    // CRM receipt is already durable. A Google failure stays pending, never undo the RSVP.
+    if(event.event_type==="asistencia_rechazada"){
+      try{
+        const result=await fetch("https://complicelab.com/api/public/calendar/attendance",{
+          method:"POST",headers:{"content-type":"application/json","x-clave":secret},
+          body:JSON.stringify({meeting_id:(event.payload as Record<string,unknown>).meeting_id}),
+          signal:AbortSignal.timeout(4000),
+        });
+        await result.body?.cancel();
+      }catch{/* Later verified sync retries the stored pending cancellation. */}
+    }
     return response(200,{ok:true});
   } catch(e){console.error("CRM inbound failed",e instanceof Error?e.name:"unknown");return response(500,{ok:false,error:"No se pudo guardar el evento."});}
 });

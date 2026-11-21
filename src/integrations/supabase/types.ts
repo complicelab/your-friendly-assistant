@@ -223,6 +223,7 @@ export type Database = {
           connected_at: string
           google_email: string
           id: number
+          last_cron_at: string | null
           last_error: string | null
           last_synced_at: string | null
           refresh_token_encrypted: string
@@ -237,6 +238,7 @@ export type Database = {
           connected_at?: string
           google_email: string
           id?: number
+          last_cron_at?: string | null
           last_error?: string | null
           last_synced_at?: string | null
           refresh_token_encrypted: string
@@ -251,10 +253,32 @@ export type Database = {
           connected_at?: string
           google_email?: string
           id?: number
+          last_cron_at?: string | null
           last_error?: string | null
           last_synced_at?: string | null
           refresh_token_encrypted?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      crm_calendar_event_reviews: {
+        Row: {
+          action: string
+          calendar_id: string
+          event_id: string
+          reviewed_at: string
+        }
+        Insert: {
+          action: string
+          calendar_id: string
+          event_id: string
+          reviewed_at?: string
+        }
+        Update: {
+          action?: string
+          calendar_id?: string
+          event_id?: string
+          reviewed_at?: string
         }
         Relationships: []
       }
@@ -397,8 +421,15 @@ export type Database = {
         Row: {
           admin_email: string
           admin_whatsapp: string | null
+          attendance_reminder_at: string | null
+          attendance_responded_at: string | null
+          attendance_response_source: string | null
+          attendance_response_text: string | null
+          attendance_status: string
           attendee_email: string | null
           attendee_whatsapp: string | null
+          calendar_cancel_pending: boolean
+          calendar_cancel_synced_at: string | null
           contact_id: string
           created_at: string
           email_notification_status: string
@@ -420,8 +451,15 @@ export type Database = {
         Insert: {
           admin_email?: string
           admin_whatsapp?: string | null
+          attendance_reminder_at?: string | null
+          attendance_responded_at?: string | null
+          attendance_response_source?: string | null
+          attendance_response_text?: string | null
+          attendance_status?: string
           attendee_email?: string | null
           attendee_whatsapp?: string | null
+          calendar_cancel_pending?: boolean
+          calendar_cancel_synced_at?: string | null
           contact_id: string
           created_at?: string
           email_notification_status?: string
@@ -443,8 +481,15 @@ export type Database = {
         Update: {
           admin_email?: string
           admin_whatsapp?: string | null
+          attendance_reminder_at?: string | null
+          attendance_responded_at?: string | null
+          attendance_response_source?: string | null
+          attendance_response_text?: string | null
+          attendance_status?: string
           attendee_email?: string | null
           attendee_whatsapp?: string | null
+          calendar_cancel_pending?: boolean
+          calendar_cancel_synced_at?: string | null
           contact_id?: string
           created_at?: string
           email_notification_status?: string
@@ -585,6 +630,30 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      crm_apply_attendance_agent_event: {
+        Args: {
+          p_event_type: string
+          p_payload: Json
+          p_timestamp: string
+          p_wa_id: string
+        }
+        Returns: string
+      }
+      crm_attach_google_calendar_event: {
+        Args: {
+          p_contact_id: string
+          p_end: string
+          p_event_id: string
+          p_meeting_url?: string
+          p_start: string
+          p_title: string
+        }
+        Returns: string
+      }
+      crm_classify_attendance_reply: {
+        Args: { p_text: string }
+        Returns: string
+      }
       crm_public_available_slots: {
         Args: { p_days?: number; p_start_date: string }
         Returns: {

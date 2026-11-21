@@ -209,6 +209,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
 
   return <section className="clb-agenda">
     <div className="clb-toolbar">
+      <button type="button" className="crm-secondary" disabled={loading} onClick={()=>void loadMeetings()}>Actualizar asistencia</button>
       <div className="clb-segment"><button className={mode==='month'?'active':''} onClick={()=>setMode('month')}>Mes</button><button className={mode==='week'?'active':''} onClick={()=>setMode('week')}>Semana</button></div>
       <div className="clb-calendar-nav"><button onClick={()=>move(-1)} aria-label="Anterior">←</button><b>{mode==='month'?monthLabel(cursor):'Semana seleccionada'}</b><button onClick={()=>move(1)} aria-label="Siguiente">→</button><button onClick={today}>Hoy</button></div>
     </div>
@@ -221,7 +222,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
       <div><span>Canceladas</span><strong>{attendanceCounts.cancelled}</strong></div>
     </div>
     <p className="clb-muted clb-attendance-help">Reservar una cita no confirma asistencia.
-      El agente pregunta aproximadamente 24 horas antes y el CRM cambia el estado
+      Los envíos se muestran cuando el agente externo los comunica; el CRM cambia el estado
       cuando recibe una respuesta verificada de esa cita.</p>
     <div className="clb-agenda-google-tools">
       <label><input type="checkbox" checked={showGoogle} onChange={event=>setShowGoogle(event.target.checked)}/>
@@ -295,7 +296,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
     </div>}
     {selected&&<div className="crm-modal-backdrop" onMouseDown={event=>{if(event.currentTarget===event.target)setSelected(null);}}><section className="crm-modal clb-meeting-modal">
       <div className="crm-modal-head"><div><span>REUNIÓN</span><h2>{selected.crm_contacts?.full_name||'Contacto'}</h2><p>{formatMeetingDate(selected.starts_at)} · Hora de Colombia</p></div><button onClick={()=>setSelected(null)} aria-label="Cerrar">×</button></div>
-      <div className="crm-fields"><Field label="Marca / empresa" value={selected.crm_contacts?.brand_name}/><Field label="Servicio" value={selected.service_interest||selected.crm_contacts?.solution_interest}/><Field label="WhatsApp" value={selected.attendee_whatsapp||selected.crm_contacts?.whatsapp}/><Field label="Correo" value={selected.attendee_email||selected.crm_contacts?.email}/></div>
+      <div className="crm-fields"><Field label="Marca / empresa" value={selected.crm_contacts?.brand_name}/><Field label="Servicio" value={selected.service_interest||selected.crm_contacts?.solution_interest}/><Field label="WhatsApp" value={selected.attendee_whatsapp||selected.crm_contacts?.whatsapp}/><Field label="Correo" value={selected.attendee_email||selected.crm_contacts?.email}/><Field label="Duración" value={`${Math.round((Date.parse(selected.ends_at)-Date.parse(selected.starts_at))/60000)} minutos`}/></div>
       <div className="clb-attendance-detail" role="status">
         <span>CONFIRMACIÓN DE ASISTENCIA · WHATSAPP IA</span>
         <strong className={'meeting-'+attendanceStatusClass(selected.attendance_status,selected.status)}>
@@ -306,6 +307,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
         <small>Respuesta del cliente: {selected.attendance_responded_at
           ? shortMeetingDate(selected.attendance_responded_at):'sin respuesta registrada'}</small>
         {selected.attendance_response_text&&<p>Respuesta: {selected.attendance_response_text}</p>}
+        {selected.calendar_cancel_synced_at&&<small>Cancelación comprobada en Google: {shortMeetingDate(selected.calendar_cancel_synced_at)}</small>}
         {selected.calendar_cancel_pending&&<p className="crm-alert">El cliente rechazó la asistencia.
           La cita ya está cancelada en el CRM, pero falta comprobar su cancelación en Google Calendar.</p>}
         {selected.attendance_status==='no_asistira'&&!selected.external_calendar_id&&

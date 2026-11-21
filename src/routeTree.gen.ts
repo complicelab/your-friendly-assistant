@@ -39,6 +39,7 @@ import { Route as ServiciosPaginasWebManizalesRouteImport } from './routes/servi
 import { Route as ServiciosPublicidadMetaAdsRouteImport } from './routes/servicios.publicidad-meta-ads'
 import { Route as ApiCalendarCallbackRouteImport } from './routes/api.calendar.callback'
 import { Route as ApiCalendarCronRouteImport } from './routes/api.calendar.cron'
+import { Route as ApiPublicCalendarAttendanceRouteImport } from './routes/api/public/calendar/attendance'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -193,6 +194,12 @@ const ApiCalendarCronRoute = ApiCalendarCronRouteImport.update({
   path: '/cron',
   getParentRoute: () => ApiCalendarRoute,
 } as any)
+const ApiPublicCalendarAttendanceRoute =
+  ApiPublicCalendarAttendanceRouteImport.update({
+    id: '/api/public/calendar/attendance',
+    path: '/api/public/calendar/attendance',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -225,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/servicios/publicidad-meta-ads': typeof ServiciosPublicidadMetaAdsRoute
   '/api/calendar/callback': typeof ApiCalendarCallbackRoute
   '/api/calendar/cron': typeof ApiCalendarCronRoute
+  '/api/public/calendar/attendance': typeof ApiPublicCalendarAttendanceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -257,6 +265,7 @@ export interface FileRoutesByTo {
   '/servicios/publicidad-meta-ads': typeof ServiciosPublicidadMetaAdsRoute
   '/api/calendar/callback': typeof ApiCalendarCallbackRoute
   '/api/calendar/cron': typeof ApiCalendarCronRoute
+  '/api/public/calendar/attendance': typeof ApiPublicCalendarAttendanceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -290,6 +299,7 @@ export interface FileRoutesById {
   '/servicios/publicidad-meta-ads': typeof ServiciosPublicidadMetaAdsRoute
   '/api/calendar/callback': typeof ApiCalendarCallbackRoute
   '/api/calendar/cron': typeof ApiCalendarCronRoute
+  '/api/public/calendar/attendance': typeof ApiPublicCalendarAttendanceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -324,6 +334,7 @@ export interface FileRouteTypes {
     | '/servicios/publicidad-meta-ads'
     | '/api/calendar/callback'
     | '/api/calendar/cron'
+    | '/api/public/calendar/attendance'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -356,6 +367,7 @@ export interface FileRouteTypes {
     | '/servicios/publicidad-meta-ads'
     | '/api/calendar/callback'
     | '/api/calendar/cron'
+    | '/api/public/calendar/attendance'
   id:
     | '__root__'
     | '/'
@@ -388,6 +400,7 @@ export interface FileRouteTypes {
     | '/servicios/publicidad-meta-ads'
     | '/api/calendar/callback'
     | '/api/calendar/cron'
+    | '/api/public/calendar/attendance'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -419,6 +432,7 @@ export interface RootRouteChildren {
   ServiciosSlugRoute: typeof ServiciosSlugRoute
   ServiciosPaginasWebManizalesRoute: typeof ServiciosPaginasWebManizalesRoute
   ServiciosPublicidadMetaAdsRoute: typeof ServiciosPublicidadMetaAdsRoute
+  ApiPublicCalendarAttendanceRoute: typeof ApiPublicCalendarAttendanceRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -633,6 +647,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCalendarCronRouteImport
       parentRoute: typeof ApiCalendarRoute
     }
+    '/api/public/calendar/attendance': {
+      id: '/api/public/calendar/attendance'
+      path: '/api/public/calendar/attendance'
+      fullPath: '/api/public/calendar/attendance'
+      preLoaderRoute: typeof ApiPublicCalendarAttendanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -679,6 +700,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServiciosSlugRoute: ServiciosSlugRoute,
   ServiciosPaginasWebManizalesRoute: ServiciosPaginasWebManizalesRoute,
   ServiciosPublicidadMetaAdsRoute: ServiciosPublicidadMetaAdsRoute,
+  ApiPublicCalendarAttendanceRoute: ApiPublicCalendarAttendanceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -64,6 +64,27 @@
       "when": 1795273308284,
       "tag": "0008_google_automatic_booking_duration",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1795279139694,
+      "tag": "0009_activate_agent_attendance_confirmation",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1795279207682,
+      "tag": "0010_calendar_review_and_attach_dependency",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1795279528569,
+      "tag": "0011_attendance_reply_negative_safety",
+      "breakpoints": true
     }
   ]
 }

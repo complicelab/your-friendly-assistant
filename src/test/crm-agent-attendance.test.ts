@@ -47,7 +47,7 @@ describe('Authenticated WhatsApp agent confirmation contract',()=>{
  it('never creates a contact when receiving confirmation answers',()=>{
   const procedure=sql.slice(sql.indexOf('create or replace function public.crm_apply_attendance_agent_event'));
   expect(procedure).not.toContain('insert into public.crm_contacts');
-  expect(procedure).toContain("auth.role()<>'service_role'");
+  expect(procedure).toContain("auth.role() is distinct from 'service_role'");
   expect(sql).toContain('revoke all on function public.crm_apply_attendance_agent_event');
  });
  it('requires a matching reminder and refuses stale or cancelled replies',()=>{
@@ -85,11 +85,12 @@ describe('Google and CRM safeguards for 24-hour agent cancellations',()=>{
  const admin=readFileSync('src/routes/admin.tsx','utf8');
  const types=readFileSync('src/integrations/supabase/types.ts','utf8');
  it('queues Google cancellations and never reopens a declined RSVP',()=>{
+  const cancellation=readFileSync('src/lib/calendar-attendance.server.ts','utf8');
   expect(sync).toContain("m.attendance_status==='no_asistira'");
   expect(sync).toContain('m.calendar_cancel_pending');
-  expect(sync).toContain("method:'DELETE'");
+  expect(cancellation).toContain("method:'DELETE'");
   expect(sync).toContain("if(existing?.attendance_status==='no_asistira')continue;");
-  expect(sync).toContain("calendar_cancel_synced_at:new Date().toISOString()");
+  expect(cancellation).toContain("calendar_cancel_synced_at:new Date().toISOString()");
  });
  it('shows dashboard states, customer evidence and Google pending status',()=>{
   expect(agenda).toContain('Confirmadas por respuesta');

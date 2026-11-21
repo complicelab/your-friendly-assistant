@@ -161,7 +161,7 @@ begin
        where contact_id=v_meeting.contact_id
          and metadata->>'meeting_id'=v_mid::text
          and metadata->>'type'='attendance_confirmation_review'
-         and status<>'cancelada'
+         and status='pendiente'
     ) then
       insert into public.crm_tasks(contact_id,title,due_at,assigned_to,status,metadata)
       values(v_meeting.contact_id,'Confirmar asistencia con el cliente',

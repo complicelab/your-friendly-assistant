@@ -68,14 +68,33 @@ export async function requireCalendarAdmin(request: Request) {
 
 export async function calendarStatus() {
   const configured = ready();
-  const record = configured ? await connection() : null;
-  return {
+  const unavailable = {
     configured,
-    connected: Boolean(record),
-    email: record?.google_email || null,
-    last_synced_at: record?.last_synced_at || null,
-    last_error: record?.last_error || null,
+    database_ready: false,
+    connected: false,
+    email: null as string | null,
+    last_synced_at: null as string | null,
+    last_error: null as string | null,
   };
+  if (!configured) return unavailable;
+  try {
+    // Read-only readiness check: both private tables must exist with server grants.
+    // Never return stored OAuth tokens, environment values or database error internals.
+    const stateCheck = await db.from('crm_calendar_oauth_states')
+      .select('nonce', { head: true }).limit(1);
+    if (stateCheck.error) return unavailable;
+    const record = await connection();
+    return {
+      configured,
+      database_ready: true,
+      connected: Boolean(record),
+      email: record?.google_email || null,
+      last_synced_at: record?.last_synced_at || null,
+      last_error: record?.last_error || null,
+    };
+  } catch {
+    return unavailable;
+  }
 }
 
 export async function startCalendarConsent(request: Request) {

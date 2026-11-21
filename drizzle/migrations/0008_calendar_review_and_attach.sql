@@ -1,3 +1,6 @@
+-- Record confirmed server-side scheduled runs independently of manual panel sync.
+alter table public.crm_calendar_connections add column if not exists last_cron_at timestamptz;
+
 -- Cómplice Lab: manual review decisions for unlinked Google Calendar events.
 -- No destructive changes to existing CRM or calendar credentials.
 create table if not exists public.crm_calendar_event_reviews (

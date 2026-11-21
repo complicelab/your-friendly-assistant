@@ -41,8 +41,9 @@ begin
       or new.attendance_response_text is distinct from old.attendance_response_text
       or new.attendance_response_source is distinct from old.attendance_response_source
       or new.calendar_cancel_pending is distinct from old.calendar_cancel_pending
-      or (new.status='confirmada' and old.status is distinct from 'confirmada'
-          and old.attendance_status<>'confirmada')
+      or (new.status is distinct from old.status and
+          (new.status in ('pendiente','confirmada')
+           or old.attendance_status='no_asistira'))
     then
       raise exception 'La confirmación de asistencia proviene del agente verificado.';
     end if;

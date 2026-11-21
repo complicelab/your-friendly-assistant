@@ -70,6 +70,16 @@ Para NO usar event_type asistencia_rechazada; para dudas usar asistencia_dudosa.
 9. Verificar publicación de la web. No declarar operativo 24/7 hasta tener prueba de agente > webhook > SQL > CRM > Google.
 
 ## Observaciones importantes
+### Auditoría de activación en Lovable Cloud
+- Base existente: asistencia activada mediante `0009_activate_agent_attendance_confirmation.sql`; no ejecutar el espejo legado dañado `0010_agent_attendance_confirmation.sql`.
+- Se reparó una expresión regular SQL sin cierre y un bloque duplicado fuera de la función. Se añadió `extensions` al contexto de ejecución de la recepción y autenticación segura incluso sin rol.
+- Se aplicó `0010_calendar_review_and_attach_dependency.sql` para las dependencias faltantes de revisión Calendar y `0011_attendance_reply_negative_safety.sql` para evitar afirmaciones sobre textos negativos.
+- Webhook existente desplegado y probado con citas identificadas como auditoría. Los fixtures quedan cancelados, con historial conservado; no se enviaron mensajes ni correos.
+- Reversión segura: deshabilitar emisión de los cuatro eventos de asistencia en el agente externo y volver al receptor anterior; mantener columnas e historial, sin retirar tablas. Cualquier reversión de funciones debe ser una migración nueva y revisada, nunca ejecutar el SQL legado roto.
+- Cancelaciones: callback autenticado `/api/public/calendar/attendance` verifica identidad y horario del evento antes de borrarlo en Google; la sincronización reutiliza la misma verificación.
+- La publicación fue rechazada. El callback y la interfaz nueva no están confirmados en producción. No hay tarea HTTP programada ni `CRM_CALENDAR_CRON_SECRET`; no se afirma reconciliación 24/7.
+- Confirmación, rechazo, silencio, dudas, duplicados y bloqueo admin se verificaron contra el webhook/base reales. Cancelación Google exitosa/fallida se verificó con proveedor simulado; lectura Calendar y FreeBusy con la cuenta real. No se canceló una cita real.
+
 La migración restablece como pendientes SOLO las reuniones futuras de diagnóstico de origen web/google_calendar sin RSVP demostrada; conserva reuniones pasadas y estados de resultado ya finalizados. Al cambiar la fecha de una cita vigente se invalida el RSVP antiguo y el CRM vuelve a exigir confirmación para la nueva fecha. Las citas de Google que no estén vinculadas a un contacto del CRM deben relacionarse primero mediante la bandeja de revisión; no se asocian por nombre.
 
 Este proyecto no tiene acceso directo desde GitHub a los secretos del agente externo, al tráfico privado de Meta ni a la base de datos en vivo. El código puede estar integrado en main, pero su despliegue y el envío real de recordatorios deben verificarse independientemente.

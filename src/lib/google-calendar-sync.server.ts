@@ -22,7 +22,7 @@ export function matchContactForGoogleEvent(event:GoogleEventIdentity,contacts:Co
 export type GoogleEvent=GoogleEventIdentity & {id?:string;status?:string;summary?:string;hangoutLink?:string;
   start?:{dateTime?:string;date?:string};end?:{dateTime?:string;date?:string};transparency?:string};
 type Contact=ContactIdentity & {full_name:string;solution_interest:string|null};
-type Meeting={id:string;contact_id:string;external_calendar_id:string|null;starts_at:string;ends_at:string;status:string;source:string};
+type Meeting={id:string;contact_id:string;external_calendar_id:string|null;starts_at:string;ends_at:string;status:string;source:string;attendance_status:string;calendar_cancel_pending:boolean};
 export async function loadAll(table:string,columns:string){
  const result:Record<string,unknown>[]=[];
  for(let offset=0;offset<20000;offset+=1000){
@@ -59,16 +59,41 @@ export async function synchronizeGoogleAppointments(source:'manual'|'cron'='manu
  try {
   const [events,c,m,ignoredRows]=await Promise.all([
    listGoogleEvents(access),loadAll('crm_contacts','id,full_name,email,whatsapp,solution_interest'),
-   loadAll('crm_meetings','id,contact_id,external_calendar_id,starts_at,ends_at,status,source'),
+   loadAll('crm_meetings','id,contact_id,external_calendar_id,starts_at,ends_at,status,source,attendance_status,calendar_cancel_pending'),
    loadAll('crm_calendar_event_reviews','event_id'),
   ]);
   const ignored=new Set(ignoredRows.map(row=>String(row['event_id'])));
   const contacts=c as unknown as Contact[],meetings=m as unknown as Meeting[];
   const linked=new Map(meetings.filter(x=>x.external_calendar_id).map(x=>[x.external_calendar_id!,x]));
   const stats:SyncStats={reviewed:0,linked:0,imported:0,updated:0,unlinked:0,ambiguous:0};
+  // The authenticated agent already marked these appointments as declined in CRM.
+  // Reconcile their cancellation in Google so the slot is freed. Failures remain
+  // queued and visible, not silently treated as successful or resurrected.
+  for(const meeting of meetings.filter(m=>m.attendance_status==='no_asistira' &&
+       m.calendar_cancel_pending && m.external_calendar_id)){
+    try {
+      const url='https://www.googleapis.com/calendar/v3/calendars/'+
+        encodeURIComponent(access.calendarId)+'/events/'+
+        encodeURIComponent(meeting.external_calendar_id!)+'?sendUpdates=all';
+      const cancelled=await fetch(url,{
+        method:'DELETE',headers:{Authorization:'Bearer '+access.token},
+      });
+      if(!cancelled.ok && cancelled.status!==404 && cancelled.status!==410)
+        throw Error('Google rechazó la cancelación.');
+      const {error}=await db.from('crm_meetings').update({
+        calendar_cancel_pending:false,calendar_cancel_synced_at:new Date().toISOString(),
+      }).eq('id',meeting.id).eq('attendance_status','no_asistira');
+      if(error)throw Error('Google canceló la cita, pero no se pudo registrar el resultado.');
+    } catch {
+      console.warn('[calendar] Cancelación del agente pendiente de reconciliar en Google.');
+    }
+  }
   for(const event of events){
    if(!event.id || ignored.has(event.id))continue;
    const existing=linked.get(event.id);
+   // A Google event still present after an explicit declined RSVP cannot turn
+   // that cancelled CRM appointment back into "confirmed".
+   if(existing?.attendance_status==='no_asistira')continue;
    if(event.status==='cancelled'){
     if(existing&&existing.status!=='cancelada'){
      const result=await db.from('crm_meetings').update({status:'cancelada'}).eq('id',existing.id);
@@ -106,7 +131,8 @@ export async function synchronizeGoogleAppointments(source:'manual'|'cron'='manu
    });
    if(attachError||!attachedId)throw Error('No se pudo relacionar el evento con el CRM.');
    const created:Meeting={id:String(attachedId),contact_id:match.contactId,starts_at,ends_at,
-    external_calendar_id:event.id,status:'confirmada',source:'google_calendar'};
+    external_calendar_id:event.id,status:'pendiente',source:'google_calendar',
+    attendance_status:'por_confirmar',calendar_cancel_pending:false};
    meetings.push(created);linked.set(event.id,created);
    if(alreadyAtTime)stats.linked++;
    else stats.imported++;

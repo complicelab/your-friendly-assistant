@@ -1,10 +1,26 @@
 export const BOOKING_TIMEZONE = 'America/Bogota';
 export const MEETING_STATUSES = [
+  ['pendiente', 'Por confirmar'],
   ['confirmada', 'Confirmada'],
   ['realizada', 'Realizada'],
   ['no_asistio', 'No asistió'],
   ['cancelada', 'Cancelada'],
 ] as const;
+
+export function attendanceStatusLabel(attendance:string,meetingStatus?:string) {
+  if(meetingStatus==='realizada')return 'Realizada';
+  if(meetingStatus==='no_asistio')return 'No asistió';
+  if(meetingStatus==='cancelada'||attendance==='no_asistira')return 'Cancelada';
+  if(attendance==='confirmada')return 'Confirmada';
+  if(attendance==='requiere_atencion')return 'Por confirmar · requiere atención';
+  return 'Por confirmar';
+}
+
+export function attendanceStatusClass(attendance:string,meetingStatus:string) {
+  if(meetingStatus==='cancelada'||attendance==='no_asistira')return 'cancelada';
+  if(meetingStatus==='realizada'||meetingStatus==='no_asistio')return meetingStatus;
+  return attendance==='confirmada'?'confirmada':'pendiente';
+}
 
 export type AvailabilityRangeInput = {
   id?: string;

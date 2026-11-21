@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { calendarApi, calendarCommand } from '@/components/crm/calendar-connection-settings';
 import type { Tables } from '@/integrations/supabase/types';
-import { BOOKING_TIMEZONE, MEETING_STATUSES, formatMeetingDate, meetingStatusLabel, notificationStatusLabel } from '@/lib/booking-model';
+import { BOOKING_TIMEZONE, MEETING_STATUSES, attendanceStatusClass, attendanceStatusLabel, formatMeetingDate, meetingStatusLabel, notificationStatusLabel } from '@/lib/booking-model';
 
 type ContactSummary = Pick<Tables<'crm_contacts'>, 'id'|'full_name'|'brand_name'|'whatsapp'|'email'|'solution_interest'>;
 export type CrmMeeting = Tables<'crm_meetings'> & { crm_contacts: ContactSummary | null };
@@ -73,16 +73,31 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
     }finally{setSaving(false);}
   }
 
-  async function loadMeetings() {
-    setLoading(true);
+  async function loadMeetings(silent=false) {
+    if(!silent)setLoading(true);
     const {data,error}=await supabase.from('crm_meetings')
       .select('*, crm_contacts(id,full_name,brand_name,whatsapp,email,solution_interest)')
       .order('starts_at',{ascending:true}).limit(500);
     if(error)setMessage('No pude cargar las reuniones.');
-    else setMeetings((data||[]) as CrmMeeting[]);
-    setLoading(false);
+    else {
+      const updated=(data||[]) as CrmMeeting[];
+      setMeetings(updated);
+      setSelected(current=>current?updated.find(m=>m.id===current.id)||current:null);
+    }
+    if(!silent)setLoading(false);
   }
-  useEffect(()=>{void loadMeetings();},[]);
+  useEffect(()=>{
+    void loadMeetings();
+    const refresh=()=>{if(!document.hidden)void loadMeetings(true);};
+    const timer=window.setInterval(refresh,60_000);
+    window.addEventListener('focus',refresh);
+    document.addEventListener('visibilitychange',refresh);
+    return()=>{
+      window.clearInterval(timer);
+      window.removeEventListener('focus',refresh);
+      document.removeEventListener('visibilitychange',refresh);
+    };
+  },[]);
   useEffect(()=>{
     if(!selected){setNotifications([]);return;}
     void supabase.from('crm_notifications').select('*').eq('meeting_id',selected.id).order('created_at',{ascending:true})
@@ -143,6 +158,18 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
   const googleOnly=useMemo(()=>googleEvents.filter(e=>!linkedGoogleIds.has(e.id)),[googleEvents,linkedGoogleIds]);
   const upcoming=useMemo(()=>meetings.filter(meeting=>new Date(meeting.starts_at).getTime()>=Date.now()&&['pendiente','confirmada'].includes(meeting.status)),[meetings]);
   const upcomingGoogle=googleOnly.filter(e=>Date.parse(e.endsAt)>=Date.now());
+  const futureMeetings=meetings.filter(m=>Date.parse(m.starts_at)>=Date.now());
+  const attendanceCounts={
+    pending:futureMeetings.filter(m=>m.attendance_status==='por_confirmar' &&
+      m.status!=='cancelada' && m.status!=='realizada').length,
+    confirmed:futureMeetings.filter(m=>m.attendance_status==='confirmada' &&
+      m.status==='confirmada').length,
+    reminded:futureMeetings.filter(m=>m.attendance_reminder_at &&
+      m.attendance_status==='por_confirmar'&&m.status==='pendiente').length,
+    needsAttention:futureMeetings.filter(m=>m.attendance_status==='requiere_atencion' &&
+      m.status!=='cancelada').length,
+    cancelled:futureMeetings.filter(m=>m.status==='cancelada').length,
+  };
   const dayGoogle=showGoogle?googleOnly.filter(e=>googleEventOverlapsDay(e,selectedDay)):[];
 
   const dayMeetings=meetings.filter(meeting=>meetingDateKey(meeting.starts_at)===selectedDay);
@@ -186,6 +213,16 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
       <div className="clb-calendar-nav"><button onClick={()=>move(-1)} aria-label="Anterior">←</button><b>{mode==='month'?monthLabel(cursor):'Semana seleccionada'}</b><button onClick={()=>move(1)} aria-label="Siguiente">→</button><button onClick={today}>Hoy</button></div>
     </div>
     {message&&<div className="crm-alert">{message}</div>}
+    <div className="clb-attendance-summary" aria-label="Confirmaciones de asistencia del agente WhatsApp">
+      <div><span>Por confirmar</span><strong>{attendanceCounts.pending}</strong></div>
+      <div><span>Confirmadas por respuesta</span><strong>{attendanceCounts.confirmed}</strong></div>
+      <div><span>Recordatorios enviados sin respuesta</span><strong>{attendanceCounts.reminded}</strong></div>
+      <div><span>Requieren atención</span><strong>{attendanceCounts.needsAttention}</strong></div>
+      <div><span>Canceladas</span><strong>{attendanceCounts.cancelled}</strong></div>
+    </div>
+    <p className="clb-muted clb-attendance-help">Reservar una cita no confirma asistencia.
+      El agente pregunta aproximadamente 24 horas antes y el CRM cambia el estado
+      cuando recibe una respuesta verificada de esa cita.</p>
     <div className="clb-agenda-google-tools">
       <label><input type="checkbox" checked={showGoogle} onChange={event=>setShowGoogle(event.target.checked)}/>
         Mostrar eventos reales de Google Calendar
@@ -214,7 +251,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
             const outside=mode==='month'&&day.getUTCMonth()!==cursor.getUTCMonth();
             return <button key={key} className={'clb-day '+(outside?'outside ':'')+(key===selectedDay?'selected':'')} onClick={()=>setSelectedDay(key)}>
               <span>{day.getUTCDate()}</span><div>
-                {items.slice(0,2).map(meeting=><i key={meeting.id} className={'meeting-'+meeting.status} title={meeting.crm_contacts?.full_name||'Reunión'}>{shortMeetingDate(meeting.starts_at).split(', ').pop()} · {meeting.crm_contacts?.full_name||'Reunión'}</i>)}
+                {items.slice(0,2).map(meeting=><i key={meeting.id} className={'meeting-'+attendanceStatusClass(meeting.attendance_status,meeting.status)} title={meeting.crm_contacts?.full_name||'Reunión'}>{shortMeetingDate(meeting.starts_at).split(', ').pop()} · {meeting.crm_contacts?.full_name||'Reunión'}</i>)}
                 {googleItems.slice(0,2).map(event=><i key={'google-'+event.id} className="clb-google-day-marker" title={'Google Calendar: '+event.title}>{event.allDay?'Todo el día':shortMeetingDate(event.startsAt).split(', ').pop()} · {event.title}</i>)}
                 {items.length+googleItems.length>4&&<small>+{items.length+googleItems.length-4} más</small>}
               </div>
@@ -259,7 +296,33 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
     {selected&&<div className="crm-modal-backdrop" onMouseDown={event=>{if(event.currentTarget===event.target)setSelected(null);}}><section className="crm-modal clb-meeting-modal">
       <div className="crm-modal-head"><div><span>REUNIÓN</span><h2>{selected.crm_contacts?.full_name||'Contacto'}</h2><p>{formatMeetingDate(selected.starts_at)} · Hora de Colombia</p></div><button onClick={()=>setSelected(null)} aria-label="Cerrar">×</button></div>
       <div className="crm-fields"><Field label="Marca / empresa" value={selected.crm_contacts?.brand_name}/><Field label="Servicio" value={selected.service_interest||selected.crm_contacts?.solution_interest}/><Field label="WhatsApp" value={selected.attendee_whatsapp||selected.crm_contacts?.whatsapp}/><Field label="Correo" value={selected.attendee_email||selected.crm_contacts?.email}/></div>
-      <label className="crm-control-label">Estado de la reunión</label><select className="crm-control" value={selected.status} disabled={saving} onChange={event=>void updateMeetingStatus(event.target.value)}>{!MEETING_STATUSES.some(([value])=>value===selected.status)&&<option value={selected.status}>{meetingStatusLabel(selected.status)}</option>}{MEETING_STATUSES.map(([value,label])=><option key={value} value={value}>{label}</option>)}</select>
+      <div className="clb-attendance-detail" role="status">
+        <span>CONFIRMACIÓN DE ASISTENCIA · WHATSAPP IA</span>
+        <strong className={'meeting-'+attendanceStatusClass(selected.attendance_status,selected.status)}>
+          {attendanceStatusLabel(selected.attendance_status,selected.status)}</strong>
+        <small>Recordatorio 24 horas antes: {selected.attendance_reminder_at
+          ? shortMeetingDate(selected.attendance_reminder_at)+' (envío registrado por el agente)'
+          : 'sin envío registrado en el CRM'}</small>
+        <small>Respuesta del cliente: {selected.attendance_responded_at
+          ? shortMeetingDate(selected.attendance_responded_at):'sin respuesta registrada'}</small>
+        {selected.attendance_response_text&&<p>Respuesta: {selected.attendance_response_text}</p>}
+        {selected.calendar_cancel_pending&&<p className="crm-alert">El cliente rechazó la asistencia.
+          La cita ya está cancelada en el CRM, pero falta comprobar su cancelación en Google Calendar.</p>}
+        {selected.attendance_status==='no_asistira'&&!selected.external_calendar_id&&
+          <p className="crm-alert">El CRM canceló la cita. Este registro no tiene un identificador de Google
+            vinculado; revisa si existe una reserva independiente en Google Calendar.</p>}
+        <small>El evento "cita_confirmada" del agente comercial NO significa que el cliente haya aceptado asistir.</small>
+      </div>
+      <label className="crm-control-label">Resultado operativo de la reunión</label>
+      <select className="crm-control" value={selected.status} disabled={saving}
+        onChange={event=>void updateMeetingStatus(event.target.value)}>
+        {!MEETING_STATUSES.some(([value])=>value===selected.status)&&
+          <option value={selected.status}>{meetingStatusLabel(selected.status)}</option>}
+        {MEETING_STATUSES.filter(([value])=>value!=='confirmada'||selected.attendance_status==='confirmada')
+          .map(([value,label])=><option key={value} value={value}>{label}</option>)}
+      </select>
+      <p className="clb-muted">La confirmación de asistencia la determina el agente.
+        El administrador puede registrar resultados posteriores o cancelar por motivos operativos.</p>
       <div className="clb-notifications"><h3>Notificaciones</h3>{!notifications.length&&<p className="clb-muted">No hay registros de notificación para esta reunión.</p>}{notifications.map(notification=><div key={notification.id}><span><b>{notification.channel==='whatsapp'?'WhatsApp':'Email'} · {notification.recipient_type==='admin'?'Administrador':'Cliente'}</b><small>{notification.recipient}</small></span><em className={'notification-'+notification.status}>{notificationStatusLabel(notification.channel,notification.status)}</em></div>)}</div>
       {selected.external_calendar_id
         ? <div className="clb-meeting-reschedule">
@@ -283,7 +346,9 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
 }
 
 function MeetingRow({meeting,onClick}:{meeting:CrmMeeting;onClick:()=>void}){
-  return <button className="clb-meeting-row" onClick={onClick}><span className="clb-meeting-date">{shortMeetingDate(meeting.starts_at)}</span><span><b>{meeting.crm_contacts?.full_name||'Contacto'}</b><small>{meeting.crm_contacts?.brand_name||meeting.service_interest||'Diagnóstico'}</small></span><em className={'meeting-'+meeting.status}>{meetingStatusLabel(meeting.status)}</em></button>;
+  return <button className="clb-meeting-row" onClick={onClick}><span className="clb-meeting-date">{shortMeetingDate(meeting.starts_at)}</span><span><b>{meeting.crm_contacts?.full_name||'Contacto'}</b><small>{meeting.crm_contacts?.brand_name||meeting.service_interest||'Diagnóstico'}</small></span><em className={'meeting-'+attendanceStatusClass(meeting.attendance_status,meeting.status)}>
+        {attendanceStatusLabel(meeting.attendance_status,meeting.status)}
+      </em></button>;
 }
 function GoogleAgendaRow({event,onClick}:{event:GoogleAgendaEvent;onClick:()=>void}){
  return <button type="button" className="clb-meeting-row clb-google-event-row" onClick={onClick}>

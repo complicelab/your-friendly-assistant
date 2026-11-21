@@ -36,6 +36,27 @@
       "when": 1794451814482,
       "tag": "0004_fix_whatsapp_inbound_digest_search_path",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795269832491,
+      "tag": "0005_google_calendar_connection",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1795269862034,
+      "tag": "0006_calendar_import_no_notifications",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795269923736,
+      "tag": "0007_calendar_trigger_server_only",
+      "breakpoints": true
     }
   ]
 }

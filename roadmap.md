@@ -1,3 +1,9 @@
+# Preparación Google Calendar
+- [x] Revisar migraciones, dependencias y permisos de las tablas privadas en el CRM existente.
+- [x] Aplicar solo migraciones faltantes sin modificar datos, secretos ni importar citas.
+- [x] Verificar diagnóstico autenticado, seguridad y conservación de registros; informar si puede enlazar.
+- [ ] Habilitar enlace Google Calendar: bloqueado por formato inválido de GOOGLE_CALENDAR_ENCRYPTION_KEY; el usuario pidió no sobrescribir secretos.
+
 # Activación WhatsApp IA existente
 - [x] Revisar secreto, migración y conservación de datos/RLS.
 - [x] Aplicar migración y desplegar la función existente con x-clave obligatorio.

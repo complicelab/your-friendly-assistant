@@ -213,6 +213,66 @@ export type Database = {
         }
         Relationships: []
       }
+      crm_calendar_connections: {
+        Row: {
+          calendar_id: string
+          connected_at: string
+          google_email: string
+          id: number
+          last_error: string | null
+          last_synced_at: string | null
+          refresh_token_encrypted: string
+          updated_at: string
+        }
+        Insert: {
+          calendar_id: string
+          connected_at?: string
+          google_email: string
+          id?: number
+          last_error?: string | null
+          last_synced_at?: string | null
+          refresh_token_encrypted: string
+          updated_at?: string
+        }
+        Update: {
+          calendar_id?: string
+          connected_at?: string
+          google_email?: string
+          id?: number
+          last_error?: string | null
+          last_synced_at?: string | null
+          refresh_token_encrypted?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      crm_calendar_oauth_states: {
+        Row: {
+          consumed_at: string | null
+          created_at: string
+          expires_at: string
+          nonce: string
+          requested_by: string
+          verifier_encrypted: string
+        }
+        Insert: {
+          consumed_at?: string | null
+          created_at?: string
+          expires_at: string
+          nonce: string
+          requested_by: string
+          verifier_encrypted: string
+        }
+        Update: {
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          nonce?: string
+          requested_by?: string
+          verifier_encrypted?: string
+        }
+        Relationships: []
+      }
       crm_contacts: {
         Row: {
           agent_enabled: boolean

@@ -100,7 +100,7 @@ export async function syncGoogleBookingDuration(force=false):Promise<DurationSyn
      if(error)throw Error('No se pudo actualizar la duración del CRM desde el servidor.');
     }
    }
-   const nextStatus=observed.minutes!==null?'verified':observed.confidence;
+   const nextStatus=observed.minutes!==null?'verified':observed.confidence==='mixed'?'mixed':'pending';
    const {error:stateError}=await db.from('crm_calendar_connections').update({
     booking_duration_minutes:observed.minutes??old.booking_duration_minutes,
     booking_duration_observations:observed.observations,

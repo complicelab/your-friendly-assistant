@@ -1,0 +1,42 @@
+name: Google Calendar - sincronizacion programada
+on:
+  schedule:
+    # GitHub Actions uses UTC and may run later during congestion.
+    - cron: "7,17,27,37,47,57 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: complice-calendar-scheduled-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Synchronize through authenticated Cómplice Lab server endpoint
+        env:
+          CALENDAR_CRON_TOKEN: ${{ secrets.CRM_CALENDAR_CRON_SECRET }}
+          CALENDAR_CRON_URL: https://complicelab.com/api/calendar/cron
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${CALENDAR_CRON_TOKEN}" || "${#CALENDAR_CRON_TOKEN}" -lt 32 ]]; then
+            echo "::warning::CRM_CALENDAR_CRON_SECRET not installed in GitHub Actions; no synchronization executed."
+            exit 0
+          fi
+          # Never print token or response body.
+          if curl --fail-with-body --silent --show-error --retry 2 \
+             --retry-delay 3 --connect-timeout 10 --max-time 90 \
+             --output /dev/null --request POST \
+             --header "Authorization: Bearer ${CALENDAR_CRON_TOKEN}" \
+             --header "Content-Type: application/json" \
+             "${CALENDAR_CRON_URL}"; then
+            echo "Google Calendar synchronization completed successfully."
+          else
+            echo "::error::Calendar synchronization failed. Inspect server logs without exposing tokens."
+            exit 1
+          fi

@@ -2,7 +2,8 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { supabaseAdmin } from '@/integrations/supabase/client.server';
 import { googleConnectionAccess } from '@/lib/calendar-connection.server';
-import { listGoogleEvents, loadAll, matchContactForGoogleEvent, type GoogleEvent } from '@/lib/google-calendar-sync.server';
+import { listGoogleEvents, loadAll, type GoogleEvent } from '@/lib/google-calendar-sync.server';
+import { classifyCalendarReview } from '@/lib/calendar-review-model';
 
 const db = supabaseAdmin as unknown as SupabaseClient;
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i;
@@ -38,24 +39,8 @@ export async function reviewCalendarEvents(){
  const linked=new Set(meetings.map(m=>String(m['external_calendar_id']||'')).filter(Boolean));
  const ignored=new Set(reviewRows.filter(row=>row['action']==='ignored' &&
     row['calendar_id']===access.calendarId).map(row=>String(row['event_id'])));
- const pending:CalendarReviewEvent[]=[];
- const ignoredEvents:CalendarReviewEvent[]=[];
- for(const event of events){
-  if(!meetsEventCriteria(event)||linked.has(event.id!))continue;
-  const matched=matchContactForGoogleEvent(event,contacts as unknown as {id:string;email:string|null;whatsapp:string|null}[]);
-  const item:CalendarReviewEvent={
-   id:event.id!,title:String(event.summary||'Evento sin título').slice(0,180),
-   startsAt:iso(event.start!.dateTime!),endsAt:iso(event.end!.dateTime!),
-   guests:(event.attendees||[]).filter(guest=>!guest.self && !!guest.email &&
-     guest.email.toLowerCase()!=='complicelab@gmail.com')
-     .slice(0,5).map(guest=>String(guest.email).slice(0,180)),
-   suggestedContactId:matched.contactId,ambiguous:matched.ambiguous,
-  };
-  (ignored.has(event.id!)?ignoredEvents:pending).push(item);
- }
- return {pending:pending.slice(0,150),ignored:ignoredEvents.slice(0,150),
-  pending_total:pending.length,ignored_total:ignoredEvents.length,
-  truncated:pending.length>150||ignoredEvents.length>150};
+ return classifyCalendarReview(events,contacts as unknown as {id:string;email:string|null;whatsapp:string|null}[],
+  linked,ignored);
 }
 
 async function fetchGoogleEvent(access:{token:string;calendarId:string},eventId:string){

@@ -53,7 +53,7 @@ export async function listGoogleEvents(access:{token:string;calendarId:string}){
  throw Error('La agenda tiene demasiados eventos; reduce el rango de importación.');
 }
 export type SyncStats={reviewed:number;linked:number;imported:number;updated:number;unlinked:number;ambiguous:number};
-export async function synchronizeGoogleAppointments():Promise<SyncStats>{
+export async function synchronizeGoogleAppointments(source:'manual'|'cron'='manual'):Promise<SyncStats>{
  const access=await googleConnectionAccess();
  if(!access)throw Error('Primero conecta Google Calendar.');
  try {
@@ -111,10 +111,10 @@ export async function synchronizeGoogleAppointments():Promise<SyncStats>{
    if(alreadyAtTime)stats.linked++;
    else stats.imported++;
   }
-  await recordCalendarSync({});
+  await recordCalendarSync({source});
   return stats;
  }catch(error){
-  await recordCalendarSync({error:error instanceof Error?error.message:'Falló la sincronización.'});
+  await recordCalendarSync({error:error instanceof Error?error.message:'Falló la sincronización.',source});
   throw error;
  }
 }

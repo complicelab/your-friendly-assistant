@@ -47,6 +47,7 @@ type Connection = {
   refresh_token_encrypted: string;
   connected_at: string;
   last_synced_at: string | null;
+  last_cron_at: string | null;
   last_error: string | null;
 };
 
@@ -74,6 +75,7 @@ export async function calendarStatus() {
     connected: false,
     email: null as string | null,
     last_synced_at: null as string | null,
+    last_cron_at: null as string | null,
     last_error: null as string | null,
   };
   if (!configured) return unavailable;
@@ -90,6 +92,7 @@ export async function calendarStatus() {
       connected: Boolean(record),
       email: record?.google_email || null,
       last_synced_at: record?.last_synced_at || null,
+      last_cron_at: record?.last_cron_at || null,
       last_error: record?.last_error || null,
     };
   } catch {
@@ -211,9 +214,13 @@ export async function disconnectCalendar() {
   tokenCache = null;
 }
 
-export async function recordCalendarSync(result: { error?: string }) {
+export async function recordCalendarSync(result: { error?: string; source?: 'manual' | 'cron' }) {
   const patch: Record<string,string|null> = { last_error: result.error || null };
-  if (!result.error) patch['last_synced_at'] = new Date().toISOString();
+  if (!result.error) {
+    const timestamp = new Date().toISOString();
+    patch['last_synced_at'] = timestamp;
+    if (result.source === 'cron') patch['last_cron_at'] = timestamp;
+  }
   const { error } = await db.from('crm_calendar_connections').update(patch).eq('id', 1);
   if (error) throw new Error('No se pudo guardar el estado de sincronización.');
 }

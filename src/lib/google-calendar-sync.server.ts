@@ -19,11 +19,11 @@ export function matchContactForGoogleEvent(event:GoogleEventIdentity,contacts:Co
   (phone.length>=10&&cleanPhone(c.whatsapp)===phone)).map(c=>c.id));
  return {contactId:ids.size===1?[...ids][0]!:null,ambiguous:ids.size>1};
 }
-type GoogleEvent=GoogleEventIdentity & {id?:string;status?:string;summary?:string;hangoutLink?:string;
+export type GoogleEvent=GoogleEventIdentity & {id?:string;status?:string;summary?:string;hangoutLink?:string;
   start?:{dateTime?:string;date?:string};end?:{dateTime?:string;date?:string};transparency?:string};
 type Contact=ContactIdentity & {full_name:string;solution_interest:string|null};
 type Meeting={id:string;contact_id:string;external_calendar_id:string|null;starts_at:string;ends_at:string;status:string;source:string};
-async function loadAll(table:string,columns:string){
+export async function loadAll(table:string,columns:string){
  const result:Record<string,unknown>[]=[];
  for(let offset=0;offset<20000;offset+=1000){
   const {data,error}=await db.from(table).select(columns).range(offset,offset+999);
@@ -33,7 +33,7 @@ async function loadAll(table:string,columns:string){
  }
  throw Error('Hay demasiados registros para sincronizar en una operación.');
 }
-async function listGoogleEvents(access:{token:string;calendarId:string}){
+export async function listGoogleEvents(access:{token:string;calendarId:string}){
  const start=new Date(Date.now()-180*86400000).toISOString();
  const end=new Date(Date.now()+365*86400000).toISOString();
  const events:GoogleEvent[]=[];
@@ -53,19 +53,21 @@ async function listGoogleEvents(access:{token:string;calendarId:string}){
  throw Error('La agenda tiene demasiados eventos; reduce el rango de importación.');
 }
 export type SyncStats={reviewed:number;linked:number;imported:number;updated:number;unlinked:number;ambiguous:number};
-export async function synchronizeGoogleAppointments():Promise<SyncStats>{
+export async function synchronizeGoogleAppointments(source:'manual'|'cron'='manual'):Promise<SyncStats>{
  const access=await googleConnectionAccess();
  if(!access)throw Error('Primero conecta Google Calendar.');
  try {
-  const [events,c,m]=await Promise.all([
+  const [events,c,m,ignoredRows]=await Promise.all([
    listGoogleEvents(access),loadAll('crm_contacts','id,full_name,email,whatsapp,solution_interest'),
    loadAll('crm_meetings','id,contact_id,external_calendar_id,starts_at,ends_at,status,source'),
+   loadAll('crm_calendar_event_reviews','event_id'),
   ]);
+  const ignored=new Set(ignoredRows.map(row=>String(row['event_id'])));
   const contacts=c as unknown as Contact[],meetings=m as unknown as Meeting[];
   const linked=new Map(meetings.filter(x=>x.external_calendar_id).map(x=>[x.external_calendar_id!,x]));
   const stats:SyncStats={reviewed:0,linked:0,imported:0,updated:0,unlinked:0,ambiguous:0};
   for(const event of events){
-   if(!event.id)continue;
+   if(!event.id || ignored.has(event.id))continue;
    const existing=linked.get(event.id);
    if(event.status==='cancelled'){
     if(existing&&existing.status!=='cancelada'){
@@ -95,36 +97,24 @@ export async function synchronizeGoogleAppointments():Promise<SyncStats>{
    const match=matchContactForGoogleEvent(event,contacts);
    if(match.ambiguous){stats.ambiguous++;continue;}
    if(!match.contactId){stats.unlinked++;continue;}
-   const local=meetings.find(x=>x.contact_id===match.contactId&&
+   const alreadyAtTime=meetings.find(x=>x.contact_id===match.contactId &&
     Date.parse(x.starts_at)===Date.parse(starts_at)&&x.status!=='cancelada'&&!x.external_calendar_id);
-   if(local){
-    const result=await db.from('crm_meetings').update({
-     external_calendar_id:event.id,meeting_url:event.hangoutLink||null,
-    }).eq('id',local.id).is('external_calendar_id',null);
-    if(result.error)throw Error('No se pudo relacionar una cita existente.');
-    local.external_calendar_id=event.id;linked.set(event.id,local);
-    stats.linked++;continue;
-   }
-   const contact=contacts.find(x=>x.id===match.contactId)!;
-   // Import must not dispatch duplicate emails or WhatsApp notices.
-   // See migration 20261121_calendar_import_no_notifications.sql.
-   const result=await db.from('crm_meetings').insert({
-    contact_id:contact.id,starts_at,ends_at,timezone:'America/Bogota',status:'confirmada',
-    meeting_type:'diagnostico',title:(event.summary||'Cita de Google Calendar').slice(0,180),
-    attendee_email:null,attendee_whatsapp:null,admin_email:'',
-    service_interest:contact.solution_interest,source:'google_calendar',
-    external_calendar_id:event.id,meeting_url:event.hangoutLink||null,
-   }).select('id').single();
-   if(result.error)throw Error('No se pudo importar una cita sin duplicarla.');
-   const created:Meeting={id:String(result.data.id),contact_id:contact.id,
-    starts_at,ends_at,external_calendar_id:event.id,status:'confirmada',source:'google_calendar'};
+   // The DB RPC serializes attachments, checks ownership and suppresses booking notices.
+   const {data:attachedId,error:attachError}=await db.rpc('crm_attach_google_calendar_event',{
+    p_event_id:event.id,p_contact_id:match.contactId,p_start:starts_at,p_end:ends_at,
+    p_title:event.summary||'Cita de Google Calendar',p_meeting_url:event.hangoutLink||null,
+   });
+   if(attachError||!attachedId)throw Error('No se pudo relacionar el evento con el CRM.');
+   const created:Meeting={id:String(attachedId),contact_id:match.contactId,starts_at,ends_at,
+    external_calendar_id:event.id,status:'confirmada',source:'google_calendar'};
    meetings.push(created);linked.set(event.id,created);
-   stats.imported++;
+   if(alreadyAtTime)stats.linked++;
+   else stats.imported++;
   }
-  await recordCalendarSync({});
+  await recordCalendarSync({source});
   return stats;
  }catch(error){
-  await recordCalendarSync({error:error instanceof Error?error.message:'Falló la sincronización.'});
+  await recordCalendarSync({error:error instanceof Error?error.message:'Falló la sincronización.',source});
   throw error;
  }
 }

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { calendarApi } from '@/components/crm/calendar-connection-settings';
+import { calendarApi, calendarCommand } from '@/components/crm/calendar-connection-settings';
 import type { Tables } from '@/integrations/supabase/types';
 import { BOOKING_TIMEZONE, MEETING_STATUSES, formatMeetingDate, meetingStatusLabel, notificationStatusLabel } from '@/lib/booking-model';
 
@@ -18,6 +18,9 @@ function meetingDateKey(value: string) {
 }
 function monthLabel(date: Date) { return new Intl.DateTimeFormat('es-CO',{month:'long',year:'numeric',timeZone:'UTC'}).format(date); }
 function shortMeetingDate(value: string) { return new Intl.DateTimeFormat('es-CO',{weekday:'short',day:'numeric',month:'short',hour:'numeric',minute:'2-digit',hour12:true,timeZone:BOOKING_TIMEZONE}).format(new Date(value)); }
+function bogotaDatetimeInput(value:string) {
+ return new Date(Date.parse(value)-5*60*60*1000).toISOString().slice(0,16);
+}
 
 export function CrmAgenda({onOpenContact,onChanged}:{onOpenContact:(contactId:string)=>void;onChanged:()=>void}) {
   const [meetings,setMeetings]=useState<CrmMeeting[]>([]);
@@ -29,6 +32,27 @@ export function CrmAgenda({onOpenContact,onChanged}:{onOpenContact:(contactId:st
   const [selected,setSelected]=useState<CrmMeeting|null>(null);
   const [notifications,setNotifications]=useState<Notification[]>([]);
   const [saving,setSaving]=useState(false);
+  const [newAppointmentStart,setNewAppointmentStart]=useState('');
+  useEffect(()=>{
+    setNewAppointmentStart(selected?bogotaDatetimeInput(selected.starts_at):'');
+  },[selected?.id,selected?.starts_at]);
+  async function rescheduleMeeting(){
+    if(!selected||!newAppointmentStart||!selected.external_calendar_id)return;
+    if(!window.confirm('¿Reprogramar esta cita en Google Calendar y en el CRM? Se informará a los invitados desde Google.'))return;
+    setSaving(true);setMessage('');
+    try{
+      const result=await calendarCommand({
+        action:'reschedule',meeting_id:selected.id,
+        starts_at:newAppointmentStart+':00-05:00',
+      });
+      const updated={...selected,starts_at:String(result.starts_at),ends_at:String(result.ends_at)};
+      setMeetings(prev=>prev.map(m=>m.id===updated.id?updated:m));
+      setSelected(updated);onChanged();
+      setMessage('La cita se actualizó en Google Calendar y en el CRM.');
+    }catch(e){
+      setMessage(e instanceof Error?e.message:'No se pudo cambiar el horario.');
+    }finally{setSaving(false);}
+  }
 
   async function loadMeetings() {
     setLoading(true);
@@ -125,7 +149,17 @@ export function CrmAgenda({onOpenContact,onChanged}:{onOpenContact:(contactId:st
       <label className="crm-control-label">Estado de la reunión</label><select className="crm-control" value={selected.status} disabled={saving} onChange={event=>void updateMeetingStatus(event.target.value)}>{!MEETING_STATUSES.some(([value])=>value===selected.status)&&<option value={selected.status}>{meetingStatusLabel(selected.status)}</option>}{MEETING_STATUSES.map(([value,label])=><option key={value} value={value}>{label}</option>)}</select>
       <div className="clb-notifications"><h3>Notificaciones</h3>{!notifications.length&&<p className="clb-muted">No hay registros de notificación para esta reunión.</p>}{notifications.map(notification=><div key={notification.id}><span><b>{notification.channel==='whatsapp'?'WhatsApp':'Email'} · {notification.recipient_type==='admin'?'Administrador':'Cliente'}</b><small>{notification.recipient}</small></span><em className={'notification-'+notification.status}>{notificationStatusLabel(notification.channel,notification.status)}</em></div>)}</div>
       {selected.external_calendar_id
-        ? <p className="clb-muted">Esta reunión está registrada en Google Calendar. Si la cancelas o cambias aquí, actualiza también el evento en Google hasta habilitar sincronización de cambios.</p>
+        ? <div className="clb-meeting-reschedule">
+            <strong>Google Calendar vinculado</strong>
+            <p className="clb-muted">Puedes cambiar el horario aquí. Se comprobarán los conflictos en Google y en el CRM antes de confirmar.</p>
+            {selected.status!=='cancelada'&&<>
+              <label className="crm-control-label" htmlFor="crm-reschedule-start">Nuevo día y hora (Colombia)</label>
+              <input id="crm-reschedule-start" type="datetime-local" value={newAppointmentStart}
+                onChange={e=>setNewAppointmentStart(e.target.value)} disabled={saving}/>
+              <button type="button" className="crm-secondary" disabled={saving||!newAppointmentStart}
+                onClick={()=>void rescheduleMeeting()}>Guardar nuevo horario en ambos calendarios</button>
+            </>}
+          </div>
         : <p className="clb-muted">Esta reserva está guardada en el CRM, pero no tiene una sincronización confirmada con Google Calendar. Revisa la configuración y el estado del calendario.</p>}
       {selected.meeting_url
         ? <p><a href={selected.meeting_url} target="_blank" rel="noopener noreferrer">Abrir enlace de videollamada</a></p>

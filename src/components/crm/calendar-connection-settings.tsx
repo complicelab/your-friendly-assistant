@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { CalendarEventReview } from '@/components/crm/calendar-event-review';
 
 type CalendarStatus={
   configured:boolean;database_ready:boolean;connected:boolean;email:string|null;
-  last_synced_at:string|null;last_error:string|null;
+  last_synced_at:string|null;last_cron_at:string|null;last_error:string|null;
 };
 type SyncStats={reviewed:number;linked:number;imported:number;updated:number;unlinked:number;ambiguous:number};
-const INITIAL:CalendarStatus={configured:false,database_ready:false,connected:false,email:null,last_synced_at:null,last_error:null};
+const INITIAL:CalendarStatus={configured:false,database_ready:false,connected:false,email:null,last_synced_at:null,last_cron_at:null,last_error:null};
 
 async function calendarApi(action?:string,meeting_id?:string) {
  const {data}=await supabase.auth.getSession();
@@ -23,6 +24,20 @@ async function calendarApi(action?:string,meeting_id?:string) {
  return result;
 }
 export {calendarApi};
+export async function calendarCommand(input:Record<string,string>) {
+ const {data}=await supabase.auth.getSession();
+ const token=data.session?.access_token;
+ if(!token)throw Error('Inicia sesión nuevamente para gestionar el calendario.');
+ const response=await fetch('/api/calendar',{
+  method:'POST',
+  headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},
+  body:JSON.stringify(input),cache:'no-store',
+ });
+ const payload=await response.json();
+ if(!response.ok||!payload.ok)throw Error(payload.error||'No se pudo completar la operación.');
+ return payload;
+}
+
 
 export function CalendarConnectionSettings(){
  const [status,setStatus]=useState<CalendarStatus>(INITIAL);
@@ -102,6 +117,9 @@ export function CalendarConnectionSettings(){
   {status.connected&&<div className="clb-google-details">
     <span>Cuenta vinculada <strong>{status.email}</strong></span>
     <span>Última sincronización <strong>{date||'Pendiente'}</strong></span>
+    <span>Sincronización con panel cerrado <strong>{status.last_cron_at
+      ? new Intl.DateTimeFormat('es-CO',{timeZone:'America/Bogota',dateStyle:'short',timeStyle:'short'}).format(new Date(status.last_cron_at))
+      : 'Aún sin ejecución programada confirmada'}</strong></span>
   </div>}
   {status.last_error&&<p role="alert" className="crm-alert">Última sincronización: {status.last_error}</p>}
   {!loading&&!status.configured&&<p className="crm-alert">La configuración de servidor está incompleta. Comprueba que las variables GOOGLE_CALENDAR_CLIENT_ID, GOOGLE_CALENDAR_CLIENT_SECRET y GOOGLE_CALENDAR_REDIRECT_URI estén guardadas, y que GOOGLE_CALENDAR_ENCRYPTION_KEY sea una clave de 64 caracteres hexadecimales. No compartas sus valores.</p>}
@@ -120,6 +138,7 @@ export function CalendarConnectionSettings(){
      <><button className="crm-primary" type="button" onClick={()=>void synchronize()} disabled={!!action}>{action==='sync'?'Sincronizando...':'Sincronizar ahora'}</button>
      <button type="button" className="crm-secondary" onClick={()=>void disconnect()} disabled={!!action}>{action==='disconnect'?'Desconectando...':'Desconectar'}</button></>}
   </div>
+  {status.connected&&<CalendarEventReview refreshKey={status.last_synced_at||''}/>}
   <p className="clb-muted">Las reuniones se relacionan por correo o WhatsApp verificable. Si Google no permite identificar de forma inequívoca al cliente, no se crean registros de contacto nuevos. Para sincronización permanente con el panel cerrado se requiere activar la tarea programada del servidor.</p>
  </section>;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { calendarApi, calendarCommand } from '@/components/crm/calendar-connection-settings';
 import type { Tables } from '@/integrations/supabase/types';
@@ -7,6 +7,17 @@ import { BOOKING_TIMEZONE, MEETING_STATUSES, formatMeetingDate, meetingStatusLab
 type ContactSummary = Pick<Tables<'crm_contacts'>, 'id'|'full_name'|'brand_name'|'whatsapp'|'email'|'solution_interest'>;
 export type CrmMeeting = Tables<'crm_meetings'> & { crm_contacts: ContactSummary | null };
 type Notification = Tables<'crm_notifications'>;
+type GoogleAgendaEvent = {
+  id:string; title:string; startsAt:string; endsAt:string; allDay:boolean;
+  eventType:string; transparent:boolean; guestsCount:number;
+};
+type GoogleAgendaResult = {
+  events:GoogleAgendaEvent[]; calendar:string; from:string; to:string; checkedAt:string;
+};
+function googleEventOverlapsDay(event:GoogleAgendaEvent,day:string) {
+ const begin=Date.parse(day+'T00:00:00-05:00');
+ return Date.parse(event.startsAt)<begin+86400000&&Date.parse(event.endsAt)>begin;
+}
 
 const WEEKDAYS = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
 
@@ -22,7 +33,7 @@ function bogotaDatetimeInput(value:string) {
  return new Date(Date.parse(value)-5*60*60*1000).toISOString().slice(0,16);
 }
 
-export function CrmAgenda({onOpenContact,onChanged}:{onOpenContact:(contactId:string)=>void;onChanged:()=>void}) {
+export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:(contactId:string)=>void;onChanged:()=>void;onOpenReview:()=>void}) {
   const [meetings,setMeetings]=useState<CrmMeeting[]>([]);
   const [loading,setLoading]=useState(true);
   const [message,setMessage]=useState('');
@@ -33,6 +44,14 @@ export function CrmAgenda({onOpenContact,onChanged}:{onOpenContact:(contactId:st
   const [notifications,setNotifications]=useState<Notification[]>([]);
   const [saving,setSaving]=useState(false);
   const [newAppointmentStart,setNewAppointmentStart]=useState('');
+  const [googleEvents,setGoogleEvents]=useState<GoogleAgendaEvent[]>([]);
+  const [googleLoaded,setGoogleLoaded]=useState(false);
+  const [googleLoading,setGoogleLoading]=useState(false);
+  const [googleError,setGoogleError]=useState('');
+  const [googleCheckedAt,setGoogleCheckedAt]=useState<string|null>(null);
+  const [showGoogle,setShowGoogle]=useState(true);
+  const [selectedGoogle,setSelectedGoogle]=useState<GoogleAgendaEvent|null>(null);
+  const googleSequence=useRef(0);
   useEffect(()=>{
     setNewAppointmentStart(selected?bogotaDatetimeInput(selected.starts_at):'');
   },[selected?.id,selected?.starts_at]);
@@ -83,7 +102,49 @@ export function CrmAgenda({onOpenContact,onChanged}:{onOpenContact:(contactId:st
     return Array.from({length:42},(_,index)=>{const day=new Date(start);day.setUTCDate(day.getUTCDate()+index);return day;});
   },[cursor,mode,selectedDay]);
 
+  const googleRange=useMemo(()=>{
+    const first=days[0]!,last=new Date(days[days.length-1]!);
+    last.setUTCDate(last.getUTCDate()+1);
+    return {from:dateKey(first),to:dateKey(last)};
+  },[days]);
+  const loadGoogle=useCallback(async()=>{
+    const seq=++googleSequence.current;
+    setGoogleLoading(true);setGoogleError('');
+    try{
+      const result=await calendarCommand({action:'agenda',from:googleRange.from,to:googleRange.to}) as GoogleAgendaResult;
+      if(seq!==googleSequence.current)return;
+      setGoogleEvents(result.events);
+      setGoogleCheckedAt(result.checkedAt);
+      setGoogleLoaded(true);
+    }catch(error){
+      if(seq!==googleSequence.current)return;
+      setGoogleEvents([]);setGoogleLoaded(false);
+      setGoogleError(error instanceof Error?error.message:'No se pudo consultar Google Calendar.');
+    }finally{
+      if(seq===googleSequence.current)setGoogleLoading(false);
+    }
+  },[googleRange.from,googleRange.to]);
+
+  useEffect(()=>{
+    void loadGoogle();
+    const refresh=()=>{if(!document.hidden)void loadGoogle();};
+    const timer=window.setInterval(refresh,60_000);
+    window.addEventListener('focus',refresh);
+    document.addEventListener('visibilitychange',refresh);
+    return()=>{
+      googleSequence.current++;
+      window.clearInterval(timer);
+      window.removeEventListener('focus',refresh);
+      document.removeEventListener('visibilitychange',refresh);
+    };
+  },[loadGoogle]);
+
+  const linkedGoogleIds=useMemo(()=>new Set(meetings.map(m=>m.external_calendar_id).filter((s):s is string=>!!s)),[meetings]);
+  const googleOnly=useMemo(()=>googleEvents.filter(e=>!linkedGoogleIds.has(e.id)),[googleEvents,linkedGoogleIds]);
   const upcoming=useMemo(()=>meetings.filter(meeting=>new Date(meeting.starts_at).getTime()>=Date.now()&&['pendiente','confirmada'].includes(meeting.status)),[meetings]);
+  const upcomingGoogle=googleOnly.filter(e=>Date.parse(e.endsAt)>=Date.now());
+  const dayGoogle=showGoogle?googleOnly.filter(e=>googleEventOverlapsDay(e,selectedDay)):[];
+
   const dayMeetings=meetings.filter(meeting=>meetingDateKey(meeting.starts_at)===selectedDay);
 
   function move(amount:number){
@@ -125,24 +186,76 @@ export function CrmAgenda({onOpenContact,onChanged}:{onOpenContact:(contactId:st
       <div className="clb-calendar-nav"><button onClick={()=>move(-1)} aria-label="Anterior">←</button><b>{mode==='month'?monthLabel(cursor):'Semana seleccionada'}</b><button onClick={()=>move(1)} aria-label="Siguiente">→</button><button onClick={today}>Hoy</button></div>
     </div>
     {message&&<div className="crm-alert">{message}</div>}
+    <div className="clb-agenda-google-tools">
+      <label><input type="checkbox" checked={showGoogle} onChange={event=>setShowGoogle(event.target.checked)}/>
+        Mostrar eventos reales de Google Calendar
+      </label>
+      <span>{googleLoading?'Consultando Google...':googleError?'Google no disponible':
+        googleLoaded?`${googleOnly.length} eventos de Google sin vínculo CRM · ${linkedGoogleIds.size} reuniones vinculadas`:'Sin comprobar'}</span>
+      <button type="button" className="crm-secondary" disabled={googleLoading}
+        onClick={()=>void loadGoogle()}>Actualizar Google</button>
+    </div>
+    {googleError&&<div className="crm-alert" role="alert">
+      No es posible mostrar Google Calendar: {googleError}
+      <button type="button" onClick={onOpenReview}>Revisar Configuración</button>
+    </div>}
+    {googleLoaded&&<p className="clb-muted clb-google-agenda-explainer">
+      Los eventos de Google se muestran aunque no tengan cliente en el CRM. Las franjas de disponibilidad
+      de la página de reservas de Google no son citas confirmadas y no se importan como reuniones.
+      {googleCheckedAt?' Última consulta: '+shortMeetingDate(googleCheckedAt)+'.':''}
+    </p>}
     <div className="clb-agenda-grid">
       <div className="clb-calendar-card">
         <div className="clb-weekdays">{WEEKDAYS.map(day=><span key={day}>{day}</span>)}</div>
         <div className={'clb-calendar '+mode}>
           {days.map(day=>{
             const key=dateKey(day);const items=meetings.filter(meeting=>meetingDateKey(meeting.starts_at)===key);
+            const googleItems=showGoogle?googleOnly.filter(event=>googleEventOverlapsDay(event,key)):[];
             const outside=mode==='month'&&day.getUTCMonth()!==cursor.getUTCMonth();
             return <button key={key} className={'clb-day '+(outside?'outside ':'')+(key===selectedDay?'selected':'')} onClick={()=>setSelectedDay(key)}>
-              <span>{day.getUTCDate()}</span><div>{items.slice(0,3).map(meeting=><i key={meeting.id} className={'meeting-'+meeting.status} title={meeting.crm_contacts?.full_name||'Reunión'}>{shortMeetingDate(meeting.starts_at).split(', ').pop()} · {meeting.crm_contacts?.full_name||'Reunión'}</i>)}{items.length>3&&<small>+{items.length-3} más</small>}</div>
+              <span>{day.getUTCDate()}</span><div>
+                {items.slice(0,2).map(meeting=><i key={meeting.id} className={'meeting-'+meeting.status} title={meeting.crm_contacts?.full_name||'Reunión'}>{shortMeetingDate(meeting.starts_at).split(', ').pop()} · {meeting.crm_contacts?.full_name||'Reunión'}</i>)}
+                {googleItems.slice(0,2).map(event=><i key={'google-'+event.id} className="clb-google-day-marker" title={'Google Calendar: '+event.title}>{event.allDay?'Todo el día':shortMeetingDate(event.startsAt).split(', ').pop()} · {event.title}</i>)}
+                {items.length+googleItems.length>4&&<small>+{items.length+googleItems.length-4} más</small>}
+              </div>
             </button>;
           })}
         </div>
-        <div className="clb-day-list"><h3>Reuniones del {selectedDay.split('-').reverse().join('/')}</h3>{!dayMeetings.length&&<p>No hay reuniones para esta fecha.</p>}{dayMeetings.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} onClick={()=>setSelected(meeting)}/>)}</div>
+        <div className="clb-day-list">
+          <h3>Agenda del {selectedDay.split('-').reverse().join('/')}</h3>
+          {!dayMeetings.length&&(!dayGoogle.length||!googleLoaded)&&
+            <p>{googleLoading?'Cargando eventos de Google...':'No hay reuniones del CRM para esta fecha.'}</p>}
+          {dayMeetings.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} onClick={()=>setSelected(meeting)}/>)}
+          {dayGoogle.map(event=><GoogleAgendaRow key={event.id} event={event} onClick={()=>setSelectedGoogle(event)}/>)}
+        </div>
       </div>
-      <aside className="clb-upcoming"><div className="clb-panel-title"><div><span>AGENDA</span><h2>Próximas reuniones</h2></div><b>{upcoming.length}</b></div>
-        {loading?<p className="clb-muted">Cargando agenda…</p>:!upcoming.length?<p className="clb-muted">No hay citas próximas confirmadas o pendientes.</p>:upcoming.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} onClick={()=>setSelected(meeting)}/>) }
+      <aside className="clb-upcoming"><div className="clb-panel-title"><div><span>AGENDA</span><h2>Próximas reuniones del CRM</h2></div><b>{upcoming.length}</b></div>
+        {loading?<p className="clb-muted">Cargando agenda…</p>:!upcoming.length?<p className="clb-muted">No hay citas próximas del CRM confirmadas o pendientes.</p>:upcoming.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} onClick={()=>setSelected(meeting)}/>) }
+        {showGoogle&&<div className="clb-google-upcoming">
+          <h3>Eventos próximos de Google <b>{googleLoaded?upcomingGoogle.length:'—'}</b></h3>
+          {googleLoading&&!googleLoaded?<p className="clb-muted">Cargando eventos...</p>:
+          googleLoaded&&!upcomingGoogle.length?<p className="clb-muted">No hay eventos adicionales en el período visible.</p>:
+          upcomingGoogle.slice(0,12).map(event=><GoogleAgendaRow key={event.id} event={event} onClick={()=>setSelectedGoogle(event)}/>)}
+        </div>}
       </aside>
     </div>
+    {selectedGoogle&&<div className="crm-modal-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)setSelectedGoogle(null);}}>
+      <section className="crm-modal">
+        <div className="crm-modal-head"><div><span>GOOGLE CALENDAR · SIN VINCULAR</span>
+          <h2>{selectedGoogle.title}</h2><p>{selectedGoogle.allDay?'Evento de día completo':shortMeetingDate(selectedGoogle.startsAt)} · Colombia</p></div>
+          <button type="button" onClick={()=>setSelectedGoogle(null)} aria-label="Cerrar">×</button>
+        </div>
+        <p className="clb-muted">Este evento existe en Google, pero no tiene una ficha de reunión vinculada en el CRM.
+          No se ha creado un cliente ficticio ni se ha enviado ninguna confirmación.</p>
+        <p className="clb-muted">{selectedGoogle.allDay?'Evento de día completo, no necesariamente una reserva.':
+          'Comprueba quién realizó la reserva antes de vincularlo a un cliente.'}</p>
+        <div className="crm-modal-actions">
+          <button type="button" onClick={()=>setSelectedGoogle(null)}>Cerrar</button>
+          {!selectedGoogle.allDay&&<button type="button" className="crm-primary"
+            onClick={()=>{setSelectedGoogle(null);onOpenReview();}}>Revisar y vincular cliente</button>}
+        </div>
+      </section>
+    </div>}
     {selected&&<div className="crm-modal-backdrop" onMouseDown={event=>{if(event.currentTarget===event.target)setSelected(null);}}><section className="crm-modal clb-meeting-modal">
       <div className="crm-modal-head"><div><span>REUNIÓN</span><h2>{selected.crm_contacts?.full_name||'Contacto'}</h2><p>{formatMeetingDate(selected.starts_at)} · Hora de Colombia</p></div><button onClick={()=>setSelected(null)} aria-label="Cerrar">×</button></div>
       <div className="crm-fields"><Field label="Marca / empresa" value={selected.crm_contacts?.brand_name}/><Field label="Servicio" value={selected.service_interest||selected.crm_contacts?.solution_interest}/><Field label="WhatsApp" value={selected.attendee_whatsapp||selected.crm_contacts?.whatsapp}/><Field label="Correo" value={selected.attendee_email||selected.crm_contacts?.email}/></div>
@@ -172,4 +285,12 @@ export function CrmAgenda({onOpenContact,onChanged}:{onOpenContact:(contactId:st
 function MeetingRow({meeting,onClick}:{meeting:CrmMeeting;onClick:()=>void}){
   return <button className="clb-meeting-row" onClick={onClick}><span className="clb-meeting-date">{shortMeetingDate(meeting.starts_at)}</span><span><b>{meeting.crm_contacts?.full_name||'Contacto'}</b><small>{meeting.crm_contacts?.brand_name||meeting.service_interest||'Diagnóstico'}</small></span><em className={'meeting-'+meeting.status}>{meetingStatusLabel(meeting.status)}</em></button>;
 }
+function GoogleAgendaRow({event,onClick}:{event:GoogleAgendaEvent;onClick:()=>void}){
+ return <button type="button" className="clb-meeting-row clb-google-event-row" onClick={onClick}>
+   <span className="clb-meeting-date">{event.allDay?'Todo el día':shortMeetingDate(event.startsAt)}</span>
+   <span><b>{event.title}</b><small>Google Calendar · sin vínculo con un cliente del CRM</small></span>
+   <em>Google</em>
+ </button>;
+}
+
 function Field({label,value}:{label:string;value:string|null|undefined}){return <div className="crm-field"><span>{label}</span><b>{value||'—'}</b></div>;}

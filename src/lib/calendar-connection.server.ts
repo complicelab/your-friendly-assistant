@@ -1,5 +1,4 @@
 /** Server only: admin-authenticated OAuth and encrypted calendar credentials. */
-import { randomBytes, randomUUID, createHash, createCipheriv, createDecipheriv } from 'node:crypto';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { supabaseAdmin } from '@/integrations/supabase/client.server';
 
@@ -15,23 +14,30 @@ const keyBytes = () => {
   if (!/^[a-f0-9]{64}$/i.test(value)) {
     throw new Error('Falta una clave de cifrado de 32 bytes (64 caracteres hexadecimales).');
   }
-  return Buffer.from(value, 'hex');
+  return Uint8Array.from(value.match(/.{2}/g)!.map((item) => parseInt(item, 16)));
 };
 const ready = () =>
-  Boolean(clientId() && clientSecret() && redirectUri() && /^[a-f0-9]{64}$/i.test(env('GOOGLE_CALENDAR_ENCRYPTION_KEY')));
+  Boolean(clientId() && clientSecret() && redirectUri() &&
+    /^[a-f0-9]{64}$/i.test(env('GOOGLE_CALENDAR_ENCRYPTION_KEY')));
 
-function seal(value: string) {
-  const iv = randomBytes(12);
-  const cipher = createCipheriv('aes-256-gcm', keyBytes(), iv);
-  const encoded = Buffer.concat([cipher.update(value, 'utf8'), cipher.final()]);
-  return [iv.toString('base64url'), cipher.getAuthTag().toString('base64url'), encoded.toString('base64url')].join('.');
+const toB64 = (bytes: Uint8Array) =>
+  btoa(Array.from(bytes, (v) => String.fromCharCode(v)).join(''))
+    .replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=+$/g, '');
+const fromB64 = (value: string) =>
+  Uint8Array.from(atob(value.replace(/-/g, '+').replace(/_/g, '/')), (v) => v.charCodeAt(0));
+
+async function seal(value: string) {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await crypto.subtle.importKey('raw', keyBytes(), 'AES-GCM', false, ['encrypt']);
+  const encoded = new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, new TextEncoder().encode(value)));
+  return toB64(iv) + '.' + toB64(encoded);
 }
-function open(value: string) {
-  const [iv, tag, cipherText] = value.split('.');
-  if (!iv || !tag || !cipherText) throw new Error('Credencial almacenada inválida.');
-  const decipher = createDecipheriv('aes-256-gcm', keyBytes(), Buffer.from(iv, 'base64url'));
-  decipher.setAuthTag(Buffer.from(tag, 'base64url'));
-  return Buffer.concat([decipher.update(Buffer.from(cipherText, 'base64url')), decipher.final()]).toString('utf8');
+async function open(value: string) {
+  const [iv, cipherText] = value.split('.');
+  if (!iv || !cipherText) throw new Error('Credencial almacenada inválida.');
+  const key = await crypto.subtle.importKey('raw', keyBytes(), 'AES-GCM', false, ['decrypt']);
+  const plain = await crypto.subtle.decrypt({name:'AES-GCM', iv:fromB64(iv)}, key, fromB64(cipherText));
+  return new TextDecoder().decode(plain);
 }
 
 type Connection = {
@@ -75,11 +81,11 @@ export async function calendarStatus() {
 export async function startCalendarConsent(request: Request) {
   if (!ready()) throw new Error('La aplicación de Google aún necesita configuración inicial en el servidor.');
   const user = await requireCalendarAdmin(request);
-  const nonce = randomUUID();
-  const verifier = randomBytes(48).toString('base64url');
-  const challenge = createHash('sha256').update(verifier).digest('base64url');
+  const nonce = crypto.randomUUID();
+  const verifier = toB64(crypto.getRandomValues(new Uint8Array(48)));
+  const challenge = toB64(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier))));
   const { error } = await db.from('crm_calendar_oauth_states').insert({
-    nonce, requested_by: user.id, verifier_encrypted: seal(verifier),
+    nonce, requested_by: user.id, verifier_encrypted: await seal(verifier),
     expires_at: new Date(Date.now() + 10 * 60_000).toISOString(),
   });
   if (error) throw new Error('No se pudo preparar una autorización segura de Google.');
@@ -105,7 +111,7 @@ export async function completeCalendarConsent(code: string, nonce: string) {
     .is('consumed_at', null).gt('expires_at', new Date().toISOString())
     .select('requested_by,verifier_encrypted').maybeSingle();
   if (error || !state) throw new Error('La autorización venció o ya se utilizó.');
-  const verifier = open(String(state.verifier_encrypted));
+  const verifier = await open(String(state.verifier_encrypted));
   const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
@@ -131,7 +137,7 @@ export async function completeCalendarConsent(code: string, nonce: string) {
     id: 1,
     google_email: ADMIN_EMAIL,
     calendar_id: ADMIN_EMAIL,
-    refresh_token_encrypted: seal(credentials.refresh_token),
+    refresh_token_encrypted: await seal(credentials.refresh_token),
     connected_at: new Date().toISOString(),
     last_synced_at: null,
     last_error: null,
@@ -155,7 +161,7 @@ export async function googleConnectionAccess(): Promise<{token:string; calendarI
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       client_id: clientId(), client_secret: clientSecret(),
-      refresh_token: open(record.refresh_token_encrypted), grant_type: 'refresh_token',
+      refresh_token: await open(record.refresh_token_encrypted), grant_type: 'refresh_token',
     }),
   });
   if (!response.ok) throw new Error('La cuenta Google debe volver a autorizarse en Configuración.');
@@ -177,7 +183,7 @@ export async function disconnectCalendar() {
       await fetch('https://oauth2.googleapis.com/revoke', {
         method: 'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
-        body: new URLSearchParams({token:open(record.refresh_token_encrypted)}),
+        body: new URLSearchParams({token:await open(record.refresh_token_encrypted)}),
       });
     } catch { /* local disconnect remains authoritative */ }
   }

@@ -106,7 +106,7 @@ export async function verifyCalendarConnectionWithoutWrites(){
  const calendar=result.calendars?.[access.calendarId];
  if(!calendar||!Array.isArray(calendar.busy)||calendar.errors?.length)
   throw Error('La API devolvió una disponibilidad incompleta.');
- return {ok:true,calendar:access.calendarId,timezone:details.timeZone||'America/Bogota',
+ return {calendar:access.calendarId,timezone:details.timeZone||'America/Bogota',
   busyPeriodsNext24h:calendar.busy.length,mode:'solo_lectura'};
 }
 

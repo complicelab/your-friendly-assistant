@@ -32,3 +32,21 @@ Código preparado en GitHub. **No afirmar que está desplegado u operativo** sin
 
 ## Límite de la verificación
 Un commit de GitHub no equivale a migración ejecutada, secreto creado, función desplegada o webhook conectado al agente externo.
+
+
+## Auditoría del indicador del administrador — 21/11/2026
+Se detectó que el anterior aviso "WhatsApp / Agente IA: conexión pendiente de verificar" era texto fijo: no consultaba ningún dato ni señal de API. Podía permanecer visible aun con contactos y eventos registrados.
+
+La nueva vista consulta desde la sesión autenticada del administrador:
+- crm_activities con channel = whatsapp_ia: fecha de recepción del último evento y su tipo.
+- crm_contacts con source = whatsapp_ia: cantidad de contactos de ese origen.
+- crm_notifications con channel = whatsapp: último registro de avisos de reservas, independiente de las conversaciones del agente.
+- En Configuración, sección "WhatsApp IA · diagnóstico del CRM" con actualización manual.
+- La barra superior actualiza el estado cada 60 segundos cuando la pestaña está visible y al recuperar foco.
+- En cada ficha, se indica si hay actividad o metadata asociada al contacto, no se atribuyen mensajes salientes sin pruebas.
+
+Significado exacto: haber recibido eventos en el CRM demuestra funcionamiento histórico o reciente del flujo entrante, pero no prueba por sí solo que la API Meta, el webhook, las respuestas automáticas del agente ni la entrega de mensajes estén operativos ahora. "Enviado" en la tabla de avisos significa aceptación por el proveedor y tampoco acredita entrega. La etiqueta usa expresiones como "recepción reciente", "eventos registrados" o "estado no disponible", no "API conectada".
+
+Esta corrección no toca claves, webhook, mensajes de terceros, base histórica ni automaciones externas. La validación del envío y entrega de respuestas del agente debe verificarse con su proveedor e idempotencia/webhooks autorizados sin exponer secretos.
+
+Para la garantía técnica se agregaron pruebas de dos capas: (1) semántica de estados basada en marcas temporales y (2) inspección del renderizado para impedir que vuelva el texto fijo. GitHub Actions ejecuta ambas, compilación y TypeScript en cada modificación relevante a main.

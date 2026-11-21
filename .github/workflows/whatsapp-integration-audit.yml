@@ -1,0 +1,35 @@
+name: Audit WhatsApp IA status and CRM UI
+on:
+  push:
+    branches:
+      - main
+      - fix/crm-whatsapp-real-status-20261121
+    paths:
+      - "src/routes/admin.tsx"
+      - "src/components/crm/whatsapp-integration-details.tsx"
+      - "src/lib/whatsapp-integration-status.ts"
+      - "src/test/crm-whatsapp-audit.test.ts"
+      - ".github/workflows/whatsapp-integration-audit.yml"
+  pull_request:
+    paths:
+      - "src/routes/admin.tsx"
+      - "src/components/crm/whatsapp-integration-details.tsx"
+      - "src/lib/whatsapp-integration-status.ts"
+      - "src/test/crm-whatsapp-audit.test.ts"
+      - ".github/workflows/whatsapp-integration-audit.yml"
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+      - name: Verify WhatsApp audit (data semantics + UI)
+        run: bun test src/test/crm-whatsapp-audit.test.ts src/test/crm-admin-navigation.test.ts
+      - name: Build with TanStack route generation
+        run: bun run build
+      - name: Strict type check
+        run: bunx tsc --noEmit

@@ -7,6 +7,8 @@ import { CrmAgenda } from "@/components/crm/agenda";
 import { CrmBookingSettings } from "@/components/crm/booking-settings";
 import { CalendarConnectionSettings } from "@/components/crm/calendar-connection-settings";
 import { CrmClientsList } from "@/components/crm/clients-list";
+import { CrmWhatsAppIntegrationDetails, useWhatsAppIntegrationStatus } from "@/components/crm/whatsapp-integration-details";
+import { whatsAppReceiptLabel, formatWhatsAppTimestamp } from "@/lib/whatsapp-integration-status";
 import { formatMeetingDate, meetingStatusLabel, nextUpcomingMeeting } from "@/lib/booking-model";
 import { SERVICES, serviceCategory, serviceLabel } from "@/lib/crm-model";
 import "@/components/crm/booking.css";
@@ -115,6 +117,8 @@ function AdminCrmPage() {
   },[]);
   const [upcomingCount,setUpcomingCount]=useState(0);
   const [contactMeetings,setContactMeetings]=useState<Meeting[]>([]);
+  const {status:whatsappStatus, refreshing:whatsappRefreshing, refresh:refreshWhatsAppStatus} =
+    useWhatsAppIntegrationStatus(token);
 
   async function checkAccess(){
     if(recoveryActive.current)return;
@@ -510,7 +514,10 @@ function AdminCrmPage() {
       <header className="crm-topbar">
         <img src="/brand/complice-lab-logo.svg" alt="Cómplice Lab"/>
         <div className="crm-top-actions">
-          <span className="crm-integration"><i/> WhatsApp / Agente IA: conexión pendiente de verificar</span>
+          <span
+            className={"crm-integration crm-whatsapp-status "+(whatsappStatus.phase==="recent"?"is-recent":whatsappStatus.phase==="error"?"is-error":"is-history")}
+            title="Estado calculado con eventos recibidos en el CRM, no con la conexión directa a Meta."
+          ><i/>{whatsAppReceiptLabel(whatsappStatus.phase)}</span>
           <button onClick={()=>setShowSecurity(true)}>Seguridad</button>
           <button onClick={logout}>Salir</button>
         </div>
@@ -533,7 +540,9 @@ function AdminCrmPage() {
 
         <div className="crm-notice">
           <b>{upcomingCount>0?`Tienes ${upcomingCount} diagnóstico${upcomingCount===1?"":"s"} próximo${upcomingCount===1?"":"s"}.`:"CRM activo."}</b>
-          <span>Las reservas quedan en Contactos y Agenda. Las confirmaciones por correo y WhatsApp se registran en la reunión; WhatsApp / Agente IA seguirá indicando conexión pendiente hasta configurar Meta Cloud API.</span>
+          <span>Las reservas se guardan en Contactos y Agenda. WhatsApp IA: {whatsAppReceiptLabel(whatsappStatus.phase)}.
+            {whatsappStatus.lastInboundAt?" Último evento registrado: "+formatWhatsAppTimestamp(whatsappStatus.lastInboundAt)+".":""}
+            {" "}La recepción de eventos no confirma por sí sola la entrega de respuestas automáticas del agente.</span>
           {upcomingCount>0&&view!=="agenda"&&<button className="crm-secondary" onClick={()=>setView("agenda")}>Ver agenda</button>}
         </div>
 
@@ -666,7 +675,8 @@ function AdminCrmPage() {
                   <div className="crm-permissions">
                     <span>Respuesta a solicitud <b>{selected.consent_service?"Autorizada":"No registrada"}</b></span>
                     <span>Marketing adicional <b>{selected.consent_marketing?"Autorizado":"No autorizado"}</b></span>
-                    <span>WhatsApp / agente <b>Recepción de eventos pendiente de verificar</b></span>
+                    <span>WhatsApp IA → CRM <b>{selected.source==="whatsapp_ia"||whatsappMetadata(selected)["received"]===true||activities.some(a=>a.channel==="whatsapp_ia")?"Registros asociados a este contacto":"Sin eventos de WhatsApp IA en esta ficha"}</b></span>
+                    <span>Respuestas automáticas del agente <b>Entrega no verificable desde este CRM</b></span>
                   </div>
                 </section>
 
@@ -699,7 +709,7 @@ function AdminCrmPage() {
         </>}
         {view==="clientes"&&<CrmClientsList onOpen={id=>void openContactFromMeeting(id)}/>}
         {view==="agenda"&&<CrmAgenda onOpenContact={openContactFromMeeting} onChanged={()=>void loadUpcomingCount()}/>}
-        {view==="configuracion"&&<div className="clb-admin-config"><CalendarConnectionSettings/><CrmBookingSettings/></div>}
+        {view==="configuracion"&&<div className="clb-admin-config"><CrmWhatsAppIntegrationDetails status={whatsappStatus} refreshing={whatsappRefreshing} onRefresh={()=>void refreshWhatsAppStatus()}/><CalendarConnectionSettings/><CrmBookingSettings/></div>}
       </section>
 
       {showCreate&&<div className="crm-modal-backdrop" onMouseDown={e=>{if(e.currentTarget===e.target)setShowCreate(false);}}>
@@ -765,7 +775,7 @@ function Select({label,value,options,labels,onChange}:{label:string;value:string
 function nullIfEmpty(v:string){const t=v.trim();return t||null;}
 function initials(v:string){return v.split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase();}
 function statusLabel(v:string){return STATUS.find(([x])=>x===v)?.[1]||v.replaceAll("_"," ");}
-function activityLabel(v:string){return ({contact_created:"Contacto creado",contact_updated:"Contacto actualizado",status_changed:"Etapa actualizada",follow_up_updated:"Seguimiento actualizado",meeting_booked:"Videollamada agendada"} as Record<string,string>)[v]||v.replaceAll("_"," ");}
+function activityLabel(v:string){return ({contact_created:"Contacto creado",contact_updated:"Contacto actualizado",status_changed:"Etapa actualizada",follow_up_updated:"Seguimiento actualizado",meeting_booked:"Videollamada agendada",lead_creado:"Prospecto recibido por WhatsApp IA",diagnostico_solicitado:"Diagnóstico solicitado por WhatsApp IA",cita_confirmada:"Cita informada por el agente",escalado_a_humano:"Solicitó atención humana",no_interesado:"No interesado",opt_out:"Solicitó no recibir más mensajes"} as Record<string,string>)[v]||v.replaceAll("_"," ");}
 function formatDateTime(v:string){return new Intl.DateTimeFormat("es-CO",{dateStyle:"medium",timeStyle:"short"}).format(new Date(v));}
 function toLocalInput(v:string|null){if(!v)return"";const d=new Date(v);const offset=d.getTimezoneOffset();return new Date(d.getTime()-offset*60000).toISOString().slice(0,16);}
 

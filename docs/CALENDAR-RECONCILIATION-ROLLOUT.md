@@ -18,6 +18,7 @@ supabase/migrations/20261121_calendar_review_and_attach.sql
 Existe una copia equivalente en drizzle/migrations/0008_calendar_review_and_attach.sql. Ejecuta UNA sola vía de migración según el sistema de Lovable para evitar aplicaciones duplicadas. La migración es idempotente y no borra datos existentes.
 
 Crea:
+- last_cron_at: fecha del último ciclo programado exitoso, distinta de la sincronización manual.
 - crm_calendar_event_reviews: tabla privada de decisiones de ignorar, con RLS y permisos de service_role solamente.
 - crm_attach_google_calendar_event: función SECURITY DEFINER invocable únicamente con service_role, valida contacto, id, tiempos, evita duplicados y no activa la creación de clientes.
 
@@ -32,7 +33,7 @@ No funcionará sin la MISMA clave privada en ambos lados:
 
 Debe ser un secreto aleatorio mínimo 32 caracteres, exclusivo de esta función. Nunca se pone en código, captura ni conversación. La tarea es segura ante ausencia del secreto: termina sin hacer llamadas e indica que falta configurar.
 
-Confirmar que la API /api/calendar/cron responde 401 sin autenticación y 200 a la tarea con credencial válida; verificar en GitHub Actions el último resultado. La tarea solo debe activarse tras instalar y probar la migración. No crear ni modificar eventos de prueba desde el cron.
+Confirmar que la API /api/calendar/cron responde 401 sin autenticación y 200 a la tarea con credencial válida; verificar en GitHub Actions el último resultado. La tarjeta Google Calendar en /admin indica la última fecha de sincronización programada exitosa; si aún no aparece, no se ha comprobado el funcionamiento con el panel cerrado. La tarea solo debe activarse tras instalar y probar la migración. No crear ni modificar eventos de prueba desde el cron.
 
 ## Prueba real controlada de reserva de extremo a extremo (después de desplegar)
 1. Crear un evento personal de bloqueo de 30 minutos para una fecha futura en Google y comprobar que ese hueco desaparece de los horarios ofrecidos por la web.

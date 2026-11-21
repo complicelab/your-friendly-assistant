@@ -95,7 +95,105 @@ begin
   if p_event_type not in ('recordatorio_asistencia_enviado','asistencia_confirmada','asistencia_rechazada','asistencia_dudosa')
      or p_payload is null or jsonb_typeof(p_payload)<>'object'
      or v_phone !~ '^[0-9]{8,15}$'
-     or v_message_id !~ '^[A-Za-z0-9_.:-]{6,180}$'
+     or v_message_id !~ '^[A-Za-z0-9_.:/+=-]{6,180}
+     or coalesce(p_payload->>'meeting_id','') !~
+         '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
+     or p_timestamp is null or p_timestamp>now()+interval '5 minutes'
+     or p_timestamp<now()-interval '7 days'
+     or (p_event_type <> 'recordatorio_asistencia_enviado'
+         and length(trim(coalesce(p_payload->>'respuesta_texto',''))) not between 1 and 500)
+  then raise exception 'invalid attendance event'; end if;
+  v_mid:=(p_payload->>'meeting_id')::uuid;
+  select * into v_meeting from public.crm_meetings where id=v_mid for update;
+  if not found then raise exception 'meeting not found'; end if;
+  select regexp_replace(coalesce(c.whatsapp,''),'[^0-9]','','g') into v_customer_phone
+    from public.crm_contacts c where c.id=v_meeting.contact_id;
+  if v_phone not in (regexp_replace(coalesce(v_meeting.attendee_whatsapp,''),'[^0-9]','','g'),
+                      coalesce(v_customer_phone,'')) then
+    raise exception 'phone does not belong to appointment'; end if;
+  if v_meeting.meeting_type<>'diagnostico'
+    or p_timestamp<v_meeting.starts_at-interval '36 hours'
+    or p_timestamp>v_meeting.starts_at
+    or v_meeting.status in ('realizada','no_asistio')
+  then raise exception 'event outside appointment confirmation window'; end if;
+  v_fingerprint:='attendance:'||
+    encode(digest(v_mid::text||'|'||v_message_id,'sha256'),'hex');
+  if exists(select 1 from public.crm_activities where channel='whatsapp_ia'
+            and external_id=v_fingerprint) then return v_mid; end if;
+  if v_meeting.status='cancelada' then return v_mid; end if;
+  if p_event_type='recordatorio_asistencia_enviado' then
+    if v_meeting.attendance_reminder_at is null then
+      update public.crm_meetings set attendance_reminder_at=p_timestamp where id=v_mid;
+    end if;
+    v_note:='El agente registró el envío del recordatorio de asistencia (entrega no verificada).';
+  else
+    -- Reply MUST be tied to a previously recorded reminder for this exact meeting.
+    if v_meeting.attendance_reminder_at is null or p_timestamp<v_meeting.attendance_reminder_at
+      then raise exception 'no matching reminder for this meeting'; end if;
+    -- Never allow a stale reply or a later unsolicited "yes" to reopen a cancelled appointment.
+    if (v_meeting.attendance_responded_at is not null
+        and p_timestamp<=v_meeting.attendance_responded_at)
+        or v_meeting.attendance_status='no_asistira'
+        or v_meeting.status='cancelada' then
+      return v_mid;
+    end if;
+    v_new_attendance:=case p_event_type
+      when 'asistencia_confirmada' then 'confirmada'
+      when 'asistencia_rechazada' then 'no_asistira' else 'requiere_atencion' end;
+    v_new_status:=case p_event_type
+      when 'asistencia_confirmada' then 'confirmada'
+      when 'asistencia_rechazada' then 'cancelada' else 'pendiente' end;
+    v_note:=case p_event_type
+      when 'asistencia_confirmada' then 'El cliente confirmó al agente que asistirá.'
+      when 'asistencia_rechazada' then 'El cliente informó al agente que no asistirá.'
+      else 'El cliente tiene dudas sobre la asistencia; necesita seguimiento.' end;
+    update public.crm_meetings set
+       status=v_new_status, attendance_status=v_new_attendance,
+       attendance_responded_at=p_timestamp,
+       attendance_response_source='whatsapp_ia',
+       attendance_response_text=left(nullif(trim(coalesce(p_payload->>'respuesta_texto','')),''),500),
+       calendar_cancel_pending=(p_event_type='asistencia_rechazada'
+          and v_meeting.external_calendar_id is not null),
+       updated_at=now()
+     where id=v_mid;
+    -- Doubtful RSVP creates a follow-up task; clear it once the customer decides.
+    if p_event_type='asistencia_dudosa' and not exists(
+      select 1 from public.crm_tasks
+       where contact_id=v_meeting.contact_id
+         and metadata->>'meeting_id'=v_mid::text
+         and metadata->>'type'='attendance_confirmation_review'
+         and status<>'cancelada'
+    ) then
+      insert into public.crm_tasks(contact_id,title,due_at,assigned_to,status,metadata)
+      values(v_meeting.contact_id,'Confirmar asistencia con el cliente',
+        greatest(now(),v_meeting.starts_at-interval '2 hours'),
+        coalesce(nullif(v_meeting.admin_email,''),'complicelab@gmail.com'),
+        'pendiente',jsonb_build_object('meeting_id',v_mid,
+          'type','attendance_confirmation_review'));
+    elsif p_event_type in ('asistencia_confirmada','asistencia_rechazada') then
+      update public.crm_tasks set status='completada',completed_at=now()
+       where contact_id=v_meeting.contact_id and status='pendiente'
+         and metadata->>'meeting_id'=v_mid::text
+         and metadata->>'type'='attendance_confirmation_review';
+    end if;
+  end if;
+  insert into public.crm_activities(
+    contact_id,activity_type,channel,direction,actor_type,body,external_id,metadata,created_at
+  ) values(
+    v_meeting.contact_id,p_event_type,'whatsapp_ia','inbound','agent',
+    v_note,v_fingerprint,
+    jsonb_build_object('meeting_id',v_mid,'event_timestamp',p_timestamp,
+      'message_id',v_message_id,'respuesta_texto',left(coalesce(p_payload->>'respuesta_texto',''),500)),
+    now()
+  ) on conflict do nothing;
+  return v_mid;
+end;
+$$;
+revoke all on function public.crm_apply_attendance_agent_event(text,text,timestamptz,jsonb)
+ from public,anon,authenticated;
+grant execute on function public.crm_apply_attendance_agent_event(text,text,timestamptz,jsonb)
+ to service_role;
+
      or coalesce(p_payload->>'meeting_id','') !~
          '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
      or p_timestamp is null or p_timestamp>now()+interval '5 minutes'

@@ -130,7 +130,8 @@ begin
     -- Never allow a stale reply or a later unsolicited "yes" to reopen a cancelled appointment.
     if (v_meeting.attendance_responded_at is not null
         and p_timestamp<=v_meeting.attendance_responded_at)
-        or v_meeting.attendance_status='no_asistira' then
+        or v_meeting.attendance_status='no_asistira'
+        or v_meeting.status='cancelada' then
       return v_mid;
     end if;
     v_new_attendance:=case p_event_type

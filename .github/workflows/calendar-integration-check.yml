@@ -24,7 +24,7 @@ jobs:
         run: bun install --frozen-lockfile
       - name: Calendar matching + availability tests
         run: bun test src/test/google-calendar-server.test.ts src/test/google-calendar-matching.test.ts
+      - name: Production build (generates TanStack routes)
+        run: bun run build
       - name: Typecheck
         run: bunx tsc --noEmit
-      - name: Production build
-        run: bun run build

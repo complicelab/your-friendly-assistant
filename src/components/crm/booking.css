@@ -86,3 +86,20 @@
 .clb-meeting-reschedule input{width:100%;background:#fff;border:1px solid #dce5f3;border-radius:10px;padding:10px}
 .clb-meeting-reschedule button{justify-self:start}
 @media(max-width:750px){.clb-review-event{grid-template-columns:1fr}.clb-review-head{display:grid}.clb-review-actions{width:100%}}
+
+
+/* One CRM agenda: Google events appear alongside CRM meetings, never as phantom contacts. */
+.clb-agenda-google-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 12px;font-size:11px;color:#5c7192}
+.clb-agenda-google-tools label{display:flex;align-items:center;gap:7px;cursor:pointer;font-weight:650}
+.clb-agenda-google-tools input{accent-color:#2174ca}
+.clb-agenda-google-tools>span{flex:1;color:#6d809e}
+.clb-agenda-google-tools button{font-size:10px;margin:0}
+.clb-google-agenda-explainer{max-width:900px;margin:5px 0 13px;line-height:1.65}
+.clb-google-day-marker{background:#e6f7f6!important;border-left:3px solid #168d8e!important;color:#146363!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:9px}
+.clb-google-event-row{border-left:3px solid #0b9290!important;background:#f4fcfb!important}
+.clb-google-event-row em{background:#dff5ee!important;color:#116f62!important;border:1px solid #b8e5dc!important}
+.clb-google-event-row small{font-size:10px;color:#278278!important}
+.clb-google-upcoming{margin-top:16px;border-top:1px solid #e4eaf4;padding-top:13px;display:grid;gap:5px}
+.clb-google-upcoming h3{font-size:12px;color:#214f5a;display:flex;align-items:center;justify-content:space-between}
+.clb-google-upcoming h3 b{background:#e3f4f2;color:#117673;border-radius:99px;font-size:11px;padding:4px 9px}
+@media(max-width:650px){.clb-agenda-google-tools{align-items:flex-start}.clb-agenda-google-tools>span{flex-basis:100%}}

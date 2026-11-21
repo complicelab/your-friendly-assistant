@@ -416,13 +416,6 @@ export type Database = {
           title: string
           updated_at: string
           whatsapp_notification_status: string
-          attendance_status: string
-          attendance_reminder_at: string | null
-          attendance_responded_at: string | null
-          attendance_response_text: string | null
-          attendance_response_source: string | null
-          calendar_cancel_pending: boolean
-          calendar_cancel_synced_at: string | null
         }
         Insert: {
           admin_email?: string
@@ -446,13 +439,6 @@ export type Database = {
           title?: string
           updated_at?: string
           whatsapp_notification_status?: string
-          attendance_status?: string
-          attendance_reminder_at?: string | null
-          attendance_responded_at?: string | null
-          attendance_response_text?: string | null
-          attendance_response_source?: string | null
-          calendar_cancel_pending?: boolean
-          calendar_cancel_synced_at?: string | null
         }
         Update: {
           admin_email?: string
@@ -476,13 +462,6 @@ export type Database = {
           title?: string
           updated_at?: string
           whatsapp_notification_status?: string
-          attendance_status?: string
-          attendance_reminder_at?: string | null
-          attendance_responded_at?: string | null
-          attendance_response_text?: string | null
-          attendance_response_source?: string | null
-          calendar_cancel_pending?: boolean
-          calendar_cancel_synced_at?: string | null
         }
         Relationships: [
           {

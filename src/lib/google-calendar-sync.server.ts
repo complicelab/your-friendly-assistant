@@ -111,6 +111,15 @@ export async function synchronizeGoogleAppointments(source:'manual'|'cron'='manu
    if(alreadyAtTime)stats.linked++;
    else stats.imported++;
   }
+  // Keep CRM duration in line with real Google customer bookings on each sync.
+  // If the external sample is unavailable, retain the last verified policy;
+  // do not fail existing contact/event reconciliation due to a duration probe.
+  try {
+   const {syncGoogleBookingDuration}=await import('@/lib/google-booking-duration.server');
+   await syncGoogleBookingDuration();
+  } catch(error) {
+   console.warn('[calendar] No se pudo verificar automáticamente la duración de reservas.');
+  }
   await recordCalendarSync({source});
   return stats;
  }catch(error){

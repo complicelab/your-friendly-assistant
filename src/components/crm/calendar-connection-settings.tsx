@@ -5,6 +5,8 @@ import { CalendarEventReview } from '@/components/crm/calendar-event-review';
 type CalendarStatus={
   configured:boolean;database_ready:boolean;connected:boolean;email:string|null;
   last_synced_at:string|null;last_cron_at:string|null;last_error:string|null;
+  booking_duration?:{connected:boolean;minutes:number|null;observations:number;checkedAt:string|null;
+    status:string;source:string}|null;
 };
 type SyncStats={reviewed:number;linked:number;imported:number;updated:number;unlinked:number;ambiguous:number};
 const INITIAL:CalendarStatus={configured:false,database_ready:false,connected:false,email:null,last_synced_at:null,last_cron_at:null,last_error:null};
@@ -117,6 +119,9 @@ export function CalendarConnectionSettings(){
   {status.connected&&<div className="clb-google-details">
     <span>Cuenta vinculada <strong>{status.email}</strong></span>
     <span>Última sincronización <strong>{date||'Pendiente'}</strong></span>
+    <span>Duración de reservas del CRM <strong>{status.booking_duration?.status==='verified'&&status.booking_duration.minutes!==null
+      ? status.booking_duration.minutes+' minutos · verificados con '+status.booking_duration.observations+' reservas de Google'
+      : 'Pendiente de evidencia verificable en Google'}</strong></span>
     <span>Sincronización con panel cerrado <strong>{status.last_cron_at
       ? new Intl.DateTimeFormat('es-CO',{timeZone:'America/Bogota',dateStyle:'short',timeStyle:'short'}).format(new Date(status.last_cron_at))
       : 'Aún sin ejecución programada confirmada'}</strong></span>

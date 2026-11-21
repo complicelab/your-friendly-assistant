@@ -302,6 +302,15 @@ export const Route = createFileRoute("/api/booking")({
         const start = url.searchParams.get("start") || new Date().toISOString().slice(0,10);
         const rawDays = Number(url.searchParams.get("days") || "14");
         const days = Number.isFinite(rawDays) ? Math.max(1, Math.min(60, rawDays)) : 14;
+        // Refresh the server-owned duration before the SQL slot generator runs.
+        // A failed inference preserves the previous CRM policy; FreeBusy still
+        // independently checks Google occupancy, so no conflicts are advertised.
+        try {
+          const {syncGoogleBookingDuration}=await import('@/lib/google-booking-duration.server');
+          await syncGoogleBookingDuration();
+        } catch {
+          console.warn('[booking] Google booking duration is not yet verifiable.');
+        }
         const { data, error } = await supabase.rpc("crm_public_available_slots", {
           p_start_date: start,
           p_days: days,
@@ -352,6 +361,12 @@ export const Route = createFileRoute("/api/booking")({
         }).formatToParts(new Date(startTimestamp));
         const dateValues = Object.fromEntries(dateParts.map((part) => [part.type, part.value]));
         const bookingDate = dateValues["year"]+"-"+dateValues["month"]+"-"+dateValues["day"];
+        try {
+          const {syncGoogleBookingDuration}=await import('@/lib/google-booking-duration.server');
+          await syncGoogleBookingDuration();
+        } catch {
+          console.warn('[booking] Keeping prior CRM slot duration until verified.');
+        }
         const {data:validSlots,error:slotError} = await supabase.rpc("crm_public_available_slots", {
           p_start_date: bookingDate, p_days: 2,
         });

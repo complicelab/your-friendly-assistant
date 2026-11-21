@@ -1,0 +1,30 @@
+name: Calendar integration verification
+on:
+  push:
+    branches:
+      - feat/complice-lab-google-calendar-20261121
+  pull_request:
+    paths:
+      - "src/lib/*calendar*"
+      - "src/routes/api.calendar*"
+      - "src/components/crm/**"
+      - "src/test/google-calendar*"
+      - "supabase/migrations/20261121_*"
+      - ".github/workflows/calendar-integration-check.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Install
+        run: bun install --frozen-lockfile
+      - name: Calendar matching + availability tests
+        run: bun test src/test/google-calendar-server.test.ts src/test/google-calendar-matching.test.ts
+      - name: Typecheck
+        run: bunx tsc --noEmit
+      - name: Production build
+        run: bun run build

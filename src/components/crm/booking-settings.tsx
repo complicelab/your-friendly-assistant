@@ -43,9 +43,11 @@ export function CrmBookingSettings(){
       if(connected&&info?.status==='verified'&&info.minutes!==null){
         setDuration(String(info.minutes));setInterval(String(info.minutes));
       }
+      return connected;
     }catch(error){
       setGoogleMode('error');
       setMessage(error instanceof Error?error.message:'No se pudo comprobar el estado de Google.');
+      return false;
     }finally{setCheckingGoogle(false);}
   }
   const [adminEmail,setAdminEmail]=useState('complicelab@gmail.com');const [adminWhatsapp,setAdminWhatsapp]=useState('');
@@ -72,12 +74,11 @@ export function CrmBookingSettings(){
   useEffect(()=>{
     void load();
     // First inspect the connection, then request an evidence-based refresh.
-    void (async()=>{
-      await readGoogleStatus();
-      // A verified Google OAuth connection is required before the server will
-      // infer a duration. This operation does not create or alter events.
-    })();
-    const timer=window.setInterval(()=>{void readGoogleStatus();},300_000);
+    const refresh=async()=>{
+      if(await readGoogleStatus())await readGoogleStatus(true);
+    };
+    void refresh();
+    const timer=window.setInterval(()=>void refresh(),300_000);
     return()=>window.clearInterval(timer);
   },[]);
 

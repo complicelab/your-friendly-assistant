@@ -311,7 +311,9 @@ export const Route = createFileRoute("/api/booking")({
         const slots = data || [];
         try {
           if (!slots.length) return Response.json({ ok:true, timezone:BOOKING_TIMEZONE, slots });
-          const busy = await googleCalendarBusy(slots[0]!.slot_start, slots[slots.length - 1]!.slot_end);
+          const firstStart = slots.map((slot) => slot.slot_start).sort()[0]!;
+          const lastEnd = slots.map((slot) => slot.slot_end).sort().at(-1)!;
+          const busy = await googleCalendarBusy(firstStart, lastEnd);
           const available = busy
             ? slots.filter((slot) => !overlapsBusy(slot.slot_start, slot.slot_end, busy))
             : slots;

@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { timingSafeEqual } from 'node:crypto';
 
 export const Route = createFileRoute('/api/calendar/cron')({
  server:{handlers:{
   POST:async({request})=>{
+   const {timingSafeEqual}=await import('node:crypto');
    const configured=String(process.env.CRM_CALENDAR_CRON_SECRET||'');
    const provided=(request.headers.get('Authorization')||'').replace(/^Bearer\s+/i,'');
    // When no secret exists, this endpoint is strictly disabled.

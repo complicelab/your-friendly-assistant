@@ -1,21 +1,11 @@
 name: Booking flow audit
 
 on:
-  push:
-    branches:
-      - main
-      - lovable-sync
-    paths:
-      - "src/routes/index.tsx"
-      - "src/routes/api.booking.ts"
-      - "src/data/booking/**"
-      - "src/test/booking-*.test.ts"
-      - "src/test/booking-*.mjs"
-      - "src/routeTree.gen.ts"
-      - "package.json"
-      - "bun.lock"
-      - ".github/workflows/booking-audit.yml"
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   verify:

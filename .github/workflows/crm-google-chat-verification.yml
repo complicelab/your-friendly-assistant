@@ -30,7 +30,7 @@ jobs:
       - name: Install frozen dependencies
         run: bun install --frozen-lockfile
       - name: Audit RSVP, booking, Google and CRM regression
-        run: bun test src/test/crm-calendar-evidence-audit.test.ts src/test/crm-agent-attendance.test.ts src/test/calendar-attendance-cancellation.test.ts src/test/calendar-agenda-live.test.ts src/test/calendar-review-reconciliation.test.ts src/test/calendar-setup-readiness.test.ts src/test/google-calendar-server.test.ts
+        run: bun run test src/test/crm-calendar-evidence-audit.test.ts src/test/crm-agent-attendance.test.ts src/test/calendar-attendance-cancellation.test.ts src/test/calendar-agenda-live.test.ts src/test/calendar-review-reconciliation.test.ts src/test/calendar-setup-readiness.test.ts src/test/google-calendar-server.test.ts
       - name: Application build
         run: bun run build
       - name: Strict TypeScript

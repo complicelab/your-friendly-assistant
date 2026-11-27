@@ -318,7 +318,10 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
             const outside=mode==='month'&&day.getUTCMonth()!==cursor.getUTCMonth();
             return <button key={key} className={'clb-day '+(outside?'outside ':'')+(key===selectedDay?'selected':'')} onClick={()=>setSelectedDay(key)}>
               <span>{day.getUTCDate()}</span><div>
-                {items.slice(0,2).map(meeting=><i key={meeting.id} className={'meeting-'+attendanceStatusClass(meeting.attendance_status,meeting.status)} title={meeting.crm_contacts?.full_name||'Reunión'}>{shortMeetingDate(meeting.starts_at).split(', ').pop()} · {meeting.crm_contacts?.full_name||'Reunión'}</i>)}
+                {items.slice(0,2).map(meeting=><i key={meeting.id} className={'meeting-'+
+                   (meeting.status==='confirmada'&&!auditByMeetingId.get(meeting.id)?.confirmed
+                     ?'pendiente':attendanceStatusClass(meeting.attendance_status,meeting.status))}
+                   title={meeting.crm_contacts?.full_name||'Reunión'}>{shortMeetingDate(meeting.starts_at).split(', ').pop()} · {meeting.crm_contacts?.full_name||'Reunión'}</i>)}
                 {googleItems.slice(0,2).map(event=><i key={'google-'+event.id} className="clb-google-day-marker" title={'Google Calendar: '+event.title}>{event.allDay?'Todo el día':shortMeetingDate(event.startsAt).split(', ').pop()} · {event.title}</i>)}
                 {items.length+googleItems.length>4&&<small>+{items.length+googleItems.length-4} más</small>}
               </div>
@@ -377,8 +380,11 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
       </div>
       <div className="clb-attendance-detail" role="status">
         <span>CONFIRMACIÓN DE ASISTENCIA · WHATSAPP IA</span>
-        <strong className={'meeting-'+attendanceStatusClass(selected.attendance_status,selected.status)}>
-          {attendanceStatusLabel(selected.attendance_status,selected.status)}</strong>
+        <strong className={'meeting-'+(selected.status==='confirmada'&&!auditByMeetingId.get(selected.id)?.confirmed
+          ?'pendiente':attendanceStatusClass(selected.attendance_status,selected.status))}>
+          {selected.status==='confirmada'
+            ?auditByMeetingId.get(selected.id)?.confirmed?'Confirmada por WhatsApp · evidencia verificada':'Confirmación sin verificar'
+            :attendanceStatusLabel(selected.attendance_status,selected.status)}</strong>
         <small>Recordatorio 24 horas antes: {selected.attendance_reminder_at
           ? shortMeetingDate(selected.attendance_reminder_at)+' (envío registrado por el agente)'
           : 'sin envío registrado en el CRM'}</small>
@@ -430,7 +436,8 @@ function MeetingRow({meeting,audit,onClick}:{meeting:CrmMeeting;audit:Appointmen
   const label=meeting.status==='confirmada'
     ?audit?.confirmed?'Confirmada por WhatsApp':'Confirmación sin verificar'
     :attendanceStatusLabel(meeting.attendance_status,meeting.status);
-  return <button className="clb-meeting-row" onClick={onClick}><span className="clb-meeting-date">{shortMeetingDate(meeting.starts_at)}</span><span><b>{meeting.crm_contacts?.full_name||'Contacto'}</b><small>{meeting.crm_contacts?.brand_name||meeting.service_interest||'Diagnóstico'}</small></span><em className={'meeting-'+attendanceStatusClass(meeting.attendance_status,meeting.status)}>
+  return <button className="clb-meeting-row" onClick={onClick}><span className="clb-meeting-date">{shortMeetingDate(meeting.starts_at)}</span><span><b>{meeting.crm_contacts?.full_name||'Contacto'}</b><small>{meeting.crm_contacts?.brand_name||meeting.service_interest||'Diagnóstico'}</small></span><em className={'meeting-'+(meeting.status==='confirmada'&&!audit?.confirmed
+          ?'pendiente':attendanceStatusClass(meeting.attendance_status,meeting.status))}>
         {label}
       </em>{audit&&['calendar_missing','calendar_mismatch','calendar_unlinked'].includes(audit.booking)&&
         meeting.status!=='cancelada'&&

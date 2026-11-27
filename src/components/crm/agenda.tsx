@@ -96,7 +96,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
       .select('contact_id,activity_type,channel,metadata,created_at')
       .eq('channel','whatsapp_ia')
       .in('activity_type',['recordatorio_asistencia_enviado','asistencia_confirmada',
-        'asistencia_rechazada','asistencia_dudosa'])
+        'asistencia_rechazada','asistencia_dudosa','cita_confirmada'])
       .order('created_at',{ascending:false}).limit(5000);
     if(error||!data||data.length===5000){
       setReplyEvidenceError('No se pudo verificar todo el historial de WhatsApp; no se acreditarán confirmaciones sin evidencia.');
@@ -198,6 +198,16 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
       m.status!=='cancelada').length,
     cancelled:futureMeetings.filter(m=>m.status==='cancelada').length,
   };
+  const chatBookingClaimsWithoutReservation=useMemo(()=>{
+    if(!replyEvidenceLoaded||meetings.length>=500)return [] as AppointmentAuditActivity[];
+    const unique=new Map<string,AppointmentAuditActivity>();
+    for(const item of replyEvidence){
+      if(item.activity_type!=='cita_confirmada'||!item.contact_id||unique.has(item.contact_id))continue;
+      if(!meetings.some(meeting=>meeting.contact_id===item.contact_id))
+        unique.set(item.contact_id,item);
+    }
+    return [...unique.values()];
+  },[replyEvidence,replyEvidenceLoaded,meetings]);
   const needsEvidenceReview=futureMeetings.filter(m=>
     auditByMeetingId.get(m.id)?.requiresReview&&m.status!=='cancelada');
   const confirmedWithGoogle=futureMeetings.filter(m=>{
@@ -272,6 +282,12 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
         <span>{meeting.crm_contacts?.full_name||'Contacto'} · {shortMeetingDate(meeting.starts_at)}</span>
         <small>{auditByMeetingId.get(meeting.id)?.findings[0]||'Revisar cita'}</small>
       </button>)}
+      {!!chatBookingClaimsWithoutReservation.length&&<div className="clb-claims-review">
+        <strong>{chatBookingClaimsWithoutReservation.length} conversaciones con cita informada por el agente sin una reserva correspondiente en las reuniones cargadas</strong>
+        <p>Son señales comerciales, NO citas confirmadas. Revisar si realmente se reservó el horario y si existe en Google.</p>
+        {chatBookingClaimsWithoutReservation.slice(0,10).map(item=>
+          <button type="button" key={item.contact_id} onClick={()=>onOpenContact(item.contact_id)}>Revisar conversación y contacto · {item.contact_id.slice(0,8)}…</button>)}
+      </div>}
       {!needsEvidenceReview.length&&replyEvidenceLoaded&&<small>Sin discrepancias de evidencia en las citas futuras consultadas. Comprueba también las citas fuera del mes visible.</small>}
     </div>
     <div className="clb-agenda-google-tools">

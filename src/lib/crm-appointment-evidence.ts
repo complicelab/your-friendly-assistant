@@ -56,26 +56,26 @@ export function verifyAppointmentEvidence(
  const related=activities.filter(a=>{
   if(a.contact_id!==meeting.contact_id||a.channel!=='whatsapp_ia')return false;
   const metadata=obj(a.metadata);
-  return metadata?.meeting_id===meeting.id&&[
+  return metadata?.['meeting_id']===meeting.id&&[
    'recordatorio_asistencia_enviado','asistencia_confirmada','asistencia_rechazada','asistencia_dudosa',
   ].includes(a.activity_type);
  });
  const byTime=[...related].sort((a,b)=>{
   const am=obj(a.metadata),bm=obj(b.metadata);
   const t=(v:Record<string,unknown>|null,created:string)=>
-   validDate(v?.event_timestamp)?Date.parse(String(v!.event_timestamp)):Date.parse(created);
+   validDate(v?.['event_timestamp'])?Date.parse(String(v!['event_timestamp'])):Date.parse(created);
   return t(bm,b.created_at)-t(am,a.created_at);
  });
  const responses=byTime.filter(a=>a.activity_type!=='recordatorio_asistencia_enviado');
  const latest=responses[0];
  const evidence=obj(latest?.metadata);
- const date=validDate(evidence?.event_timestamp)
-   ?Date.parse(String(evidence!.event_timestamp)):NaN;
+ const date=validDate(evidence?.['event_timestamp'])
+   ?Date.parse(String(evidence!['event_timestamp'])):NaN;
  const reminder=meeting.attendance_reminder_at?Date.parse(meeting.attendance_reminder_at):NaN;
  const replied=meeting.attendance_responded_at?Date.parse(meeting.attendance_responded_at):NaN;
  const exactResponse=!!latest&&latest.activity_type==='asistencia_confirmada'&&
-   typeof evidence?.message_id==='string'&&
-   /^[A-Za-z0-9_.:/+=-]{6,180}$/.test(evidence.message_id)&&
+   typeof evidence?.['message_id']==='string'&&
+   /^[A-Za-z0-9_.:/+=-]{6,180}$/.test(evidence['message_id'])&&
    Number.isFinite(date)&&Number.isFinite(reminder)&&Number.isFinite(replied)&&
    date>=reminder&&Math.abs(date-replied)<60_000&&date<=Date.parse(meeting.starts_at);
  let reply:AppointmentAuditResult['reply']='unconfirmed';

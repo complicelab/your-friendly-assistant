@@ -137,11 +137,15 @@ export function CrmFunnelDashboard(){
   <div className="cl-funnel-kpis">
    <Kpi label="Leads recibidos" value={String(n.leads)} note="Contactos únicos"/>
    <Kpi label="Con interés registrado" value={String(n.interested)} note={percent(n.interested,n.leads)+' de leads'}/>
+   <Kpi label="Interesados sin cita" value={String(Math.max(0,n.interested-n.booked))}
+    note="Seguimiento comercial prioritario"/>
    <Kpi label="Agendaron cita" value={String(n.booked)} note={percent(n.booked,n.leads)+' de leads'}/>
    <Kpi label="Confirmaron asistencia" value={String(n.attendanceConfirmed)}
     note={percent(n.attendanceConfirmed,n.booked)+' de agendados'}/>
-   <Kpi label="Diagnóstico realizado" value={String(n.attended)}
-    note={percent(n.attended,n.booked)+' de agendados'}/>
+   <Kpi label="Asistencia efectiva" value={percent(n.attendedAppointments,n.attendedAppointments+n.noShowAppointments)}
+    note={(n.attendedAppointments+n.noShowAppointments)+' citas con resultado definitivo'}/>
+   <Kpi label="Citas canceladas" value={String(n.cancelledAppointments)}
+    note={percent(n.cancelledAppointments,n.appointments)+' de reservas'}/>
    <Kpi label="Ventas ganadas" value={String(n.won)}
     note={percent(n.won,n.leads)+' de leads'}/>
   </div>
@@ -176,7 +180,7 @@ export function CrmFunnelDashboard(){
   </div>
   <article className="cl-funnel-card">
    <h3>Efectividad por canal de captación</h3>
-   <p>Compara de dónde llegan los contactos y cuáles terminan agendando; no mezcla fuentes con resultados.</p>
+   <p>Compara de dónde llegan los contactos y cuáles terminan agendando; no mezcla fuentes con resultados. Para atribución por campaña y retorno de pauta se necesitan UTMs y gasto real.</p>
    <div className="cl-funnel-table-wrap"><table>
     <thead><tr><th>Canal</th><th>Leads</th><th>Interesados</th><th>Agendaron</th><th>Tasa de agendamiento</th><th>Ventas ganadas</th></tr></thead>
     <tbody>{report.bySource.map(x=><tr key={x.source}>

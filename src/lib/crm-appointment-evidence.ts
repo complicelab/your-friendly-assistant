@@ -21,6 +21,7 @@ export type AppointmentAuditActivity={
 };
 export type AppointmentAuditGoogleEvent={
   id:string;startsAt:string;endsAt:string;
+  transparent?:boolean;allDay?:boolean;
 };
 export type AppointmentAuditResult={
   booking:'calendar_match'|'calendar_missing'|'calendar_mismatch'|'calendar_unlinked'|'calendar_unchecked';
@@ -101,9 +102,10 @@ export function verifyAppointmentEvidence(
    if(!event){
      booking='calendar_missing';
      if(meeting.status!=='cancelada')findings.push('No se encontró el evento vinculado en Google Calendar durante el período consultado.');
-   }else if(!sameInstant(event.startsAt,meeting.starts_at)||!sameInstant(event.endsAt,meeting.ends_at)){
+   }else if(event.transparent||event.allDay||
+     !sameInstant(event.startsAt,meeting.starts_at)||!sameInstant(event.endsAt,meeting.ends_at)){
      booking='calendar_mismatch';
-     findings.push('El horario de Google Calendar no coincide con el de la cita registrada en CRM.');
+     findings.push('El evento de Google no coincide con la reserva del CRM en hora o carácter de ocupación.');
    }else{
      booking='calendar_match';
      if(meeting.status==='cancelada')findings.push('La cita está cancelada en el CRM, pero su evento continúa visible en Google.');

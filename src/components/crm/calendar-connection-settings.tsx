@@ -110,6 +110,8 @@ export function CalendarConnectionSettings(){
  const date=status.last_synced_at?new Intl.DateTimeFormat('es-CO',{
   timeZone:'America/Bogota',dateStyle:'medium',timeStyle:'short',
  }).format(new Date(status.last_synced_at)):null;
+ const cronLast=status.last_cron_at?Date.parse(status.last_cron_at):NaN;
+ const cronStale=!Number.isFinite(cronLast)||Date.now()-cronLast>30*60_000;
  return <section className="clb-settings-card clb-google-card">
   <div className="clb-panel-title">
    <div><span>INTEGRACIONES</span><h2>Google Calendar</h2></div>
@@ -126,6 +128,12 @@ export function CalendarConnectionSettings(){
       ? new Intl.DateTimeFormat('es-CO',{timeZone:'America/Bogota',dateStyle:'short',timeStyle:'short'}).format(new Date(status.last_cron_at))
       : 'Aún sin ejecución programada confirmada'}</strong></span>
   </div>}
+  {status.connected&&!loading&&cronStale&&<p role="alert" className="crm-alert">
+    La sincronización automática de Google Calendar no tiene una ejecución comprobada
+    en los últimos 30 minutos. Aunque Google esté conectado, los cambios externos podrían
+    no llegar al CRM con el panel cerrado. Comprueba CRM_CALENDAR_CRON_SECRET en Lovable Cloud
+    y GitHub Actions y una ejecución HTTP exitosa. Mientras tanto usa «Sincronizar ahora».
+  </p>}
   {status.last_error&&<p role="alert" className="crm-alert">Última sincronización: {status.last_error}</p>}
   {!loading&&!status.configured&&<p className="crm-alert">La configuración de servidor está incompleta. Comprueba que las variables GOOGLE_CALENDAR_CLIENT_ID, GOOGLE_CALENDAR_CLIENT_SECRET y GOOGLE_CALENDAR_REDIRECT_URI estén guardadas, y que GOOGLE_CALENDAR_ENCRYPTION_KEY sea una clave de 64 caracteres hexadecimales. No compartas sus valores.</p>}
   {!loading&&status.configured&&!status.database_ready&&<p className="crm-alert">Las credenciales tienen el formato esperado, pero las tablas privadas de Google Calendar no están disponibles. Verifica en la base EXISTENTE las migraciones 20261121_google_calendar_connection.sql y 20261121_calendar_import_no_notifications.sql antes de enlazar.</p>}

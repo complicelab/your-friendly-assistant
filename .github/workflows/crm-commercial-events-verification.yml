@@ -1,0 +1,39 @@
+name: CRM Railway commercial events contract
+on:
+  push:
+    branches:
+      - main
+      - feat/crm-railway-commercial-stage-events-20261127
+    paths:
+      - "drizzle/migrations/0012_commercial_agent_events.sql"
+      - "supabase/functions/recibir-prospecto-whatsapp/index.ts"
+      - "src/lib/crm-funnel-model.ts"
+      - "src/components/crm/crm-funnel-dashboard.tsx"
+      - "src/test/crm-funnel-analytics.test.ts"
+      - "src/integrations/supabase/types.ts"
+      - ".github/workflows/crm-commercial-events-verification.yml"
+  pull_request:
+    paths:
+      - "drizzle/migrations/0012_commercial_agent_events.sql"
+      - "supabase/functions/recibir-prospecto-whatsapp/index.ts"
+      - "src/lib/crm-funnel-model.ts"
+      - "src/components/crm/crm-funnel-dashboard.tsx"
+      - "src/test/crm-funnel-analytics.test.ts"
+      - "src/integrations/supabase/types.ts"
+      - ".github/workflows/crm-commercial-events-verification.yml"
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+      - name: Funnel and webhook regression tests
+        run: bun test src/test/crm-funnel-analytics.test.ts src/test/crm-whatsapp-audit.test.ts src/test/crm-agent-attendance.test.ts src/test/crm-admin-navigation.test.ts
+      - name: Build
+        run: bun run build
+      - name: Strict type check
+        run: bunx tsc --noEmit

@@ -1,0 +1,39 @@
+name: Verify WhatsApp booking evidence and Google agenda
+on:
+  push:
+    branches:
+      - main
+      - fix/crm-google-chat-booking-verification-20261127
+    paths:
+      - "src/lib/crm-appointment-evidence.ts"
+      - "src/lib/google-calendar-sync.server.ts"
+      - "src/components/crm/agenda.tsx"
+      - "src/components/crm/calendar-connection-settings.tsx"
+      - "src/components/crm/booking.css"
+      - "src/test/crm-calendar-evidence-audit.test.ts"
+      - ".github/workflows/crm-google-chat-verification.yml"
+  pull_request:
+    paths:
+      - "src/lib/crm-appointment-evidence.ts"
+      - "src/lib/google-calendar-sync.server.ts"
+      - "src/components/crm/agenda.tsx"
+      - "src/components/crm/calendar-connection-settings.tsx"
+      - "src/components/crm/booking.css"
+      - "src/test/crm-calendar-evidence-audit.test.ts"
+      - ".github/workflows/crm-google-chat-verification.yml"
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Install frozen dependencies
+        run: bun install --frozen-lockfile
+      - name: Audit RSVP, booking, Google and CRM regression
+        run: bun run test src/test/crm-calendar-evidence-audit.test.ts src/test/crm-agent-attendance.test.ts src/test/calendar-attendance-cancellation.test.ts src/test/calendar-agenda-live.test.ts src/test/calendar-review-reconciliation.test.ts src/test/calendar-setup-readiness.test.ts src/test/google-calendar-server.test.ts
+      - name: Application build
+        run: bun run build
+      - name: Strict TypeScript
+        run: bunx tsc --noEmit

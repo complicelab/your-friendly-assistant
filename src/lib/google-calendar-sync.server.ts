@@ -97,11 +97,17 @@ export async function synchronizeGoogleAppointments(source:'manual'|'cron'='manu
    const starts_at=new Date(event.start.dateTime).toISOString();
    const ends_at=new Date(event.end.dateTime).toISOString();
    if(existing){
+    // Google presence proves occupancy, not acceptance of attendance.
+    // A cancelled CRM appointment must never be reopened by calendar sync.
+    if(existing.status==='cancelada'){stats.linked++;continue;}
     const patch:Record<string,unknown>={};
     if(existing.starts_at!==starts_at||existing.ends_at!==ends_at){
       patch['starts_at']=starts_at;patch['ends_at']=ends_at;
     }
-    if(existing.status==='cancelada')patch['status']='confirmada';
+    // Repair future legacy rows that Google marked confirmed without a
+    // matching explicit RSVP. This is a pending reservation, not a yes.
+    if(existing.status==='confirmada'&&existing.attendance_status!=='confirmada'&&
+       Date.parse(starts_at)>Date.now())patch['status']='pendiente';
     if(Object.keys(patch).length){
       const result=await db.from('crm_meetings').update(patch).eq('id',existing.id);
       if(result.error)throw Error('No se pudo actualizar una reunión vinculada.');

@@ -3,6 +3,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { calendarApi, calendarCommand } from '@/components/crm/calendar-connection-settings';
 import type { Tables } from '@/integrations/supabase/types';
 import { BOOKING_TIMEZONE, MEETING_STATUSES, attendanceStatusClass, attendanceStatusLabel, formatMeetingDate, meetingStatusLabel, notificationStatusLabel } from '@/lib/booking-model';
+import {verifyAppointmentEvidence,auditReplyLabel,auditCalendarLabel,
+ type AppointmentAuditResult,type AppointmentAuditActivity} from '@/lib/crm-appointment-evidence';
 
 type ContactSummary = Pick<Tables<'crm_contacts'>, 'id'|'full_name'|'brand_name'|'whatsapp'|'email'|'solution_interest'>;
 export type CrmMeeting = Tables<'crm_meetings'> & { crm_contacts: ContactSummary | null };
@@ -45,6 +47,9 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
   const [saving,setSaving]=useState(false);
   const [newAppointmentStart,setNewAppointmentStart]=useState('');
   const [googleEvents,setGoogleEvents]=useState<GoogleAgendaEvent[]>([]);
+  const [replyEvidence,setReplyEvidence]=useState<AppointmentAuditActivity[]>([]);
+  const [replyEvidenceLoaded,setReplyEvidenceLoaded]=useState(false);
+  const [replyEvidenceError,setReplyEvidenceError]=useState('');
   const [googleLoaded,setGoogleLoaded]=useState(false);
   const [googleLoading,setGoogleLoading]=useState(false);
   const [googleError,setGoogleError]=useState('');
@@ -86,9 +91,25 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
     }
     if(!silent)setLoading(false);
   }
+  const loadReplyEvidence=useCallback(async()=>{
+    const {data,error}=await supabase.from('crm_activities')
+      .select('contact_id,activity_type,channel,metadata,created_at')
+      .eq('channel','whatsapp_ia')
+      .in('activity_type',['recordatorio_asistencia_enviado','asistencia_confirmada',
+        'asistencia_rechazada','asistencia_dudosa','cita_confirmada'])
+      .order('created_at',{ascending:false}).limit(5000);
+    if(error||!data||data.length===5000){
+      setReplyEvidenceError('No se pudo verificar todo el historial de WhatsApp; no se acreditarán confirmaciones sin evidencia.');
+      setReplyEvidenceLoaded(false);return;
+    }
+    setReplyEvidence(data as AppointmentAuditActivity[]);
+    setReplyEvidenceError('');
+    setReplyEvidenceLoaded(true);
+  },[]);
   useEffect(()=>{
     void loadMeetings();
-    const refresh=()=>{if(!document.hidden)void loadMeetings(true);};
+    void loadReplyEvidence();
+    const refresh=()=>{if(!document.hidden){void loadMeetings(true);void loadReplyEvidence();}};
     const timer=window.setInterval(refresh,60_000);
     window.addEventListener('focus',refresh);
     document.addEventListener('visibilitychange',refresh);
@@ -97,7 +118,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
       window.removeEventListener('focus',refresh);
       document.removeEventListener('visibilitychange',refresh);
     };
-  },[]);
+  },[loadReplyEvidence]);
   useEffect(()=>{
     if(!selected){setNotifications([]);return;}
     void supabase.from('crm_notifications').select('*').eq('meeting_id',selected.id).order('created_at',{ascending:true})
@@ -124,7 +145,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
   },[days]);
   const loadGoogle=useCallback(async()=>{
     const seq=++googleSequence.current;
-    setGoogleLoading(true);setGoogleError('');
+    setGoogleLoading(true);setGoogleLoaded(false);setGoogleError('');
     try{
       const result=await calendarCommand({action:'agenda',from:googleRange.from,to:googleRange.to}) as GoogleAgendaResult;
       if(seq!==googleSequence.current)return;
@@ -154,6 +175,14 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
     };
   },[loadGoogle]);
 
+  const auditByMeetingId=useMemo(()=>{
+    const result=new Map<string,AppointmentAuditResult>();
+    if(!replyEvidenceLoaded||replyEvidenceError)return result;
+    for(const meeting of meetings)result.set(meeting.id,
+      verifyAppointmentEvidence(meeting,replyEvidence,googleLoaded?googleEvents:null,
+        googleLoaded?googleRange:null));
+    return result;
+  },[meetings,replyEvidence,replyEvidenceLoaded,replyEvidenceError,googleLoaded,googleEvents,googleRange]);
   const linkedGoogleIds=useMemo(()=>new Set(meetings.map(m=>m.external_calendar_id).filter((s):s is string=>!!s)),[meetings]);
   const googleOnly=useMemo(()=>googleEvents.filter(e=>!linkedGoogleIds.has(e.id)),[googleEvents,linkedGoogleIds]);
   const upcoming=useMemo(()=>meetings.filter(meeting=>new Date(meeting.starts_at).getTime()>=Date.now()&&['pendiente','confirmada'].includes(meeting.status)),[meetings]);
@@ -162,14 +191,29 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
   const attendanceCounts={
     pending:futureMeetings.filter(m=>m.attendance_status==='por_confirmar' &&
       m.status!=='cancelada' && m.status!=='realizada').length,
-    confirmed:futureMeetings.filter(m=>m.attendance_status==='confirmada' &&
-      m.status==='confirmada').length,
+    confirmed:futureMeetings.filter(m=>auditByMeetingId.get(m.id)?.confirmed).length,
     reminded:futureMeetings.filter(m=>m.attendance_reminder_at &&
       m.attendance_status==='por_confirmar'&&m.status==='pendiente').length,
     needsAttention:futureMeetings.filter(m=>m.attendance_status==='requiere_atencion' &&
       m.status!=='cancelada').length,
     cancelled:futureMeetings.filter(m=>m.status==='cancelada').length,
   };
+  const chatBookingClaimsWithoutReservation=useMemo(()=>{
+    if(!replyEvidenceLoaded||meetings.length>=500)return [] as AppointmentAuditActivity[];
+    const unique=new Map<string,AppointmentAuditActivity>();
+    for(const item of replyEvidence){
+      if(item.activity_type!=='cita_confirmada'||!item.contact_id||unique.has(item.contact_id))continue;
+      if(!meetings.some(meeting=>meeting.contact_id===item.contact_id))
+        unique.set(item.contact_id,item);
+    }
+    return [...unique.values()];
+  },[replyEvidence,replyEvidenceLoaded,meetings]);
+  const needsEvidenceReview=futureMeetings.filter(m=>
+    auditByMeetingId.get(m.id)?.requiresReview&&m.status!=='cancelada');
+  const confirmedWithGoogle=futureMeetings.filter(m=>{
+    const audit=auditByMeetingId.get(m.id);
+    return audit?.confirmed&&audit.booking==='calendar_match';
+  }).length;
   const dayGoogle=showGoogle?googleOnly.filter(e=>googleEventOverlapsDay(e,selectedDay)):[];
 
   const dayMeetings=meetings.filter(meeting=>meetingDateKey(meeting.starts_at)===selectedDay);
@@ -216,14 +260,36 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
     {message&&<div className="crm-alert">{message}</div>}
     <div className="clb-attendance-summary" aria-label="Confirmaciones de asistencia del agente WhatsApp">
       <div><span>Por confirmar</span><strong>{attendanceCounts.pending}</strong></div>
-      <div><span>Confirmadas por respuesta</span><strong>{attendanceCounts.confirmed}</strong></div>
+      <div><span>Confirmadas por respuesta verificable</span><strong>{attendanceCounts.confirmed}</strong></div>
+      <div><span>Confirmadas en WhatsApp y Google</span><strong>{confirmedWithGoogle}</strong></div>
+      <div><span>Citas con discrepancias</span><strong>{needsEvidenceReview.length}</strong></div>
       <div><span>Recordatorios enviados sin respuesta</span><strong>{attendanceCounts.reminded}</strong></div>
       <div><span>Requieren atención</span><strong>{attendanceCounts.needsAttention}</strong></div>
       <div><span>Canceladas</span><strong>{attendanceCounts.cancelled}</strong></div>
     </div>
+    {replyEvidenceError&&<p className="crm-alert" role="alert">{replyEvidenceError}</p>}
+    {!replyEvidenceLoaded&&!replyEvidenceError&&<p className="clb-muted">Consultando las respuestas verificables de WhatsApp…</p>}
     <p className="clb-muted clb-attendance-help">Reservar una cita no confirma asistencia.
       Los envíos se muestran cuando el agente externo los comunica; el CRM cambia el estado
       cuando recibe una respuesta verificada de esa cita.</p>
+    <div className="clb-appointment-audit">
+      <strong>Auditoría WhatsApp · CRM · Google Calendar</strong>
+      <p>Una cita solo cuenta como confirmada cuando consta la respuesta afirmativa
+        del cliente para esa reunión, con su identificador de mensaje, y no simplemente
+        porque exista una reserva en Google. Las citas sin respuesta siguen Por confirmar.</p>
+      {needsEvidenceReview.slice(0,8).map(meeting=><button key={meeting.id}
+        type="button" onClick={()=>setSelected(meeting)}>
+        <span>{meeting.crm_contacts?.full_name||'Contacto'} · {shortMeetingDate(meeting.starts_at)}</span>
+        <small>{auditByMeetingId.get(meeting.id)?.findings[0]||'Revisar cita'}</small>
+      </button>)}
+      {!!chatBookingClaimsWithoutReservation.length&&<div className="clb-claims-review">
+        <strong>{chatBookingClaimsWithoutReservation.length} conversaciones con cita informada por el agente sin una reserva correspondiente en las reuniones cargadas</strong>
+        <p>Son señales comerciales, NO citas confirmadas. Revisar si realmente se reservó el horario y si existe en Google.</p>
+        {chatBookingClaimsWithoutReservation.slice(0,10).map(item=>
+          <button type="button" key={item.contact_id} onClick={()=>onOpenContact(item.contact_id)}>Revisar conversación y contacto · {item.contact_id.slice(0,8)}…</button>)}
+      </div>}
+      {!needsEvidenceReview.length&&replyEvidenceLoaded&&<small>Sin discrepancias de evidencia en las citas futuras consultadas. Comprueba también las citas fuera del mes visible.</small>}
+    </div>
     <div className="clb-agenda-google-tools">
       <label><input type="checkbox" checked={showGoogle} onChange={event=>setShowGoogle(event.target.checked)}/>
         Mostrar eventos reales de Google Calendar
@@ -252,7 +318,11 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
             const outside=mode==='month'&&day.getUTCMonth()!==cursor.getUTCMonth();
             return <button key={key} className={'clb-day '+(outside?'outside ':'')+(key===selectedDay?'selected':'')} onClick={()=>setSelectedDay(key)}>
               <span>{day.getUTCDate()}</span><div>
-                {items.slice(0,2).map(meeting=><i key={meeting.id} className={'meeting-'+attendanceStatusClass(meeting.attendance_status,meeting.status)} title={meeting.crm_contacts?.full_name||'Reunión'}>{shortMeetingDate(meeting.starts_at).split(', ').pop()} · {meeting.crm_contacts?.full_name||'Reunión'}</i>)}
+                {items.slice(0,2).map(meeting=><i key={meeting.id} className={'meeting-'+
+                   (meeting.status==='confirmada'&&!(auditByMeetingId.get(meeting.id)?.confirmed&&
+                       auditByMeetingId.get(meeting.id)?.booking==='calendar_match')
+                     ?'pendiente':attendanceStatusClass(meeting.attendance_status,meeting.status))}
+                   title={meeting.crm_contacts?.full_name||'Reunión'}>{shortMeetingDate(meeting.starts_at).split(', ').pop()} · {meeting.crm_contacts?.full_name||'Reunión'}</i>)}
                 {googleItems.slice(0,2).map(event=><i key={'google-'+event.id} className="clb-google-day-marker" title={'Google Calendar: '+event.title}>{event.allDay?'Todo el día':shortMeetingDate(event.startsAt).split(', ').pop()} · {event.title}</i>)}
                 {items.length+googleItems.length>4&&<small>+{items.length+googleItems.length-4} más</small>}
               </div>
@@ -263,12 +333,12 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
           <h3>Agenda del {selectedDay.split('-').reverse().join('/')}</h3>
           {!dayMeetings.length&&(!dayGoogle.length||!googleLoaded)&&
             <p>{googleLoading?'Cargando eventos de Google...':'No hay reuniones del CRM para esta fecha.'}</p>}
-          {dayMeetings.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} onClick={()=>setSelected(meeting)}/>)}
+          {dayMeetings.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} audit={auditByMeetingId.get(meeting.id)} onClick={()=>setSelected(meeting)}/>)}
           {dayGoogle.map(event=><GoogleAgendaRow key={event.id} event={event} onClick={()=>setSelectedGoogle(event)}/>)}
         </div>
       </div>
       <aside className="clb-upcoming"><div className="clb-panel-title"><div><span>AGENDA</span><h2>Próximas reuniones del CRM</h2></div><b>{upcoming.length}</b></div>
-        {loading?<p className="clb-muted">Cargando agenda…</p>:!upcoming.length?<p className="clb-muted">No hay citas próximas del CRM confirmadas o pendientes.</p>:upcoming.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} onClick={()=>setSelected(meeting)}/>) }
+        {loading?<p className="clb-muted">Cargando agenda…</p>:!upcoming.length?<p className="clb-muted">No hay citas próximas del CRM confirmadas o pendientes.</p>:upcoming.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} audit={auditByMeetingId.get(meeting.id)} onClick={()=>setSelected(meeting)}/>) }
         {showGoogle&&<div className="clb-google-upcoming">
           <h3>Eventos próximos de Google <b>{googleLoaded?upcomingGoogle.length:'—'}</b></h3>
           {googleLoading&&!googleLoaded?<p className="clb-muted">Cargando eventos...</p>:
@@ -297,10 +367,30 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
     {selected&&<div className="crm-modal-backdrop" onMouseDown={event=>{if(event.currentTarget===event.target)setSelected(null);}}><section className="crm-modal clb-meeting-modal">
       <div className="crm-modal-head"><div><span>REUNIÓN</span><h2>{selected.crm_contacts?.full_name||'Contacto'}</h2><p>{formatMeetingDate(selected.starts_at)} · Hora de Colombia</p></div><button onClick={()=>setSelected(null)} aria-label="Cerrar">×</button></div>
       <div className="crm-fields"><Field label="Marca / empresa" value={selected.crm_contacts?.brand_name}/><Field label="Servicio" value={selected.service_interest||selected.crm_contacts?.solution_interest}/><Field label="WhatsApp" value={selected.attendee_whatsapp||selected.crm_contacts?.whatsapp}/><Field label="Correo" value={selected.attendee_email||selected.crm_contacts?.email}/><Field label="Duración" value={`${Math.round((Date.parse(selected.ends_at)-Date.parse(selected.starts_at))/60000)} minutos`}/></div>
+      <div className="clb-evidence-summary" role="status">
+        <strong>Comprobación cruzada de la cita</strong>
+        <span>Reserva: registrada en el CRM</span>
+        <span>Cliente en WhatsApp: {auditByMeetingId.get(selected.id)
+          ?auditReplyLabel(auditByMeetingId.get(selected.id)!.reply)
+          :'Evidencia pendiente de consulta'}</span>
+        <span>Google Calendar: {auditByMeetingId.get(selected.id)
+          ?auditCalendarLabel(auditByMeetingId.get(selected.id)!.booking)
+          :'Sin comprobar'}</span>
+        {auditByMeetingId.get(selected.id)?.findings.map((finding,index)=>
+          <small key={index}>{finding}</small>)}
+      </div>
       <div className="clb-attendance-detail" role="status">
         <span>CONFIRMACIÓN DE ASISTENCIA · WHATSAPP IA</span>
-        <strong className={'meeting-'+attendanceStatusClass(selected.attendance_status,selected.status)}>
-          {attendanceStatusLabel(selected.attendance_status,selected.status)}</strong>
+        <strong className={'meeting-'+(selected.status==='confirmada'&&!(auditByMeetingId.get(selected.id)?.confirmed&&
+             auditByMeetingId.get(selected.id)?.booking==='calendar_match')
+          ?'pendiente':attendanceStatusClass(selected.attendance_status,selected.status))}>
+          {selected.status==='confirmada'
+            ?auditByMeetingId.get(selected.id)?.confirmed&&auditByMeetingId.get(selected.id)?.booking==='calendar_match'
+              ?'Confirmada · WhatsApp y Google verificados'
+              :auditByMeetingId.get(selected.id)?.confirmed
+                ?'Confirmó por WhatsApp · Google sin verificar'
+                :'Confirmación sin verificar'
+            :attendanceStatusLabel(selected.attendance_status,selected.status)}</strong>
         <small>Recordatorio 24 horas antes: {selected.attendance_reminder_at
           ? shortMeetingDate(selected.attendance_reminder_at)+' (envío registrado por el agente)'
           : 'sin envío registrado en el CRM'}</small>
@@ -348,10 +438,17 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
   </section>;
 }
 
-function MeetingRow({meeting,onClick}:{meeting:CrmMeeting;onClick:()=>void}){
-  return <button className="clb-meeting-row" onClick={onClick}><span className="clb-meeting-date">{shortMeetingDate(meeting.starts_at)}</span><span><b>{meeting.crm_contacts?.full_name||'Contacto'}</b><small>{meeting.crm_contacts?.brand_name||meeting.service_interest||'Diagnóstico'}</small></span><em className={'meeting-'+attendanceStatusClass(meeting.attendance_status,meeting.status)}>
-        {attendanceStatusLabel(meeting.attendance_status,meeting.status)}
-      </em></button>;
+function MeetingRow({meeting,audit,onClick}:{meeting:CrmMeeting;audit:AppointmentAuditResult|undefined;onClick:()=>void}){
+  const label=meeting.status==='confirmada'
+    ?audit?.confirmed&&audit.booking==='calendar_match'?'Confirmada · WhatsApp y Google'
+      :audit?.confirmed?'Confirmó WhatsApp · Google sin verificar':'Confirmación sin verificar'
+    :attendanceStatusLabel(meeting.attendance_status,meeting.status);
+  return <button className="clb-meeting-row" onClick={onClick}><span className="clb-meeting-date">{shortMeetingDate(meeting.starts_at)}</span><span><b>{meeting.crm_contacts?.full_name||'Contacto'}</b><small>{meeting.crm_contacts?.brand_name||meeting.service_interest||'Diagnóstico'}</small></span><em className={'meeting-'+(meeting.status==='confirmada'&&!(audit?.confirmed&&audit.booking==='calendar_match')
+          ?'pendiente':attendanceStatusClass(meeting.attendance_status,meeting.status))}>
+        {label}
+      </em>{audit&&['calendar_missing','calendar_mismatch','calendar_unlinked'].includes(audit.booking)&&
+        meeting.status!=='cancelada'&&
+        <small className="clb-meeting-audit-warning">{auditCalendarLabel(audit.booking)}</small>}</button>;
 }
 function GoogleAgendaRow({event,onClick}:{event:GoogleAgendaEvent;onClick:()=>void}){
  return <button type="button" className="clb-meeting-row clb-google-event-row" onClick={onClick}>

@@ -66,6 +66,23 @@ describe('commercial funnel uses verified records, not hopeful guesses',()=>{
   expect(r.totals.explicitlyAbandoned).toBe(1);
   expect(r.abandonmentMeasurable).toBe(true);
  });
+ it('does not keep a recovered contact in the abandoned stage',()=>{
+  const r=commercialFunnel([contact('one','contactado')],[],[
+   { ...activity('one','prospecto_abandonado'), created_at:'2026-11-25T10:00:00Z' },
+   { ...activity('one','prospecto_reactivado'), created_at:'2026-11-26T10:00:00Z' },
+  ]);
+  expect(r.contactStates[0]?.stage).toBe('reactivado');
+  expect(r.totals.explicitlyAbandoned).toBe(0);
+  expect(r.totals.reactivated).toBe(1);
+  expect(r.abandonmentMeasurable).toBe(true);
+ });
+ it('commercial event history is not mistaken for a booking',()=>{
+  const r=commercialFunnel([contact('one','abandonado')],[],[
+   activity('one','prospecto_abandonado'),
+  ]);
+  expect(r.totals.booked).toBe(0);
+  expect(r.stages.abandonado).toBe(1);
+ });
  it('uses historical interest event even after a sales stage changes',()=>{
   const r=commercialFunnel([contact('one','contactado')],[],
    [activity('one','diagnostico_solicitado')]);
@@ -114,5 +131,29 @@ describe('CRM analytic screen integration',()=>{
   expect(panel).toContain('Sin medición verificada');
   expect(panel).toContain('Agendaron');
   expect(panel).toContain('Confirmaron asistencia');
+ });
+});
+
+describe('Railway-to-Lovable commercial stage integration contracts',()=>{
+ const sql=readFileSync('drizzle/migrations/0012_commercial_agent_events.sql','utf8');
+ const webhook=readFileSync('supabase/functions/recibir-prospecto-whatsapp/index.ts','utf8');
+ it('routes new events to dedicated service-only RPC without changing RSVP',()=>{
+  expect(webhook).toContain('crm_apply_commercial_agent_event');
+  expect(webhook).toContain('crm_apply_attendance_agent_event');
+  expect(webhook).toContain('crm_receive_whatsapp_event');
+  expect(webhook).toContain('CRM_WEBHOOK_SECRET');
+ });
+ it('avoids creating contacts, messages or fake bookings',()=>{
+  expect(sql).not.toMatch(/insert\s+into\s+public\.crm_contacts/i);
+  expect(sql).not.toMatch(/insert\s+into\s+public\.crm_meetings/i);
+  expect(sql).toContain('exactly one existing contact');
+  expect(sql).toContain('no_contactar');
+  expect(sql).toContain('prospecto_reactivado');
+ });
+ it('requires documented follow-up evidence and preserves event idempotency',()=>{
+  expect(sql).toContain('dos_seguimientos_sin_respuesta');
+  expect(sql).toContain("interval '48 hours'");
+  expect(sql).toContain("commercial:'||encode(digest(v_message_id");
+  expect(sql).toContain('grant execute on function public.crm_apply_commercial_agent_event');
  });
 });

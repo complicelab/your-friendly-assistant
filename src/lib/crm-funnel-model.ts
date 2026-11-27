@@ -27,16 +27,16 @@ export type CommercialStage=
  |'nuevo'|'en_conversacion'|'interesado'|'cita_agendada'
  |'asistencia_confirmada'|'diagnostico_realizado'|'cita_cancelada'
  |'propuesta'|'ganado'|'perdido'|'no_interesado'
- |'no_contactar'|'abandonado';
+ |'no_contactar'|'abandonado'|'reactivado';
 export type ContactFunnelState={
  contactId:string;stage:CommercialStage;interested:boolean;booked:boolean;
  attendanceConfirmed:boolean;attended:boolean;won:boolean;
- explicitlyAbandoned:boolean;
+ explicitlyAbandoned:boolean;reactivated:boolean;
 };
 export type FunnelCounts={
  leads:number;contacted:number;interested:number;booked:number;
  attendanceConfirmed:number;attended:number;won:number;
- noInterested:number;optedOut:number;explicitlyAbandoned:number;
+ noInterested:number;optedOut:number;explicitlyAbandoned:number;reactivated:number;
  appointments:number;cancelledAppointments:number;
  attendedAppointments:number;noShowAppointments:number;
 };
@@ -64,6 +64,7 @@ export const FUNNEL_STAGE_LABELS:Record<CommercialStage,string>={
  no_interesado:'No interesado',
  no_contactar:'No contactar',
  abandonado:'Abandono registrado',
+ reactivado:'Reactivado',
 };
 
 const interestedStatuses=new Set([
@@ -85,13 +86,13 @@ export const isTestContact=(contact:FunnelContact)=>
 const empty=():FunnelCounts=>({
  leads:0,contacted:0,interested:0,booked:0,
  attendanceConfirmed:0,attended:0,won:0,
- noInterested:0,optedOut:0,explicitlyAbandoned:0,
+ noInterested:0,optedOut:0,explicitlyAbandoned:0,reactivated:0,
  appointments:0,cancelledAppointments:0,attendedAppointments:0,noShowAppointments:0,
 });
 const increase=(count:FunnelCounts, state:{
  contacted:boolean;interested:boolean;booked:boolean;
  attendanceConfirmed:boolean;attended:boolean;won:boolean;
- noInterested:boolean;optedOut:boolean;explicitlyAbandoned:boolean;
+ noInterested:boolean;optedOut:boolean;explicitlyAbandoned:boolean;reactivated:boolean;
 })=>{
  count.leads++;
  if(state.contacted)count.contacted++;
@@ -103,6 +104,7 @@ const increase=(count:FunnelCounts, state:{
  if(state.noInterested)count.noInterested++;
  if(state.optedOut)count.optedOut++;
  if(state.explicitlyAbandoned)count.explicitlyAbandoned++;
+ if(state.reactivated)count.reactivated++;
 };
 
 export function commercialFunnel(
@@ -116,10 +118,10 @@ export function commercialFunnel(
   const group=meetingByContact.get(meeting.contact_id)||[];
   group.push(meeting);meetingByContact.set(meeting.contact_id,group);
  }
- const activitiesByContact=new Map<string,Set<string>>();
+ const activitiesByContact=new Map<string,FunnelActivity[]>();
  for(const activity of activities){
-  const set=activitiesByContact.get(activity.contact_id)||new Set<string>();
-  set.add(activity.activity_type);activitiesByContact.set(activity.contact_id,set);
+  const set=activitiesByContact.get(activity.contact_id)||[];
+  set.push(activity);activitiesByContact.set(activity.contact_id,set);
  }
  const totals=empty();
  const stages=Object.fromEntries((Object.keys(FUNNEL_STAGE_LABELS) as CommercialStage[])
@@ -129,7 +131,12 @@ export function commercialFunnel(
  let hasAbandonmentEvents=false;
  for(const contact of eligible){
   const contactMeetings=meetingByContact.get(contact.id)||[];
-  const activityTypes=activitiesByContact.get(contact.id)||new Set<string>();
+  const history=activitiesByContact.get(contact.id)||[];
+  const activityTypes=new Set(history.map(item=>item.activity_type));
+  const latestCommercial=[...history]
+    .filter(item=>['prospecto_abandonado','abandono_confirmado','prospecto_reactivado'].includes(item.activity_type))
+    .sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at))[0];
+  const reactivated=latestCommercial?.activity_type==='prospecto_reactivado';
   const booked=contactMeetings.length>0;
   const attended=contactMeetings.some(m=>m.status==='realizada');
   const attendanceConfirmed=contactMeetings.some(m=>m.attendance_status==='confirmada'&&
@@ -140,9 +147,9 @@ export function commercialFunnel(
   const won=contact.status==='ganado';
   const noInterested=contact.status==='no_interesado';
   const optedOut=contact.status==='no_contactar';
-  const explicitlyAbandoned=contact.status==='abandonado'||
-   [...activityTypes].some(type=>explicitAbandonmentEvents.has(type));
-  if(explicitlyAbandoned)hasAbandonmentEvents=true;
+  const explicitlyAbandoned=contact.status==='abandonado' ||
+   (!reactivated && !!latestCommercial && explicitAbandonmentEvents.has(latestCommercial.activity_type));
+  if(latestCommercial)hasAbandonmentEvents=true;
   const latest=[...contactMeetings].sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at))[0];
   let stage:CommercialStage='nuevo';
   if(won)stage='ganado';
@@ -155,15 +162,16 @@ export function commercialFunnel(
   else if(latest?.status==='cancelada')stage='cita_cancelada';
   else if(latest&&latest.attendance_status==='confirmada'&&latest.status==='confirmada')stage='asistencia_confirmada';
   else if(booked)stage='cita_agendada';
+  else if(reactivated)stage='reactivado';
   else if(interested)stage='interesado';
   else if(contacted)stage='en_conversacion';
 
   const state:ContactFunnelState={contactId:contact.id,stage,interested,
-   booked,attendanceConfirmed,attended,won,explicitlyAbandoned};
+   booked,attendanceConfirmed,attended,won,explicitlyAbandoned,reactivated};
   states.push(state);
   stages[stage]++;
   const data={contacted,interested,booked,attendanceConfirmed,attended,
-   won,noInterested,optedOut,explicitlyAbandoned};
+   won,noInterested,optedOut,explicitlyAbandoned,reactivated};
   increase(totals,data);
   const appointmentOutcomes={
    appointments:contactMeetings.length,

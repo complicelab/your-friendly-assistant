@@ -250,14 +250,30 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
     {message&&<div className="crm-alert">{message}</div>}
     <div className="clb-attendance-summary" aria-label="Confirmaciones de asistencia del agente WhatsApp">
       <div><span>Por confirmar</span><strong>{attendanceCounts.pending}</strong></div>
-      <div><span>Confirmadas por respuesta</span><strong>{attendanceCounts.confirmed}</strong></div>
+      <div><span>Confirmadas por respuesta verificable</span><strong>{attendanceCounts.confirmed}</strong></div>
+      <div><span>Confirmadas en WhatsApp y Google</span><strong>{confirmedWithGoogle}</strong></div>
+      <div><span>Citas con discrepancias</span><strong>{needsEvidenceReview.length}</strong></div>
       <div><span>Recordatorios enviados sin respuesta</span><strong>{attendanceCounts.reminded}</strong></div>
       <div><span>Requieren atención</span><strong>{attendanceCounts.needsAttention}</strong></div>
       <div><span>Canceladas</span><strong>{attendanceCounts.cancelled}</strong></div>
     </div>
+    {replyEvidenceError&&<p className="crm-alert" role="alert">{replyEvidenceError}</p>}
+    {!replyEvidenceLoaded&&!replyEvidenceError&&<p className="clb-muted">Consultando las respuestas verificables de WhatsApp…</p>}
     <p className="clb-muted clb-attendance-help">Reservar una cita no confirma asistencia.
       Los envíos se muestran cuando el agente externo los comunica; el CRM cambia el estado
       cuando recibe una respuesta verificada de esa cita.</p>
+    <div className="clb-appointment-audit">
+      <strong>Auditoría WhatsApp · CRM · Google Calendar</strong>
+      <p>Una cita solo cuenta como confirmada cuando consta la respuesta afirmativa
+        del cliente para esa reunión, con su identificador de mensaje, y no simplemente
+        porque exista una reserva en Google. Las citas sin respuesta siguen Por confirmar.</p>
+      {needsEvidenceReview.slice(0,8).map(meeting=><button key={meeting.id}
+        type="button" onClick={()=>setSelected(meeting)}>
+        <span>{meeting.crm_contacts?.full_name||'Contacto'} · {shortMeetingDate(meeting.starts_at)}</span>
+        <small>{auditByMeetingId.get(meeting.id)?.findings[0]||'Revisar cita'}</small>
+      </button>)}
+      {!needsEvidenceReview.length&&replyEvidenceLoaded&&<small>Sin discrepancias de evidencia en las citas futuras consultadas. Comprueba también las citas fuera del mes visible.</small>}
+    </div>
     <div className="clb-agenda-google-tools">
       <label><input type="checkbox" checked={showGoogle} onChange={event=>setShowGoogle(event.target.checked)}/>
         Mostrar eventos reales de Google Calendar
@@ -297,12 +313,12 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
           <h3>Agenda del {selectedDay.split('-').reverse().join('/')}</h3>
           {!dayMeetings.length&&(!dayGoogle.length||!googleLoaded)&&
             <p>{googleLoading?'Cargando eventos de Google...':'No hay reuniones del CRM para esta fecha.'}</p>}
-          {dayMeetings.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} onClick={()=>setSelected(meeting)}/>)}
+          {dayMeetings.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} audit={auditByMeetingId.get(meeting.id)} onClick={()=>setSelected(meeting)}/>)}
           {dayGoogle.map(event=><GoogleAgendaRow key={event.id} event={event} onClick={()=>setSelectedGoogle(event)}/>)}
         </div>
       </div>
       <aside className="clb-upcoming"><div className="clb-panel-title"><div><span>AGENDA</span><h2>Próximas reuniones del CRM</h2></div><b>{upcoming.length}</b></div>
-        {loading?<p className="clb-muted">Cargando agenda…</p>:!upcoming.length?<p className="clb-muted">No hay citas próximas del CRM confirmadas o pendientes.</p>:upcoming.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} onClick={()=>setSelected(meeting)}/>) }
+        {loading?<p className="clb-muted">Cargando agenda…</p>:!upcoming.length?<p className="clb-muted">No hay citas próximas del CRM confirmadas o pendientes.</p>:upcoming.map(meeting=><MeetingRow key={meeting.id} meeting={meeting} audit={auditByMeetingId.get(meeting.id)} onClick={()=>setSelected(meeting)}/>) }
         {showGoogle&&<div className="clb-google-upcoming">
           <h3>Eventos próximos de Google <b>{googleLoaded?upcomingGoogle.length:'—'}</b></h3>
           {googleLoading&&!googleLoaded?<p className="clb-muted">Cargando eventos...</p>:
@@ -331,6 +347,18 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
     {selected&&<div className="crm-modal-backdrop" onMouseDown={event=>{if(event.currentTarget===event.target)setSelected(null);}}><section className="crm-modal clb-meeting-modal">
       <div className="crm-modal-head"><div><span>REUNIÓN</span><h2>{selected.crm_contacts?.full_name||'Contacto'}</h2><p>{formatMeetingDate(selected.starts_at)} · Hora de Colombia</p></div><button onClick={()=>setSelected(null)} aria-label="Cerrar">×</button></div>
       <div className="crm-fields"><Field label="Marca / empresa" value={selected.crm_contacts?.brand_name}/><Field label="Servicio" value={selected.service_interest||selected.crm_contacts?.solution_interest}/><Field label="WhatsApp" value={selected.attendee_whatsapp||selected.crm_contacts?.whatsapp}/><Field label="Correo" value={selected.attendee_email||selected.crm_contacts?.email}/><Field label="Duración" value={`${Math.round((Date.parse(selected.ends_at)-Date.parse(selected.starts_at))/60000)} minutos`}/></div>
+      <div className="clb-evidence-summary" role="status">
+        <strong>Comprobación cruzada de la cita</strong>
+        <span>Reserva: registrada en el CRM</span>
+        <span>Cliente en WhatsApp: {auditByMeetingId.get(selected.id)
+          ?auditReplyLabel(auditByMeetingId.get(selected.id)!.reply)
+          :'Evidencia pendiente de consulta'}</span>
+        <span>Google Calendar: {auditByMeetingId.get(selected.id)
+          ?auditCalendarLabel(auditByMeetingId.get(selected.id)!.booking)
+          :'Sin comprobar'}</span>
+        {auditByMeetingId.get(selected.id)?.findings.map((finding,index)=>
+          <small key={index}>{finding}</small>)}
+      </div>
       <div className="clb-attendance-detail" role="status">
         <span>CONFIRMACIÓN DE ASISTENCIA · WHATSAPP IA</span>
         <strong className={'meeting-'+attendanceStatusClass(selected.attendance_status,selected.status)}>
@@ -382,10 +410,15 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
   </section>;
 }
 
-function MeetingRow({meeting,onClick}:{meeting:CrmMeeting;onClick:()=>void}){
+function MeetingRow({meeting,audit,onClick}:{meeting:CrmMeeting;audit?:AppointmentAuditResult;onClick:()=>void}){
+  const label=meeting.status==='confirmada'
+    ?audit?.confirmed?'Confirmada por WhatsApp':'Confirmación sin verificar'
+    :attendanceStatusLabel(meeting.attendance_status,meeting.status);
   return <button className="clb-meeting-row" onClick={onClick}><span className="clb-meeting-date">{shortMeetingDate(meeting.starts_at)}</span><span><b>{meeting.crm_contacts?.full_name||'Contacto'}</b><small>{meeting.crm_contacts?.brand_name||meeting.service_interest||'Diagnóstico'}</small></span><em className={'meeting-'+attendanceStatusClass(meeting.attendance_status,meeting.status)}>
-        {attendanceStatusLabel(meeting.attendance_status,meeting.status)}
-      </em></button>;
+        {label}
+      </em>{audit&&['calendar_missing','calendar_mismatch','calendar_unlinked'].includes(audit.booking)&&
+        meeting.status!=='cancelada'&&
+        <small className="clb-meeting-audit-warning">{auditCalendarLabel(audit.booking)}</small>}</button>;
 }
 function GoogleAgendaRow({event,onClick}:{event:GoogleAgendaEvent;onClick:()=>void}){
  return <button type="button" className="clb-meeting-row clb-google-event-row" onClick={onClick}>

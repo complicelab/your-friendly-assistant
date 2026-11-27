@@ -630,6 +630,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      crm_apply_commercial_agent_event: {
+        Args: {
+          p_event_type: string
+          p_payload: Json
+          p_timestamp: string
+          p_wa_id: string
+        }
+        Returns: string
+      }
       crm_apply_attendance_agent_event: {
         Args: {
           p_event_type: string

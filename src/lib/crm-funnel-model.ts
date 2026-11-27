@@ -171,15 +171,17 @@ export function commercialFunnel(
    attendedAppointments:contactMeetings.filter(m=>m.status==='realizada').length,
    noShowAppointments:contactMeetings.filter(m=>m.status==='no_asistio').length,
   };
-  for(const [metric,value] of Object.entries(appointmentOutcomes)){
-   (totals as unknown as Record<string,number>)[metric]+=value;
-  }
+  totals.appointments+=appointmentOutcomes.appointments;
+  totals.cancelledAppointments+=appointmentOutcomes.cancelledAppointments;
+  totals.attendedAppointments+=appointmentOutcomes.attendedAppointments;
+  totals.noShowAppointments+=appointmentOutcomes.noShowAppointments;
   const source=(contact.source||'sin_origen').trim()||'sin_origen';
   const sourceCounts=sources.get(source)||empty();
   increase(sourceCounts,data);
-  for(const [metric,value] of Object.entries(appointmentOutcomes)){
-   (sourceCounts as unknown as Record<string,number>)[metric]+=value;
-  }
+  sourceCounts.appointments+=appointmentOutcomes.appointments;
+  sourceCounts.cancelledAppointments+=appointmentOutcomes.cancelledAppointments;
+  sourceCounts.attendedAppointments+=appointmentOutcomes.attendedAppointments;
+  sourceCounts.noShowAppointments+=appointmentOutcomes.noShowAppointments;
   sources.set(source,sourceCounts);
  }
  return {

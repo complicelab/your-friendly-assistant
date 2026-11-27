@@ -426,7 +426,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
   </section>;
 }
 
-function MeetingRow({meeting,audit,onClick}:{meeting:CrmMeeting;audit?:AppointmentAuditResult;onClick:()=>void}){
+function MeetingRow({meeting,audit,onClick}:{meeting:CrmMeeting;audit:AppointmentAuditResult|undefined;onClick:()=>void}){
   const label=meeting.status==='confirmada'
     ?audit?.confirmed?'Confirmada por WhatsApp':'Confirmación sin verificar'
     :attendanceStatusLabel(meeting.attendance_status,meeting.status);

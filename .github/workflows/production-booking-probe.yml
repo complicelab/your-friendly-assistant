@@ -1,12 +1,11 @@
 name: Production booking probe
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/production-booking-probe.yml"
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   probe:

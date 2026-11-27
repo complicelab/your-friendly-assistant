@@ -1,0 +1,38 @@
+name: CRM commercial funnel verification
+on:
+  push:
+    branches:
+      - main
+      - feat/crm-commercial-funnel-analytics-20261127
+    paths:
+      - "src/lib/crm-funnel-model.ts"
+      - "src/components/crm/crm-funnel-dashboard.tsx"
+      - "src/components/crm/crm-funnel-dashboard.css"
+      - "src/routes/admin.tsx"
+      - "src/test/crm-funnel-analytics.test.ts"
+      - ".github/workflows/crm-funnel-analytics.yml"
+  pull_request:
+    paths:
+      - "src/lib/crm-funnel-model.ts"
+      - "src/components/crm/crm-funnel-dashboard.tsx"
+      - "src/components/crm/crm-funnel-dashboard.css"
+      - "src/routes/admin.tsx"
+      - "src/test/crm-funnel-analytics.test.ts"
+      - ".github/workflows/crm-funnel-analytics.yml"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Funnel analytics and CRM regressions
+        run: bun test src/test/crm-funnel-analytics.test.ts src/test/crm-whatsapp-audit.test.ts src/test/crm-agent-attendance.test.ts src/test/crm-admin-navigation.test.ts
+      - name: Build
+        run: bun run build
+      - name: Typecheck
+        run: bunx tsc --noEmit

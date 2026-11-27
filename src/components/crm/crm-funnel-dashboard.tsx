@@ -60,7 +60,7 @@ export function CrmFunnelDashboard(){
     readPages<FunnelActivity>(async(from,to)=>{
      const {data,error}=await supabase.from('crm_activities')
       .select('contact_id,activity_type,created_at')
-      .in('activity_type',['diagnostico_solicitado','interes_confirmado','prospecto_abandonado','abandono_confirmado'])
+      .in('activity_type',['diagnostico_solicitado','interes_confirmado','prospecto_abandonado','abandono_confirmado','prospecto_reactivado'])
       .order('created_at',{ascending:false}).range(from,to);
      return {data,error};
     }),
@@ -146,6 +146,8 @@ export function CrmFunnelDashboard(){
     note={(n.attendedAppointments+n.noShowAppointments)+' citas con resultado definitivo'}/>
    <Kpi label="Citas canceladas" value={String(n.cancelledAppointments)}
     note={percent(n.cancelledAppointments,n.appointments)+' de reservas'}/>
+   <Kpi label="Reactivados" value={String(n.reactivated)}
+    note="Reactivación registrada por el agente"/>
    <Kpi label="Ventas ganadas" value={String(n.won)}
     note={percent(n.won,n.leads)+' de leads'}/>
   </div>
@@ -174,7 +176,8 @@ export function CrmFunnelDashboard(){
     <div className="cl-funnel-abandoned">
      <strong>Abandono comercial: {report.abandonmentMeasurable?n.explicitlyAbandoned:'Sin medición verificada'}</strong>
      <p>Una conversación sin respuesta no se clasifica automáticamente como abandonada.
-      Para medirla, Railway debe enviar una señal explícita con fecha y motivo.</p>
+      Para medirla, Railway debe enviar una señal explícita con dos seguimientos
+      documentados, fecha y motivo; la reactivación posterior cambia su estado actual.</p>
     </div>
    </article>
   </div>

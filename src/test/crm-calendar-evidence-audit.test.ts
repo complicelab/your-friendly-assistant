@@ -79,6 +79,15 @@ describe('Cross-source meeting verification: agent conversation / CRM / Google',
   expect(auditReplyLabel('verified')).toContain('WhatsApp');
  });
 });
+describe('CRM calendar must not show unverified meetings as green',()=>{
+ const agenda=readFileSync('src/components/crm/agenda.tsx','utf8');
+ it('requires both the WhatsApp message and the actual matching Google event',()=>{
+  expect(agenda).toContain("audit?.confirmed&&audit.booking==='calendar_match'");
+  expect(agenda).toContain("Confirmó WhatsApp · Google sin verificar");
+  expect(agenda).toContain("Confirmación sin verificar");
+  expect(agenda).toContain("chatBookingClaimsWithoutReservation");
+ });
+});
 describe('Google sync cannot fabricate a customer confirmation',()=>{
  const sync=readFileSync('src/lib/google-calendar-sync.server.ts','utf8');
  it('never sets a cancelled meeting back to confirmed',()=>{

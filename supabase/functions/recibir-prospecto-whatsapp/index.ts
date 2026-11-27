@@ -2,7 +2,8 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const attendanceTypes=new Set(["recordatorio_asistencia_enviado","asistencia_confirmada","asistencia_rechazada","asistencia_dudosa"]);
-const allowed = new Set(["lead_creado","diagnostico_solicitado","cita_confirmada","escalado_a_humano","no_interesado","opt_out",...attendanceTypes]);
+const commercialTypes=new Set(["interes_confirmado","seguimiento_pendiente","prospecto_abandonado","prospecto_reactivado"]);
+const allowed = new Set(["lead_creado","diagnostico_solicitado","cita_confirmada","escalado_a_humano","no_interesado","opt_out",...attendanceTypes,...commercialTypes]);
 const response = (status:number, data:Record<string,unknown>) =>
   new Response(JSON.stringify(data), {status,headers:{"content-type":"application/json; charset=utf-8"}});
 const equal = (a:string,b:string) => {
@@ -32,6 +33,22 @@ Deno.serve(async (request) => {
     return response(400,{ok:false,error:"Evento inválido."});
   if(JSON.stringify(event).length>16384) return response(413,{ok:false,error:"Solicitud demasiado grande."});
   const attendanceEvent=attendanceTypes.has(String(event.event_type));
+  const commercialEvent=commercialTypes.has(String(event.event_type));
+  if(commercialEvent){
+    const payload=event.payload as Record<string,unknown>;
+    if(typeof payload.message_id!=="string" ||
+       !/^[a-zA-Z0-9_.:/+=-]{6,180}$/.test(payload.message_id) ||
+       (payload.motivo!==undefined && (typeof payload.motivo!=="string" || payload.motivo.length>240)))
+      return response(400,{ok:false,error:"El evento comercial requiere message_id válido y motivo breve."});
+    if(event.event_type==="prospecto_abandonado" &&
+      (payload.evidence_type!=="dos_seguimientos_sin_respuesta" ||
+       !/^[0-9]{1,3}$/.test(String(payload.follow_up_count??"")) ||
+       Number(payload.follow_up_count)<2 ||
+       typeof payload.last_followup_at!=="string" ||
+       !Number.isFinite(Date.parse(payload.last_followup_at)) ||
+       typeof payload.motivo!=="string" || !payload.motivo.trim()))
+      return response(400,{ok:false,error:"Abandono requiere evidencia de dos seguimientos y tiempo transcurrido."});
+  }
   if(attendanceEvent){
     const payload=event.payload as Record<string,unknown>;
     if(typeof payload.meeting_id!=="string" ||
@@ -50,19 +67,20 @@ Deno.serve(async (request) => {
     const supabase=createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});
     // Existing cita_confirmada remains a booking/lead-stage event.
     // ONLY explicit RSVP events with a unique meeting ID may update attendance.
-    const {error}=attendanceEvent
-      ? await supabase.rpc("crm_apply_attendance_agent_event",{
-          p_event_type:event.event_type,p_wa_id:wa,
-          p_timestamp:timestamp,p_payload:event.payload,
-        })
-      : await supabase.rpc("crm_receive_whatsapp_event",{
-          p_event_type:event.event_type,p_wa_id:wa,
-          p_timestamp:timestamp,p_payload:event.payload,
-        });
+    const rpc=attendanceEvent?"crm_apply_attendance_agent_event":
+      commercialEvent?"crm_apply_commercial_agent_event":"crm_receive_whatsapp_event";
+    // The service role is the only caller. Commercial events can be emitted
+    // by Railway only AFTER the Lovable Cloud migration is applied.
+    const {error}=await supabase.rpc(rpc,{
+      p_event_type:event.event_type,p_wa_id:wa,
+      p_timestamp:timestamp,p_payload:event.payload,
+    });
     if(error){
       console.error("CRM inbound RPC failed",error.code);
       if(attendanceEvent && error.code==="P0001")
         return response(422,{ok:false,error:"No se pudo aplicar la respuesta a esa reunión. Verifica meeting_id, teléfono, recordatorio y horario."});
+      if(commercialEvent && error.code==="P0001")
+        return response(422,{ok:false,error:"Evento comercial no válido para este contacto, su etapa o su evidencia."});
       return response(500,{ok:false,error:"No se pudo guardar el evento."});
     }
     // CRM receipt is already durable. A Google failure stays pending, never undo the RSVP.

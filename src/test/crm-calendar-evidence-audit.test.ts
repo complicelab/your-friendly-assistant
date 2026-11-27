@@ -68,6 +68,12 @@ describe('Cross-source meeting verification: agent conversation / CRM / Google',
   const moved=verifyAppointmentEvidence(meeting,[],[{...google[0]!,startsAt:'2026-12-02T16:00:00Z'}],range);
   expect(moved.booking).toBe('calendar_mismatch');
  });
+ it('does not count transparent or all-day Google events as customer appointments',()=>{
+  const transparent=verifyAppointmentEvidence(confirmed,[activity('asistencia_confirmada',yes)],[{...google[0]!,transparent:true}],range);
+  expect(transparent.booking).toBe('calendar_mismatch');
+  const allDay=verifyAppointmentEvidence(confirmed,[activity('asistencia_confirmada',yes)],[{...google[0]!,allDay:true}],range);
+  expect(allDay.booking).toBe('calendar_mismatch');
+ });
  it('does not report missing events for months the Google query never checked',()=>{
   expect(verifyAppointmentEvidence(meeting,[],[],{from:'2026-11-01',to:'2026-11-30'}).booking).toBe('calendar_unchecked');
   expect(auditReplyLabel('verified')).toContain('WhatsApp');

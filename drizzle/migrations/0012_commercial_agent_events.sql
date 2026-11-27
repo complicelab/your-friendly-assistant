@@ -121,7 +121,7 @@ begin
     raise exception 'stale commercial event';
   end if;
 
-  if v_contact.status in ('ganado','no_contactar','perdido') then
+  if v_contact.status in ('ganado','no_contactar','perdido','no_interesado') then
     raise exception 'terminal sales status cannot be changed by agent';
   end if;
 

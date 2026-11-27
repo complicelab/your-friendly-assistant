@@ -3,6 +3,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { calendarApi, calendarCommand } from '@/components/crm/calendar-connection-settings';
 import type { Tables } from '@/integrations/supabase/types';
 import { BOOKING_TIMEZONE, MEETING_STATUSES, attendanceStatusClass, attendanceStatusLabel, formatMeetingDate, meetingStatusLabel, notificationStatusLabel } from '@/lib/booking-model';
+import {verifyAppointmentEvidence,auditReplyLabel,auditCalendarLabel,
+ type AppointmentAuditResult,type AppointmentAuditActivity} from '@/lib/crm-appointment-evidence';
 
 type ContactSummary = Pick<Tables<'crm_contacts'>, 'id'|'full_name'|'brand_name'|'whatsapp'|'email'|'solution_interest'>;
 export type CrmMeeting = Tables<'crm_meetings'> & { crm_contacts: ContactSummary | null };
@@ -45,6 +47,9 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
   const [saving,setSaving]=useState(false);
   const [newAppointmentStart,setNewAppointmentStart]=useState('');
   const [googleEvents,setGoogleEvents]=useState<GoogleAgendaEvent[]>([]);
+  const [replyEvidence,setReplyEvidence]=useState<AppointmentAuditActivity[]>([]);
+  const [replyEvidenceLoaded,setReplyEvidenceLoaded]=useState(false);
+  const [replyEvidenceError,setReplyEvidenceError]=useState('');
   const [googleLoaded,setGoogleLoaded]=useState(false);
   const [googleLoading,setGoogleLoading]=useState(false);
   const [googleError,setGoogleError]=useState('');
@@ -86,9 +91,25 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
     }
     if(!silent)setLoading(false);
   }
+  const loadReplyEvidence=useCallback(async()=>{
+    const {data,error}=await supabase.from('crm_activities')
+      .select('contact_id,activity_type,channel,metadata,created_at')
+      .eq('channel','whatsapp_ia')
+      .in('activity_type',['recordatorio_asistencia_enviado','asistencia_confirmada',
+        'asistencia_rechazada','asistencia_dudosa'])
+      .order('created_at',{ascending:false}).limit(5000);
+    if(error||!data||data.length===5000){
+      setReplyEvidenceError('No se pudo verificar todo el historial de WhatsApp; no se acreditarán confirmaciones sin evidencia.');
+      setReplyEvidenceLoaded(false);return;
+    }
+    setReplyEvidence(data as AppointmentAuditActivity[]);
+    setReplyEvidenceError('');
+    setReplyEvidenceLoaded(true);
+  },[]);
   useEffect(()=>{
     void loadMeetings();
-    const refresh=()=>{if(!document.hidden)void loadMeetings(true);};
+    void loadReplyEvidence();
+    const refresh=()=>{if(!document.hidden){void loadMeetings(true);void loadReplyEvidence();}};
     const timer=window.setInterval(refresh,60_000);
     window.addEventListener('focus',refresh);
     document.addEventListener('visibilitychange',refresh);
@@ -97,7 +118,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
       window.removeEventListener('focus',refresh);
       document.removeEventListener('visibilitychange',refresh);
     };
-  },[]);
+  },[loadReplyEvidence]);
   useEffect(()=>{
     if(!selected){setNotifications([]);return;}
     void supabase.from('crm_notifications').select('*').eq('meeting_id',selected.id).order('created_at',{ascending:true})
@@ -124,7 +145,7 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
   },[days]);
   const loadGoogle=useCallback(async()=>{
     const seq=++googleSequence.current;
-    setGoogleLoading(true);setGoogleError('');
+    setGoogleLoading(true);setGoogleLoaded(false);setGoogleError('');
     try{
       const result=await calendarCommand({action:'agenda',from:googleRange.from,to:googleRange.to}) as GoogleAgendaResult;
       if(seq!==googleSequence.current)return;
@@ -154,6 +175,14 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
     };
   },[loadGoogle]);
 
+  const auditByMeetingId=useMemo(()=>{
+    const result=new Map<string,AppointmentAuditResult>();
+    if(!replyEvidenceLoaded||replyEvidenceError)return result;
+    for(const meeting of meetings)result.set(meeting.id,
+      verifyAppointmentEvidence(meeting,replyEvidence,googleLoaded?googleEvents:null,
+        googleLoaded?googleRange:null));
+    return result;
+  },[meetings,replyEvidence,replyEvidenceLoaded,replyEvidenceError,googleLoaded,googleEvents,googleRange]);
   const linkedGoogleIds=useMemo(()=>new Set(meetings.map(m=>m.external_calendar_id).filter((s):s is string=>!!s)),[meetings]);
   const googleOnly=useMemo(()=>googleEvents.filter(e=>!linkedGoogleIds.has(e.id)),[googleEvents,linkedGoogleIds]);
   const upcoming=useMemo(()=>meetings.filter(meeting=>new Date(meeting.starts_at).getTime()>=Date.now()&&['pendiente','confirmada'].includes(meeting.status)),[meetings]);
@@ -162,14 +191,19 @@ export function CrmAgenda({onOpenContact,onChanged,onOpenReview}:{onOpenContact:
   const attendanceCounts={
     pending:futureMeetings.filter(m=>m.attendance_status==='por_confirmar' &&
       m.status!=='cancelada' && m.status!=='realizada').length,
-    confirmed:futureMeetings.filter(m=>m.attendance_status==='confirmada' &&
-      m.status==='confirmada').length,
+    confirmed:futureMeetings.filter(m=>auditByMeetingId.get(m.id)?.confirmed).length,
     reminded:futureMeetings.filter(m=>m.attendance_reminder_at &&
       m.attendance_status==='por_confirmar'&&m.status==='pendiente').length,
     needsAttention:futureMeetings.filter(m=>m.attendance_status==='requiere_atencion' &&
       m.status!=='cancelada').length,
     cancelled:futureMeetings.filter(m=>m.status==='cancelada').length,
   };
+  const needsEvidenceReview=futureMeetings.filter(m=>
+    auditByMeetingId.get(m.id)?.requiresReview&&m.status!=='cancelada');
+  const confirmedWithGoogle=futureMeetings.filter(m=>{
+    const audit=auditByMeetingId.get(m.id);
+    return audit?.confirmed&&audit.booking==='calendar_match';
+  }).length;
   const dayGoogle=showGoogle?googleOnly.filter(e=>googleEventOverlapsDay(e,selectedDay)):[];
 
   const dayMeetings=meetings.filter(meeting=>meetingDateKey(meeting.starts_at)===selectedDay);

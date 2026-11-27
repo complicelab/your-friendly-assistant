@@ -1,0 +1,41 @@
+name: Railway CRM conversation reconciliation audit
+on:
+  push:
+    branches:
+      - main
+      - feat/railway-crm-conversation-reconciliation-20261127
+    paths:
+      - "src/lib/railway-conversation-reconcile.ts"
+      - "src/lib/railway-conversation-reconcile.server.ts"
+      - "src/routes/api.railway.reconcile.ts"
+      - "src/components/crm/railway-conversation-reconciler.tsx"
+      - "src/components/crm/railway-conversation-reconciler.css"
+      - "src/routes/admin.tsx"
+      - "src/test/railway-conversation-reconciliation.test.ts"
+      - ".github/workflows/railway-crm-conversation-reconciliation.yml"
+  pull_request:
+    paths:
+      - "src/lib/railway-conversation-reconcile.ts"
+      - "src/lib/railway-conversation-reconcile.server.ts"
+      - "src/routes/api.railway.reconcile.ts"
+      - "src/components/crm/railway-conversation-reconciler.tsx"
+      - "src/components/crm/railway-conversation-reconciler.css"
+      - "src/routes/admin.tsx"
+      - "src/test/railway-conversation-reconciliation.test.ts"
+      - ".github/workflows/railway-crm-conversation-reconciliation.yml"
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Reconciliation and CRM regressions
+        run: bun run test src/test/railway-conversation-reconciliation.test.ts src/test/crm-whatsapp-audit.test.ts src/test/crm-agent-attendance.test.ts src/test/crm-calendar-evidence-audit.test.ts
+      - name: Build
+        run: bun run build
+      - name: Typecheck
+        run: bunx tsc --noEmit

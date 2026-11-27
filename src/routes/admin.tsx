@@ -9,6 +9,7 @@ import { CalendarConnectionSettings } from "@/components/crm/calendar-connection
 import { CrmClientsList } from "@/components/crm/clients-list";
 import { CrmFunnelDashboard } from "@/components/crm/crm-funnel-dashboard";
 import { CrmWhatsAppIntegrationDetails, useWhatsAppIntegrationStatus } from "@/components/crm/whatsapp-integration-details";
+import { RailwayConversationReconciler } from "@/components/crm/railway-conversation-reconciler";
 import { whatsAppReceiptLabel, formatWhatsAppTimestamp } from "@/lib/whatsapp-integration-status";
 import { formatMeetingDate, meetingStatusLabel, nextUpcomingMeeting } from "@/lib/booking-model";
 import { SERVICES, serviceCategory, serviceLabel } from "@/lib/crm-model";
@@ -550,9 +551,9 @@ function AdminCrmPage() {
 
         {view==="oportunidades"&&<>
         <div className="crm-metrics">
-          <Metric label="Total" value={metrics.total}/>
+          <Metric label="Contactos CRM" value={metrics.total}/>
           <Metric label="Nuevos" value={metrics.nuevos}/>
-          <Metric label="Citas" value={metrics.citas}/>
+          <Metric label="Etapa cita (sin verificar)" value={metrics.citas}/>
           <Metric label="Próximas citas" value={upcomingCount}/>
           <Metric label="Seguimiento" value={metrics.seguimiento}/>
           <Metric label="Ganados" value={metrics.ganados}/>
@@ -712,7 +713,7 @@ function AdminCrmPage() {
         {view==="analitica"&&<CrmFunnelDashboard/>}
         {view==="clientes"&&<CrmClientsList onOpen={id=>void openContactFromMeeting(id)}/>}
         {view==="agenda"&&<CrmAgenda onOpenContact={openContactFromMeeting} onChanged={()=>void loadUpcomingCount()} onOpenReview={()=>setView("configuracion")}/>}
-        {view==="configuracion"&&<div className="clb-admin-config"><CrmWhatsAppIntegrationDetails status={whatsappStatus} refreshing={whatsappRefreshing} onRefresh={()=>void refreshWhatsAppStatus()}/><CalendarConnectionSettings/><CrmBookingSettings/></div>}
+        {view==="configuracion"&&<div className="clb-admin-config"><CrmWhatsAppIntegrationDetails status={whatsappStatus} refreshing={whatsappRefreshing} onRefresh={()=>void refreshWhatsAppStatus()}/><RailwayConversationReconciler accessToken={token} onImport={()=>{void loadContacts();void refreshWhatsAppStatus();}}/><CalendarConnectionSettings/><CrmBookingSettings/></div>}
       </section>
 
       {showCreate&&<div className="crm-modal-backdrop" onMouseDown={e=>{if(e.currentTarget===e.target)setShowCreate(false);}}>

@@ -7,6 +7,7 @@ import { CrmAgenda } from "@/components/crm/agenda";
 import { CrmBookingSettings } from "@/components/crm/booking-settings";
 import { CalendarConnectionSettings } from "@/components/crm/calendar-connection-settings";
 import { CrmClientsList } from "@/components/crm/clients-list";
+import { CrmFunnelDashboard } from "@/components/crm/crm-funnel-dashboard";
 import { CrmWhatsAppIntegrationDetails, useWhatsAppIntegrationStatus } from "@/components/crm/whatsapp-integration-details";
 import { whatsAppReceiptLabel, formatWhatsAppTimestamp } from "@/lib/whatsapp-integration-status";
 import { formatMeetingDate, meetingStatusLabel, nextUpcomingMeeting } from "@/lib/booking-model";
@@ -32,7 +33,7 @@ type Contact = Tables<"crm_contacts">;
 type Activity = Tables<"crm_activities">;
 type Task = Tables<"crm_tasks">;
 type Meeting = Tables<"crm_meetings">;
-type CrmView = "oportunidades"|"clientes"|"agenda"|"configuracion";
+type CrmView = "oportunidades"|"analitica"|"clientes"|"agenda"|"configuracion";
 
 const ADMIN_EMAIL = CRM_ADMIN_EMAIL;
 const STATUS = [
@@ -526,12 +527,13 @@ function AdminCrmPage() {
       <section className="crm-content">
         <nav className="crm-nav" aria-label="Secciones del CRM">
           <button className={view==="oportunidades"?"active":""} onClick={()=>setView("oportunidades")}>Oportunidades</button>
+          <button className={view==="analitica"?"active":""} onClick={()=>setView("analitica")}>Embudo y métricas</button>
           <button className={view==="clientes"?"active":""} onClick={()=>setView("clientes")}>Clientes</button>
           <button className={view==="agenda"?"active":""} onClick={()=>setView("agenda")}>Agenda</button>
           <button className={view==="configuracion"?"active":""} onClick={()=>setView("configuracion")}>Configuración</button>
         </nav>
         <div className="crm-heading">
-          <div><span>CRM INTERNO</span><h1>{view==="oportunidades"?"Oportunidades":view==="clientes"?"Clientes":view==="agenda"?"Agenda":"Configuración"}</h1><p>{view==="oportunidades"?"Quién llegó, qué necesita y qué toca hacer después.":view==="clientes"?"Contactos, correos, WhatsApp, país y fechas, en un solo lugar.":view==="agenda"?"Videollamadas, próximos encuentros y estados de notificación.":"Disponibilidad de reservas y conexión con Google Calendar."}</p></div>
+          <div><span>CRM INTERNO</span><h1>{view==="oportunidades"?"Oportunidades":view==="analitica"?"Embudo comercial":view==="clientes"?"Clientes":view==="agenda"?"Agenda":"Configuración"}</h1><p>{view==="oportunidades"?"Quién llegó, qué necesita y qué toca hacer después.":view==="analitica"?"De interés a agendamiento, asistencia y ventas reales, por canal de captación.":view==="clientes"?"Contactos, correos, WhatsApp, país y fechas, en un solo lugar.":view==="agenda"?"Videollamadas, próximos encuentros y estados de notificación.":"Disponibilidad de reservas y conexión con Google Calendar."}</p></div>
           {view==="oportunidades"&&<div className="crm-heading-actions">
             <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Buscar contacto, marca, WhatsApp…"/>
             <button className="crm-secondary" onClick={()=>void loadContacts()}>Actualizar</button><button className="crm-primary" onClick={()=>setShowCreate(true)}>+ Nuevo contacto</button>
@@ -707,6 +709,7 @@ function AdminCrmPage() {
           </aside>
         </div>
         </>}
+        {view==="analitica"&&<CrmFunnelDashboard/>}
         {view==="clientes"&&<CrmClientsList onOpen={id=>void openContactFromMeeting(id)}/>}
         {view==="agenda"&&<CrmAgenda onOpenContact={openContactFromMeeting} onChanged={()=>void loadUpcomingCount()} onOpenReview={()=>setView("configuracion")}/>}
         {view==="configuracion"&&<div className="clb-admin-config"><CrmWhatsAppIntegrationDetails status={whatsappStatus} refreshing={whatsappRefreshing} onRefresh={()=>void refreshWhatsAppStatus()}/><CalendarConnectionSettings/><CrmBookingSettings/></div>}

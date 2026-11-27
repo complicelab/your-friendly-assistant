@@ -1,0 +1,41 @@
+.cl-funnel{display:grid;gap:18px;color:#152746;font-family:inherit}
+.cl-funnel-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+.cl-funnel-top h2{font-size:28px;font-weight:800;letter-spacing:-.035em;margin:6px 0 8px}
+.cl-funnel-top p,.cl-funnel-card>p{font-size:12px;color:#667891;line-height:1.65;margin:0;max-width:730px}
+.cl-funnel-kicker{font-size:10px;letter-spacing:.13em;color:#3665d1;font-weight:800}
+.cl-funnel-top button{padding:12px 15px;border-radius:12px;border:1px solid #cedbee;background:white;color:#1a50b0;font-weight:750;white-space:nowrap}
+.cl-funnel-filters{display:flex;flex-wrap:wrap;align-items:end;gap:12px}
+.cl-funnel-filters label{display:grid;gap:6px;font-weight:700;font-size:11px;color:#62718a}
+.cl-funnel-filters select{min-width:180px;max-width:260px;padding:10px 12px;border:1px solid #d8e2f0;background:#fff;border-radius:11px;color:#253d66}
+.cl-funnel-filters .cl-funnel-test{display:flex;align-items:center;gap:8px;padding-bottom:10px}
+.cl-funnel-filters input{accent-color:#375ae5}
+.cl-funnel-updated{font-size:10px;color:#8390a4;margin:-4px 0}
+.cl-funnel-loading{padding:24px;background:white;border:1px solid #e3e7f1;border-radius:16px}
+.cl-funnel-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.cl-funnel-kpi{background:#fff;border:1px solid #dfe6f1;border-radius:16px;padding:17px;min-height:112px;box-shadow:0 10px 27px rgba(27,50,89,.04);display:grid;gap:5px}
+.cl-funnel-kpi span{font-size:11px;color:#64748a;font-weight:650}
+.cl-funnel-kpi strong{font-size:29px;color:#1b3980;font-weight:850;letter-spacing:-.04em;line-height:1}
+.cl-funnel-kpi small{font-size:10px;color:#8190a5}
+.cl-funnel-columns{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px}
+.cl-funnel-card{background:#fff;border:1px solid #dfe6f1;border-radius:18px;padding:19px 21px;box-shadow:0 9px 28px rgba(23,47,97,.03)}
+.cl-funnel-card h3{font-size:15px;margin:0 0 6px;letter-spacing:-.02em}
+.cl-funnel-bar{margin-top:16px;display:grid;gap:7px}
+.cl-funnel-bar>div:first-child{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px}
+.cl-funnel-bar span{font-weight:650;color:#52627c}
+.cl-funnel-bar b{font-weight:750;color:#274c93}
+.cl-funnel-bar-track{width:100%;height:9px;border-radius:999px;background:#edf2fa;overflow:hidden}
+.cl-funnel-bar-track i{display:block;height:100%;background:linear-gradient(90deg,#298ad6,#6e5bef);border-radius:999px;transition:width .3s}
+.cl-funnel-stage{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #eef1f7;font-size:11px;padding:9px 0}
+.cl-funnel-stage strong{border-radius:8px;background:#edf3ff;color:#3058a4;min-width:36px;text-align:center;padding:5px 9px}
+.cl-funnel-abandoned{margin-top:13px;padding:12px;border:1px solid #eadfc5;background:#fffbf2;border-radius:12px}
+.cl-funnel-abandoned strong{font-size:11px;color:#906e29}
+.cl-funnel-abandoned p{font-size:10px;color:#856e4e;line-height:1.55;margin:6px 0 0}
+.cl-funnel-table-wrap{overflow-x:auto;margin-top:12px}
+.cl-funnel-table-wrap table{width:100%;border-collapse:collapse;min-width:610px;text-align:left;font-size:11px}
+.cl-funnel-table-wrap th{font-weight:700;color:#71819b;background:#f4f7fd;padding:12px}
+.cl-funnel-table-wrap td{padding:12px;border-bottom:1px solid #eef1f7;color:#394e73}
+.cl-funnel-explain{border-left:3px solid #92b4ef;background:#f5f8ff;border-radius:0 11px 11px 0;padding:14px 17px}
+.cl-funnel-explain strong{font-size:11px;color:#3b63b4}
+.cl-funnel-explain p{font-size:10px;color:#61728d;line-height:1.55;margin:6px 0}
+@media(max-width:850px){.cl-funnel-columns{grid-template-columns:1fr}.cl-funnel-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.cl-funnel-top{flex-direction:column}.cl-funnel-top h2{font-size:22px}.cl-funnel-kpis{grid-template-columns:1fr 1fr}.cl-funnel-kpi{padding:13px;min-height:100px}.cl-funnel-kpi strong{font-size:24px}.cl-funnel-card{padding:15px}.cl-funnel-filters select{min-width:140px}}

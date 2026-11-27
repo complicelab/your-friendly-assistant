@@ -37,6 +37,8 @@ export type FunnelCounts={
  leads:number;contacted:number;interested:number;booked:number;
  attendanceConfirmed:number;attended:number;won:number;
  noInterested:number;optedOut:number;explicitlyAbandoned:number;
+ appointments:number;cancelledAppointments:number;
+ attendedAppointments:number;noShowAppointments:number;
 };
 export type SourceFunnel=FunnelCounts&{source:string};
 export type FunnelResult={
@@ -84,6 +86,7 @@ const empty=():FunnelCounts=>({
  leads:0,contacted:0,interested:0,booked:0,
  attendanceConfirmed:0,attended:0,won:0,
  noInterested:0,optedOut:0,explicitlyAbandoned:0,
+ appointments:0,cancelledAppointments:0,attendedAppointments:0,noShowAppointments:0,
 });
 const increase=(count:FunnelCounts, state:{
  contacted:boolean;interested:boolean;booked:boolean;
@@ -162,9 +165,22 @@ export function commercialFunnel(
   const data={contacted,interested,booked,attendanceConfirmed,attended,
    won,noInterested,optedOut,explicitlyAbandoned};
   increase(totals,data);
+  const appointmentOutcomes={
+   appointments:contactMeetings.length,
+   cancelledAppointments:contactMeetings.filter(m=>m.status==='cancelada').length,
+   attendedAppointments:contactMeetings.filter(m=>m.status==='realizada').length,
+   noShowAppointments:contactMeetings.filter(m=>m.status==='no_asistio').length,
+  };
+  for(const [metric,value] of Object.entries(appointmentOutcomes)){
+   (totals as unknown as Record<string,number>)[metric]+=value;
+  }
   const source=(contact.source||'sin_origen').trim()||'sin_origen';
   const sourceCounts=sources.get(source)||empty();
-  increase(sourceCounts,data);sources.set(source,sourceCounts);
+  increase(sourceCounts,data);
+  for(const [metric,value] of Object.entries(appointmentOutcomes)){
+   (sourceCounts as unknown as Record<string,number>)[metric]+=value;
+  }
+  sources.set(source,sourceCounts);
  }
  return {
   totals,stages,contactStates:states,
@@ -175,6 +191,7 @@ export function commercialFunnel(
    'Cada porcentaje utiliza como base los contactos creados en el período seleccionado, no las citas creadas en ese período.',
    'Agendada significa una reunión real en el CRM, incluso si luego fue cancelada; una señal del agente no crea por sí sola una reserva.',
    'Confirmación de asistencia y diagnóstico realizado son hechos diferentes de interesado y venta ganada.',
+   'La tasa de asistencia usa solo citas con resultado final Realizada o No asistió; excluye citas futuras, pendientes y canceladas.',
    'Abandono requiere una señal explícita del agente o una decisión comercial: no se deduce del silencio ni de la falta de citas.',
   ],
  };

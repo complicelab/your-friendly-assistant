@@ -1,35 +1,11 @@
 name: Audit WhatsApp IA status and CRM UI
 on:
-  push:
-    branches:
-      - main
-      - fix/crm-whatsapp-real-status-20261121
-      - feat/crm-agent-attendance-rsvp-20261121
-      - fix/agent-rsvp-admin-readonly-20261121
-    paths:
-      - "src/routes/admin.tsx"
-      - "src/components/crm/whatsapp-integration-details.tsx"
-      - "src/lib/whatsapp-integration-status.ts"
-      - "src/test/crm-whatsapp-audit.test.ts"
-      - "src/test/crm-agent-attendance.test.ts"
-      - "src/components/crm/agenda.tsx"
-      - "src/lib/booking-model.ts"
-      - "supabase/functions/recibir-prospecto-whatsapp/index.ts"
-      - "supabase/migrations/20261121_agent_attendance_confirmation.sql"
-      - ".github/workflows/whatsapp-integration-audit.yml"
-  pull_request:
-    paths:
-      - "src/routes/admin.tsx"
-      - "src/components/crm/whatsapp-integration-details.tsx"
-      - "src/lib/whatsapp-integration-status.ts"
-      - "src/test/crm-whatsapp-audit.test.ts"
-      - "src/test/crm-agent-attendance.test.ts"
-      - "src/components/crm/agenda.tsx"
-      - "src/lib/booking-model.ts"
-      - "supabase/functions/recibir-prospecto-whatsapp/index.ts"
-      - "supabase/migrations/20261121_agent_attendance_confirmation.sql"
-      - ".github/workflows/whatsapp-integration-audit.yml"
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   audit:
     runs-on: ubuntu-24.04

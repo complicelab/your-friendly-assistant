@@ -27,6 +27,17 @@ describe('commercial funnel uses verified records, not hopeful guesses',()=>{
   expect(r.stages.cita_cancelada).toBe(1);
   expect(r.totals.attendanceConfirmed).toBe(0);
  });
+ it('calculates attendance rate from decided past outcomes, not future slots',()=>{
+  const result=commercialFunnel([contact('a','cita_agendada'),contact('b','cita_agendada')],
+   [meeting('m1','a','realizada'),meeting('m2','a','no_asistio'),
+    meeting('m3','b','pendiente'),meeting('m4','b','cancelada')],[]);
+  expect(result.totals).toMatchObject({
+   leads:2,booked:2,appointments:4,attendedAppointments:1,
+   noShowAppointments:1,cancelledAppointments:1,
+  });
+  expect(percent(result.totals.attendedAppointments,
+   result.totals.attendedAppointments+result.totals.noShowAppointments)).toContain('50');
+ });
  it('keeps interested, booked, RSVP, attended and won separate',()=>{
   const c=[contact('one','calificado'),contact('two','cita_agendada'),
    contact('three','ganado')];

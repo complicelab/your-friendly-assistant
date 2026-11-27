@@ -63,12 +63,14 @@ begin
   if p_event_type='prospecto_abandonado' then
     if v_evidence <> 'dos_seguimientos_sin_respuesta'
        or coalesce(p_payload->>'follow_up_count','') !~ '^[0-9]{1,3}$'
-       or coalesce((p_payload->>'follow_up_count')::integer,0)<2
        or coalesce(p_payload->>'last_followup_at','') !~
-          '^\d{4}-\d\d-\d\dT\d\d:\d\d'
+          '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}'
        or nullif(v_reason,'') is null
     then
       raise exception 'abandonment requires verified follow-up evidence';
+    end if;
+    if (p_payload->>'follow_up_count')::integer<2 then
+      raise exception 'at least two completed follow-ups required';
     end if;
     begin
       v_last_followup := (p_payload->>'last_followup_at')::timestamptz;
